@@ -3,18 +3,64 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/header/header.component';
+import { SearchInterfaceComponent } from './components/search-interface/search-interface.component';
+import { AdventureComponent } from './components/adventure/adventure.component';
+import { AdventureEditorComponent } from './components/adventure-editor/adventure-editor.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+
+import { NgxGraphModule } from '@swimlane/ngx-graph';
+
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon'
+import { MatButtonModule } from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { GameComponent } from './views/game/game.component';
+import { MatGridListModule } from '@angular/material/grid-list'
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { DashboardComponent } from './views/dashboard/dashboard.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { LayoutModule } from '@angular/cdk/layout';
+import { EditorComponent } from './views/editor/editor.component';
+import { GameBarComponent } from './components/game-bar/game-bar.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AdventureComponent,
+    AdventureEditorComponent,
+    SearchInterfaceComponent,
+    GameComponent,
+    DashboardComponent,
+    EditorComponent,
+    GameBarComponent,
     HeaderComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatCardModule,
+    MatButtonModule,
+    NgxGraphModule,
+    MatSidenavModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatIconModule,
+    MatGridListModule,
+    FlexLayoutModule,
+    MatMenuModule,
+    LayoutModule,
+    MatToolbarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,13 @@
+
+.editor-container {
+  display: grid;
+  grid-template-areas: "header" "editor";
+  grid-template-rows: 60px auto;
+  grid-row-gap: 0px;
+  grid-column-gap: 16px;
+  height: 100%;
+}
+
+.filler {
+  background-color: bisque;
+}

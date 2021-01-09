@@ -1,7 +1,8 @@
 .game-bar-container {
   background-color: bisque;
   height: 100%;
-  padding: 25px 50px 75px;
+  box-sizing: border-box;
+  padding: 25px 25px 25px;
 }
 
 .choices-panel button {
