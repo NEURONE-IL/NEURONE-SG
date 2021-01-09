@@ -1,0 +1,13 @@
+.game-bar-container {
+  background-color: bisque;
+  height: 100%;
+  padding: 25px 50px 75px;
+}
+
+.choices-panel button {
+  margin-right: 5px;
+}
+
+.ending-panel button{
+  margin-right: 5px;
+}

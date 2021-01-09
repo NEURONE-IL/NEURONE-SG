@@ -1,0 +1,16 @@
+<div class="game-bar-container">
+  <div class="choices-panel" *ngIf="gameService.currentNode.type=='transition'">
+    <button
+      *ngFor="let link of gameService.getLinks(gameService.currentNode)"
+      (click)="gameService.goTo(link.target)"
+      mat-raised-button
+      color="primary"
+    >
+      {{ link.label }}
+    </button>
+  </div>
+  <div class="ending-panel" *ngIf="gameService.currentNode.type=='ending'">
+    <p>You've reached an ending, congrats!</p>
+    <button mat-raised-button color="primary" (click)="refresh()">Finish</button>
+  </div>
+</div>

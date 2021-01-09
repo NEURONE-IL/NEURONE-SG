@@ -1,0 +1,25 @@
+
+.adventure {
+  border-left: solid 1px black;
+  padding: 0 0 0 1.5em;
+  height: 100%;
+  max-width: 500px;
+  margin-bottom: 5px;
+}
+
+.adventure  > * {
+  display: block;
+  margin: 5px 0;
+}
+
+.node-img {
+  width: 90%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}

@@ -1,0 +1,74 @@
+<ng-container class="basic-container" *ngIf="!gameService.loading">
+  <mat-sidenav-container
+      class="node-editor" (backdropClick)="closeEditor('backdrop')">
+    <mat-sidenav #sidenav (keydown.escape)="closeEditor('escape')" position="end" disableClose>
+      <div class="form-container" *ngIf="currentNode!=null">
+        <h3>Node editor</h3>
+        <form class="node-form" [formGroup]="nodeForm">
+          <mat-form-field appearance="fill" class="node-form-field">
+            <mat-label>Node Type</mat-label>
+            <!-- <mat-select [ngModel]="currentNode.type" name="nodeType">
+              <mat-option *ngFor="let type of nodeTypes" [value]="type.value">{{type.viewValue}}</mat-option>
+            </mat-select> -->
+            <mat-select [ngModel]="currentNode.type" name="nodeType" formControlName="type">
+              <mat-option *ngFor="let type of nodeTypes" [value]="type.value">
+                {{type.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="node-form-field">
+            <mat-label>ID</mat-label>
+            <input matInput name ="nodeId" formControlName="id" placeholder="room1" [ngModel]="currentNode.id">
+          </mat-form-field>
+          <mat-form-field class="node-form-field">
+            <mat-label>Label</mat-label>
+            <input matInput name ="nodeLabel" formControlName="label" placeholder="B" [ngModel]="currentNode.label">
+          </mat-form-field>
+          <form formGroupName="data">
+            <mat-form-field class="node-form-field">
+              <mat-label>Image</mat-label>
+              <input matInput name="nodeImage" formControlName="image" placeholder="background.jpg" [ngModel]="currentNode.data.image">
+            </mat-form-field>
+            <mat-form-field class="node-form-field">
+              <mat-label>Text</mat-label>
+              <input matInput name="nodeText" formControlName="text" placeholder="This is your bedroom" [ngModel]="currentNode.data.text">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="node-form-field">
+              <mat-label>Target Node</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let node of getOtherNodes()" [value]="node.label">{{node.id}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </form>
+        </form>
+        <button mat-raised-button color="primary" (click)="updateNode()">Save</button>
+        <button mat-raised-button color="accent" (click)="closeEditor()">Close</button>
+        <button mat-raised-button color="accent" (click)="addLink('homecinema', 'end1', 'go to the end')">Add Link (WIP)</button>
+      </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <ngx-graph
+        class="chart-container"
+        [showMiniMap]="true"
+        [links]="gameService.storyLinks"
+        [nodes]="gameService.storyNodes"
+        [update$]="updateGraph"
+      >
+      <ng-template #nodeTemplate let-node>
+        <svg:g class="node" (click)="openEditor(node)">
+            <svg:rect
+            [attr.width]="node.dimension.width"
+            [attr.height]="node.dimension.height"
+            [attr.fill]="node.data.color"
+            />
+            <svg:text alignment-baseline="central" [attr.x]="10" [attr.y]="node.dimension.height / 2">
+              {{node.label}}
+            </svg:text>
+        </svg:g>
+      </ng-template>
+      </ngx-graph>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</ng-container>
+

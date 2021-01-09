@@ -1,0 +1,8 @@
+<div class="search-content">
+  <img class="main-logo" src="assets/images/neurone_logo.png" alt="neurone logo">
+  <mat-form-field appearance="outline" class="search-box" >
+      <mat-icon matSuffix>search</mat-icon>
+      <input matInput [(ngModel)]="query" (keyup.enter)="search()">
+  </mat-form-field>
+  <button mat-raised-button class="search-button" color="primary" (click)="search()">Buscar</button>
+</div>
