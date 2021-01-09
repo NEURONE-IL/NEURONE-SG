@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { GameService } from 'src/app/services/game/game.service';
+import { GameService } from '../../services/game/game.service';
+import { SearchService } from '../../services/search/search.service';
 
 @Component({
   selector: 'app-game-bar',
@@ -8,7 +9,8 @@ import { GameService } from 'src/app/services/game/game.service';
 })
 export class GameBarComponent implements OnInit {
 
-  constructor(public gameService: GameService) { }
+  constructor(public gameService: GameService,
+              public SearchService: SearchService) { }
 
   ngOnInit(): void {
   }
