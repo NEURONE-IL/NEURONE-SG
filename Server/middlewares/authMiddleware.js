@@ -1,6 +1,6 @@
 const Joi = require('joi');
-const User = require('../models/user');
-const Role = require('../models/role');
+const User = require('../models/auth/user');
+const Role = require('../models/auth/role');
 
 const schema = Joi.object({
     password: Joi.string()

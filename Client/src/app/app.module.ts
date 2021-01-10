@@ -9,6 +9,7 @@ import { AdventureEditorComponent } from './components/adventure-editor/adventur
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 
@@ -29,6 +30,7 @@ import { EditorComponent } from './views/editor/editor.component';
 import { GameBarComponent } from './components/game-bar/game-bar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HeaderComponent } from './components/header/header.component';
+import { AdventureMetaEditorComponent } from './components/adventure-meta-editor/adventure-meta-editor.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import { HeaderComponent } from './components/header/header.component';
     DashboardComponent,
     EditorComponent,
     GameBarComponent,
-    HeaderComponent
+    HeaderComponent,
+    AdventureMetaEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +63,8 @@ import { HeaderComponent } from './components/header/header.component';
     FlexLayoutModule,
     MatMenuModule,
     LayoutModule,
-    MatToolbarModule
+    MatToolbarModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

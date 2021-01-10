@@ -1,4 +1,4 @@
-const Role = require('../models/role');
+const Role = require('../models/auth/role');
 
 async function initial() {
   Role.estimatedDocumentCount((err, count) => {

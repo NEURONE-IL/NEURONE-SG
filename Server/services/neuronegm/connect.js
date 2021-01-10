@@ -1,5 +1,5 @@
 const axios = require("axios");
-const Credential = require('../../models/credential');
+const Credential = require('../../models/auth/credential');
 
 const loginGM = async (credential, email, password, callback) => {
     await axios.post(process.env.NEURONEGM+'/auth/signin', {username: email, password: password}).then((response)=> {

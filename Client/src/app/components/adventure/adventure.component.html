@@ -1,40 +1,12 @@
-<!-- <button mat-raised-button color="accent" (click)="printData()">Print Game Data</button> -->
-<!-- <mat-card class="adventure-card">
-  <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>Story</mat-card-title>
-    <mat-card-subtitle>{{gameService.currentNode.id}}</mat-card-subtitle>
-  </mat-card-header>
-  <img mat-card-image src="{{gameService.currentNode.data.image}}" alt="Current stage image">
-  <mat-card-content>
-    <p>
-      {{gameService.currentNode.data.text}}
-    </p>
-  </mat-card-content>
-  <mat-card-actions>
-    <button   *ngFor="let link of gameService.getLinks(gameService.currentNode)"
-              (click)="gameService.goTo(link.target)"
-              mat-raised-button color="primary">{{link.label}}</button>
-  </mat-card-actions>
-</mat-card> -->
-
-<!-- <div class="adventure">
-  <h1>Story</h1>
-  <h3>{{gameService.currentNode.id}}</h3>
-  <img src="{{gameService.currentNode.data.image}}" alt="Current stage image">
-  <p>
-    {{gameService.currentNode.data.text}}
-  </p>
-  <button   *ngFor="let link of gameService.getLinks(gameService.currentNode)"
-          (click)="gameService.goTo(link.target)"
-          mat-raised-button color="primary">
-          {{link.label}}
-  </button>
-</div> -->
-
 <div class="adventure">
   <button mat-raised-button color="accent" (click)="printData()">Print Game Data</button>
-  <img class="node-img" src="{{gameService.currentNode.data.image}}" alt="" />
-  <h3>{{gameService.currentNode.id}}</h3>
-  <p>{{gameService.currentNode.data.text}}</p>
+  <div class="node-wrapper">
+    <div class="img-wrapper">
+      <img class="node-img" src="{{gameService.currentNode.data.image}}" alt="" />
+    </div>
+    <div class="text-wrapper">
+      <h3>{{gameService.currentNode.label}}</h3>
+      <p>{{gameService.currentNode.data.text}}</p>
+    </div>
+  </div>
 </div>

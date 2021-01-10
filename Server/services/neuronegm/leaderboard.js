@@ -1,7 +1,7 @@
 const axios = require("axios");
 const connect = require('./connect');
 const leaderboardsJson = require('../../config/neuronegm/leaderboards.json');
-const GameElement = require('../../models/gameElement');
+const GameElement = require('../../models/neuronegm/gameElement');
 
 
 const getLeaderboards = async (callback) => {

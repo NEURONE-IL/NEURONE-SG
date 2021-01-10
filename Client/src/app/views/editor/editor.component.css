@@ -1,9 +1,8 @@
 
 .editor-container {
   display: grid;
-  grid-template-areas: "header" "editor";
-  grid-template-rows: 60px auto;
-  grid-row-gap: 0px;
+  grid-template-areas: "header" "nodes-editor" "meta-editor";
+  grid-template-rows: 60px auto auto;
   grid-column-gap: 16px;
   height: 100%;
 }

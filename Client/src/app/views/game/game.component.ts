@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GameService } from 'src/app/services/game/game.service';
 import { SearchService } from '../../services/search/search.service';
 
 @Component({
@@ -8,7 +9,8 @@ import { SearchService } from '../../services/search/search.service';
 })
 export class GameComponent implements OnInit {
 
-  constructor(public searchService: SearchService) { }
+  constructor(public searchService: SearchService,
+              public gameService: GameService) { }
 
   ngOnInit(): void {
   }

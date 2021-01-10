@@ -4,6 +4,7 @@
   "description": "REST API for neurone-adv game and game creation tool.",
   "main": "app.js",
   "scripts": {
+    "dev": "nodemon app.js localhost 3000",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Cristóbal Becerra",
@@ -20,6 +21,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.11",
     "nodemailer": "^6.4.17",
+    "nodemon": "^2.0.7",
     "qs": "^6.9.4"
   }
 }

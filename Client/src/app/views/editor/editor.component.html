@@ -1,5 +1,6 @@
-<div class="editor-container">
+<div class="editor-container" *ngIf="!editorService.loading">
   <app-header [style.grid-area]="'header'"></app-header>
-  <app-adventure-editor [style.grid-area]="'editor'"></app-adventure-editor>
+  <app-adventure-editor [style.grid-area]="'nodes-editor'"></app-adventure-editor>
+  <app-adventure-meta-editor [style.grid.area]="'meta-editor'" (saveAllEvent)="saveAllFromParent()"></app-adventure-meta-editor>
 </div>
 

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { GameService } from 'src/app/services/game/game.service';
+import { EditorService } from '../../services/game/editor.service';
 
 @Component({
   selector: 'app-editor',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditorComponent implements OnInit {
 
-  constructor() { }
+  constructor(public editorService: EditorService) { }
 
   ngOnInit(): void {
+  }
+
+  saveAllFromParent() {
+    console.log('save all from parent');
   }
 
 }

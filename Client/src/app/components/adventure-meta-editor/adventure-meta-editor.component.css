@@ -1,0 +1,20 @@
+.meta-editor-container {
+  background-color: bisque;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 25px 25px 25px;
+}
+
+.panel button {
+  margin-right: 5px;
+}
+
+.meta-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}

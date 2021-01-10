@@ -1,7 +1,7 @@
 const axios = require("axios");
 const connect = require('./connect');
 const actionsJson = require('../../config/neuronegm/actions.json');
-const GameElement = require('../../models/gameElement');
+const GameElement = require('../../models/neuronegm/gameElement');
 
 const getActions = async (callback) => {
     await connect.getHeadersGM((err, headers) => {

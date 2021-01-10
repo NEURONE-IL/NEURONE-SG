@@ -1,0 +1,14 @@
+<div class="meta-editor-container">
+  <h1>Adventure editor</h1>
+  <form class="meta-form" [formGroup]="metaForm">
+    <mat-form-field class="full-width">
+      <mat-label>Name</mat-label>
+      <input matInput name ="metaName" formControlName="name" placeholder="Space adventure" [ngModel]="editorService.name">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Description</mat-label>
+      <input matInput name ="metaDescription" formControlName="description" placeholder="An adventure in the planet of Mars." [ngModel]="editorService.description">
+    </mat-form-field>
+  </form>
+  <button mat-raised-button color="primary" (click)="saveAllChanges()">Save all changes</button>
+</div>

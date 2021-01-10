@@ -1,19 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user');
-const Role = require('../models/role');
-const Token = require('../models/token');
+const User = require('../models/auth/user');
+const Role = require('../models/auth/role');
+const Token = require('../models/auth/token');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require("nodemailer");
 const crypto = require('crypto');
 const fs = require('fs');
-const authMw = require('../middlewares/authMiddleware');
+const authMiddleware = require('../middlewares/authMiddleware');
 
 const neuronegmService = require('../services/neuronegm/connect');
 const playerService = require('../services/neuronegm/player');
 
-router.post('/register/admin', [authMw.verifyBodyAdmin, authMw.uniqueEmail], async (req, res) => {
+router.post('/register/admin', [authMiddleware.verifyBodyAdmin, authMiddleware.uniqueEmail], async (req, res) => {
     // Role
     const role = await Role.findOne({name: 'admin'}, err => {
         if(err){
@@ -32,7 +32,7 @@ router.post('/register/admin', [authMw.verifyBodyAdmin, authMw.uniqueEmail], asy
     const user = new User({
         email: req.body.email.toLowerCase(),
         password: hashpassword,
-        role: role._id
+        role: role.id
     })
 
     await neuronegmService.connectGM(req.body.email, req.body.password, (err, res) => {
@@ -57,7 +57,7 @@ router.post('/register/admin', [authMw.verifyBodyAdmin, authMw.uniqueEmail], asy
     });
 })
 
-router.post('/register/', [authMw.verifyBody, authMw.uniqueEmail], async (req, res)=>{
+router.post('/register/', [authMiddleware.verifyBody, authMiddleware.uniqueEmail], async (req, res)=>{
 
     // Find student role
     const role = await Role.findOne({name: 'student'}, err => {
@@ -80,7 +80,7 @@ router.post('/register/', [authMw.verifyBody, authMw.uniqueEmail], async (req, r
         last_names: req.body.last_names,
         birthday: req.body.birthday,
         password: hashpassword,
-        role: role._id
+        role: role.id
     });
 
     //save user in db
@@ -114,14 +114,14 @@ router.post('/login', async (req, res) => {
     //check if user is confirmed
     if(!user.confirmed) res.status(400).send('USER_NOT_CONFIRMED');
     //create and assign a token
-    const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
+    const token = jwt.sign({_id: user.id}, process.env.TOKEN_SECRET);
     res.header('x-access-token', token).send({user: user, token: token});
 });
 
 
 // Creates player on NEURONE-GM
 function saveGMPlayer(req, user, res) {
-    playerService.postPlayer({ name: user.names, last_name: user.last_names, sourceId: user._id }, (err, data) => {
+    playerService.postPlayer({ name: user.names, last_name: user.last_names, sourceId: user.id }, (err, data) => {
         if (err) {
             console.log(err);
             res.status(200).json({
@@ -147,7 +147,7 @@ function saveGMPlayer(req, user, res) {
 function sendConfirmationEmail(user, res, req) {
 
     // Create a verification token
-    const token = new Token({ _userId: user._id, token: crypto.randomBytes(16).toString('hex') });
+    const token = new Token({ _userId: user.id, token: crypto.randomBytes(16).toString('hex') });
 
     // Save the verification token
     token.save((err) => {

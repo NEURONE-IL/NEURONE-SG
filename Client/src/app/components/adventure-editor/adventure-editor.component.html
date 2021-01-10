@@ -1,16 +1,16 @@
-<ng-container class="basic-container" *ngIf="!gameService.loading">
+<ng-container class="adventure-editor-container" *ngIf="!editorService.loading">
   <mat-sidenav-container
       class="node-editor" (backdropClick)="closeEditor('backdrop')">
     <mat-sidenav #sidenav (keydown.escape)="closeEditor('escape')" position="end" disableClose>
-      <div class="form-container" *ngIf="currentNode!=null">
+      <div class="form-container" *ngIf="editorService.currentNode!=null">
         <h3>Node editor</h3>
         <form class="node-form" [formGroup]="nodeForm">
           <mat-form-field appearance="fill" class="node-form-field">
             <mat-label>Node Type</mat-label>
-            <!-- <mat-select [ngModel]="currentNode.type" name="nodeType">
+            <!-- <mat-select [ngModel]="editorService.currentNode.type" name="nodeType">
               <mat-option *ngFor="let type of nodeTypes" [value]="type.value">{{type.viewValue}}</mat-option>
             </mat-select> -->
-            <mat-select [ngModel]="currentNode.type" name="nodeType" formControlName="type">
+            <mat-select [ngModel]="editorService.currentNode.type" name="nodeType" formControlName="type">
               <mat-option *ngFor="let type of nodeTypes" [value]="type.value">
                 {{type.viewValue}}
               </mat-option>
@@ -18,20 +18,20 @@
           </mat-form-field>
           <mat-form-field class="node-form-field">
             <mat-label>ID</mat-label>
-            <input matInput name ="nodeId" formControlName="id" placeholder="room1" [ngModel]="currentNode.id">
+            <input matInput name ="nodeId" formControlName="id" placeholder="room1" [ngModel]="editorService.currentNode.id">
           </mat-form-field>
           <mat-form-field class="node-form-field">
             <mat-label>Label</mat-label>
-            <input matInput name ="nodeLabel" formControlName="label" placeholder="B" [ngModel]="currentNode.label">
+            <input matInput name ="nodeLabel" formControlName="label" placeholder="B" [ngModel]="editorService.currentNode.label">
           </mat-form-field>
           <form formGroupName="data">
             <mat-form-field class="node-form-field">
               <mat-label>Image</mat-label>
-              <input matInput name="nodeImage" formControlName="image" placeholder="background.jpg" [ngModel]="currentNode.data.image">
+              <input matInput name="nodeImage" formControlName="image" placeholder="background.jpg" [ngModel]="editorService.currentNode.data.image">
             </mat-form-field>
             <mat-form-field class="node-form-field">
               <mat-label>Text</mat-label>
-              <input matInput name="nodeText" formControlName="text" placeholder="This is your bedroom" [ngModel]="currentNode.data.text">
+              <input matInput name="nodeText" formControlName="text" placeholder="This is your bedroom" [ngModel]="editorService.currentNode.data.text">
             </mat-form-field>
             <mat-form-field appearance="fill" class="node-form-field">
               <mat-label>Target Node</mat-label>
@@ -51,8 +51,8 @@
       <ngx-graph
         class="chart-container"
         [showMiniMap]="true"
-        [links]="gameService.storyLinks"
-        [nodes]="gameService.storyNodes"
+        [nodes]="editorService.adventure.nodes"
+        [links]="editorService.adventure.links"
         [draggingEnabled]="false"
         [update$]="updateGraph"
         [autoCenter]="true"

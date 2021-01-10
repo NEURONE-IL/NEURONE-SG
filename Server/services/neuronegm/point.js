@@ -1,7 +1,7 @@
 const axios = require("axios");
 const connect = require('./connect');
 const pointsJson = require('../../config/neuronegm/points.json');
-const GameElement = require('../../models/gameElement');
+const GameElement = require('../../models/neuronegm/gameElement');
 
 const getPoints = async (callback) => {
     await connect.getHeadersGM((err, headers) => {

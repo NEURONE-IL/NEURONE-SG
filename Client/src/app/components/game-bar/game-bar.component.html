@@ -1,7 +1,8 @@
 <div class="game-bar-container">
-  <div class="choices-panel" *ngIf="gameService.currentNode.type=='transition'">
+  <div class="choices-panel" *ngIf="gameService.currentNode.type=='transition'
+                                    || gameService.currentNode.type=='initial'">
     <button
-      *ngFor="let link of gameService.getLinks(gameService.currentNode)"
+      *ngFor="let link of gameService.currentLinks"
       (click)="gameService.goTo(link.target)"
       mat-raised-button
       color="primary"
