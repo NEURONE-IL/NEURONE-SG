@@ -3,7 +3,6 @@
   display: grid;
   grid-template-areas: "header header header header" "search search search adventure" "challenge challenge challenge challenge";
   grid-template-rows: 60px auto 150px;
-  grid-row-gap: 16px;
   grid-column-gap: 16px;
   height: 100%;
 }
@@ -12,7 +11,6 @@
   display: grid;
   grid-template-areas: "header header header header" "adventure adventure adventure adventure" "challenge challenge challenge challenge";
   grid-template-rows: 60px auto 150px;
-  grid-row-gap: 16px;
   grid-column-gap: 16px;
   height: 100%;
 }

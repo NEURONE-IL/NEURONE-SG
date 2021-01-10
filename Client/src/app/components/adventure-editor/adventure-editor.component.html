@@ -1,8 +1,15 @@
-<ng-container class="adventure-editor-container" *ngIf="!editorService.loading">
+<ng-container *ngIf="!editorService.updating; else updating">
   <mat-sidenav-container
-      class="node-editor" (backdropClick)="closeEditor('backdrop')">
-    <mat-sidenav #sidenav (keydown.escape)="closeEditor('escape')" position="end" disableClose>
-      <div class="form-container" *ngIf="editorService.currentNode!=null">
+    class="node-editor"
+    (backdropClick)="closeEditor('backdrop')"
+  >
+    <mat-sidenav
+      #sidenav
+      (keydown.escape)="closeEditor('escape')"
+      position="end"
+      disableClose
+    >
+      <div class="form-container" *ngIf="editorService.currentNode != null">
         <h3>Node editor</h3>
         <form class="node-form" [formGroup]="nodeForm">
           <mat-form-field appearance="fill" class="node-form-field">
@@ -10,40 +17,72 @@
             <!-- <mat-select [ngModel]="editorService.currentNode.type" name="nodeType">
               <mat-option *ngFor="let type of nodeTypes" [value]="type.value">{{type.viewValue}}</mat-option>
             </mat-select> -->
-            <mat-select [ngModel]="editorService.currentNode.type" name="nodeType" formControlName="type">
+            <mat-select
+              [ngModel]="editorService.currentNode.type"
+              name="nodeType"
+              formControlName="type"
+            >
               <mat-option *ngFor="let type of nodeTypes" [value]="type.value">
-                {{type.viewValue}}
+                {{ type.viewValue }}
               </mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field class="node-form-field">
             <mat-label>ID</mat-label>
-            <input matInput name ="nodeId" formControlName="id" placeholder="room1" [ngModel]="editorService.currentNode.id">
+            <input
+              matInput
+              name="nodeId"
+              formControlName="id"
+              placeholder="room1"
+              [ngModel]="editorService.currentNode.id"
+            />
           </mat-form-field>
           <mat-form-field class="node-form-field">
             <mat-label>Label</mat-label>
-            <input matInput name ="nodeLabel" formControlName="label" placeholder="B" [ngModel]="editorService.currentNode.label">
+            <input
+              matInput
+              name="nodeLabel"
+              formControlName="label"
+              placeholder="B"
+              [ngModel]="editorService.currentNode.label"
+            />
           </mat-form-field>
           <form formGroupName="data">
             <mat-form-field class="node-form-field">
               <mat-label>Image</mat-label>
-              <input matInput name="nodeImage" formControlName="image" placeholder="background.jpg" [ngModel]="editorService.currentNode.data.image">
+              <input
+                matInput
+                name="nodeImage"
+                formControlName="image"
+                placeholder="background.jpg"
+                [ngModel]="editorService.currentNode.data.image"
+              />
             </mat-form-field>
             <mat-form-field class="node-form-field">
               <mat-label>Text</mat-label>
-              <input matInput name="nodeText" formControlName="text" placeholder="This is your bedroom" [ngModel]="editorService.currentNode.data.text">
-            </mat-form-field>
-            <mat-form-field appearance="fill" class="node-form-field">
-              <mat-label>Target Node</mat-label>
-              <mat-select>
-                <mat-option *ngFor="let node of getOtherNodes()" [value]="node.label">{{node.id}}</mat-option>
-              </mat-select>
+              <input
+                matInput
+                name="nodeText"
+                formControlName="text"
+                placeholder="This is your bedroom"
+                [ngModel]="editorService.currentNode.data.text"
+              />
             </mat-form-field>
           </form>
         </form>
-        <button mat-raised-button color="primary" (click)="updateNode()">Save</button>
-        <button mat-raised-button color="accent" (click)="closeEditor()">Close</button>
-        <button mat-raised-button color="accent" (click)="addLink('homecinema', 'end1', 'go to the end')">Add Link (WIP)</button>
+        <button mat-raised-button color="primary" (click)="updateNode()">
+          Save
+        </button>
+        <button mat-raised-button color="accent" (click)="closeEditor()">
+          Close
+        </button>
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="showNewLinkDialog()"
+        >
+          Add Link
+        </button>
       </div>
     </mat-sidenav>
 
@@ -57,46 +96,76 @@
         [update$]="updateGraph"
         [autoCenter]="true"
       >
+        <!-- Defs custom template -->
+        <ng-template #defsTemplate>
+          <svg:marker
+            id="arrow"
+            viewBox="0 -5 10 10"
+            refX="8"
+            refY="0"
+            markerWidth="4"
+            markerHeight="4"
+            orient="auto"
+          >
+            <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
+          </svg:marker>
+        </ng-template>
 
-      <!-- Defs custom template -->
-      <ng-template #defsTemplate>
-        <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
-          <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
-        </svg:marker>
-      </ng-template>
-
-      <!-- Links custom template -->
-      <ng-template #linkTemplate let-link>
-        <svg:g class="edge">
-          <svg:path class="line" stroke-width="2" marker-end="url(#arrow)"></svg:path>
-          <svg:text class="edge-label" text-anchor="middle">
-            <textPath
-              class="text-path"
-              [attr.href]="'#' + link.id"
-              [style.dominant-baseline]="link.dominantBaseline"
-              startOffset="50%"
-            >
-              {{link.label}}
-            </textPath>
-          </svg:text>
-        </svg:g>
-      </ng-template>
-
-      <!-- Nodes custom template -->
-      <ng-template #nodeTemplate let-node>
-        <svg:g class="node" (click)="openEditor(node)">
-            <svg:rect
-            [attr.width]="node.dimension.width"
-            [attr.height]="node.dimension.height"
-            [attr.fill]="node.data.color"
-            />
-            <svg:text alignment-baseline="central" [attr.x]="10" [attr.y]="node.dimension.height / 2">
-              {{node.label}}
+        <!-- Links custom template -->
+        <ng-template #linkTemplate let-link>
+          <svg:g class="edge">
+            <svg:path
+              class="line"
+              stroke-width="2"
+              marker-end="url(#arrow)"
+            ></svg:path>
+            <svg:text class="edge-label" text-anchor="middle">
+              <textPath
+                class="text-path"
+                [attr.href]="'#' + link.id"
+                [style.dominant-baseline]="link.dominantBaseline"
+                startOffset="50%"
+              >
+                {{ link.label }}
+              </textPath>
             </svg:text>
-        </svg:g>
-      </ng-template>
+          </svg:g>
+        </ng-template>
+
+        <!-- Nodes custom template -->
+        <ng-template #nodeTemplate let-node>
+          <svg:g class="node" (click)="openEditor(node)">
+            <svg:rect
+              [attr.width]="node.dimension.width"
+              [attr.height]="node.dimension.height"
+              [attr.fill]="node.data.color"
+            />
+            <svg:text
+              alignment-baseline="central"
+              [attr.x]="10"
+              [attr.y]="node.dimension.height / 2"
+            >
+              {{ node.label }}
+            </svg:text>
+          </svg:g>
+        </ng-template>
       </ngx-graph>
+      <div class="button-panel">
+        <button
+        class="new-node-btn"
+        mat-fab
+        color="accent"
+        (click)="showNewNodeForm()"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </ng-container>
 
+<ng-template #updating>
+  <div class="adventure-editor-container">
+    <mat-progress-spinner></mat-progress-spinner>
+  </div>
+</ng-template>

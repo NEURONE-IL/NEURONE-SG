@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { SearchInterfaceComponent } from './components/search-interface/search-interface.component';
 import { AdventureComponent } from './components/adventure/adventure.component';
 import { AdventureEditorComponent } from './components/adventure-editor/adventure-editor.component';
+import { NewNodeDialogComponent } from './components/adventure-editor/adventure-editor.component';
+import { NewLinkDialogComponent } from './components/adventure-editor/adventure-editor.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
@@ -31,6 +33,8 @@ import { GameBarComponent } from './components/game-bar/game-bar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HeaderComponent } from './components/header/header.component';
 import { AdventureMetaEditorComponent } from './components/adventure-meta-editor/adventure-meta-editor.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -43,7 +47,9 @@ import { AdventureMetaEditorComponent } from './components/adventure-meta-editor
     EditorComponent,
     GameBarComponent,
     HeaderComponent,
-    AdventureMetaEditorComponent
+    AdventureMetaEditorComponent,
+    NewNodeDialogComponent,
+    NewLinkDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -65,6 +71,8 @@ import { AdventureMetaEditorComponent } from './components/adventure-meta-editor
     LayoutModule,
     MatToolbarModule,
     HttpClientModule,
+    MatProgressSpinnerModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -22,10 +22,9 @@ export class AdventureMetaEditorComponent implements OnInit {
   }
 
   saveAllChanges() {
-    console.log(this.metaForm.value);
+    this.editorService.updating = true;
     this.editorService.updateMeta(this.metaForm.value);
     this.editorService.updateAdventure();
-    // this.saveAllEvent.emit(true);
   }
 
 }

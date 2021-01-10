@@ -15,6 +15,8 @@ export class EditorService {
 
   loading = true;
 
+  updating = false;
+
   private refreshGraphSubject = new Subject<any>();
 
   constructor(private adventureService: AdventureService,
@@ -60,6 +62,12 @@ export class EditorService {
     return this.adventure.description;
   }
 
+  getOtherNodes() {
+    return this.adventure.nodes.filter(
+      (node) => this.currentNode != node
+    );
+  }
+
   updateNode(newNode) {
     this.nodes.forEach((node, index) => {
       if(node.id==this.currentNode.id) {
@@ -76,17 +84,24 @@ export class EditorService {
     });
   }
 
+  addLink(newLink) {
+    console.log(newLink);
+    this.adventure.links.push(newLink);
+    this.refreshGraphSubject.next(true);
+  }
+
   updateMeta(newMeta) {
     this.adventure.name = newMeta.name;
     this.adventure.description = newMeta.description;
   }
 
-  getMessage(): Observable<any> {
+  getRefreshRequest(): Observable<any> {
     return this.refreshGraphSubject.asObservable();
-}
+  }
 
   updateAdventure() {
     this.adventureService.updateAdventure(this.adventure).subscribe((res) => {
+      this.updating = false;
       this.refreshGraphSubject.next(true);
     },
     (err) => {
