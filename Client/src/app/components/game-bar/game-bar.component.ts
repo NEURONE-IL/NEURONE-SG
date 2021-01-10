@@ -10,7 +10,7 @@ import { SearchService } from '../../services/search/search.service';
 export class GameBarComponent implements OnInit {
 
   constructor(public gameService: GameService,
-              public SearchService: SearchService) { }
+              public searchService: SearchService) { }
 
   ngOnInit(): void {
   }

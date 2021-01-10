@@ -85,8 +85,12 @@ export class EditorService {
   }
 
   addLink(newLink) {
-    console.log(newLink);
-    this.adventure.links.push(newLink);
+    this.links.push(newLink);
+    this.refreshGraphSubject.next(true);
+  }
+
+  addNode(newNode) {
+    this.nodes.push(newNode);
     this.refreshGraphSubject.next(true);
   }
 

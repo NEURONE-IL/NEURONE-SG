@@ -3,6 +3,7 @@
   height: 100%;
   box-sizing: border-box;
   padding: 25px 25px 25px;
+  position: relative;
 }
 
 .choices-panel button {
@@ -11,4 +12,10 @@
 
 .ending-panel button{
   margin-right: 5px;
+}
+
+.neurone-btn {
+  position: absolute;
+  top: -20px;
+  right: 15%;
 }

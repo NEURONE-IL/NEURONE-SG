@@ -1,6 +1,11 @@
 <div class="game-bar-container">
-  <div class="choices-panel" *ngIf="gameService.currentNode.type=='transition'
-                                    || gameService.currentNode.type=='initial'">
+  <div
+    class="choices-panel"
+    *ngIf="
+      gameService.currentNode.type == 'transition' ||
+      gameService.currentNode.type == 'initial'
+    "
+  >
     <button
       *ngFor="let link of gameService.currentLinks"
       (click)="gameService.goTo(link.target)"
@@ -9,10 +14,20 @@
     >
       {{ link.label }}
     </button>
-    <button mat-raised-button color="accent" (click)="SearchService.toggleSearch()">NEURONE</button>
+    <button
+      class="neurone-btn"
+      mat-fab
+      color="accent"
+      (click)="searchService.toggleSearch()"
+    >
+      <mat-icon *ngIf="!searchService.searchEnabled">search</mat-icon>
+      <mat-icon *ngIf="searchService.searchEnabled">search-off</mat-icon>
+    </button>
   </div>
-  <div class="ending-panel" *ngIf="gameService.currentNode.type=='ending'">
+  <div class="ending-panel" *ngIf="gameService.currentNode.type == 'ending'">
     <p>You've reached an ending, congrats!</p>
-    <button mat-raised-button color="primary" (click)="refresh()">Finish</button>
+    <button mat-raised-button color="primary" (click)="refresh()">
+      Finish
+    </button>
   </div>
 </div>

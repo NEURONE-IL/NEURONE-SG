@@ -1,11 +1,13 @@
-import { Component, Inject, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { EditorService } from 'src/app/services/game/editor.service';
 import { Subscription } from 'rxjs';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { NewNodeDialogComponent } from './NewNodeDialogComponent';
+import { NewLinkDialogComponent } from './NewLinkDialogComponent';
 
 @Component({
   selector: 'app-adventure-editor',
@@ -105,57 +107,4 @@ export class AdventureEditorComponent implements OnInit {
     });
   }
 }
-@Component({
-  selector: 'app-new-node-dialog',
-  templateUrl: 'dialogs/new-node-dialog.html',
-})
-export class NewNodeDialogComponent {
 
-  newNodeForm: FormGroup;
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public adventure: any,
-    private formBuilder: FormBuilder
-  ) {}
-
-  ngOnInit(): void {
-    this.newNodeForm = this.formBuilder.group({
-      id: [],
-      label: [],
-      type: [],
-      data: this.formBuilder.group({
-        image: [],
-        text: [],
-      }),
-    });
-  }
-}
-
-@Component({
-  selector: 'app-new-link-dialog',
-  templateUrl: 'dialogs/new-link-dialog.html',
-})
-export class NewLinkDialogComponent {
-
-  linkForm: FormGroup;
-  targetNodes: any;
-  node: any;
-
-  constructor(private formBuilder: FormBuilder,
-              public editorService: EditorService) {}
-
-  ngOnInit(): void {
-    this.node = this.editorService.currentNode;
-    this.targetNodes = this.editorService.getOtherNodes();
-    console.log('target nodes: ',this.targetNodes);
-    this.linkForm = this.formBuilder.group({
-      label: [],
-      source: [this.node.id],
-      target: []
-    });
-  }
-
-  addNewLink() {
-    this.editorService.addLink(this.linkForm.value);
-  }
-}

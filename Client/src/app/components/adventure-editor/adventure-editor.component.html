@@ -14,9 +14,6 @@
         <form class="node-form" [formGroup]="nodeForm">
           <mat-form-field appearance="fill" class="node-form-field">
             <mat-label>Node Type</mat-label>
-            <!-- <mat-select [ngModel]="editorService.currentNode.type" name="nodeType">
-              <mat-option *ngFor="let type of nodeTypes" [value]="type.value">{{type.viewValue}}</mat-option>
-            </mat-select> -->
             <mat-select
               [ngModel]="editorService.currentNode.type"
               name="nodeType"
@@ -70,19 +67,23 @@
             </mat-form-field>
           </form>
         </form>
-        <button mat-raised-button color="primary" (click)="updateNode()">
-          Save
-        </button>
-        <button mat-raised-button color="accent" (click)="closeEditor()">
-          Close
-        </button>
-        <button
-          mat-raised-button
-          color="accent"
-          (click)="showNewLinkDialog()"
-        >
-          Add Link
-        </button>
+        <div class="sidebar-button-panel" *ngIf="editorService.currentNode.type!='ending'">
+          <button
+            mat-stroked-button
+            color="accent"
+            (click)="showNewLinkDialog()"
+          >
+            Add Link
+          </button>
+        </div>
+        <div class="sidebar-button-panel">
+          <button mat-raised-button color="primary" (click)="updateNode()">
+            Save
+          </button>
+          <button mat-raised-button (click)="closeEditor()">
+            Close
+          </button>
+        </div>
       </div>
     </mat-sidenav>
 
@@ -152,10 +153,10 @@
       </ngx-graph>
       <div class="button-panel">
         <button
-        class="new-node-btn"
-        mat-fab
-        color="accent"
-        (click)="showNewNodeForm()"
+          class="new-node-btn"
+          mat-fab
+          color="accent"
+          (click)="showNewNodeForm()"
         >
           <mat-icon>add</mat-icon>
         </button>
