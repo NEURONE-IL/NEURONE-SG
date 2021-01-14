@@ -1,6 +1,5 @@
 <div class="adventure">
-  <!-- <button mat-raised-button color="accent" (click)="printData()">Print Game Data</button> -->
-  <div class="node-wrapper">
+  <mat-card class="adventure-card">
     <div class="img-wrapper">
       <img class="node-img" src="{{gameService.currentNode.data.image}}" alt="" />
     </div>
@@ -8,5 +7,5 @@
       <h3>{{gameService.currentNode.label}}</h3>
       <p>{{gameService.currentNode.data.text}}</p>
     </div>
-  </div>
+  </mat-card>
 </div>
