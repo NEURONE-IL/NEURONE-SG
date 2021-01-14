@@ -4,7 +4,7 @@ import { GameService } from '../../services/game/game.service';
 @Component({
   selector: 'app-adventure',
   templateUrl: './adventure.component.html',
-  styleUrls: ['./adventure.component.css']
+  styleUrls: ['./adventure.component.scss']
 })
 export class AdventureComponent implements OnInit {
 

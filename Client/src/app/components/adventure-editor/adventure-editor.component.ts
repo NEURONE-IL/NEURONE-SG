@@ -12,7 +12,7 @@ import { NewLinkDialogComponent } from './NewLinkDialogComponent';
 @Component({
   selector: 'app-adventure-editor',
   templateUrl: './adventure-editor.component.html',
-  styleUrls: ['./adventure-editor.component.css'],
+  styleUrls: ['./adventure-editor.component.scss'],
 })
 export class AdventureEditorComponent implements OnInit {
   updateGraph: Subject<boolean> = new Subject();

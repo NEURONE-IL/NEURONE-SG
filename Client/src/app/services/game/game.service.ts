@@ -6,8 +6,11 @@ import { AdventureService } from '../../services/game/adventure.service';
 })
 export class GameService {
 
-  //test story
+  // adventure or escaperoom
   adventure: any;
+
+  // player data
+  player: any;
 
   currentNode: any;
   loading = true;
@@ -20,6 +23,10 @@ export class GameService {
 
     this.adventureService.getAdventures().subscribe((adventures) => {
       this.adventure = adventures[0];
+      this.player = {
+        name: 'Anne',
+        level: 'NEURONE novice'
+      }
 
       this.currentNode = this.nodes.find(node => node.type="initial");
       this.loading = false;

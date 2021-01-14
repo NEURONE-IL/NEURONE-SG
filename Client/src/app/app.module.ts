@@ -35,6 +35,9 @@ import { HeaderComponent } from './components/header/header.component';
 import { AdventureMetaEditorComponent } from './components/adventure-meta-editor/adventure-meta-editor.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -72,7 +75,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatToolbarModule,
     HttpClientModule,
     MatProgressSpinnerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDividerModule,
+    MatListModule,
+    MatTabsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

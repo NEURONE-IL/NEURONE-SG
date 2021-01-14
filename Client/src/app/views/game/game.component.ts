@@ -5,7 +5,7 @@ import { SearchService } from '../../services/search/search.service';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.css']
+  styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
 

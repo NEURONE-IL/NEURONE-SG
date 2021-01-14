@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-search-interface',
   templateUrl: './search-interface.component.html',
-  styleUrls: ['./search-interface.component.css']
+  styleUrls: ['./search-interface.component.scss']
 })
 
 export class SearchInterfaceComponent implements OnInit {

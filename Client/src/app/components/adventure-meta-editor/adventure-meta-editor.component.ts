@@ -5,7 +5,7 @@ import { EditorService } from 'src/app/services/game/editor.service';
 @Component({
   selector: 'app-adventure-meta-editor',
   templateUrl: './adventure-meta-editor.component.html',
-  styleUrls: ['./adventure-meta-editor.component.css']
+  styleUrls: ['./adventure-meta-editor.component.scss']
 })
 export class AdventureMetaEditorComponent implements OnInit {
 

@@ -1,0 +1,41 @@
+.game-bar-container {
+  box-sizing: border-box;
+  background: #d1d9ff;
+  height: 100%;
+  width: 100%;
+  padding: 5px 10px 5px;
+  position: relative;
+}
+
+.mat-tab-group {
+  margin-bottom: 48px;
+}
+
+.choices-panel button {
+  margin-right: 5px;
+}
+
+.ending-panel button{
+  margin-right: 5px;
+}
+
+.neurone-btn {
+  position: absolute;
+  top: -20px;
+  right: 15%;
+}
+
+.choices-card {
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.player-avatar {
+  background-image: url('../../../assets/images/avatars/girl-in-ballcap.svg');
+  background-size: cover;
+}
+
+.bar-divider {
+  width: 100%;
+  padding-bottom: 5px;
+}
