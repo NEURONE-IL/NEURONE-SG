@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 
-const adventureSchema = new Schema({
+const escapeRoomSchema = new Schema({
 
   name: {type: String, required: true},
   description: {type: String, required: true},
@@ -11,38 +11,37 @@ const adventureSchema = new Schema({
     id: {type: String, required: true},
     label: {type: String, required: true},
     type: {type: String, required: true},
-    data: {
+    data: {type: {
       image: {type: String, default: ""},
-      text: {type: String, default: "", required: true},
-      challenge: {
-        question: {type: String},
-        answer: {type: String},
-        type: {type: String},
-        options: {type: [{type: String}], default: undefined}
-      }
-    }
+      text: {type: String, default: ""}
+    }, required: true},
+    challenge: {type: {
+      type: {type: String}
+    }},
+    // _id: false
   }], required: true, default: []},
 
   links: { type: [{
     source: {type: String, required: true},
     target: {type: String, required: true},
     label: {type: String, required: true},
+    // _id: false
   }], default: []},
 
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
 
-adventureSchema.set('toJSON', {
+escapeRoomSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     if (returnedObject.nodes) {
       returnedObject.nodes.forEach(node => {
-        // delete node._id;
+        delete node._id;
       });
     }
     if (returnedObject.links) {
       returnedObject.links.forEach(link => {
-        // delete link._id;
+        delete link._id;
       });
     }
     delete returnedObject.createdAt;
@@ -52,7 +51,7 @@ adventureSchema.set('toJSON', {
 });
 
 // Sets the createdAt parameter equal to the current time
-adventureSchema.pre('save', next => {
+escapeRoomSchema.pre('save', next => {
     const now = new Date();
     if(!this.createdAt) {
       this.createdAt = now;
@@ -63,4 +62,4 @@ adventureSchema.pre('save', next => {
     next();
 });
 
-module.exports = mongoose.model('Adventure', adventureSchema);
+module.exports = mongoose.model('Escaperoom', escapeRoomSchema);

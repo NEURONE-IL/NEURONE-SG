@@ -73,6 +73,7 @@ export class AdventureEditorComponent implements OnInit {
 
   openEditor(node: any) {
     this.editorService.currentNode = node;
+    console.log(node);
     this.nodeEditor.open();
   }
 

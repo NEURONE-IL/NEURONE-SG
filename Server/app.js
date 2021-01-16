@@ -14,6 +14,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/auth');
 const confirmationRoutes = require('./routes/confirmation');
 const adventureRoutes = require('./routes/adventure');
+const answerRoutes = require('./routes/answer');
 
 // Setup DB
 mongoose.connect(config.DBHost, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
@@ -36,6 +37,7 @@ app.use(bodyParser.json({ type: 'application/json'}));
 // Express routes
 app.use('/api/auth', authRoutes);
 app.use('/api/adventure', adventureRoutes);
+app.use('/api/answer', answerRoutes);
 app.use('/', confirmationRoutes);
 
 app.get('/', (req, res) => {

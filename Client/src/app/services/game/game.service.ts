@@ -22,7 +22,8 @@ export class GameService {
   init() {
 
     this.adventureService.getAdventures().subscribe((adventures) => {
-      this.adventure = adventures[0];
+      console.log(adventures[1]);
+      this.adventure = adventures[1];
       this.player = {
         name: 'Anne',
         level: 'NEURONE novice'
@@ -57,5 +58,9 @@ export class GameService {
 
   get currentLinks() {
     return this.links.filter(link => link.source==this.currentNode.id);
+  }
+
+  get currentChallenge() {
+    return this.currentNode.data.challenge;
   }
 }

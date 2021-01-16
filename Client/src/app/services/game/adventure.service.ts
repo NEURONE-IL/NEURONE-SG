@@ -30,9 +30,11 @@ export class AdventureService {
       delete node.meta;
       delete node.position;
       delete node.transform;
+      delete node._id;
     });
     body.links.forEach(link => {
       delete link.id;
+      delete link._id
     });
     console.log(adventure);
     return this.http.put(this.uri + '/' + id, body);

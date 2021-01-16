@@ -1,5 +1,4 @@
 const Joi = require('joi');
-const Adventure = require('../models/game/adventure');
 
 const schema = Joi.object({
     _id: Joi.string(),
@@ -16,8 +15,14 @@ const schema = Joi.object({
         type: Joi.string().required(),
         data: Joi.object({
             image: Joi.string(),
-            text: Joi.string().required()
-        }).required()
+            text: Joi.string().required(),
+            challenge: Joi.object({
+                type: Joi.string().required(),
+                question: Joi.string(),
+                answer: Joi.string(),
+                options: Joi.array().items(Joi.string())
+            })
+        }).required(),
     })),
     
     links: Joi.array().items(Joi.object({

@@ -27,7 +27,7 @@ export class EditorService {
   init() {
 
     this.adventureService.getAdventures().subscribe((adventures) => {
-      this.adventure = adventures[0];
+      this.adventure = adventures[1];
 
       this.currentNode = this.adventure.nodes.find(node => node.type="initial");
       this.loading = false;
@@ -110,6 +110,6 @@ export class EditorService {
     },
     (err) => {
       console.log(err);
-    })
+    });
   }
 }
