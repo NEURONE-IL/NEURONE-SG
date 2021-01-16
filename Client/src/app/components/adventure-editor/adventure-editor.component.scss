@@ -1,6 +1,5 @@
 
 .node-editor {
-  box-sizing: border-box;
   width: 100%;
 }
 
@@ -21,6 +20,10 @@
 
 button {
   margin-right: 5px;
+}
+
+.mat-drawer-content .mat-sidenav-container {
+  overflow: hidden;
 }
 
 .mat-sidenav-container {
