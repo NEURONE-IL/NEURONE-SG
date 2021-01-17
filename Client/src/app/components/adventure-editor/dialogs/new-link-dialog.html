@@ -18,6 +18,22 @@
         placeholder="Go to target"
       />
     </mat-form-field>
+    <button mat-button color="primary" (click)="addActivator()">
+      Add Activator
+    </button>
+    <mat-form-field
+      class="node-form-field"
+      formArrayName="activators"
+      *ngFor="let activator of activatorItems; let i=index"
+    >
+      <mat-label>Activator</mat-label>
+      <input
+        matInput
+        name="activator"
+        [formControlName]="i"
+        placeholder="correct_answer"
+      />
+    </mat-form-field>
   </form>
 </div>
 <div mat-dialog-actions align="end">

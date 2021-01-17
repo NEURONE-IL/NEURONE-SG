@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 import { AdventureService } from './adventure.service';
+import { nanoid } from 'nanoid';
 
 @Injectable({
   providedIn: 'root'
@@ -95,6 +96,7 @@ export class EditorService {
   }
 
   addNode(newNode) {
+    newNode.id = nanoid(12);
     this.nodes.push(newNode);
     this.refreshGraphSubject.next(true);
   }

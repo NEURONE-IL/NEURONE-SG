@@ -68,12 +68,15 @@ export class AdventureEditorComponent implements OnInit {
 
   closeEditor() {
     this.editorService.currentNode = null;
-    this.nodeEditor.close();
+    if(this.nodeEditor) {
+      this.nodeEditor.close();
+    }
   }
 
   closeDialogs() {
-    this.newNodeDialog.closeAll();
-    this.newLinkDialog.closeAll();
+    if(this.newNodeDialog) this.newNodeDialog.closeAll();
+    if(this.newLinkDialog) this.newLinkDialog.closeAll();
+    if(this.challengeDialog) this.challengeDialog.closeAll();
   }
 
   openEditor(node: any) {

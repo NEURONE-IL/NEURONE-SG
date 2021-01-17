@@ -2,10 +2,6 @@
 <div mat-dialog-content>
   <form class="new-link-form" [formGroup]="newNodeForm">
     <mat-form-field class="node-form-field">
-      <mat-label>ID</mat-label>
-      <input matInput name="nodeId" formControlName="id" placeholder="nodeA" />
-    </mat-form-field>
-    <mat-form-field class="node-form-field">
       <mat-label>Label</mat-label>
       <input
         matInput
@@ -29,6 +25,15 @@
           matInput
           name="nodeImage"
           formControlName="image"
+          placeholder="background.jpg"
+        />
+      </mat-form-field>
+      <mat-form-field class="node-form-field">
+        <mat-label>Video</mat-label>
+        <input
+          matInput
+          name="nodeVideo"
+          formControlName="video"
           placeholder="background.jpg"
         />
       </mat-form-field>

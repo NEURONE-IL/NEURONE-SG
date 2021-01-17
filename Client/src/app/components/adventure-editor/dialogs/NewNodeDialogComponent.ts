@@ -27,18 +27,18 @@ export class NewNodeDialogComponent {
 
   ngOnInit(): void {
     this.newNodeForm = this.formBuilder.group({
-      id: [],
-      label: [Validators.required],
-      type: [Validators.required],
+      label: ['', Validators.required],
+      type: ['', Validators.required],
       data: this.formBuilder.group({
-        image: [],
-        video: [],
-        text: [Validators.required],
+        image: [''],
+        video: [''],
+        text: ['', Validators.required],
       }),
     });
   }
 
   addNewNode() {
     this.editorService.addNode(this.newNodeForm.value);
+    console.log(this);
   }
 }
