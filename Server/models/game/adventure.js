@@ -27,6 +27,7 @@ const adventureSchema = new Schema({
     source: {type: String, required: true},
     target: {type: String, required: true},
     label: {type: String, required: true},
+    activators: {type: [{type: String}], default: undefined}
   }], default: []},
 
   createdAt: { type: Date, default: Date.now },
