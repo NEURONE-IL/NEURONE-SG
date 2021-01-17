@@ -1,5 +1,5 @@
 <div class="game-bar-container">
-  <mat-card class="choices-card" *ngIf="!(gameService.currentNode.type=='challenge'); else challengeCard">
+  <mat-card class="choices-card" *ngIf="!gameService.challengePending; else challengeCard">
     <mat-card-header>
       <div mat-card-avatar class="player-avatar"></div>
       <mat-card-title>{{ gameService.player.name }}</mat-card-title>
@@ -9,10 +9,7 @@
     <mat-card-content>
       <div
         class="choices-panel"
-        *ngIf="
-          gameService.currentNode.type == 'transition' ||
-          gameService.currentNode.type == 'initial'
-        "
+        *ngIf="gameService.currentNode.type != 'ending'; else endingPanel"
       >
         <button
           *ngFor="let link of gameService.currentLinks"
@@ -23,17 +20,15 @@
           {{ link.label }}
         </button>
       </div>
-      <div class="ending-panel" *ngIf="gameService.currentNode.type == 'ending'">
-        <p>You've reached an ending, congrats!</p>
-        <button mat-raised-button color="primary" (click)="refresh()">
-          Finish
-        </button>
-      </div>
+      <ng-template #endingPanel>
+        <div class="ending-panel">
+          <p>You've reached an ending, congrats!</p>
+          <button mat-raised-button color="primary" (click)="refresh()">
+            Finish
+          </button>
+        </div>
+      </ng-template>
     </mat-card-content>
-    <!-- <mat-card-actions>
-      <button mat-button>BTN</button>
-      <button mat-button>BTN</button>
-    </mat-card-actions> -->
   </mat-card>
   <ng-template #challengeCard>
     <mat-card class="challenge-card">

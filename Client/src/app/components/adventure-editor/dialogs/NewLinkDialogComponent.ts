@@ -4,7 +4,8 @@ import { EditorService } from 'src/app/services/game/editor.service';
 
 @Component({
   selector: 'app-new-link-dialog',
-  templateUrl: 'dialogs/new-link-dialog.html',
+  templateUrl: 'new-link-dialog.html',
+  styleUrls: ['dialogs.scss'],
 })
 export class NewLinkDialogComponent {
 

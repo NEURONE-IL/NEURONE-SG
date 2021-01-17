@@ -56,6 +56,16 @@
               />
             </mat-form-field>
             <mat-form-field class="node-form-field">
+              <mat-label>Video</mat-label>
+              <input
+                matInput
+                name="nodeVideo"
+                formControlName="video"
+                placeholder="https://www.youtube.com/watch?v=xxZvQPeNBh0"
+                [ngModel]="editorService.currentNode.data.video"
+              />
+            </mat-form-field>
+            <mat-form-field class="node-form-field">
               <mat-label>Text</mat-label>
               <input
                 matInput
@@ -66,8 +76,12 @@
               />
             </mat-form-field>
           </form>
+          <input type="hidden" formControlName="challenge" [ngModel]="editorService.currentNode.challenge">
         </form>
-        <div class="sidebar-button-panel" *ngIf="editorService.currentNode.type!='ending'">
+        <div
+          class="sidebar-button-panel"
+          *ngIf="editorService.currentNode.type != 'ending'"
+        >
           <button
             mat-stroked-button
             color="accent"
@@ -75,14 +89,20 @@
           >
             Add Link
           </button>
+          <button
+            *ngIf="editorService.currentNode.type == 'challenge'"
+            mat-stroked-button
+            color="accent"
+            (click)="showChallengeDialog()"
+          >
+            Edit Challenge
+          </button>
         </div>
         <div class="sidebar-button-panel">
           <button mat-raised-button color="primary" (click)="updateNode()">
             Save
           </button>
-          <button mat-raised-button (click)="closeEditor()">
-            Close
-          </button>
+          <button mat-raised-button (click)="closeEditor()">Close</button>
         </div>
       </div>
     </mat-sidenav>

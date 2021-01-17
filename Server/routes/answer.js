@@ -27,7 +27,7 @@ router.post('',  [answerMiddleware.verifyBody], async (req, res) => {
             }
             const node = adventure.nodes.id(answer.node);
             if (node) {
-                const challenge = node.data.challenge;
+                const challenge = node.challenge;
                 const answerCheck = await answerService.checkAnswer(challenge, answer);
                 res.status(200).json(answerCheck);
             }

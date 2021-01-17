@@ -27,7 +27,7 @@ const postChallenge = async (challenge, callback) => {
         else{
             let credential = headers.credential;
             axios.post(process.env.NEURONEGM+'/api/'+credential.app_code+'/challenges', challenge, headers.headers ).then((response)=> {
-                callback(null, response.data.challenge)
+                callback(null, response.challenge)
             }).catch((err) => {
                 callback(err);
             })

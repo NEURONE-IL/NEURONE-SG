@@ -14,15 +14,16 @@ const schema = Joi.object({
         label: Joi.string().required(),
         type: Joi.string().required(),
         data: Joi.object({
-            image: Joi.string(),
+            image: Joi.string().allow(''),
+            video: Joi.string().allow(''),
             text: Joi.string().required(),
-            challenge: Joi.object({
-                type: Joi.string().required(),
-                question: Joi.string(),
-                answer: Joi.string(),
-                options: Joi.array().items(Joi.string())
-            })
         }).required(),
+        challenge: Joi.object({
+            type: Joi.string().required(),
+            question: Joi.string(),
+            answer: Joi.string(),
+            options: Joi.array().items(Joi.string())
+        })
     })),
     
     links: Joi.array().items(Joi.object({

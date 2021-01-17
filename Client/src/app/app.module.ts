@@ -6,8 +6,9 @@ import { AppComponent } from './app.component';
 import { SearchInterfaceComponent } from './components/search-interface/search-interface.component';
 import { AdventureComponent } from './components/adventure/adventure.component';
 import { AdventureEditorComponent } from './components/adventure-editor/adventure-editor.component';
-import { NewNodeDialogComponent } from "./components/adventure-editor/NewNodeDialogComponent";
-import { NewLinkDialogComponent } from "./components/adventure-editor/NewLinkDialogComponent";
+import { NewNodeDialogComponent } from "./components/adventure-editor/dialogs/NewNodeDialogComponent";
+import { NewLinkDialogComponent } from "./components/adventure-editor/dialogs/NewLinkDialogComponent";
+import { ChallengeDialogComponent } from "./components/adventure-editor/dialogs/ChallengeDialogComponent";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
@@ -52,7 +53,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     HeaderComponent,
     AdventureMetaEditorComponent,
     NewNodeDialogComponent,
-    NewLinkDialogComponent
+    NewLinkDialogComponent,
+    ChallengeDialogComponent
   ],
   imports: [
     BrowserModule,

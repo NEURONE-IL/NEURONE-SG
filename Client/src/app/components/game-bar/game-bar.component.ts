@@ -23,9 +23,9 @@ export class GameBarComponent implements OnInit {
       answer: ["", Validators.required],
       adventure: [this.gameService.adventure._id],
       // user: [this.authService.user._id],
-      user: ["5ff90042eace08b452d92d63"],
-      node: [this.gameService.currentNode._id],
-      type: [this.gameService.currentNode.type]
+      user: [Validators.required],
+      node: [Validators.required],
+      type: [""]
     });
   }
 
@@ -35,9 +35,15 @@ export class GameBarComponent implements OnInit {
 
   sendAnswer() {
     if(this.answerForm.valid) {
+      this.answerForm.controls['node'].setValue(this.gameService.currentNode._id);
+      this.answerForm.controls['user'].setValue('5ff90042eace08b452d92d63');
+      this.answerForm.controls['type'].setValue('question');
       const answer = this.answerForm.value;
+      console.log(answer);
       this.answerService.postAnswer(answer).subscribe((res) => {
         console.log(res);
+        this.gameService.activators.push(res);
+        this.gameService.challengePending = false;
       },
       (err) => {
         console.log(err);
@@ -47,5 +53,6 @@ export class GameBarComponent implements OnInit {
       console.log('invalid answer form');
     }
   }
+
 
 }

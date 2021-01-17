@@ -1,22 +1,22 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EditorService } from 'src/app/services/game/editor.service';
 
 @Component({
   selector: 'app-new-node-dialog',
-  templateUrl: 'dialogs/new-node-dialog.html',
+  templateUrl: 'new-node-dialog.html',
+  styleUrls: ['dialogs.scss'],
 })
 export class NewNodeDialogComponent {
 
   newNodeForm: FormGroup;
 
   nodeTypes = [
-    { value: 'initial', viewValue: 'Initial' },
     { value: 'transition', viewValue: 'Transition' },
     { value: 'ending', viewValue: 'Ending' },
     { value: 'question', viewValue: 'Question' },
-    { value: 'evaluate', viewValue: 'Evaluate source' },
+    // { value: 'evaluate', viewValue: 'Evaluate source' },
   ];
 
   constructor(
@@ -28,11 +28,12 @@ export class NewNodeDialogComponent {
   ngOnInit(): void {
     this.newNodeForm = this.formBuilder.group({
       id: [],
-      label: [],
-      type: [],
+      label: [Validators.required],
+      type: [Validators.required],
       data: this.formBuilder.group({
         image: [],
-        text: [],
+        video: [],
+        text: [Validators.required],
       }),
     });
   }

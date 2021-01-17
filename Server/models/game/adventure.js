@@ -13,13 +13,14 @@ const adventureSchema = new Schema({
     type: {type: String, required: true},
     data: {
       image: {type: String, default: ""},
-      text: {type: String, default: "", required: true},
-      challenge: {
-        question: {type: String},
-        answer: {type: String},
-        type: {type: String},
-        options: {type: [{type: String}], default: undefined}
-      }
+      video: {type: String, default: ""},
+      text: {type: String, default: "", required: true}
+    },
+    challenge: {
+      question: {type: String},
+      answer: {type: String},
+      type: {type: String},
+      options: {type: [{type: String}], default: undefined}
     }
   }], required: true, default: []},
 

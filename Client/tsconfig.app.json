@@ -8,8 +8,9 @@
   "files": [
     "src/main.ts",
     "src/polyfills.ts",
-    "./src/app/components/adventure-editor/NewLinkDialogComponent.ts",
-    "./src/app/components/adventure-editor/NewNodeDialogComponent.ts"
+    "src/app/components/adventure-editor/dialogs/NewLinkDialogComponent.ts",
+    "src/app/components/adventure-editor/dialogs/NewNodeDialogComponent.ts",
+    "src/app/components/adventure-editor/dialogs/ChallengeDialogComponent.ts"
   ],
   "include": [
     "src/**/*.d.ts"

@@ -6,8 +6,9 @@ import { Subject } from 'rxjs';
 import { EditorService } from 'src/app/services/game/editor.service';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { NewNodeDialogComponent } from './NewNodeDialogComponent';
-import { NewLinkDialogComponent } from './NewLinkDialogComponent';
+import { NewNodeDialogComponent } from './dialogs/NewNodeDialogComponent';
+import { NewLinkDialogComponent } from './dialogs/NewLinkDialogComponent';
+import { ChallengeDialogComponent } from './dialogs/ChallengeDialogComponent';
 
 @Component({
   selector: 'app-adventure-editor',
@@ -18,24 +19,26 @@ export class AdventureEditorComponent implements OnInit {
   updateGraph: Subject<boolean> = new Subject();
   @ViewChild('sidenav') nodeEditor: MatSidenav;
   nodeForm: FormGroup;
+  challengeForm: FormGroup;
   nodeLinkForm: FormGroup;
 
   // Subscription for updating graph
   updateSubscription: Subscription;
 
   nodeTypes = [
-    { value: 'initial', viewValue: 'Initial' },
+    // { value: 'initial', viewValue: 'Initial' },
     { value: 'transition', viewValue: 'Transition' },
     { value: 'ending', viewValue: 'Ending' },
-    { value: 'question', viewValue: 'Question' },
-    { value: 'evaluate', viewValue: 'Evaluate source' },
+    { value: 'challenge', viewValue: 'Challenge' }
+    // { value: 'evaluate', viewValue: 'Evaluate source' },
   ];
 
   constructor(
     public editorService: EditorService,
     private formBuilder: FormBuilder,
     public newNodeDialog: MatDialog,
-    public newLinkDialog: MatDialog
+    public newLinkDialog: MatDialog,
+    public challengeDialog: MatDialog
   ) {
     // Subscribe to editor services messages
     this.updateSubscription = this.editorService
@@ -54,10 +57,12 @@ export class AdventureEditorComponent implements OnInit {
       id: [],
       label: [],
       type: [],
+      challenge: [],
       data: this.formBuilder.group({
         image: [],
-        text: [],
-      }),
+        video: [],
+        text: []
+      })
     });
   }
 
@@ -102,6 +107,15 @@ export class AdventureEditorComponent implements OnInit {
   showNewLinkDialog() {
     this.newLinkDialog.open(NewLinkDialogComponent, {
       width: '250px',
+      data: {
+        node: this.editorService.currentNode
+      }
+    });
+  }
+
+  showChallengeDialog() {
+    this.challengeDialog.open(ChallengeDialogComponent, {
+      width: '400px',
       data: {
         node: this.editorService.currentNode
       }

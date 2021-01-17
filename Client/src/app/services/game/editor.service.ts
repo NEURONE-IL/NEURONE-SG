@@ -71,6 +71,11 @@ export class EditorService {
   updateNode(newNode) {
     this.nodes.forEach((node, index) => {
       if(node.id==this.currentNode.id) {
+        // Workaround to keep challenges for now
+        if ('challenge' in this.nodes[index].data) {
+          newNode.challenge = this.nodes[index].challenge;
+        }
+        console.log('newNode', newNode);
         this.nodes[index] = newNode;
       }
     });
@@ -97,6 +102,11 @@ export class EditorService {
   updateMeta(newMeta) {
     this.adventure.name = newMeta.name;
     this.adventure.description = newMeta.description;
+  }
+
+  updateChallenge(newChallenge) {
+    this.currentNode.challenge = newChallenge;
+    this.refreshGraphSubject.next(true);
   }
 
   getRefreshRequest(): Observable<any> {
