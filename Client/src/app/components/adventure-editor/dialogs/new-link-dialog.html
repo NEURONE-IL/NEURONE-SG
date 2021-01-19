@@ -21,19 +21,31 @@
     <button mat-button color="primary" (click)="addActivator()">
       Add Activator
     </button>
-    <mat-form-field
-      class="node-form-field"
+    <!-- <div *ngFor="let activator of activatorItems; let i=index" formArrayName="activators">-->
+    <div
       formArrayName="activators"
-      *ngFor="let activator of activatorItems; let i=index"
+      *ngFor="let activator of activatorsArray.controls; let i = index;"
     >
-      <mat-label>Activator</mat-label>
-      <input
-        matInput
-        name="activator"
-        [formControlName]="i"
-        placeholder="correct_answer"
-      />
-    </mat-form-field>
+      <div [formGroupName]="i">
+        <mat-form-field appearance="fill" class="node-form-field">
+          <mat-label>Node</mat-label>
+          <mat-select name="node" formControlName="node" [value]="'coruscant'">
+            <mat-option *ngFor="let node of nodes" [value]="node.id"
+              >{{ node.label }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="node-form-field">
+          <mat-label>Condition</mat-label>
+          <input
+            matInput
+            name="condition"
+            formControlName="condition"
+            placeholder="correct_answer"
+          />
+        </mat-form-field>
+      </div>
+    </div>
   </form>
 </div>
 <div mat-dialog-actions align="end">

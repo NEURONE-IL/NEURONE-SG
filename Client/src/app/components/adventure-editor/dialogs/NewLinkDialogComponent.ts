@@ -10,8 +10,8 @@ import { EditorService } from 'src/app/services/game/editor.service';
 export class NewLinkDialogComponent {
   linkForm: FormGroup;
   targetNodes: any;
+  nodes: any;
   node: any;
-  activatorItems: Array<string>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -19,9 +19,10 @@ export class NewLinkDialogComponent {
   ) {}
 
   ngOnInit(): void {
-    this.activatorItems = [];
     this.node = this.editorService.currentNode;
-    this.targetNodes = this.editorService.getOtherNodes();
+    this.targetNodes = this.editorService.otherNodes;
+    this.nodes = this.editorService.nodes;
+    this.nodes.push({id: undefined, label: 'No node'});
     console.log('target nodes: ', this.targetNodes);
     this.linkForm = this.formBuilder.group({
       label: [],
@@ -33,7 +34,7 @@ export class NewLinkDialogComponent {
 
   addNewLink() {
     console.log(this.linkForm.value);
-    this.editorService.addLink(this.linkForm.value);
+    // this.editorService.addLink(this.linkForm.value);
   }
 
   get activatorsArray() {
@@ -41,11 +42,14 @@ export class NewLinkDialogComponent {
   }
 
   addActivator() {
-    this.activatorItems.push('');
-    this.activatorsArray.push(this.formBuilder.control(''));
+    const newActivator = this.formBuilder.group({
+      node: '',
+      condition: ''
+    });
+
+    this.activatorsArray.push(newActivator);
   }
   removeItem() {
-    this.activatorItems.pop();
     this.activatorsArray.removeAt(this.activatorsArray.length - 1);
   }
 }

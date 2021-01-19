@@ -63,7 +63,7 @@ export class EditorService {
     return this.adventure.description;
   }
 
-  getOtherNodes() {
+  get otherNodes() {
     return this.adventure.nodes.filter(
       (node) => this.currentNode != node
     );
@@ -91,6 +91,11 @@ export class EditorService {
   }
 
   addLink(newLink) {
+    if ('activators' in newLink) {
+      if (newLink.activators.length==0) {
+        delete newLink.activators;
+      }
+    }
     this.links.push(newLink);
     this.refreshGraphSubject.next(true);
   }

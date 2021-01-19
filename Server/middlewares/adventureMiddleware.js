@@ -30,7 +30,10 @@ const schema = Joi.object({
         source: Joi.string().required(),
         target: Joi.string().required(),
         label: Joi.string().required(),
-        activators: Joi.array().items(Joi.string())
+        activators: Joi.array().items(Joi.object({
+            node: Joi.string(),
+            condition: Joi.string().required()
+        }))
     })),
 })
 

@@ -65,9 +65,10 @@ export class GameService {
     let currentLinks = this.links.filter(link => link.source==this.currentNode.id);
     for (let i = currentLinks.length - 1; i >= 0; i--) {
       if('activators' in currentLinks[i]) {
-        console.log('activators found!');
-        if (!currentLinks[i].activators.some(r=> this.activators.includes(r))) {
-          currentLinks.splice(i, 1);
+        if(currentLinks[i].activators.length>0) {
+          if (!currentLinks[i].activators.some(r=> this.activators.includes(r))) {
+            currentLinks.splice(i, 1);
+          }
         }
       }
     }
