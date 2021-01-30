@@ -1,0 +1,9 @@
+<h3>{{ question }}</h3>
+<div class="options-panel">
+  <ng-container *ngFor="let option of options; let i = index">
+    <mat-checkbox [(ngModel)]="option.checked" [checked]="option.checked">
+      {{ option.value }}
+    </mat-checkbox>
+  </ng-container>
+</div>
+<button mat-raised-button color="primary" (click)="sendAnswer()">Submit</button>

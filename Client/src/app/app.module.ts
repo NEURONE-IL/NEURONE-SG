@@ -1,30 +1,33 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SearchInterfaceComponent } from './components/search-interface/search-interface.component';
 import { AdventureComponent } from './components/adventure/adventure.component';
 import { AdventureEditorComponent } from './components/adventure-editor/adventure-editor.component';
-import { NewNodeDialogComponent } from "./components/adventure-editor/dialogs/NewNodeDialogComponent";
-import { NewLinkDialogComponent } from "./components/adventure-editor/dialogs/NewLinkDialogComponent";
-import { ChallengeDialogComponent } from "./components/adventure-editor/dialogs/ChallengeDialogComponent";
+import { NewNodeDialogComponent } from './components/adventure-editor/dialogs/NewNodeDialogComponent';
+import { NewLinkDialogComponent } from './components/adventure-editor/dialogs/NewLinkDialogComponent';
+import { ChallengeDialogComponent } from './components/adventure-editor/dialogs/ChallengeDialogComponent';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { authInterceptorProviders } from './helpers/auth.interceptor';
 
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 
 import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon'
+import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { GameComponent } from './views/game/game.component';
-import { MatGridListModule } from '@angular/material/grid-list'
+import { MatGridListModule } from '@angular/material/grid-list';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { MatMenuModule } from '@angular/material/menu';
@@ -39,7 +42,15 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
+import { QuestionFormComponent } from './components/game-bar/question-form/question-form.component';
+import { MultipleFormComponent } from './components/game-bar/multiple-form/multiple-form.component';
+import { SynthesisFormComponent } from './components/game-bar/synthesis-form/synthesis-form.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { LoginRegisterComponent } from './views/login-register/login-register.component';
 
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,7 +65,11 @@ import { MatTabsModule } from '@angular/material/tabs';
     AdventureMetaEditorComponent,
     NewNodeDialogComponent,
     NewLinkDialogComponent,
-    ChallengeDialogComponent
+    ChallengeDialogComponent,
+    QuestionFormComponent,
+    MultipleFormComponent,
+    SynthesisFormComponent,
+    LoginRegisterComponent,
   ],
   imports: [
     BrowserModule,
@@ -80,9 +95,17 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatDialogModule,
     MatDividerModule,
     MatListModule,
-    MatTabsModule
+    MatTabsModule,
+    MatCheckboxModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [authInterceptorProviders],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

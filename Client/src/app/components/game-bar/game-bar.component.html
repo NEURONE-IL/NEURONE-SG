@@ -54,6 +54,9 @@
           <button class="hidden-btn" (click)="sendAnswer()"></button>
         </form>
       </mat-card-content>
+      <mat-card-content *ngIf="gameService.currentChallenge.type=='multiple'">
+        <app-multiple-form></app-multiple-form>
+      </mat-card-content>
     </mat-card>
   </ng-template>
   <button

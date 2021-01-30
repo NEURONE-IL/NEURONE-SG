@@ -1,0 +1,8 @@
+
+.login-container {
+  display: grid;
+  grid-template-areas: "header" "login-register" "footer";
+  grid-template-rows: 60px 60vh auto;
+  grid-column-gap: 16px;
+  height: 100%;
+}

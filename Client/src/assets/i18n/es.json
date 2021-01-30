@@ -1,0 +1,7 @@
+{
+  "welcomeMessage": "Thanks for joining, {{ firstName }}! It's great to have you!",
+  "header": {
+    "game": "Juego",
+    "editor": "Editor"
+  }
+}
