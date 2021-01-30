@@ -47,7 +47,7 @@ const createAppGM = async (credential, callback) => {
         if(err){
             callback(err)
         }
-        axios.post(process.env.NEURONEGM+'/api/applications', {name: "game", description: "neurone game"}, headers.headers ).then((response)=> {
+        axios.post(process.env.NEURONEGM+'/api/applications', {name: "adventure", description: "neurone adventure game"}, headers.headers ).then((response)=> {
             credential.app_code = response.data.data.code;
             credential.save(err => {
                 if(err){
@@ -76,7 +76,8 @@ const connectGM = async(email, password, callback) => {
             console.log("Registered User on NEURONEGM");
             credential = new Credential({
                 code: "superadmin",
-                registered: true
+                registered: true,
+                app_code: "adventure"
             });
             credential.save(err => {
                 if(err){
@@ -89,6 +90,7 @@ const connectGM = async(email, password, callback) => {
                     createAppGM(credential, err => {
                         console.log("Registered APP on NEURONEGM");
                         if(err){
+                            console.log("ERROR registering APP on NEURONEGM");
                             callback(err);
                         }
                         callback(null);

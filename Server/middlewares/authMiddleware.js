@@ -11,14 +11,8 @@ const schema = Joi.object({
     email: Joi.string()
         .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'cl'] } }),
 
-    names: Joi.string()
-        .required(),
-    
-    last_names: Joi.string()
-        .required(),
-
-    birthday: Joi.date()
-        .required(),
+    username: Joi.string()
+    .required()
 })
 
 const adminSchema = Joi.object({
@@ -27,6 +21,9 @@ const adminSchema = Joi.object({
         .required(),
 
     repeat_password: Joi.ref('password'),
+
+    username: Joi.string()
+    .required(),
 
     email: Joi.string()
         .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'cl'] } })
@@ -85,6 +82,32 @@ const uniqueEmail = async(req, res, next) => {
     })
 }
 
+const uniqueUsername = async(req, res, next) => {
+    if (!req.body.username) {
+        return res.status(404).json({
+            ok: false,
+            message: "No username in request"
+        });
+    }
+    await User.findOne({username: req.body.username}, (err, user) => {
+        if(err){
+            return res.status(404).json({
+                ok: false,
+                err
+            });
+        }
+        if(user){
+            return res.status(403).json({
+                ok: false,
+                message: "Username already exists!"
+            });
+        }
+        else{
+            next();
+        }
+    })
+}
+
 const isAdmin = async(req, res, next) => {
     User.findById(req.user).exec((err, user) => {
         if (err) {
@@ -122,6 +145,7 @@ const authMiddleware = {
     verifyBody,
     verifyBodyAdmin,
     uniqueEmail,
+    uniqueUsername,
     isAdmin
 };
 

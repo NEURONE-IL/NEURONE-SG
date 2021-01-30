@@ -47,6 +47,8 @@ import { MultipleFormComponent } from './components/game-bar/multiple-form/multi
 import { SynthesisFormComponent } from './components/game-bar/synthesis-form/synthesis-form.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { LoginRegisterComponent } from './views/login-register/login-register.component';
+import { LoginCardComponent } from './components/login-card/login-card.component';
+import { RegisterCardComponent } from './components/register-card/register-card.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -70,6 +72,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     MultipleFormComponent,
     SynthesisFormComponent,
     LoginRegisterComponent,
+    LoginCardComponent,
+    RegisterCardComponent,
   ],
   imports: [
     BrowserModule,

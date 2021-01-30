@@ -3,11 +3,9 @@ const { Schema } = mongoose;
 
 
 const UserSchema = new Schema({
+    username: {type: String, required: true, unique: true},
     email: {type: String, required: true, unique: true},
     confirmed: {type: Boolean, default: false},
-    names: {type: String },
-    last_names: {type: String },
-    birthday: {type: Date},
     password: {type: String, required: true},
     gm_code: {type: String},
     createdAt: { type: Date, default: Date.now },

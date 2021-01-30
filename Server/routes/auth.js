@@ -13,7 +13,7 @@ const authMiddleware = require('../middlewares/authMiddleware');
 const neuronegmService = require('../services/neuronegm/connect');
 const playerService = require('../services/neuronegm/player');
 
-router.post('/register/admin', [authMiddleware.verifyBodyAdmin, authMiddleware.uniqueEmail], async (req, res) => {
+router.post('/register/admin', [authMiddleware.verifyBodyAdmin, authMiddleware.uniqueEmail, authMiddleware.uniqueUsername], async (req, res) => {
     // Role
     const role = await Role.findOne({name: 'admin'}, err => {
         if(err){
@@ -30,6 +30,7 @@ router.post('/register/admin', [authMiddleware.verifyBodyAdmin, authMiddleware.u
 
     //create user
     const user = new User({
+        username: req.body.username.toLowerCase(),
         email: req.body.email.toLowerCase(),
         password: hashpassword,
         role: role.id
@@ -37,9 +38,11 @@ router.post('/register/admin', [authMiddleware.verifyBodyAdmin, authMiddleware.u
 
     await neuronegmService.connectGM(req.body.email, req.body.password, (err, res) => {
         if(err){
+            console.log('error on connectGM');
             console.log(err);
         }
         else {
+            console.log('connectGM successful');
             console.log(res);
         }
     })
@@ -51,9 +54,7 @@ router.post('/register/admin', [authMiddleware.verifyBodyAdmin, authMiddleware.u
                 err
             });
         }
-        res.status(200).json({
-            user
-        });
+        res.status(200).json("USER_REGISTERED");
     });
 })
 
@@ -75,10 +76,8 @@ router.post('/register/', [authMiddleware.verifyBody, authMiddleware.uniqueEmail
 
     //create user
     const user = new User({
+        username: req.body.username.toLowerCase(),
         email: req.body.email,
-        names: req.body.names,
-        last_names: req.body.last_names,
-        birthday: req.body.birthday,
         password: hashpassword,
         role: role.id
     });
@@ -98,9 +97,7 @@ router.post('/register/', [authMiddleware.verifyBody, authMiddleware.uniqueEmail
         // Send confirmation email
         sendConfirmationEmail(user, res, req);
 
-        res.status(200).json({
-            user
-        });
+        res.status(200).json("USER_REGISTERED");
     });
 });
 
@@ -115,16 +112,25 @@ router.post('/login', async (req, res) => {
     if(!user.confirmed) res.status(400).send('USER_NOT_CONFIRMED');
     //create and assign a token
     const token = jwt.sign({_id: user.id}, process.env.TOKEN_SECRET);
-    res.header('x-access-token', token).send({user: user, token: token});
+    const response = {
+        token: token,
+        user: {
+            confirmed: user.confirmed,
+            email: user.email,
+            role: user.role.name,
+        }
+    }
+    res.header('x-access-token', token).send(response);
 });
 
 
 // Creates player on NEURONE-GM
 function saveGMPlayer(req, user, res) {
-    playerService.postPlayer({ name: user.names, last_name: user.last_names, sourceId: user.id }, (err, data) => {
+    const player = { name: user.username, last_name: user.username, sourceId: user.id };
+    playerService.postPlayer(player, (err, data) => {
         if (err) {
             console.log(err);
-            res.status(200).json({
+            res.status(400).json({
                 user
             });
         }
@@ -185,7 +191,12 @@ function generateEmailData(req, token, user) {
 // Add translated text and user data to email
 function addTextToEmail(mailHTML, user, link) {
     mailHTML = mailHTML.replace("[CONFIRMATION_EMAIL.PREHEADER_TEXT]", "Confirme su cuenta:");
-    mailHTML = mailHTML.replace("[CONFIRMATION_EMAIL.TITLE]","Hola " + user.names.split(" ")[0] + ".");
+    if(user.username) {
+        mailHTML = mailHTML.replace("[CONFIRMATION_EMAIL.TITLE]","Hola " + user.username + ",");
+    }
+    else {
+        mailHTML = mailHTML.replace("[CONFIRMATION_EMAIL.TITLE]","Hola,");
+    }
     mailHTML = mailHTML.replace("[CONFIRMATION_EMAIL.TEXT]","Gracias por registrarse en NEURONE-ADV, "
                                 + "antes de ingresar al juego debe confirmar su correo.");
     mailHTML = mailHTML.replace("[CONFIRMATION_EMAIL.CONFIRM]", "Confirmar cuenta");
