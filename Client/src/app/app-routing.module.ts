@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AdventureSelectionComponent } from './views/adventure-selection/adventure-selection.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { EditorComponent } from './views/editor/editor.component';
 import { GameComponent } from './views/game/game.component';
@@ -11,7 +12,7 @@ const routes: Routes = [
     children: [
       {
         path: 'game',
-        component: GameComponent
+        component: GameComponent,
       },
       {
         path: 'editor',
@@ -24,13 +25,17 @@ const routes: Routes = [
       {
         path: 'login',
         component: LoginRegisterComponent,
-      }
-    ]
-  }
+      },
+      {
+        path: 'select',
+        component: AdventureSelectionComponent,
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

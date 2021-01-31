@@ -1,0 +1,37 @@
+<div class="selector-container">
+  <div fxLayout="row wrap" fxLayoutGap="16px grid">
+    <div
+      fxFlex="20%"
+      fxFlex.xs="100%"
+      fxFlex.sm="33%"
+      *ngFor="let adventure of adventures"
+    >
+      <mat-card class="mat-elevation-z4">
+        <img
+          class="adventure-img"
+          *ngIf="adventure.image"
+          mat-card-image
+          src="{{ adventure.image }}"
+          alt="Adventure image"
+        />
+        <img
+          class="adventure-img"
+          *ngIf="!adventure.image"
+          mat-card-image
+          src="assets/images/placeholder.png"
+          alt="Adventure image"
+        />
+        <mat-card-title>{{ adventure.name }}</mat-card-title>
+        <mat-card-content>
+          <p class="description-wrap">
+            {{ adventure.description }}
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>{{ "SELECTOR.CARD_PLAY" | translate }}</button>
+          <button mat-button>{{ "SELECTOR.CARD_EDIT" | translate }}</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

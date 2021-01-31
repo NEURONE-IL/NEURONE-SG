@@ -60,8 +60,8 @@ router.post('/register/admin', [authMiddleware.verifyBodyAdmin, authMiddleware.u
 
 router.post('/register/', [authMiddleware.verifyBody, authMiddleware.uniqueEmail], async (req, res)=>{
 
-    // Find student role
-    const role = await Role.findOne({name: 'student'}, err => {
+    // Find player role
+    const role = await Role.findOne({name: 'player'}, err => {
         if(err){
             return res.status(404).json({
                 ok: false,

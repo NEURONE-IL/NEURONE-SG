@@ -1,7 +1,12 @@
 {
   "welcomeMessage": "Thanks for joining, {{ firstName }}! It's great to have you!",
-  "header": {
-    "game": "Juego",
-    "editor": "Editor"
+  "HEADER": {
+    "GAME": "Juego",
+    "EDITOR": "Editor",
+    "LOGOUT": "Cerrar sesión"
+  },
+  "SELECTOR": {
+    "CARD_PLAY": "JUGAR",
+    "CARD_EDIT": "EDITAR"
   }
 }

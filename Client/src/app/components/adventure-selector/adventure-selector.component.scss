@@ -1,0 +1,16 @@
+.selector-container {
+  padding: 1.8em;
+}
+.description-wrap {
+  display: block;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow: hidden;
+  line-height: 1.8em;
+  height: 3.6em;
+}
+.adventure-img {
+  height: 10em;
+  object-fit: cover;
+}
+

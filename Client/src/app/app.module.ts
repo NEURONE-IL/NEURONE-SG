@@ -49,6 +49,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { LoginRegisterComponent } from './views/login-register/login-register.component';
 import { LoginCardComponent } from './components/login-card/login-card.component';
 import { RegisterCardComponent } from './components/register-card/register-card.component';
+import { AdventureSelectorComponent } from './components/adventure-selector/adventure-selector.component';
+import { AdventureSelectionComponent } from './views/adventure-selection/adventure-selection.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -74,6 +76,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoginRegisterComponent,
     LoginCardComponent,
     RegisterCardComponent,
+    AdventureSelectorComponent,
+    AdventureSelectionComponent,
   ],
   imports: [
     BrowserModule,

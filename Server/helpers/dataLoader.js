@@ -14,13 +14,13 @@ async function initial() {
       });
 
       new Role({
-        name: "student"
+        name: "player"
       }).save(err => {
         if (err) {
           console.log("error", err);
         }
 
-        console.log("added 'student' to roles collection");
+        console.log("added 'player' to roles collection");
       });
     }
   });
