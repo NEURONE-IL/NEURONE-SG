@@ -1,8 +1,14 @@
 <mat-toolbar color="primary">
   <span>NEURONE-ADVENTURE</span>
-  <span class="spacer"></span>
   <div class="button-panel">
     <button mat-button color="white" (click)="goToGame()">{{'header.game' | translate}}</button>
     <button mat-button color="white" (click)="goToEditor()">{{'header.editor' | translate}}</button>
+  </div>
+  <span class="spacer"></span>
+  <div *ngIf="user">
+    <span>{{user.username}}</span>
+  </div>
+  <div class="button-panel" *ngIf="user">
+    <button mat-button color="white" (click)="logout()">{{'header.logout' | translate}}</button>
   </div>
 </mat-toolbar>

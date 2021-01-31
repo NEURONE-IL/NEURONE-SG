@@ -6,14 +6,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./login-register.component.scss'],
 })
 export class LoginRegisterComponent implements OnInit {
-  onRegister = false;
+
+  register = false;
 
   constructor() {}
 
   ngOnInit(): void {}
 
   toggleRegister() {
-    this.onRegister = !this.onRegister;
-    console.log(this.onRegister);
-  };
+    this.register = true;
+  }
+
+  toggleLogin() {
+    this.register = false;
+  }
 }

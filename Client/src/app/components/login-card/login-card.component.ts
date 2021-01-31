@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TokenStorageService } from 'src/app/services/auth/token-storage.service';
 import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
@@ -10,18 +9,15 @@ import { AuthService } from '../../services/auth/auth.service';
   styleUrls: ['./login-card.component.scss'],
 })
 export class LoginCardComponent implements OnInit {
-
   loginForm: FormGroup;
-  isLoggedIn = false;
   isLoginFailed = false;
-  errorMessage = '';
-  roles: string[] = [];
-  @Input() toggleRegister: () => void;
+
+  @Output()
+  switchToRegister = new EventEmitter<boolean>();
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService,
-    private tokenStorage: TokenStorageService,
+    private auth: AuthService,
     public router: Router
   ) {}
 
@@ -40,21 +36,23 @@ export class LoginCardComponent implements OnInit {
       email: this.loginForm.value.email,
       password: this.loginForm.value.password,
     };
-    this.authService.login(credentials).subscribe(
-      data => {
-        this.tokenStorage.saveToken(data.token);
-        this.tokenStorage.saveUser(data.user);
+    this.auth.login(credentials).subscribe(
+      (data) => {
+        this.auth.saveToken(data.token);
+        this.auth.saveUser(data.user);
 
         this.isLoginFailed = false;
-        this.isLoggedIn = true;
-        this.roles = this.tokenStorage.getUser().roles;
+        this.auth.userEmitChange(this.auth.getUser());
         this.reloadPage();
       },
-      err => {
-        this.errorMessage = err.error.message;
+      (err) => {
         this.isLoginFailed = true;
       }
     );
+  }
+
+  toggleRegister() {
+    this.switchToRegister.emit(true);
   }
 
   reloadPage(): void {

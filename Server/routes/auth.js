@@ -118,6 +118,7 @@ router.post('/login', async (req, res) => {
             confirmed: user.confirmed,
             email: user.email,
             role: user.role.name,
+            username: user.username
         }
     }
     res.header('x-access-token', token).send(response);

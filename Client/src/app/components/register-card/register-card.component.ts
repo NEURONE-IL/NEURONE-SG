@@ -1,8 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { TokenStorageService } from 'src/app/services/auth/token-storage.service';
 
 @Component({
   selector: 'app-register-card',
@@ -12,14 +11,14 @@ import { TokenStorageService } from 'src/app/services/auth/token-storage.service
 export class RegisterCardComponent implements OnInit {
 
   registerForm: FormGroup;
-  roles: string[] = [];
-  @Input() toggleRegister: () => void;
+  isRegisterFailed = false;
+  @Output()
+  switchToLogin = new EventEmitter<boolean>();
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService,
-    private tokenStorage: TokenStorageService,
-    public router: Router
+    public router: Router,
+    private auth: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -34,26 +33,24 @@ export class RegisterCardComponent implements OnInit {
   }
 
   onSubmit() {
-    const credentials = {
+    const registerBody = {
       username: this.registerForm.value.username,
       email: this.registerForm.value.email,
       password: this.registerForm.value.password,
     };
-    this.authService.login(credentials).subscribe(
-      data => {
-        this.tokenStorage.saveToken(data.token);
-        this.tokenStorage.saveUser(data.user);
-
-        this.isLoginFailed = false;
-        this.isLoggedIn = true;
-        this.roles = this.tokenStorage.getUser().roles;
+    this.auth.register(registerBody).subscribe(
+      (data) => {
+        this.isRegisterFailed = false;
         this.reloadPage();
       },
-      err => {
-        this.errorMessage = err.error.message;
-        this.isLoginFailed = true;
+      (err) => {
+        this.isRegisterFailed = true;
       }
     );
+  }
+
+  toggleLogin() {
+    this.switchToLogin.emit(true);
   }
 
   reloadPage(): void {

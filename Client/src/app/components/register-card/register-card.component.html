@@ -1,35 +1,45 @@
 
 <mat-card class="card mat-elevation-z8">
-  <mat-card-title>{{ "LOGIN.TITLE" | translate }}</mat-card-title>
+  <mat-card-title>{{ "REGISTER.TITLE" | translate }}</mat-card-title>
   <mat-card-content>
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <p>
         <mat-form-field style="margin-top: 5%">
-          <mat-label>{{ "LOGIN.EMAIL" | translate }}</mat-label>
-          <input type="text" matInput formControlName="email" />
+          <mat-label>{{ "REGISTER.USERNAME" | translate }}</mat-label>
+          <input type="text" matInput formControlName="username" />
           <mat-error>
-            {{ "LOGIN.REQUIRED" | translate }}
+            {{ "REGISTER.REQUIRED" | translate }}
           </mat-error>
         </mat-form-field>
       </p>
 
       <p>
         <mat-form-field>
-          <mat-label>{{ "LOGIN.PASSWORD" | translate }}</mat-label>
+          <mat-label>{{ "REGISTER.EMAIL" | translate }}</mat-label>
+          <input type="text" matInput formControlName="email" />
+          <mat-error>
+            {{ "REGISTER.REQUIRED" | translate }}
+          </mat-error>
+        </mat-form-field>
+      </p>
+
+      <p>
+        <mat-form-field>
+          <mat-label>{{ "REGISTER.PASSWORD" | translate }}</mat-label>
           <input type="password" matInput formControlName="password" />
           <mat-error>
-            {{ "LOGIN.REQUIRED" | translate }}
+            {{ "REGISTER.REQUIRED" | translate }}
           </mat-error>
         </mat-form-field>
       </p>
 
       <div class="button">
         <button type="submit" color="primary" mat-raised-button>
-          {{ "LOGIN.ENTER" | translate }}
+          {{ "REGISTER.ENTER" | translate }}
         </button>
       </div>
-      <button type="button" color="primary" mat-button>
-        {{ "LOGIN.TOGGLE_REGISTER" | translate }}
+      <button type="button" color="primary" mat-button (click)="toggleLogin()">
+        {{ "REGISTER.TOGGLE_LOGIN" | translate }}
       </button>
     </form>
   </mat-card-content>
