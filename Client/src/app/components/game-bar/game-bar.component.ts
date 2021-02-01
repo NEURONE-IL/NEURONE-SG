@@ -6,6 +6,7 @@ import { SearchService } from '../../services/search/search.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import ActivatorsUtils from '../../utils/activators';
 
 @Component({
   selector: 'app-game-bar',
@@ -18,6 +19,8 @@ export class GameBarComponent implements OnInit, OnDestroy {
   adventure: any;
   answerForm: FormGroup;
   challengePending = false;
+  activators = [];
+  currentLinks = [];
 
   adventureSubscription: Subscription;
   currentNodeSubscription: Subscription;
@@ -43,6 +46,9 @@ export class GameBarComponent implements OnInit, OnDestroy {
           console.log('challenge node!');
           this.challengePending = true;
         }
+        else {
+          this.setCurrentLinks();
+        }
         console.log('gameBar currentNode: ', this.currentNode);
       }
     );
@@ -52,8 +58,7 @@ export class GameBarComponent implements OnInit, OnDestroy {
     this.player = this.auth.getUser();
     this.answerForm = this.formBuilder.group({
       answer: ['', Validators.required],
-      adventure: [this.gameService.adventure._id],
-      // user: [this.authService.user._id],
+      adventure: [this.adventure._id],
       user: [Validators.required],
       node: [Validators.required],
       type: [''],
@@ -72,20 +77,20 @@ export class GameBarComponent implements OnInit, OnDestroy {
   sendAnswer() {
     if (this.answerForm.valid) {
       this.answerForm.controls['node'].setValue(
-        this.gameService.currentNode._id
+        this.currentNode._id
       );
       this.answerForm.controls['user'].setValue('5ff90042eace08b452d92d63');
       this.answerForm.controls['type'].setValue('question');
       const answer = this.answerForm.value;
-      console.log(answer);
       this.answerService.postAnswer(answer).subscribe(
         (res) => {
-          console.log(res);
-          this.gameService.activators.push(res);
+          this.activators.push(res);
+          this.setCurrentLinks();
           this.challengePending = false;
         },
         (err) => {
           console.log(err);
+          // this.setCurrentLinks();
         }
       );
     } else {
@@ -93,26 +98,12 @@ export class GameBarComponent implements OnInit, OnDestroy {
     }
   }
 
-  getCurrentLinks() {
+  setCurrentLinks() {
+    console.log('getCurrentLinks called');
     let currentLinks = this.links.filter(
       (link) => link.source == this.currentNode.id
     );
-    // this.checkActivators(currentLinks);
-    return currentLinks;
-  }
-
-  private checkActivators(currentLinks: any) {
-    for (let i = currentLinks.length - 1; i >= 0; i--) {
-      if ('activators' in currentLinks[i]) {
-        if (currentLinks[i].activators.length > 0) {
-          if (
-            !currentLinks[i].activators.some((r) => this.activators.includes(r))
-          ) {
-            currentLinks.splice(i, 1);
-          }
-        }
-      }
-    }
+    this.currentLinks = ActivatorsUtils.checkActivators(currentLinks, this.activators);
   }
 
   getCurrentChallenge() {
@@ -125,9 +116,5 @@ export class GameBarComponent implements OnInit, OnDestroy {
 
   get links() {
     return this.adventure.links;
-  }
-
-  get activators() {
-    return this.currentNode.activators;
   }
 }

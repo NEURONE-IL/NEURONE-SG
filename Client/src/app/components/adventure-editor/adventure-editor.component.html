@@ -1,4 +1,4 @@
-<ng-container *ngIf="!editorService.updating; else updating">
+<ng-container *ngIf="!updating; else serviceUpdating">
   <mat-sidenav-container
     class="node-editor"
     (backdropClick)="closeEditor('backdrop')"
@@ -9,13 +9,13 @@
       position="end"
       disableClose
     >
-      <div class="form-container" *ngIf="editorService.currentNode != null">
+      <div class="form-container" *ngIf="currentNode != null">
         <h3>Node editor</h3>
         <form class="node-form" [formGroup]="nodeForm">
           <mat-form-field appearance="fill" class="node-form-field">
             <mat-label>Node Type</mat-label>
             <mat-select
-              [ngModel]="editorService.currentNode.type"
+              [ngModel]="currentNode.type"
               name="nodeType"
               formControlName="type"
             >
@@ -31,7 +31,7 @@
               name="nodeId"
               formControlName="id"
               placeholder="room1"
-              [ngModel]="editorService.currentNode.id"
+              [ngModel]="currentNode.id"
             />
           </mat-form-field>
           <mat-form-field class="node-form-field">
@@ -41,7 +41,7 @@
               name="nodeLabel"
               formControlName="label"
               placeholder="B"
-              [ngModel]="editorService.currentNode.label"
+              [ngModel]="currentNode.label"
             />
           </mat-form-field>
           <form formGroupName="data">
@@ -52,7 +52,7 @@
                 name="nodeImage"
                 formControlName="image"
                 placeholder="background.jpg"
-                [ngModel]="editorService.currentNode.data.image"
+                [ngModel]="currentNode.data.image"
               />
             </mat-form-field>
             <mat-form-field class="node-form-field">
@@ -62,7 +62,7 @@
                 name="nodeVideo"
                 formControlName="video"
                 placeholder="https://www.youtube.com/watch?v=xxZvQPeNBh0"
-                [ngModel]="editorService.currentNode.data.video"
+                [ngModel]="currentNode.data.video"
               />
             </mat-form-field>
             <mat-form-field class="node-form-field">
@@ -72,15 +72,15 @@
                 name="nodeText"
                 formControlName="text"
                 placeholder="This is your bedroom"
-                [ngModel]="editorService.currentNode.data.text"
+                [ngModel]="currentNode.data.text"
               />
             </mat-form-field>
           </form>
-          <input type="hidden" formControlName="challenge" [ngModel]="editorService.currentNode.challenge">
+          <input type="hidden" formControlName="challenge" [ngModel]="currentNode.challenge">
         </form>
         <div
           class="sidebar-button-panel"
-          *ngIf="editorService.currentNode.type != 'ending'"
+          *ngIf="currentNode.type != 'ending'"
         >
           <button
             mat-stroked-button
@@ -90,7 +90,7 @@
             Add Link
           </button>
           <button
-            *ngIf="editorService.currentNode.type == 'challenge'"
+            *ngIf="currentNode.type == 'challenge'"
             mat-stroked-button
             color="accent"
             (click)="showChallengeDialog()"
@@ -111,8 +111,8 @@
       <ngx-graph
         class="chart-container"
         [showMiniMap]="true"
-        [nodes]="editorService.adventure.nodes"
-        [links]="editorService.adventure.links"
+        [nodes]="adventure.nodes"
+        [links]="adventure.links"
         [draggingEnabled]="false"
         [update$]="updateGraph"
         [autoCenter]="true"
@@ -186,7 +186,7 @@
   </mat-sidenav-container>
 </ng-container>
 
-<ng-template #updating>
+<ng-template #serviceUpdating>
   <div class="adventure-editor-container">
     <mat-progress-spinner></mat-progress-spinner>
   </div>

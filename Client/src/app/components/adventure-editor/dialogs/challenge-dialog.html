@@ -8,7 +8,7 @@
         name="challengeQuestion"
         formControlName="question"
         placeholder="What's 5 + 20?"
-        [ngModel]="editorService.currentNode.challenge.question"
+        [ngModel]="challenge.question"
       />
     </mat-form-field>
     <mat-form-field class="form-field">
@@ -18,11 +18,11 @@
         name="challengeAnswer"
         formControlName="answer"
         placeholder="25"
-        [ngModel]="editorService.currentNode.challenge.answer"
+        [ngModel]="challenge.answer"
       />
     </mat-form-field>
-    <input type="hidden" formControlName="type" [ngModel]="editorService.currentNode.challenge.type">
-    <input type="hidden" formControlName="options" [ngModel]="editorService.currentNode.challenge.options">
+    <input type="hidden" formControlName="type" [ngModel]="challenge.type">
+    <input type="hidden" formControlName="options" [ngModel]="challenge.options">
   </form>
 </div>
 <div mat-dialog-actions align="end">

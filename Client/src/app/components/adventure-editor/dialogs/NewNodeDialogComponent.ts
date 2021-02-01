@@ -1,6 +1,6 @@
-import { Component, Inject } from '@angular/core';
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EditorService } from 'src/app/services/game/editor.service';
 
 @Component({
@@ -9,7 +9,6 @@ import { EditorService } from 'src/app/services/game/editor.service';
   styleUrls: ['dialogs.scss'],
 })
 export class NewNodeDialogComponent {
-
   newNodeForm: FormGroup;
 
   nodeTypes = [
@@ -20,10 +19,10 @@ export class NewNodeDialogComponent {
   ];
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public adventure: any,
     private formBuilder: FormBuilder,
-    public editorService: EditorService
-  ) { }
+    public editorService: EditorService,
+    public dialogRef: MatDialogRef<NewNodeDialogComponent>
+  ) {}
 
   ngOnInit(): void {
     this.newNodeForm = this.formBuilder.group({
@@ -38,7 +37,7 @@ export class NewNodeDialogComponent {
   }
 
   addNewNode() {
-    this.editorService.addNode(this.newNodeForm.value);
-    console.log(this);
+    const newNode = this.newNodeForm.value;
+    this.dialogRef.close({ newNode: newNode });
   }
 }

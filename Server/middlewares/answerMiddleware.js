@@ -5,7 +5,7 @@ const schema = Joi.object({
     answer: Joi.string().required(),
     node: Joi.string().required(),
     user: Joi.string().required(),
-    type: Joi.string(),
+    type: Joi.string().required(),
     adventure: Joi.string(),
     escaperoom: Joi.string()
 

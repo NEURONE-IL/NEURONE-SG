@@ -32,9 +32,14 @@ export class AdventureService {
       delete node.transform;
       delete node._id;
     });
-    body.links.forEach(link => {
+    body.links.forEach((link, index) => {
       delete link.id;
       delete link._id
+      if (link.activators) {
+        body.links[index].activators.forEach(activator => {
+          delete activator._id;
+        });
+      }
     });
     console.log(adventure);
     return this.http.put(this.uri + '/' + id, body);

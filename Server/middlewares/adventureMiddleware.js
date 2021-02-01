@@ -9,6 +9,8 @@ const schema = Joi.object({
     description: Joi.string()
         .required(),
 
+    image: Joi.string(),
+
     nodes: Joi.array().items(Joi.object({
         id: Joi.string().required(),
         label: Joi.string().required(),

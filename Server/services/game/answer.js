@@ -1,26 +1,36 @@
-const levenshtein = require('js-levenshtein');
-const normalize = require('normalize-diacritics');
+const levenshtein = require("js-levenshtein");
+const normalize = require("normalize-diacritics");
 
-
-const checkAnswer = async (challenge, answer) => {
-    const distance = await normalizeAndDistance(challenge.answer, answer.answer);
-    if(distance<2) {
-        return 'correct_answer';
+const checkAnswer = async (node, challenge, answer) => {
+  let answerCheck = {
+    node: node.id,
+  };
+  if (answer.type == "question") {
+    const distance = await normalizeAndDistance(
+      challenge.answer,
+      answer.answer
+    );
+    if (distance < 2) {
+      answerCheck.condition = "correct_answer";
+    } else {
+      answerCheck.condition = "wrong_answer";
     }
-    else {
-        return 'wrong_answer';
-    }
-}
+    console.log("answerCheck", answerCheck);
+  }
+  return answerCheck;
+};
 
 const answerService = {
-    checkAnswer
+  checkAnswer,
 };
 
 const normalizeAndDistance = async (answer, userAnswer) => {
-    let normalizedAnswer = await normalize.normalize(answer.toLowerCase());
-    let normalizedUserAnswer = await normalize.normalize(userAnswer.toLowerCase());
-    var distance = levenshtein(normalizedAnswer, normalizedUserAnswer);
-    return distance;
-}
+  let normalizedAnswer = await normalize.normalize(answer.toLowerCase());
+  let normalizedUserAnswer = await normalize.normalize(
+    userAnswer.toLowerCase()
+  );
+  var distance = levenshtein(normalizedAnswer, normalizedUserAnswer);
+  return distance;
+};
 
 module.exports = answerService;

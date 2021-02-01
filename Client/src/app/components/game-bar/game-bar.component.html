@@ -15,7 +15,7 @@
         *ngIf="currentNode.type != 'ending'; else endingPanel"
       >
         <button
-          *ngFor="let link of getCurrentLinks()"
+          *ngFor="let link of currentLinks"
           (click)="goTo(link.target)"
           mat-raised-button
           color="primary"

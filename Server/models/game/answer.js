@@ -7,6 +7,7 @@ const answerSchema = new Schema({
   escaperoom: { type: Schema.Types.ObjectId, ref: 'Escaperoom'},
   node: { type: Schema.Types.ObjectId, required: true },
   user: { type: Schema.Types.ObjectId, ref: 'User', required: true},
+  type: { type: String, required: true },
   answer: { type: String, required: true },
 
   createdAt: { type: Date, default: Date.now },

@@ -21,13 +21,10 @@ export class GameService {
   currentNodeSubject = new ReplaySubject<any>(1);
   currentNodeEmitter = this.currentNodeSubject.asObservable();
 
+  // Loading boolean
   loading = true;
   loadingSubject = new ReplaySubject<any>(1);
   loadingEmitter = this.loadingSubject.asObservable();
-
-
-  challengePending = false;
-  activators = [];
 
   constructor(public adventureService: AdventureService,
     private auth: AuthService) {
@@ -58,16 +55,6 @@ export class GameService {
     this.setPlayer(null);
     this.setLoading(true);
     this.setCurrentNode(null);
-  }
-
-  goTo(targetNodeId) {
-    this.loading = true;
-    this.currentNode = this.nodes.find(node => node.id==targetNodeId);
-    console.log(this.currentNode);
-    if(this.currentNode.type=='challenge') {
-      this.challengePending = true;
-    }
-    this.loading = false;
   }
 
 
@@ -105,4 +92,6 @@ export class GameService {
   get nodes() {
     return this.adventure.nodes;
   }
+
+
 }
