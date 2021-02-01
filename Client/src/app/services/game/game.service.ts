@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ReplaySubject, Subject } from 'rxjs';
 import { AdventureService } from '../../services/game/adventure.service';
 import { AuthService } from '../auth/auth.service';
 
@@ -7,14 +8,24 @@ import { AuthService } from '../auth/auth.service';
 })
 export class GameService {
 
-  // adventure or escaperoom
+  // Adventure
   adventure: any;
+  adventureSubject = new ReplaySubject<any>(1);
+  adventureEmitter = this.adventureSubject.asObservable();
 
-  // player data
+  // Player data
   player: any;
 
+  // Current node
   currentNode: any;
+  currentNodeSubject = new ReplaySubject<any>(1);
+  currentNodeEmitter = this.currentNodeSubject.asObservable();
+
   loading = true;
+  loadingSubject = new ReplaySubject<any>(1);
+  loadingEmitter = this.loadingSubject.asObservable();
+
+
   challengePending = false;
   activators = [];
 
@@ -22,36 +33,31 @@ export class GameService {
     private auth: AuthService) {
   }
 
-  init(adventure) {
-
-    // this.adventureService.getAdventures().subscribe((adventures) => {
-    //   console.log(adventures[1]);
-    //   this.adventure = adventures[1];
-    //   this.player = {
-    //     name: 'Anne',
-    //     level: 'NEURONE novice'
-    //   }
-
-    //   this.currentNode = this.nodes.find(node => node.type="initial");
-    //   this.loading = false;
-    // },
-    // (err) => {
-    //   console.log("couldn't load adventures");
-    // });
-    this.adventure = adventure;
+  async init(adventure) {
+    this.setAdventure(adventure);
+    this.setInitialNode();
     this.player = this.auth.getUser();
-    this.currentNode = this.nodes.find(node => node.type="initial");
-    this.loading = false;
-    console.log(this.adventure);
-    console.log(this.player);
+    await new Promise(r => setTimeout(r, 1000));
+    this.setLoading(false);
     console.log('init complete');
+    return Promise.resolve(1);
+  }
+
+  private setLoading(value: boolean) {
+    this.loading = value;
+    this.loadingEmitChange(this.loading);
+  }
+
+  private setAdventure(adventure: any) {
+    this.adventure = adventure;
+    this.adventureEmitChange(this.adventure);
   }
 
   reset() {
-    this.adventure = null;
-    this.player = null;
-    this.loading = true;
-    this.currentNode = null;
+    this.setAdventure(null);
+    this.setPlayer(null);
+    this.setLoading(true);
+    this.setCurrentNode(null);
   }
 
   goTo(targetNodeId) {
@@ -64,8 +70,32 @@ export class GameService {
     this.loading = false;
   }
 
-  getLinks(currentNode) {
-    return this.links.filter(link => link.source==currentNode.id);
+
+  setCurrentNode(targetNodeId) {
+    this.currentNode = this.nodes.find(node => node.id==targetNodeId);
+    this.currentNodeEmitChange(this.currentNode);
+  }
+
+  setInitialNode() {
+    this.currentNode = this.nodes.find(node => node.type="initial");
+    this.currentNodeEmitChange(this.currentNode);
+  }
+
+  setPlayer(player) {
+    this.player = player;
+    // TODO: add emitter
+  }
+
+  adventureEmitChange(adv: any) {
+    this.adventureSubject.next(adv);
+  }
+
+  currentNodeEmitChange(node: any) {
+    this.currentNodeSubject.next(node);
+  }
+
+  loadingEmitChange(loading: any) {
+    this.loadingSubject.next(loading);
   }
 
   get links() {
@@ -74,30 +104,5 @@ export class GameService {
 
   get nodes() {
     return this.adventure.nodes;
-  }
-
-  get currentLinks() {
-    let currentLinks = this.links.filter(link => link.source==this.currentNode.id);
-    for (let i = currentLinks.length - 1; i >= 0; i--) {
-      if('activators' in currentLinks[i]) {
-        if(currentLinks[i].activators.length>0) {
-          if (!currentLinks[i].activators.some(r=> this.activators.includes(r))) {
-            currentLinks.splice(i, 1);
-          }
-        }
-      }
-    }
-    console.log(currentLinks);
-    return currentLinks;
-  }
-
-  findOne = function (haystack, arr) {
-    return arr.some(function (v) {
-        return haystack.indexOf(v) >= 0;
-    });
-  };
-
-  get currentChallenge() {
-    return this.currentNode.challenge;
   }
 }

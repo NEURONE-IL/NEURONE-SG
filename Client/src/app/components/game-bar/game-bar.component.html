@@ -1,19 +1,22 @@
 <div class="game-bar-container">
-  <mat-card class="choices-card" *ngIf="!gameService.challengePending; else challengeCard">
+  <mat-card
+    class="choices-card"
+    *ngIf="!challengePending; else challengeCard"
+  >
     <mat-card-header>
       <div mat-card-avatar class="player-avatar"></div>
-      <mat-card-title>{{ gameService.player.username }}</mat-card-title>
+      <mat-card-title>{{ player.username }}</mat-card-title>
       <mat-card-subtitle>{{ "NEURONE novice" }}</mat-card-subtitle>
     </mat-card-header>
     <mat-divider [inset]="true" class="bar-divider"></mat-divider>
     <mat-card-content>
       <div
         class="choices-panel"
-        *ngIf="gameService.currentNode.type != 'ending'; else endingPanel"
+        *ngIf="currentNode.type != 'ending'; else endingPanel"
       >
         <button
-          *ngFor="let link of gameService.currentLinks"
-          (click)="gameService.goTo(link.target)"
+          *ngFor="let link of getCurrentLinks()"
+          (click)="goTo(link.target)"
           mat-raised-button
           color="primary"
         >
@@ -23,7 +26,7 @@
       <ng-template #endingPanel>
         <div class="ending-panel">
           <p>You've reached an ending, congrats!</p>
-          <button mat-raised-button color="primary" (click)="refresh()">
+          <button mat-raised-button color="primary" (click)="finish()">
             Finish
           </button>
         </div>
@@ -34,12 +37,12 @@
     <mat-card class="challenge-card">
       <mat-card-header>
         <div mat-card-avatar class="player-avatar"></div>
-        <mat-card-title>{{ gameService.player.username }}</mat-card-title>
+        <mat-card-title>{{ player.username }}</mat-card-title>
         <mat-card-subtitle>{{ "NEURONE novice" }}</mat-card-subtitle>
       </mat-card-header>
       <mat-divider [inset]="true" class="bar-divider"></mat-divider>
-      <mat-card-content *ngIf="gameService.currentChallenge.type=='question'">
-        <h3>{{gameService.currentChallenge.question}}</h3>
+      <mat-card-content *ngIf="getCurrentChallenge().type == 'question'">
+        <h3>{{ getCurrentChallenge().question }}</h3>
         <form class="challenge-form" [formGroup]="answerForm">
           <mat-form-field class="answer-form-field">
             <mat-label>Answer</mat-label>
@@ -49,12 +52,14 @@
               formControlName="answer"
               placeholder="Your answer here"
             />
-            <mat-icon matSuffix (click)="sendAnswer()" class="submit-icon">send</mat-icon>
+            <mat-icon matSuffix (click)="sendAnswer()" class="submit-icon"
+              >send</mat-icon
+            >
           </mat-form-field>
           <button class="hidden-btn" (click)="sendAnswer()"></button>
         </form>
       </mat-card-content>
-      <mat-card-content *ngIf="gameService.currentChallenge.type=='multiple'">
+      <mat-card-content *ngIf="getCurrentChallenge().type == 'multiple'">
         <app-multiple-form></app-multiple-form>
       </mat-card-content>
     </mat-card>

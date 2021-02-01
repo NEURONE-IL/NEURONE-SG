@@ -24,7 +24,7 @@ export class EditorService {
               public router: Router) {
   }
 
-  init(adventure) {
+  async init(adventure) {
 
     // this.adventureService.getAdventures().subscribe((adventures) => {
     //   this.adventure = adventures[1];
@@ -39,7 +39,9 @@ export class EditorService {
     this.adventure = adventure;
     this.currentNode = this.adventure.nodes.find(node => node.type="initial");
     this.loading = false;
+    await new Promise(r => setTimeout(r, 1000));
     console.log('editor service init complete');
+    return Promise.resolve(1);
   }
 
   reset() {

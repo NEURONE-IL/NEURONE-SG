@@ -35,13 +35,15 @@ export class AdventureSelectorComponent implements OnInit {
     );
   }
 
-  play(adventure: any) {
-    this.gameService.init(adventure);
-    this.router.navigate(['game']);
+  async play(adventure: any) {
+    await this.gameService.init(adventure).then(() => {
+      this.router.navigate(['game']);
+    });
   }
 
-  edit(adventure: any) {
-    this.editorService.init(adventure);
-    this.router.navigate(['editor']);
+  async edit(adventure: any) {
+    await this.editorService.init(adventure).then(() => {
+      this.router.navigate(['editor']);
+    });
   }
 }
