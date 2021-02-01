@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AdventureService } from '../../services/game/adventure.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,26 +18,40 @@ export class GameService {
   challengePending = false;
   activators = [];
 
-  constructor(public adventureService: AdventureService) {
-    this.init();
+  constructor(public adventureService: AdventureService,
+    private auth: AuthService) {
   }
 
-  init() {
+  init(adventure) {
 
-    this.adventureService.getAdventures().subscribe((adventures) => {
-      console.log(adventures[1]);
-      this.adventure = adventures[1];
-      this.player = {
-        name: 'Anne',
-        level: 'NEURONE novice'
-      }
+    // this.adventureService.getAdventures().subscribe((adventures) => {
+    //   console.log(adventures[1]);
+    //   this.adventure = adventures[1];
+    //   this.player = {
+    //     name: 'Anne',
+    //     level: 'NEURONE novice'
+    //   }
 
-      this.currentNode = this.nodes.find(node => node.type="initial");
-      this.loading = false;
-    },
-    (err) => {
-      console.log("couldn't load adventures");
-    });
+    //   this.currentNode = this.nodes.find(node => node.type="initial");
+    //   this.loading = false;
+    // },
+    // (err) => {
+    //   console.log("couldn't load adventures");
+    // });
+    this.adventure = adventure;
+    this.player = this.auth.getUser();
+    this.currentNode = this.nodes.find(node => node.type="initial");
+    this.loading = false;
+    console.log(this.adventure);
+    console.log(this.player);
+    console.log('init complete');
+  }
+
+  reset() {
+    this.adventure = null;
+    this.player = null;
+    this.loading = true;
+    this.currentNode = null;
   }
 
   goTo(targetNodeId) {

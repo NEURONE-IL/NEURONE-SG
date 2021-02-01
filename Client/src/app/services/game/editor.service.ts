@@ -22,20 +22,30 @@ export class EditorService {
 
   constructor(private adventureService: AdventureService,
               public router: Router) {
-    this.init();
   }
 
-  init() {
+  init(adventure) {
 
-    this.adventureService.getAdventures().subscribe((adventures) => {
-      this.adventure = adventures[1];
+    // this.adventureService.getAdventures().subscribe((adventures) => {
+    //   this.adventure = adventures[1];
 
-      this.currentNode = this.adventure.nodes.find(node => node.type="initial");
-      this.loading = false;
-    },
-    (err) => {
-      console.log("couldn't load adventures");
-    });
+    //   this.currentNode = this.adventure.nodes.find(node => node.type="initial");
+    //   this.loading = false;
+    // },
+    // (err) => {
+    //   console.log("couldn't load adventures");
+    // });
+
+    this.adventure = adventure;
+    this.currentNode = this.adventure.nodes.find(node => node.type="initial");
+    this.loading = false;
+    console.log('editor service init complete');
+  }
+
+  reset() {
+    this.adventure = null;
+    this.currentNode = null;
+    this.loading = true;
   }
 
   goTo(targetNodeId) {

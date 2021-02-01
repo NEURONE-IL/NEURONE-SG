@@ -2,8 +2,8 @@
   <mat-card class="choices-card" *ngIf="!gameService.challengePending; else challengeCard">
     <mat-card-header>
       <div mat-card-avatar class="player-avatar"></div>
-      <mat-card-title>{{ gameService.player.name }}</mat-card-title>
-      <mat-card-subtitle>{{ gameService.player.level }}</mat-card-subtitle>
+      <mat-card-title>{{ gameService.player.username }}</mat-card-title>
+      <mat-card-subtitle>{{ "NEURONE novice" }}</mat-card-subtitle>
     </mat-card-header>
     <mat-divider [inset]="true" class="bar-divider"></mat-divider>
     <mat-card-content>
@@ -34,8 +34,8 @@
     <mat-card class="challenge-card">
       <mat-card-header>
         <div mat-card-avatar class="player-avatar"></div>
-        <mat-card-title>{{ gameService.player.name }}</mat-card-title>
-        <mat-card-subtitle>{{ gameService.player.level }}</mat-card-subtitle>
+        <mat-card-title>{{ gameService.player.username }}</mat-card-title>
+        <mat-card-subtitle>{{ "NEURONE novice" }}</mat-card-subtitle>
       </mat-card-header>
       <mat-divider [inset]="true" class="bar-divider"></mat-divider>
       <mat-card-content *ngIf="gameService.currentChallenge.type=='question'">
