@@ -39,6 +39,19 @@ const schema = Joi.object({
     })),
 })
 
+const newSchema = Joi.object({
+
+    name: Joi.string()
+        .required(),
+
+    description: Joi.string()
+        .required(),
+
+    image: Joi.string(),
+
+})
+
+
 const verifyBody = async (req, res, next) => {
     try {
         const validation = await schema.validateAsync(req.body);
@@ -52,8 +65,22 @@ const verifyBody = async (req, res, next) => {
      }
 };
 
+const verifyNewBody = async (req, res, next) => {
+    try {
+        const validation = await newSchema.validateAsync(req.body);
+        next();
+    }
+    catch (err) {
+        return res.status(400).json({
+            ok: false,
+            err
+        });
+     }
+};
+
 const adventureMiddleware = {
-    verifyBody
+    verifyBody,
+    verifyNewBody
 };
 
 module.exports = adventureMiddleware;

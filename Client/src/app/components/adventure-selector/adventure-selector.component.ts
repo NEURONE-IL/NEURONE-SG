@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { AdventureService } from 'src/app/services/game/adventure.service';
 import { EditorService } from 'src/app/services/game/editor.service';
 import { GameService } from 'src/app/services/game/game.service';
+import { NewAdventureDialogComponent } from './dialogs/new-adventure-dialog.component'
 
 @Component({
   selector: 'app-adventure-selector',
@@ -19,7 +21,8 @@ export class AdventureSelectorComponent implements OnInit {
     private auth: AuthService,
     private editorService: EditorService,
     private gameService: GameService,
-    public router: Router
+    public router: Router,
+    public newAdventureDialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -45,5 +48,31 @@ export class AdventureSelectorComponent implements OnInit {
     await this.editorService.init(adventure).then(() => {
       this.router.navigate(['editor']);
     });
+  }
+
+  showNewAdventureDialog(): void {
+    const nodeDialogRef = this.newAdventureDialog.open(NewAdventureDialogComponent, {
+      width: '50em',
+      height: '20em'
+    });
+
+    nodeDialogRef.afterClosed().subscribe((result) => {
+      console.log('closed adventureDialog');
+      if (result.newAdventure) {
+        console.log('new adventure: ', result.newAdventure);
+        this.adventureService.createAdventure(result.newAdventure).subscribe(
+          (res) => {
+            this.reloadPage();
+          },
+          (err) => {
+            console.log(err);
+          }
+        )
+      }
+    });
+  }
+
+  reloadPage(): void {
+    window.location.reload();
   }
 }

@@ -51,6 +51,7 @@ import { LoginCardComponent } from './components/login-card/login-card.component
 import { RegisterCardComponent } from './components/register-card/register-card.component';
 import { AdventureSelectorComponent } from './components/adventure-selector/adventure-selector.component';
 import { AdventureSelectionComponent } from './views/adventure-selection/adventure-selection.component';
+import { NewAdventureDialogComponent } from './components/adventure-selector/dialogs/new-adventure-dialog.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -78,6 +79,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     RegisterCardComponent,
     AdventureSelectorComponent,
     AdventureSelectionComponent,
+    NewAdventureDialogComponent,
   ],
   imports: [
     BrowserModule,

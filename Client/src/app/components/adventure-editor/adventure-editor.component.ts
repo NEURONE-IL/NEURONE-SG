@@ -149,7 +149,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   }
 
   addNode(newNode) {
-    newNode.id = nanoid(12);
+    newNode.id = nanoid(13);
     this.nodes.push(newNode);
     this.refreshGraph();
   }

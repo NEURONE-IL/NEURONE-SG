@@ -1,5 +1,5 @@
 <div class="selector-container">
-  <div fxLayout="row wrap" fxLayoutGap="16px grid">
+  <div fxLayout="row wrap" fxLayoutGap="16px grid" class="adventure-grid">
     <div
       fxFlex="20%"
       fxFlex.xs="100%"
@@ -33,5 +33,15 @@
         </mat-card-actions>
       </mat-card>
     </div>
+  </div>
+  <div class="button-panel">
+    <button
+      class="new-node-btn"
+      mat-fab
+      color="accent"
+      (click)="showNewAdventureDialog()"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
   </div>
 </div>

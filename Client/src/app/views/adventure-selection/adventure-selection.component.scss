@@ -2,7 +2,7 @@
   display: grid;
   grid-template-areas: "header header" "selector selector";
   grid-template-rows: 60px auto;
-  height: 100%;
-  width: 100%;
-  background: lightgray;
+  min-width: 100%;
+  min-height: 100%;
+  background-color: lightgray;
 }

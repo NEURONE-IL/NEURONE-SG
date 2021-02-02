@@ -20,6 +20,10 @@ export class AdventureService {
     return this.http.post(this.uri, adventure);
   }
 
+  createAdventure(adventure): Observable<any> {
+    return this.http.post(this.uri +'/new', adventure)
+  }
+
   updateAdventure(adventure): Observable<any> {
     const id = adventure._id;
     const body = { ...adventure };
