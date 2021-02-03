@@ -1,8 +1,5 @@
 <div class="game-bar-container">
-  <mat-card
-    class="choices-card"
-    *ngIf="!challengePending; else challengeCard"
-  >
+  <mat-card class="choices-card" *ngIf="!challengePending; else challengeCard">
     <mat-card-header>
       <div mat-card-avatar class="player-avatar"></div>
       <mat-card-title>{{ player.username }}</mat-card-title>
@@ -64,13 +61,8 @@
       </mat-card-content>
     </mat-card>
   </ng-template>
-  <button
-    class="neurone-btn"
-    mat-fab
-    color="accent"
-    (click)="searchService.toggleSearch()"
-  >
-    <mat-icon *ngIf="!searchService.searchEnabled">search</mat-icon>
-    <mat-icon *ngIf="searchService.searchEnabled">search-off</mat-icon>
+  <button class="neurone-btn" mat-fab color="accent" (click)="toggleSearch()">
+    <mat-icon *ngIf="!searchEnabled">search</mat-icon>
+    <mat-icon *ngIf="searchEnabled">search-off</mat-icon>
   </button>
 </div>

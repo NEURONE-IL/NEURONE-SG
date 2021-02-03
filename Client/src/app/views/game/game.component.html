@@ -1,6 +1,9 @@
-<div *ngIf="!gameService.loading" [ngClass]="(searchService.searchEnabled)?'game-container':'game-container-no-search'">
+<div *ngIf="!gameService.loading" [ngClass]="searchEnabled ? 'game-container':'game-container-no-search'">
   <app-header [style.grid-area]="'header'"></app-header>
-  <app-search-interface *ngIf="searchService.searchEnabled" [style.grid-area]="'search'"></app-search-interface>
+  <!-- <app-search-interface *ngIf="searchService.searchEnabled" [style.grid-area]="'search'"></app-search-interface> -->
+  <div *ngIf="searchEnabled" [style.grid-area]="'search'">
+    <router-outlet></router-outlet>
+  </div>
   <app-adventure [style.grid-area]="'adventure'"></app-adventure>
   <app-game-bar [style.grid-area]="'challenge'"></app-game-bar>
 </div>

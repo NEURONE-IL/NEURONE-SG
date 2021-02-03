@@ -36,7 +36,7 @@ export class EditorService {
   }
 
   async init(adventure) {
-
+    this.reset();
     this.setAdventure(adventure);
     await new Promise(r => setTimeout(r, 1000));
     this.setLoading(false);
@@ -46,9 +46,12 @@ export class EditorService {
   }
 
   reset() {
-    this.setAdventure(null);
-    this.setCurrentNode(null);
-    this.setLoading(true);
+    this.adventure = undefined;
+    this.currentNode = undefined;
+    this.loading = true;
+    this.adventureEmitChange(this.adventure);
+    this.currentNodeEmitChange(this.currentNode);
+    this.loadingEmitChange(this.loading);
   }
 
   setAdventure(adventure: any) {

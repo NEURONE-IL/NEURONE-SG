@@ -52,6 +52,7 @@ import { RegisterCardComponent } from './components/register-card/register-card.
 import { AdventureSelectorComponent } from './components/adventure-selector/adventure-selector.component';
 import { AdventureSelectionComponent } from './views/adventure-selection/adventure-selection.component';
 import { NewAdventureDialogComponent } from './components/adventure-selector/dialogs/new-adventure-dialog.component';
+import { SearchResultsComponent } from './components/search-results/search-results.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -80,6 +81,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AdventureSelectorComponent,
     AdventureSelectionComponent,
     NewAdventureDialogComponent,
+    SearchResultsComponent,
   ],
   imports: [
     BrowserModule,

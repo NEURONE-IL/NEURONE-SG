@@ -25,6 +25,7 @@ export class SearchInterfaceComponent implements OnInit {
     else {
       console.log('search: ' + this.query);
     }
+    this.router.navigate(['game/results'])
   }
 
 }

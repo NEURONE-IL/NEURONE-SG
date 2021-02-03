@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { AdventureService } from 'src/app/services/game/adventure.service';
 import { EditorService } from 'src/app/services/game/editor.service';
 import { GameService } from 'src/app/services/game/game.service';
+import { SearchService } from 'src/app/services/search/search.service';
 import { NewAdventureDialogComponent } from './dialogs/new-adventure-dialog.component'
 
 @Component({
@@ -21,6 +22,7 @@ export class AdventureSelectorComponent implements OnInit {
     private auth: AuthService,
     private editorService: EditorService,
     private gameService: GameService,
+    private searchService: SearchService,
     public router: Router,
     public newAdventureDialog: MatDialog,
   ) {}
@@ -40,6 +42,7 @@ export class AdventureSelectorComponent implements OnInit {
 
   async play(adventure: any) {
     await this.gameService.init(adventure).then(() => {
+      this.searchService.init();
       this.router.navigate(['game']);
     });
   }

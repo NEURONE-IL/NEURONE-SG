@@ -16,6 +16,7 @@ import ActivatorsUtils from '../../utils/activators';
 export class GameBarComponent implements OnInit, OnDestroy {
   player: any;
   currentNode: any;
+  searchEnabled: any;
   adventure: any;
   answerForm: FormGroup;
   challengePending = false;
@@ -24,6 +25,7 @@ export class GameBarComponent implements OnInit, OnDestroy {
 
   adventureSubscription: Subscription;
   currentNodeSubscription: Subscription;
+  searchEnabledSubscription: Subscription;
 
   constructor(
     private gameService: GameService,
@@ -52,6 +54,11 @@ export class GameBarComponent implements OnInit, OnDestroy {
         console.log('gameBar currentNode: ', this.currentNode);
       }
     );
+    this.searchEnabledSubscription = this.searchService.searchEnabledEmitter.subscribe(
+      (searchEnabled) => {
+        this.searchEnabled = searchEnabled;
+      }
+    );
   }
 
   ngOnInit(): void {
@@ -68,6 +75,7 @@ export class GameBarComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.adventureSubscription.unsubscribe();
     this.currentNodeSubscription.unsubscribe();
+    this.searchEnabledSubscription.unsubscribe();
   }
 
   finish() {
@@ -116,5 +124,9 @@ export class GameBarComponent implements OnInit, OnDestroy {
 
   get links() {
     return this.adventure.links;
+  }
+
+  toggleSearch() {
+    this.searchService.toggleSearch();
   }
 }

@@ -31,6 +31,7 @@ export class GameService {
   }
 
   async init(adventure) {
+    this.reset();
     this.setAdventure(adventure);
     this.setInitialNode();
     this.player = this.auth.getUser();
@@ -38,6 +39,16 @@ export class GameService {
     this.setLoading(false);
     console.log('init complete');
     return Promise.resolve(1);
+  }
+
+  reset() {
+    this.adventure = undefined;
+    this.player = undefined;
+    this.loading = true;
+    this.currentNode = undefined;
+    this.adventureEmitChange(this.adventure);
+    this.loadingEmitChange(this.loading);
+    this.currentNodeEmitChange(this.currentNode);
   }
 
   private setLoading(value: boolean) {
@@ -49,14 +60,6 @@ export class GameService {
     this.adventure = adventure;
     this.adventureEmitChange(this.adventure);
   }
-
-  reset() {
-    this.setAdventure(null);
-    this.setPlayer(null);
-    this.setLoading(true);
-    this.setCurrentNode(null);
-  }
-
 
   setCurrentNode(targetNodeId) {
     this.currentNode = this.nodes.find(node => node.id==targetNodeId);

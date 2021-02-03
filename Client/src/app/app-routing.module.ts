@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { SearchInterfaceComponent } from './components/search-interface/search-interface.component';
+import { SearchResultsComponent } from './components/search-results/search-results.component';
 import { AdventureSelectionComponent } from './views/adventure-selection/adventure-selection.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { EditorComponent } from './views/editor/editor.component';
@@ -13,6 +15,20 @@ const routes: Routes = [
       {
         path: 'game',
         component: GameComponent,
+        children: [
+          {
+            path: '',
+            component: SearchInterfaceComponent,
+          },
+          {
+            path: 'results',
+            component: SearchResultsComponent,
+          },
+          // {
+          //   path: 'view-page',
+          //   component: ViewPageComponent
+          // }
+        ],
       },
       {
         path: 'editor',
