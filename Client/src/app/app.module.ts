@@ -53,6 +53,8 @@ import { AdventureSelectorComponent } from './components/adventure-selector/adve
 import { AdventureSelectionComponent } from './views/adventure-selection/adventure-selection.component';
 import { NewAdventureDialogComponent } from './components/adventure-selector/dialogs/new-adventure-dialog.component';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
+import { ViewPageComponent } from './components/view-page/view-page.component';
+import { SafeurlPipe } from './helpers/safeUrl/safeurl.pipe';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -82,6 +84,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AdventureSelectionComponent,
     NewAdventureDialogComponent,
     SearchResultsComponent,
+    ViewPageComponent,
+    SafeurlPipe,
   ],
   imports: [
     BrowserModule,

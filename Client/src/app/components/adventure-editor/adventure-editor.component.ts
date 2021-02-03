@@ -116,10 +116,6 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     if(this.nodeForm.valid) {
       this.nodes.forEach((node, index) => {
         if (node.id == this.currentNode.id) {
-          // Workaround to keep challenges for now
-          // if ('challenge' in this.nodes[index].data) {
-          //   newNode.challenge = this.nodes[index].challenge;
-          // }
           this.nodes[index] = newNode;
         }
       });
@@ -204,10 +200,10 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     );
 
     challengeDialogRef.afterClosed().subscribe((result) => {
-      if (result.newLink) {
+      if (result.challenge) {
         console.log('closed challengeDialog');
-        console.log('challenge: ', result.newLink);
-        this.addLink(result.newLink);
+        console.log('challenge: ', result.challenge);
+        this.currentNode.challenge = result.challenge;
       }
     });
   }

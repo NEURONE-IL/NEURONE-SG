@@ -1,0 +1,30 @@
+.page-container{
+  min-width: 70vw;
+  max-width: 70vw;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 5px 10px 5px;
+}
+
+.page-card {
+  min-width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  // overflow-y: scroll;
+}
+
+iframe {
+  overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  overflow-y: scroll;
+  background: lightgray;
+  box-shadow: inset 0 0 4px #707070;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #283593;
+  border-radius: 3em;
+}

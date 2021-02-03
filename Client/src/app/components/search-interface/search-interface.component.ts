@@ -19,13 +19,12 @@ export class SearchInterfaceComponent implements OnInit {
   }
 
   search(){
-    if(this.query !== ''){
-      console.log('empty query');
+    if(this.query){
+      this.router.navigate(['game/results/' + this.query])
     }
     else {
       console.log('search: ' + this.query);
     }
-    this.router.navigate(['game/results'])
   }
 
 }

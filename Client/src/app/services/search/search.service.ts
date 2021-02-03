@@ -28,7 +28,7 @@ export class SearchService {
   }
 
   getDocuments(query, locale, domain){
-    const body = JSON.stringify({query: '*'});
+    const body = JSON.stringify({query: query});
     let header = new HttpHeaders();
     header = header.append('Content-Type', 'text/plain');
     return this.http.post(this.uri+'/document/search', body, {headers: header});

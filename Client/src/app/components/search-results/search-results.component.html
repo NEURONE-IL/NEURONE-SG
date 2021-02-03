@@ -1,15 +1,15 @@
 <div class="search-interface-container">
   <mat-card class="results-card">
-    <mat-tab-group>
+    <mat-tab-group *ngIf="!fetching">
       <mat-tab label="Todo">
         <ng-template matTabContent>
           <p class="soft">Se han encontrado {{documents.length}} resultados.</p>
-          <div class="documents-container ">
+          <div class="documents-container">
             <div *ngFor="let doc of documents">
               <mat-card class="cardStyle doc-card">
                 <mat-card-content>
                   <h5 class="url-bar">{{doc.url}}</h5>
-                  <a [routerLink]="['/session/view-page', doc.title, doc.route]"  class="document-link">{{doc.title}}</a>
+                  <a [routerLink]="['/game/view-page', doc.route]"  class="document-link">{{doc.title}}</a>
                   <p>{{doc.searchSnippet}}</p>
                 </mat-card-content>
               </mat-card>
@@ -32,7 +32,7 @@
                   <img mat-card-image src="{{ coreRoot + '/' + doc.img}}">
                   <mat-card-content>
                     <h5 class="url-bar">{{doc.url}}</h5>
-                    <a [routerLink]="['/session/view-page', doc.title, doc.route]"  class="document-link">{{doc.title}}</a>
+                    <a [routerLink]="['/game/view-page', doc.title, doc.route]"  class="document-link">{{doc.title}}</a>
                   </mat-card-content>
                 </mat-card>
               </mat-grid-tile>

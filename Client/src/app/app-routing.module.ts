@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SearchInterfaceComponent } from './components/search-interface/search-interface.component';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
+import { ViewPageComponent } from './components/view-page/view-page.component';
 import { AdventureSelectionComponent } from './views/adventure-selection/adventure-selection.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { EditorComponent } from './views/editor/editor.component';
@@ -21,13 +22,13 @@ const routes: Routes = [
             component: SearchInterfaceComponent,
           },
           {
-            path: 'results',
+            path: 'results/:query',
             component: SearchResultsComponent,
           },
-          // {
-          //   path: 'view-page',
-          //   component: ViewPageComponent
-          // }
+          {
+            path: 'view-page/:path',
+            component: ViewPageComponent
+          }
         ],
       },
       {
