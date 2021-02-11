@@ -8,5 +8,26 @@
   "SELECTOR": {
     "CARD_PLAY": "JUGAR",
     "CARD_EDIT": "EDITAR"
+  },
+  "REGISTER": {
+    "TITLE": "Registrarse",
+    "ROLE": "Tipo de Usuario",
+    "ROLE_CREATOR": "Creador",
+    "ROLE_PLAYER": "Jugador",
+    "ROLE_ADMIN": "Administrador",
+    "USERNAME": "Nombre de usuario",
+    "EMAIL": "Correo electrónico",
+    "PASSWORD": "Contraseña",
+    "ENTER": "Registrarse",
+    "TOGGLE_LOGIN": "Iniciar sesión",
+    "REQUIRED": "El valor es requerido"
+  },
+  "LOGIN": {
+    "TITLE": "Iniciar sesión",
+    "EMAIL": "Correo electrónico",
+    "PASSWORD": "Contraseña",
+    "TOGGLE_REGISTER": "Registrarse",
+    "ENTER": "Iniciar sesión"
   }
+
 }

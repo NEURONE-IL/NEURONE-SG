@@ -28,8 +28,15 @@ export class AuthService {
     }, httpOptions);
   }
 
-  register(user): Observable<any> {
-    return this.http.post(AUTH_API + '/register', {
+  register(user, role): Observable<any> {
+    let url = AUTH_API + '/register'
+    if (role=='creator') {
+      url = url + '/creator';
+    }
+    if(role=='admin') {
+      url = url + '/admin';
+    }
+    return this.http.post(url, {
       username: user.username,
       email: user.email,
       password: user.password

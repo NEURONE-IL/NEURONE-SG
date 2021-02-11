@@ -28,8 +28,16 @@
           </p>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-button (click)="play(adventure)">{{ "SELECTOR.CARD_PLAY" | translate }}</button>
-          <button mat-button (click)="edit(adventure)">{{ "SELECTOR.CARD_EDIT" | translate }}</button>
+          <button mat-button (click)="play(adventure)">
+            {{ "SELECTOR.CARD_PLAY" | translate }}
+          </button>
+          <button
+            mat-button
+            (click)="edit(adventure)"
+            *ngIf="role == 'admin' || role == 'creator'"
+          >
+            {{ "SELECTOR.CARD_EDIT" | translate }}
+          </button>
         </mat-card-actions>
       </mat-card>
     </div>
@@ -40,6 +48,7 @@
       mat-fab
       color="accent"
       (click)="showNewAdventureDialog()"
+      *ngIf="role == 'admin' || role == 'creator'"
     >
       <mat-icon>add</mat-icon>
     </button>
