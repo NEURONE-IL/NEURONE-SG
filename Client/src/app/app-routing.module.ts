@@ -8,47 +8,52 @@ import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { EditorComponent } from './views/editor/editor.component';
 import { GameComponent } from './views/game/game.component';
 import { LoginRegisterComponent } from './views/login-register/login-register.component';
+import { AuthGuard } from './helpers/guards/auth.guard';
+import { NotLoggedInGuard } from './helpers/guards/not-logged-in.guard';
 
 const routes: Routes = [
   {
     path: '',
+    pathMatch: 'prefix',
+    redirectTo: 'select'
+  },
+  {
+    path: 'game',
+    canActivate: [AuthGuard],
+    component: GameComponent,
     children: [
       {
-        path: 'game',
-        component: GameComponent,
-        children: [
-          {
-            path: '',
-            component: SearchInterfaceComponent,
-          },
-          {
-            path: 'results/:query',
-            component: SearchResultsComponent,
-          },
-          {
-            path: 'view-page/:path',
-            component: ViewPageComponent
-          }
-        ],
+        path: '',
+        component: SearchInterfaceComponent,
       },
       {
-        path: 'editor',
-        component: EditorComponent,
+        path: 'results/:query',
+        component: SearchResultsComponent,
       },
       {
-        path: 'dashboard',
-        component: DashboardComponent,
-      },
-      {
-        path: 'login',
-        component: LoginRegisterComponent,
-      },
-      {
-        path: 'select',
-        component: AdventureSelectionComponent,
+        path: 'view-page/:path',
+        component: ViewPageComponent,
       },
     ],
   },
+  {
+    path: 'editor',
+    canActivate: [AuthGuard],
+    data: {
+      role: 'admin'
+    },
+    component: EditorComponent,
+  },
+  {
+    path: 'login',
+    canActivate: [NotLoggedInGuard],
+    component: LoginRegisterComponent,
+  },
+  {
+    path: 'select',
+    canActivate: [AuthGuard],
+    component: AdventureSelectionComponent,
+  }
 ];
 
 @NgModule({

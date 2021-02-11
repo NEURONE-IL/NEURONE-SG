@@ -141,12 +141,46 @@ const isAdmin = async(req, res, next) => {
     });
 }
 
+const isCreator = async(req, res, next) => {
+    User.findById(req.user).exec((err, user) => {
+        if (err) {
+            return res.status(404).json({
+                ok: false,
+                err
+            });
+        }
+
+        Role.findOne(
+            {
+                _id: user.role
+            },
+            (err, role) => {
+                if (err) {
+                    return res.status(404).json({
+                        ok: false,
+                        err
+                    });
+                }
+
+                if (role.name === 'creator') {
+                    next();
+                    return;
+                }
+
+                res.status(403).send({ message: "Require Creator Role!" });
+                return;
+            }
+        );
+    });
+}
+
 const authMiddleware = {
     verifyBody,
     verifyBodyAdmin,
     uniqueEmail,
     uniqueUsername,
-    isAdmin
+    isAdmin,
+    isCreator
 };
 
 module.exports = authMiddleware;

@@ -58,6 +58,57 @@ router.post('/register/admin', [authMiddleware.verifyBodyAdmin, authMiddleware.u
     });
 })
 
+router.post('/register/creator', [authMiddleware.verifyBodyAdmin, authMiddleware.uniqueEmail, authMiddleware.uniqueUsername], async (req, res) => {
+    // Role
+    const role = await Role.findOne({name: 'creator'}, (err, foundRole) => {
+        if(err){
+            return res.status(404).json({
+                ok: false,
+                err
+            });
+        }
+        if(!foundRole){
+            return res.status(404).json({
+                ok: false,
+                msg: "ROLE_NOT_FOUND"
+            });
+        }
+    });
+
+    //hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashpassword = await bcrypt.hash(req.body.password, salt);
+
+    //create user
+    const user = new User({
+        username: req.body.username.toLowerCase(),
+        email: req.body.email.toLowerCase(),
+        password: hashpassword,
+        role: role.id
+    })
+
+    await neuronegmService.connectGM(req.body.email, req.body.password, (err, res) => {
+        if(err){
+            console.log('error on connectGM');
+            console.log(err);
+        }
+        else {
+            console.log('connectGM successful');
+            console.log(res);
+        }
+    });
+    //save user in db
+    await user.save((err, user) => {
+        if(err){
+            return res.status(404).json({
+                ok: false,
+                err
+            });
+        }
+        res.status(200).json("USER_REGISTERED");
+    });
+})
+
 router.post('/register/', [authMiddleware.verifyBody, authMiddleware.uniqueEmail], async (req, res)=>{
 
     // Find player role
