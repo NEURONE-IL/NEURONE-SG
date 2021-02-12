@@ -40,7 +40,7 @@
         *ngFor="let option of optionsArray.controls; let i = index;"
       >
         <div [formGroupName]="i">
-          <mat-form-field class="node-form-field">
+          <mat-form-field class="challenge-form-field">
             <mat-label
               >{{"CHALLENGE_DIALOG.OPTION" | translate:{idx: i+1} }}</mat-label
             >
@@ -51,23 +51,32 @@
               placeholder="{{'CHALLENGE_DIALOG.OPTION_PLACEHOLDER' | translate}}"
             />
           </mat-form-field>
+          <button mat-mini-fab color="warn" aria-label="Remove option" (click)="removeOption(i)">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <mat-slide-toggle class="correct-slider" formControlName="correct">
+            {{"CHALLENGE_DIALOG.CORRECT_OPTION" | translate }}
+          </mat-slide-toggle>
         </div>
+        <mat-error *ngFor="let error of errors">
+          {{error | translate}}
+        </mat-error>
       </div>
     </ng-container>
 
     <input type="hidden" formControlName="type" [ngModel]="challenge.type" />
-    <input
+    <!-- <input
       type="hidden"
       formControlName="options"
       [ngModel]="challenge.options"
-    />
+    /> -->
   </form>
 </div>
 <div mat-dialog-actions align="end">
   <button
     mat-button
     *ngIf="challenge.type=='multiple'"
-    color="primary"
+    color="accent"
     (click)="addOption()"
   >
     {{"CHALLENGE_DIALOG.ADD_OPTION" | translate}}

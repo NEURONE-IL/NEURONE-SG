@@ -47,8 +47,7 @@ export class GameBarComponent implements OnInit, OnDestroy {
         if (this.currentNode.type == 'challenge') {
           console.log('challenge node!');
           this.challengePending = true;
-        }
-        else {
+        } else {
           this.setCurrentLinks();
         }
         console.log('gameBar currentNode: ', this.currentNode);
@@ -82,11 +81,9 @@ export class GameBarComponent implements OnInit, OnDestroy {
     this.router.navigate(['select']);
   }
 
-  sendAnswer() {
+  sendAnswerOld() {
     if (this.answerForm.valid) {
-      this.answerForm.controls['node'].setValue(
-        this.currentNode._id
-      );
+      this.answerForm.controls['node'].setValue(this.currentNode._id);
       this.answerForm.controls['user'].setValue('5ff90042eace08b452d92d63');
       this.answerForm.controls['type'].setValue('question');
       const answer = this.answerForm.value;
@@ -106,16 +103,42 @@ export class GameBarComponent implements OnInit, OnDestroy {
     }
   }
 
+  sendAnswer(answer) {
+    this.answerService.postAnswer(answer).subscribe(
+      (res) => {
+        console.log(res);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  finishChallenge(answer) {
+    this.answerService.postAnswer(answer).subscribe(
+      (res) => {
+        console.log(res);
+        if (res.activator) {
+          this.activators.push(res.activator);
+        }
+        this.setCurrentLinks();
+        this.challengePending = false;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
   setCurrentLinks() {
     console.log('getCurrentLinks called');
     let currentLinks = this.links.filter(
       (link) => link.source == this.currentNode.id
     );
-    this.currentLinks = ActivatorsUtils.checkActivators(currentLinks, this.activators);
-  }
-
-  getCurrentChallenge() {
-    return this.currentNode.challenge;
+    this.currentLinks = ActivatorsUtils.checkActivators(
+      currentLinks,
+      this.activators
+    );
   }
 
   goTo(targetNodeId) {
@@ -124,6 +147,10 @@ export class GameBarComponent implements OnInit, OnDestroy {
 
   get links() {
     return this.adventure.links;
+  }
+
+  get currentChallenge() {
+    return this.currentNode.challenge;
   }
 
   toggleSearch() {

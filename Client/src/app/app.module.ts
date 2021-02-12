@@ -18,6 +18,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { authInterceptorProviders } from './helpers/auth.interceptor';
 
 import { NgxGraphModule } from '@swimlane/ngx-graph';
+import { ToastrModule } from 'ngx-toastr';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -55,6 +56,7 @@ import { NewAdventureDialogComponent } from './components/adventure-selector/dia
 import { SearchResultsComponent } from './components/search-results/search-results.component';
 import { ViewPageComponent } from './components/view-page/view-page.component';
 import { SafeurlPipe } from './helpers/safeUrl/safeurl.pipe';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -113,6 +115,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatListModule,
     MatTabsModule,
     MatCheckboxModule,
+    MatSlideToggleModule,
+    ToastrModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

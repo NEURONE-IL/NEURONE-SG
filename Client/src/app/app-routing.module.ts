@@ -10,6 +10,7 @@ import { GameComponent } from './views/game/game.component';
 import { LoginRegisterComponent } from './views/login-register/login-register.component';
 import { AuthGuard } from './helpers/guards/auth.guard';
 import { NotLoggedInGuard } from './helpers/guards/not-logged-in.guard';
+import { DirectAccessGuard } from './helpers/guards/direct-access.guard';
 
 const routes: Routes = [
   {
@@ -19,7 +20,7 @@ const routes: Routes = [
   },
   {
     path: 'game',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, DirectAccessGuard],
     component: GameComponent,
     children: [
       {
@@ -38,7 +39,7 @@ const routes: Routes = [
   },
   {
     path: 'editor',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, DirectAccessGuard],
     data: {
       role: 'admin'
     },

@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const schema = Joi.object({
+const simpleSchema = Joi.object({
     
     answer: Joi.string().required(),
     node: Joi.string().required(),
@@ -9,11 +9,31 @@ const schema = Joi.object({
     adventure: Joi.string(),
     escaperoom: Joi.string()
 
-})
+});
+
+const multipleSchema = Joi.object({
+    
+    node: Joi.string().required(),
+    user: Joi.string().required(),
+    type: Joi.string().required(),
+    adventure: Joi.string(),
+    escaperoom: Joi.string(),
+    answer: Joi.array().items(Joi.object({
+        value: Joi.string().allow(''),
+        index: Joi.number(),
+        checked: Joi.bool().required()
+    }))
+
+});
 
 const verifyBody = async (req, res, next) => {
     try {
-        const validation = await schema.validateAsync(req.body);
+        if(req.body.type=='question') {
+            const simpleValidation = await simpleSchema.validateAsync(req.body);
+        }
+        if(req.body.type=='multiple') {
+            const multipleValidation = await multipleSchema.validateAsync(req.body);
+        }
         next();
     }
     catch (err) {

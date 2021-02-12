@@ -5,6 +5,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 @import '~@angular/material/theming';
 
+// ngx-toastr
+@import '~ngx-toastr/toastr';
+
 // Include non-theme styles for core.
 @include mat-core();
 

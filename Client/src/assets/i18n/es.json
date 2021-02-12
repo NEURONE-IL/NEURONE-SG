@@ -2,7 +2,8 @@
   "welcomeMessage": "Thanks for joining, {{ firstName }}! It's great to have you!",
   "COMMON": {
     "SAVE": "Guardar",
-    "CLOSE": "Cerrar"
+    "CLOSE": "Cerrar",
+    "SUBMIT": "Enviar"
   },
   "HEADER": {
     "GAME": "Juego",
@@ -88,6 +89,10 @@
       "MULTIPLE": "Selección múltiple"
     },
     "OPTION": "Alternativa {{idx}}",
-    "OPTION_PLACEHOLDER": "Ingresa alternativa aquí"
+    "ADD_OPTION": "Agregar alternativa",
+    "OPTION_PLACEHOLDER": "Ingresa alternativa aquí",
+    "CORRECT_OPTION": "¿Correcta?",
+    "OPTION_MAXLIMIT_MSG": "El límite máximo de opciones es 5",
+    "NEW_OPTION": "Nueva opción"
   }
 }

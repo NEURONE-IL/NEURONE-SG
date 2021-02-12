@@ -52,4 +52,7 @@ export class NewLinkDialogComponent {
   removeItem() {
     this.activatorsArray.removeAt(this.activatorsArray.length - 1);
   }
+  removeLink(idx) {
+    this.activatorsArray.removeAt(idx);
+  }
 }

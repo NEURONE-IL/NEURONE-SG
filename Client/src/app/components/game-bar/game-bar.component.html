@@ -38,8 +38,8 @@
         <mat-card-subtitle>{{ "NEURONE novice" }}</mat-card-subtitle>
       </mat-card-header>
       <mat-divider [inset]="true" class="bar-divider"></mat-divider>
-      <mat-card-content *ngIf="getCurrentChallenge().type == 'question'">
-        <h3>{{ getCurrentChallenge().question }}</h3>
+      <mat-card-content *ngIf="currentChallenge.type == 'question'">
+        <h3>{{ currentChallenge.question }}</h3>
         <form class="challenge-form" [formGroup]="answerForm">
           <mat-form-field class="answer-form-field">
             <mat-label>Answer</mat-label>
@@ -56,8 +56,13 @@
           <button class="hidden-btn" (click)="sendAnswer()"></button>
         </form>
       </mat-card-content>
-      <mat-card-content *ngIf="getCurrentChallenge().type == 'multiple'">
-        <app-multiple-form [challengeOptions]="getCurrentChallenge().options"></app-multiple-form>
+      <mat-card-content *ngIf="currentChallenge.type == 'multiple'">
+        <app-multiple-form
+          [challenge]="currentChallenge"
+          [adventure]="adventure"
+          [currentNode]="currentNode"
+          (challengeFinishedEvent)="finishChallenge($event)"
+        ></app-multiple-form>
       </mat-card-content>
     </mat-card>
   </ng-template>

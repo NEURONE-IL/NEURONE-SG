@@ -159,7 +159,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
 
   showNewNodeForm(): void {
     const nodeDialogRef = this.newNodeDialog.open(NewNodeDialogComponent, {
-      width: '250px',
+      width: '400px',
       data: { node: this.editorService.adventure },
     });
 
@@ -174,7 +174,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
 
   showNewLinkDialog() {
     const linkDialogRef = this.newLinkDialog.open(NewLinkDialogComponent, {
-      width: '250px',
+      width: '400px',
       data: {
         nodes: this.nodes,
         node: this.currentNode,

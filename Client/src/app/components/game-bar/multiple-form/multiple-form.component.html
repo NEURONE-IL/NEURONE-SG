@@ -1,9 +1,24 @@
 <h3>{{ question }}</h3>
-<div class="options-panel">
-  <ng-container *ngFor="let option of challengeOptions; let i = index">
+<!-- <div class="options-panel">
+  <ng-container *ngFor="let option of answersArray; let i = index">
     <mat-checkbox [(ngModel)]="option.checked" [checked]="option.checked">
       {{ option.value }}
     </mat-checkbox>
   </ng-container>
+</div> -->
+<form [formGroup]="answerForm">
+<div
+  formArrayName="answer"
+  *ngFor="let answer of answersArray.controls; let i = index"
+  class="options-panel"
+>
+  <div [formGroupName]="i">
+    <mat-checkbox formControlName="checked">
+      {{ answer.value.value }}
+    </mat-checkbox>
+  </div>
 </div>
-<button mat-raised-button color="primary" (click)="sendAnswer()">Submit</button>
+<button mat-raised-button color="primary" (click)="sendAnswer()">
+  {{"COMMON.SUBMIT" | translate}}
+</button>
+</form>

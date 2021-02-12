@@ -166,6 +166,7 @@ router.post('/login', async (req, res) => {
     const response = {
         token: token,
         user: {
+            _id: user._id,
             confirmed: user.confirmed,
             email: user.email,
             role: user.role.name,

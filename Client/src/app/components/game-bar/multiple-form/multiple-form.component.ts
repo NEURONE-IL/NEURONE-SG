@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { AnswerService } from 'src/app/services/game/answer.service';
 
 @Component({
@@ -9,63 +10,72 @@ import { AnswerService } from 'src/app/services/game/answer.service';
 })
 export class MultipleFormComponent implements OnInit {
   answerForm: FormGroup;
+
+  @Input()
   adventure: any;
 
   @Input()
-  question: string;
+  currentNode: any;
+
   @Input()
-  challengeOptions: any;
+  challenge;
+
+  @Output()
+  challengeFinishedEvent = new EventEmitter<boolean>();
+
+  question: string;
+  options: any;
 
   constructor(
     private formBuilder: FormBuilder,
-    private answerService: AnswerService
+    private answerService: AnswerService,
+    private auth: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.question =
-      '¿Cuales son las 3 ideas principales de la canción **********?';
-    // this.options = [
-    //   { value: 'Libertad', checked: false },
-    //   { value: 'Liderazgo', checked: false },
-    //   { value: 'Paz', checked: false },
-    //   { value: 'Diversión', checked: false },
-    //   { value: 'Compartir', checked: false },
-    // ];
-    this.challengeOptions.forEach(option => {
+    this.question = this.challenge.question;
+    this.options = this.challenge.options;
+
+    this.options.forEach((option) => {
       option.checked = false;
     });
     this.answerForm = this.formBuilder.group({
-        answers: this.formBuilder.array([])
-      // answer: ["", Validators.required],
-      // adventure: [this.adventure._id],
-      // user: [this.authService.user._id],
-      // user: [Validators.required],
-      // node: [Validators.required],
-      // type: [""]
+      answer: this.formBuilder.array([]),
+      adventure: [this.adventure._id],
+      user: [this.auth.getUser()._id],
+      node: [this.currentNode._id],
+      type: ["multiple"]
+    });
+    this.options.forEach((option) => {
+      const newAnswer = this.formBuilder.group({
+        value: option.value,
+        checked: option.checked,
+      });
+      this.answersArray.push(newAnswer);
     });
   }
 
   get answersArray() {
-    return this.answerForm.get('answers') as FormArray;
+    return this.answerForm.get('answer') as FormArray;
   }
 
   sendAnswer() {
-
-    const newActivator = this.formBuilder.group({
-      node: '',
-      condition: ''
-    });
-
-    this.challengeOptions.forEach(option => {
-      if (option.checked) {
-        const newAnswer = this.formBuilder.group({value: option.value, checked: option.checked});
-        this.answersArray.push(newAnswer);
-      }
-    });
-    console.log(this.answerForm.value);
+    if (this.answerForm.valid) {
+      const answer = this.answerForm.value;
+      this.challengeFinishedEvent.emit(answer);
+      // this.answerService.postAnswer(answer).subscribe(
+      //   (res) => {
+      //     this.challengeFinishedEvent.emit(res);
+      //   },
+      //   (err) => {
+      //     console.log(err);
+      //     this.challengeFinishedEvent.emit();
+      //   }
+      // );
+    } else {
+      console.log('invalid answer form');
+    }
   }
 
-  fetchOptions() {
-
-  }
+  fetchOptions() {}
 }

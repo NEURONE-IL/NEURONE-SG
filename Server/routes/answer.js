@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Answer = require('../models/game/answer');
+const MultipleAnswer = require('../models/game/multiple_answer');
 const Adventure = require('../models/game/adventure');
 const answerService = require('../services/game/answer')
 
@@ -12,7 +13,13 @@ const verifyToken = require('../middlewares/verifyToken');
 
 // router.post('',  [verifyToken, authMiddleware.isAdmin, adventureMiddleware.verifyBody], async (req, res) => {
 router.post('',  [answerMiddleware.verifyBody], async (req, res) => {
-    const newAnswer = new Answer(req.body);
+    let newAnswer;
+    if(req.body.type=='question') {
+        newAnswer = new Answer(req.body);
+    }
+    if(req.body.type=='multiple') {
+        newAnswer = new MultipleAnswer(req.body);
+    }
     newAnswer.save(async (err, answer) => {
         if (err) {
             return res.status(404).json({
@@ -33,7 +40,7 @@ router.post('',  [answerMiddleware.verifyBody], async (req, res) => {
             }
             else {
                 return res.status(404).json({
-                    msg: 'node not found'
+                    msg: 'NODE_NOT_FOUND'
                 });
             }
         });

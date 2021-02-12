@@ -3,7 +3,9 @@ const normalize = require("normalize-diacritics");
 
 const checkAnswer = async (node, challenge, answer) => {
   let answerCheck = {
-    node: node.id,
+    activator: {
+      node: node.id,
+    }
   };
   if (answer.type == "question") {
     const distance = await normalizeAndDistance(
@@ -11,11 +13,25 @@ const checkAnswer = async (node, challenge, answer) => {
       answer.answer
     );
     if (distance < 2) {
-      answerCheck.condition = "correct_answer";
+      answerCheck.activator.condition = "correct_answer";
     } else {
-      answerCheck.condition = "wrong_answer";
+      answerCheck.activator.condition = "wrong_answer";
     }
     console.log("answerCheck", answerCheck);
+  }
+  else if (answer.type == 'multiple') {
+    let correct = true;
+    challenge.options.forEach((option, idx) => {
+      if (answer.answer[idx].checked != option.correct) {
+        correct = false;
+      }
+    });
+    if(correct) {
+      answerCheck.activator.condition = "correct_answer";
+    }
+    else {
+      answerCheck.activator.condition = "wrong_answer";
+    }
   }
   return answerCheck;
 };
