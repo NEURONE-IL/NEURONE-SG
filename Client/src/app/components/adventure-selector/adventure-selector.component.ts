@@ -6,7 +6,8 @@ import { AdventureService } from 'src/app/services/game/adventure.service';
 import { EditorService } from 'src/app/services/game/editor.service';
 import { GameService } from 'src/app/services/game/game.service';
 import { SearchService } from 'src/app/services/search/search.service';
-import { NewAdventureDialogComponent } from './dialogs/new-adventure-dialog.component'
+import { NewAdventureDialogComponent } from './dialogs/new-adventure-dialog.component';
+import { GamificationService } from 'src/app/services/game/gamification.service';
 
 @Component({
   selector: 'app-adventure-selector',
@@ -17,6 +18,12 @@ export class AdventureSelectorComponent implements OnInit {
   adventures: any;
   role: any;
 
+  gamified = false;
+  connected = false;
+
+  GMloading = true;
+  adventuresLoading = true;
+
   constructor(
     private adventureService: AdventureService,
     private auth: AuthService,
@@ -25,14 +32,16 @@ export class AdventureSelectorComponent implements OnInit {
     private searchService: SearchService,
     public router: Router,
     public newAdventureDialog: MatDialog,
+    private gmService: GamificationService
   ) {}
 
   ngOnInit(): void {
+    this.gamificationStatus();
     this.role = this.auth.getRole();
     this.adventureService.getAdventures().subscribe(
       (res) => {
         this.adventures = res;
-        console.log(this.adventures);
+        this.adventuresLoading = false;
       },
       (err) => {
         console.log(err);
@@ -54,10 +63,13 @@ export class AdventureSelectorComponent implements OnInit {
   }
 
   showNewAdventureDialog(): void {
-    const nodeDialogRef = this.newAdventureDialog.open(NewAdventureDialogComponent, {
-      width: '50em',
-      height: '20em'
-    });
+    const nodeDialogRef = this.newAdventureDialog.open(
+      NewAdventureDialogComponent,
+      {
+        width: '50em',
+        height: '20em',
+      }
+    );
 
     nodeDialogRef.afterClosed().subscribe((result) => {
       console.log('closed adventureDialog');
@@ -70,12 +82,48 @@ export class AdventureSelectorComponent implements OnInit {
           (err) => {
             console.log(err);
           }
-        )
+        );
       }
     });
   }
 
   reloadPage(): void {
     window.location.reload();
+  }
+
+  gamificationStatus() {
+    this.gmService.gamificationStatus().subscribe(
+      (response) => {
+        this.gamified = response.gamified;
+        this.connected = response.connected;
+        this.GMloading = false;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  gamify() {
+    this.GMloading = true;
+    if (!this.gamified) {
+      this.gmService.gamify().subscribe(
+        (response) => {
+          console.log(response);
+          this.gmService.gamifyDependent().subscribe(
+            (response2) => {
+              console.log(response2);
+              this.GMloading = false;
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
   }
 }

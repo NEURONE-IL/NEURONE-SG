@@ -1,0 +1,16 @@
+{
+    "actions": [
+        {
+            "name": "Inicar Sesión",
+            "description": "El jugador inicia sesión un día",
+            "repeatable": "true",
+            "key": "inicio_sesion_1"
+        },
+        {
+            "name": "Responder una pregunta",
+            "description": "El jugador responde una pregunta",
+            "repeatable": "true",
+            "key": "responder_pregunta_1"
+        }
+    ]
+}

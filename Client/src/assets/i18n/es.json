@@ -3,7 +3,16 @@
   "COMMON": {
     "SAVE": "Guardar",
     "CLOSE": "Cerrar",
-    "SUBMIT": "Enviar"
+    "SUBMIT": "Enviar",
+    "GAMIFY": "Ludificar"
+  },
+  "GAMIFICATION": {
+    "TITLE": "Ludificación",
+    "GAMIFY": "Ludificar",
+    "GAMIFICATION_STATUS": "Estado de ludificación: ",
+    "GM_CONNECTION_STATUS": "Conectado a NEURONE-GM: ",
+    "POINTS": "Puntos",
+    "LEVEL": "Nivel: "
   },
   "HEADER": {
     "GAME": "Juego",

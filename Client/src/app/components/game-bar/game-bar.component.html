@@ -1,12 +1,13 @@
 <div class="game-bar-container">
-  <mat-card class="choices-card" *ngIf="!challengePending; else challengeCard">
+  <mat-card class="choices-card">
     <mat-card-header>
       <div mat-card-avatar class="player-avatar"></div>
       <mat-card-title>{{ player.username }}</mat-card-title>
-      <mat-card-subtitle>{{ "NEURONE novice" }}</mat-card-subtitle>
+      <mat-card-subtitle *ngIf="gmStats && playerLevel">{{playerLevel}}</mat-card-subtitle>
+      <p *ngIf="gmStats && playerPoints">{{playerPoints}} {{"GAMIFICATION.POINTS" | translate}}</p>
     </mat-card-header>
     <mat-divider [inset]="true" class="bar-divider"></mat-divider>
-    <mat-card-content>
+    <mat-card-content *ngIf="!challengePending; else challengeContent">
       <div
         class="choices-panel"
         *ngIf="currentNode.type != 'ending'; else endingPanel"
@@ -30,32 +31,7 @@
       </ng-template>
     </mat-card-content>
   </mat-card>
-  <ng-template #challengeCard>
-    <mat-card class="challenge-card">
-      <mat-card-header>
-        <div mat-card-avatar class="player-avatar"></div>
-        <mat-card-title>{{ player.username }}</mat-card-title>
-        <mat-card-subtitle>{{ "NEURONE novice" }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-divider [inset]="true" class="bar-divider"></mat-divider>
-      <mat-card-content *ngIf="currentChallenge.type == 'question'">
-        <h3>{{ currentChallenge.question }}</h3>
-        <form class="challenge-form" [formGroup]="answerForm">
-          <mat-form-field class="answer-form-field">
-            <mat-label>Answer</mat-label>
-            <input
-              matInput
-              name="answerLabel"
-              formControlName="answer"
-              placeholder="Your answer here"
-            />
-            <mat-icon matSuffix (click)="sendAnswer()" class="submit-icon"
-              >send</mat-icon
-            >
-          </mat-form-field>
-          <button class="hidden-btn" (click)="sendAnswer()"></button>
-        </form>
-      </mat-card-content>
+  <ng-template #challengeContent>
       <mat-card-content *ngIf="currentChallenge.type == 'multiple'">
         <app-multiple-form
           [challenge]="currentChallenge"
@@ -64,7 +40,6 @@
           (challengeFinishedEvent)="finishChallenge($event)"
         ></app-multiple-form>
       </mat-card-content>
-    </mat-card>
   </ng-template>
   <button class="neurone-btn" mat-fab color="accent" (click)="toggleSearch()">
     <mat-icon *ngIf="!searchEnabled">search</mat-icon>

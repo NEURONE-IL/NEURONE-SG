@@ -1,0 +1,53 @@
+{
+    "levels": [
+        {
+            "name": "Principiante",
+            "description": "Jugador que entra por primera vez a la plataforma",
+            "point_required": "adventure_point_Experiencia",
+            "point_threshold": 0,
+            "key": "principiante_1"
+        },
+        {
+            "name": "Aprendiz",
+            "description": "2",
+            "point_required": "adventure_point_Experiencia",
+            "point_threshold": 1000,
+            "key": "aprendiz_1"
+        },
+        {
+            "name": "Adepto",
+            "description": "3",
+            "point_required": "adventure_point_Experiencia",
+            "point_threshold": 2000,
+            "key": "adepto_1"
+        },
+        {
+            "name": "Graduado",
+            "description": "4",
+            "point_required": "adventure_point_Experiencia",
+            "point_threshold": 3000,
+            "key": "graduado_1"
+        },
+        {
+            "name": "Experto",
+            "description": "5",
+            "point_required": "adventure_point_Experiencia",
+            "point_threshold": 4000,
+            "key": "experto_1"
+        },
+        {
+            "name": "Maestro",
+            "description": "6",
+            "point_required": "adventure_point_Experiencia",
+            "point_threshold": 5000,
+            "key": "maestro_1"
+        },
+        {
+            "name": "Leyenda",
+            "description": "7",
+            "point_required": "adventure_point_Experiencia",
+            "point_threshold": 6000,
+            "key": "leyenda_1"
+        }
+    ]
+}

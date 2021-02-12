@@ -22,10 +22,13 @@ export class GameBarComponent implements OnInit, OnDestroy {
   challengePending = false;
   activators = [];
   currentLinks = [];
+  gmStats: any;
 
+  // Subscriptions
   adventureSubscription: Subscription;
   currentNodeSubscription: Subscription;
   searchEnabledSubscription: Subscription;
+  gmStatsSubscription: Subscription;
 
   constructor(
     private gameService: GameService,
@@ -35,12 +38,14 @@ export class GameBarComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     public router: Router
   ) {
+    // Subscribe to current adventure
     this.adventureSubscription = this.gameService.adventureEmitter.subscribe(
       (adventure) => {
         this.adventure = adventure;
         console.log('gameBar adventure: ', this.adventure);
       }
     );
+    // Subscribe to current node
     this.currentNodeSubscription = this.gameService.currentNodeEmitter.subscribe(
       (node) => {
         this.currentNode = node;
@@ -53,11 +58,18 @@ export class GameBarComponent implements OnInit, OnDestroy {
         console.log('gameBar currentNode: ', this.currentNode);
       }
     );
+    // Subscribe to search enabled boolean
     this.searchEnabledSubscription = this.searchService.searchEnabledEmitter.subscribe(
       (searchEnabled) => {
         this.searchEnabled = searchEnabled;
       }
     );
+    // Subscribe to gamification resources
+    this.gmStatsSubscription = this.gameService.gmStatsEmitter.subscribe(
+      (gmStats) => {
+        this.gmStats = gmStats;
+      }
+    )
   }
 
   ngOnInit(): void {
@@ -75,43 +87,11 @@ export class GameBarComponent implements OnInit, OnDestroy {
     this.adventureSubscription.unsubscribe();
     this.currentNodeSubscription.unsubscribe();
     this.searchEnabledSubscription.unsubscribe();
+    this.gmStatsSubscription.unsubscribe();
   }
 
   finish() {
     this.router.navigate(['select']);
-  }
-
-  sendAnswerOld() {
-    if (this.answerForm.valid) {
-      this.answerForm.controls['node'].setValue(this.currentNode._id);
-      this.answerForm.controls['user'].setValue('5ff90042eace08b452d92d63');
-      this.answerForm.controls['type'].setValue('question');
-      const answer = this.answerForm.value;
-      this.answerService.postAnswer(answer).subscribe(
-        (res) => {
-          this.activators.push(res);
-          this.setCurrentLinks();
-          this.challengePending = false;
-        },
-        (err) => {
-          console.log(err);
-          // this.setCurrentLinks();
-        }
-      );
-    } else {
-      console.log('invalid answer form');
-    }
-  }
-
-  sendAnswer(answer) {
-    this.answerService.postAnswer(answer).subscribe(
-      (res) => {
-        console.log(res);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
   }
 
   finishChallenge(answer) {
@@ -123,6 +103,7 @@ export class GameBarComponent implements OnInit, OnDestroy {
         }
         this.setCurrentLinks();
         this.challengePending = false;
+        this.gameService.fetchGMStats();
       },
       (err) => {
         console.log(err);
@@ -151,6 +132,22 @@ export class GameBarComponent implements OnInit, OnDestroy {
 
   get currentChallenge() {
     return this.currentNode.challenge;
+  }
+
+  get playerLevel() {
+    try {
+      return this.gmStats.currentLevel.level.name;
+    } catch (error) {
+      return undefined;
+    }
+  }
+
+  get playerPoints() {
+    try {
+      return this.gmStats.points[0].amount;
+    } catch (error) {
+      return undefined;
+    }
   }
 
   toggleSearch() {
