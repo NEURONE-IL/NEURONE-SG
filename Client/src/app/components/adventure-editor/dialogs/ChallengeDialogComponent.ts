@@ -1,5 +1,5 @@
-import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, Inject, ɵConsole } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EditorService } from 'src/app/services/game/editor.service';
 
@@ -12,6 +12,7 @@ export class ChallengeDialogComponent {
   challengeForm: FormGroup;
   targetNodes: any;
   challenge: any;
+  types: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -20,29 +21,69 @@ export class ChallengeDialogComponent {
     public dialogRef: MatDialogRef<ChallengeDialogComponent>
   ) {
     const node = data.node;
-    console.log('challenge node: ', node)
     if (node.challenge) {
       this.challenge = node.challenge;
-    }
-    else {
+    } else {
       this.challenge = {
-        type: "question",
+        type: 'question',
         question: "What's 10 + 15",
-        answer: "25"
-      }
+        answer: '25'
+      };
     }
     this.challengeForm = this.formBuilder.group({
       type: [],
       question: [],
       answer: [],
-      options: [],
+      options: this.formBuilder.array([]),
     });
+    this.types = [
+      {
+        value: 'question',
+        viewValue: 'CHALLENGE_DIALOG.TYPES.QUESTION',
+      },
+      {
+        value: 'multiple',
+        viewValue: 'CHALLENGE_DIALOG.TYPES.MULTIPLE',
+      },
+    ];
+    this.fetchOptions();
   }
 
   ngOnInit(): void {}
 
   saveChallenge() {
-    const challenge = this.challengeForm.value;
+    let challenge = this.challengeForm.value;
+    if(challenge.type == 'multiple') {
+      delete challenge.answer;
+    }
+    if(challenge.type == 'question') {
+      delete challenge.options;
+    }
     this.dialogRef.close({ challenge: challenge });
+  }
+
+  updateType(type) {
+    console.log(type);
+    console.log(this.challengeForm.value);
+    console.log("challenge: ",this.challenge);
+  }
+
+  addOption() {
+    const newOption = this.formBuilder.group({value: 'New option', correct: false});
+    this.optionsArray.push(newOption);
+    console.log(this.challengeForm.value);
+  }
+
+  fetchOptions() {
+    if(this.challenge.options) {
+      this.challenge.options.forEach(option => {
+        console.log(option);
+        this.optionsArray.push(this.formBuilder.group(option));
+      });
+    }
+  }
+
+  get optionsArray() {
+    return this.challengeForm.get('options') as FormArray;
   }
 }

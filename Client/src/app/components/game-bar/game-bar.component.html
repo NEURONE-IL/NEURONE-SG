@@ -57,7 +57,7 @@
         </form>
       </mat-card-content>
       <mat-card-content *ngIf="getCurrentChallenge().type == 'multiple'">
-        <app-multiple-form></app-multiple-form>
+        <app-multiple-form [challengeOptions]="getCurrentChallenge().options"></app-multiple-form>
       </mat-card-content>
     </mat-card>
   </ng-template>

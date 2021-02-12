@@ -10,21 +10,22 @@
       disableClose
     >
       <div class="form-container" *ngIf="currentNode != null">
-        <h3>Node editor</h3>
+        <h3>{{"EDITOR.NODE_EDITOR.TITLE" | translate}}</h3>
         <form class="node-form" [formGroup]="nodeForm">
           <mat-form-field appearance="fill" class="node-form-field">
-            <mat-label>Node Type</mat-label>
+            <mat-label>{{"EDITOR.NODE_EDITOR.TYPE" | translate}}</mat-label>
             <mat-select
               [ngModel]="currentNode.type"
               name="nodeType"
               formControlName="type"
+              (selectionChange)="updateNodeType($event.value)"
             >
               <mat-option *ngFor="let type of nodeTypes" [value]="type.value">
-                {{ type.viewValue }}
+                {{ type.viewValue | translate }}
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field class="node-form-field">
+          <!-- <mat-form-field class="node-form-field">
             <mat-label>ID</mat-label>
             <input
               matInput
@@ -33,9 +34,9 @@
               placeholder="room1"
               [ngModel]="currentNode.id"
             />
-          </mat-form-field>
+          </mat-form-field> -->
           <mat-form-field class="node-form-field">
-            <mat-label>Label</mat-label>
+            <mat-label>{{"EDITOR.NODE_EDITOR.LABEL" | translate}}</mat-label>
             <input
               matInput
               name="nodeLabel"
@@ -46,7 +47,7 @@
           </mat-form-field>
           <form formGroupName="data">
             <mat-form-field class="node-form-field">
-              <mat-label>Image</mat-label>
+              <mat-label>{{"EDITOR.NODE_EDITOR.IMAGE" | translate}}</mat-label>
               <input
                 matInput
                 name="nodeImage"
@@ -56,7 +57,7 @@
               />
             </mat-form-field>
             <mat-form-field class="node-form-field">
-              <mat-label>Video</mat-label>
+              <mat-label>{{"EDITOR.NODE_EDITOR.VIDEO" | translate}}</mat-label>
               <input
                 matInput
                 name="nodeVideo"
@@ -66,17 +67,18 @@
               />
             </mat-form-field>
             <mat-form-field class="node-form-field">
-              <mat-label>Text</mat-label>
+              <mat-label>{{"EDITOR.NODE_EDITOR.TEXT" | translate}}</mat-label>
               <input
                 matInput
                 name="nodeText"
                 formControlName="text"
-                placeholder="This is your bedroom"
+                placeholder="{{'EDITOR.NODE_EDITOR.TEXT_PLACEHOLDER' | translate}}"
                 [ngModel]="currentNode.data.text"
               />
             </mat-form-field>
           </form>
           <input type="hidden" formControlName="challenge" [ngModel]="currentNode.challenge">
+          <input type="hidden" formControlName="id" [ngModel]="currentNode.id">
         </form>
         <div
           class="sidebar-button-panel"
@@ -87,7 +89,7 @@
             color="accent"
             (click)="showNewLinkDialog()"
           >
-            Add Link
+          {{"EDITOR.NODE_EDITOR.LINKS_BTN" | translate}}
           </button>
           <button
             *ngIf="currentNode.type == 'challenge'"
@@ -95,14 +97,14 @@
             color="accent"
             (click)="showChallengeDialog()"
           >
-            Edit Challenge
+          {{"EDITOR.NODE_EDITOR.CHALLENGE_BTN" | translate}}
           </button>
         </div>
         <div class="sidebar-button-panel">
           <button mat-raised-button color="primary" (click)="updateNode()">
-            Save
+            {{"COMMON.SAVE" | translate}}
           </button>
-          <button mat-raised-button (click)="closeEditor()">Close</button>
+          <button mat-raised-button (click)="closeEditor()">{{"COMMON.CLOSE" | translate}}</button>
         </div>
       </div>
     </mat-sidenav>
@@ -180,6 +182,14 @@
           (click)="showNewNodeForm()"
         >
           <mat-icon>add</mat-icon>
+        </button>
+        <button
+          class="refresh-btn"
+          mat-fab
+          color="accent"
+          (click)="refreshGraph()"
+        >
+          <mat-icon>refresh</mat-icon>
         </button>
       </div>
     </mat-sidenav-content>

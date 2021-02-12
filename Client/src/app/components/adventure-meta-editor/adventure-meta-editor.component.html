@@ -1,14 +1,14 @@
 <div class="meta-editor-container">
-  <h1>Metadata</h1>
+  <h1>{{"META_EDITOR.TITLE" | translate}}</h1>
   <form class="meta-form" [formGroup]="metaForm">
     <mat-form-field class="full-width">
-      <mat-label>Name</mat-label>
+      <mat-label>{{"META_EDITOR.NAME" | translate}}</mat-label>
       <input matInput name ="metaName" formControlName="name" placeholder="Space adventure" [ngModel]="adventure.name">
     </mat-form-field>
     <mat-form-field class="full-width">
-      <mat-label>Description</mat-label>
+      <mat-label>{{"META_EDITOR.DESCRIPTION" | translate}}</mat-label>
       <input matInput name ="metaDescription" formControlName="description" placeholder="An adventure in the planet of Mars." [ngModel]="adventure.description">
     </mat-form-field>
   </form>
-  <button mat-raised-button color="primary" (click)="saveAllChanges()">Save all changes</button>
+  <button mat-raised-button color="primary" (click)="saveAllChanges()">{{"META_EDITOR.SAVE_ALL" | translate}}</button>
 </div>

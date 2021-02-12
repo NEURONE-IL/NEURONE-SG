@@ -1,5 +1,9 @@
 {
   "welcomeMessage": "Thanks for joining, {{ firstName }}! It's great to have you!",
+  "COMMON": {
+    "SAVE": "Guardar",
+    "CLOSE": "Cerrar"
+  },
   "HEADER": {
     "GAME": "Juego",
     "EDITOR": "Editor",
@@ -28,6 +32,62 @@
     "PASSWORD": "Contraseña",
     "TOGGLE_REGISTER": "Registrarse",
     "ENTER": "Iniciar sesión"
+  },
+  "GAME": {},
+  "EDITOR": {
+    "NODE_EDITOR": {
+      "TITLE": "Editor de nodo",
+      "TYPE": "Tipo de nodo",
+      "LABEL": "Etiqueta",
+      "IMAGE": "Imagen",
+      "VIDEO": "Video",
+      "TEXT": "Texto",
+      "TEXT_PLACEHOLDER": "Te encuentras en una habitación cerrada.",
+      "TYPES": {
+        "TRANSITION": "Transición",
+        "ENDING": "Final",
+        "CHALLENGE": "Desafío"
+      },
+      "LINKS_BTN": "Ramas",
+      "CHALLENGE_BTN": "Desafío"
+    }
+  },
+  "META_EDITOR": {
+    "TITLE": "Metadatos",
+    "NAME": "Nombre",
+    "DESCRIPTION": "Descripción",
+    "SAVE_ALL": "Guardar todos los cambios"
+  },
+  "LINKS_DIALOG": {
+    "TITLE": "Gestionar ramas",
+    "TARGET": "Nodo de destino",
+    "LABEL": "Etiqueta",
+    "LABEL_PLACEHOLDER": "Abrir la puerta de la izquierda",
+    "ADD_ACTIVATOR": "Agregar activador",
+    "ACTIVATOR_NODE": "Nodo",
+    "ACTIVATOR_CONDITION": "Condición"
+  },
+  "NEW_NODE_DIALOG": {
+    "TITLE": "Agregar un nuevo nodo",
+    "LABEL": "Etiqueta",
+    "TYPE": "Tipo",
+    "IMAGE": "Imagen",
+    "VIDEO": "Video",
+    "TEXT": "Texto",
+    "TEXT_PLACEHOLDER": "Te encuentras en una habitación cerrada."
+  },
+  "CHALLENGE_DIALOG": {
+    "TITLE": "Editar desafío",
+    "QUESTION": "Pregunta",
+    "ANSWER": "Respuesta",
+    "QUESTION_PLACEHOLDER": "¿Cuánto es 5*5?",
+    "ANSWER_PLACEHOLDER": "25",
+    "TYPE": "Tipo de desafío",
+    "TYPES": {
+      "QUESTION": "Pregunta y respuesta",
+      "MULTIPLE": "Selección múltiple"
+    },
+    "OPTION": "Alternativa {{idx}}",
+    "OPTION_PLACEHOLDER": "Ingresa alternativa aquí"
   }
-
 }

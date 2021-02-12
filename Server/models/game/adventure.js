@@ -20,7 +20,17 @@ const adventureSchema = new Schema({
           question: { type: String },
           answer: { type: String },
           type: { type: String },
-          options: { type: [{ type: String }], default: undefined },
+          // options: { type: [{ type: String }], default: undefined },
+          options: {
+            type: [
+              {
+                value: { type: String, default: undefined },
+                correct: { type: Boolean, default: false },
+                _id: false,
+              },
+            ],
+            default: undefined,
+          },
         },
       },
     ],
@@ -57,6 +67,13 @@ adventureSchema.set("toJSON", {
     if (returnedObject.nodes) {
       returnedObject.nodes.forEach((node) => {
         // delete node._id;
+        if(node.challenge) {
+          if(node.challenge.options) {
+            node.challenge.options.forEach(option => {
+              delete option._id;
+            })
+          }
+        }
       });
     }
     if (returnedObject.links) {

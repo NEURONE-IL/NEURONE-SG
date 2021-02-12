@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AnswerService } from 'src/app/services/game/answer.service';
 
@@ -10,8 +10,11 @@ import { AnswerService } from 'src/app/services/game/answer.service';
 export class MultipleFormComponent implements OnInit {
   answerForm: FormGroup;
   adventure: any;
+
+  @Input()
   question: string;
-  options: any;
+  @Input()
+  challengeOptions: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -21,13 +24,16 @@ export class MultipleFormComponent implements OnInit {
   ngOnInit(): void {
     this.question =
       '¿Cuales son las 3 ideas principales de la canción **********?';
-    this.options = [
-      { value: 'Libertad', checked: false },
-      { value: 'Liderazgo', checked: false },
-      { value: 'Paz', checked: false },
-      { value: 'Diversión', checked: false },
-      { value: 'Compartir', checked: false },
-    ];
+    // this.options = [
+    //   { value: 'Libertad', checked: false },
+    //   { value: 'Liderazgo', checked: false },
+    //   { value: 'Paz', checked: false },
+    //   { value: 'Diversión', checked: false },
+    //   { value: 'Compartir', checked: false },
+    // ];
+    this.challengeOptions.forEach(option => {
+      option.checked = false;
+    });
     this.answerForm = this.formBuilder.group({
         answers: this.formBuilder.array([])
       // answer: ["", Validators.required],
@@ -50,12 +56,16 @@ export class MultipleFormComponent implements OnInit {
       condition: ''
     });
 
-    this.options.forEach(option => {
+    this.challengeOptions.forEach(option => {
       if (option.checked) {
-        const newAnswer = this.formBuilder.control(option.value);
+        const newAnswer = this.formBuilder.group({value: option.value, checked: option.checked});
         this.answersArray.push(newAnswer);
       }
     });
     console.log(this.answerForm.value);
+  }
+
+  fetchOptions() {
+
   }
 }

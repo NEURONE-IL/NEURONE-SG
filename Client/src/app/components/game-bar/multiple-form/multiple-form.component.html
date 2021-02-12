@@ -1,6 +1,6 @@
 <h3>{{ question }}</h3>
 <div class="options-panel">
-  <ng-container *ngFor="let option of options; let i = index">
+  <ng-container *ngFor="let option of challengeOptions; let i = index">
     <mat-checkbox [(ngModel)]="option.checked" [checked]="option.checked">
       {{ option.value }}
     </mat-checkbox>

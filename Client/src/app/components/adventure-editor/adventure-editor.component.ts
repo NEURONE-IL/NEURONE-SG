@@ -27,17 +27,13 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   currentNode: any;
   updating: boolean;
 
+  nodeTypes: any;
+
   // Subscriptions to editor service
   updateSubscription: Subscription;
   updatingSubscription: Subscription;
   adventureSubscription: Subscription;
   currentNodeSubscription: Subscription;
-
-  nodeTypes = [
-    { value: 'transition', viewValue: 'Transition' },
-    { value: 'ending', viewValue: 'Ending' },
-    { value: 'challenge', viewValue: 'Challenge' },
-  ];
 
   constructor(
     private editorService: EditorService,
@@ -84,6 +80,11 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
         text: [],
       }),
     });
+    this.nodeTypes = [
+      { value: 'transition', viewValue: 'EDITOR.NODE_EDITOR.TYPES.TRANSITION' },
+      { value: 'ending', viewValue: 'EDITOR.NODE_EDITOR.TYPES.ENDING' },
+      { value: 'challenge', viewValue: 'EDITOR.NODE_EDITOR.TYPES.CHALLENGE' },
+    ];
   }
 
   ngOnDestroy(): void {
@@ -129,6 +130,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
       });
 
       this.editorService.setAdventure(this.adventure);
+      console.log(this.adventure);
       this.closeEditor();
       this.refreshGraph();
     }
@@ -152,6 +154,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
 
   refreshGraph() {
     this.updateGraph.next(true);
+    console.log(this.adventure);
   }
 
   showNewNodeForm(): void {
@@ -206,6 +209,11 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
         this.currentNode.challenge = result.challenge;
       }
     });
+  }
+
+  updateNodeType(type) {
+    this.currentNode.type = type;
+    console.log(this.currentNode);
   }
 
   get nodes() {

@@ -1,31 +1,81 @@
-<h1 mat-dialog-title>Edit Challenge</h1>
+<h1 mat-dialog-title>{{"CHALLENGE_DIALOG.TITLE" | translate}}</h1>
 <div mat-dialog-content>
   <form class="challenge-form" [formGroup]="challengeForm">
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>{{"CHALLENGE_DIALOG.TYPE" | translate}}</mat-label>
+      <mat-select
+        name="challengeType"
+        formControlName="type"
+        [(ngModel)]="challenge.type"
+        (selectionChange)="updateType($event.value)"
+      >
+        <mat-option *ngFor="let type of types" [value]="type.value">
+          {{ type.viewValue | translate }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
     <mat-form-field class="form-field">
-      <mat-label>Question</mat-label>
+      <mat-label>{{"CHALLENGE_DIALOG.QUESTION" | translate}}</mat-label>
       <input
         matInput
         name="challengeQuestion"
         formControlName="question"
-        placeholder="What's 5 + 20?"
+        placeholder="{{'CHALLENGE_DIALOG.QUESTION_PLACEHOLDER' | translate}}"
         [ngModel]="challenge.question"
       />
     </mat-form-field>
-    <mat-form-field class="form-field">
-      <mat-label>Answer</mat-label>
+    <mat-form-field class="form-field" *ngIf="challenge.type=='question'">
+      <mat-label>{{"CHALLENGE_DIALOG.ANSWER" | translate}}</mat-label>
       <input
         matInput
         name="challengeAnswer"
         formControlName="answer"
-        placeholder="25"
         [ngModel]="challenge.answer"
+        placeholder="{{'CHALLENGE_DIALOG.ANSWER_PLACEHOLDER' | translate}}"
       />
     </mat-form-field>
-    <input type="hidden" formControlName="type" [ngModel]="challenge.type">
-    <input type="hidden" formControlName="options" [ngModel]="challenge.options">
+    <ng-container *ngIf="challenge.type=='multiple'">
+      <div
+        formArrayName="options"
+        *ngFor="let option of optionsArray.controls; let i = index;"
+      >
+        <div [formGroupName]="i">
+          <mat-form-field class="node-form-field">
+            <mat-label
+              >{{"CHALLENGE_DIALOG.OPTION" | translate:{idx: i+1} }}</mat-label
+            >
+            <input
+              matInput
+              name="option"
+              formControlName="value"
+              placeholder="{{'CHALLENGE_DIALOG.OPTION_PLACEHOLDER' | translate}}"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </ng-container>
+
+    <input type="hidden" formControlName="type" [ngModel]="challenge.type" />
+    <input
+      type="hidden"
+      formControlName="options"
+      [ngModel]="challenge.options"
+    />
   </form>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-button color="primary" (click)="saveChallenge()">Save</button>
-  <button mat-button [mat-dialog-close]="true">Close</button>
+  <button
+    mat-button
+    *ngIf="challenge.type=='multiple'"
+    color="primary"
+    (click)="addOption()"
+  >
+    {{"CHALLENGE_DIALOG.ADD_OPTION" | translate}}
+  </button>
+  <button mat-button color="primary" (click)="saveChallenge()">
+    {{"COMMON.SAVE" | translate}}
+  </button>
+  <button mat-button [mat-dialog-close]="true">
+    {{"COMMON.CLOSE" | translate}}
+  </button>
 </div>

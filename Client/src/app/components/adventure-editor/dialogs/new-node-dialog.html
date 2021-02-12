@@ -1,8 +1,8 @@
-<h1 mat-dialog-title>Add a new node</h1>
+<h1 mat-dialog-title>{{"NEW_NODE_DIALOG.TITLE" | translate}}</h1>
 <div mat-dialog-content>
   <form class="new-link-form" [formGroup]="newNodeForm">
     <mat-form-field class="node-form-field">
-      <mat-label>Label</mat-label>
+      <mat-label>{{"NEW_NODE_DIALOG.LABEL" | translate}}</mat-label>
       <input
         matInput
         name="nodeLabel"
@@ -11,7 +11,7 @@
       />
     </mat-form-field>
     <mat-form-field appearance="fill" class="node-form-field">
-      <mat-label>Type</mat-label>
+      <mat-label>{{"NEW_NODE_DIALOG.TYPE" | translate}}</mat-label>
       <mat-select name="nodeType" formControlName="type">
         <mat-option *ngFor="let type of nodeTypes" [value]="type.value">
           {{ type.viewValue }}
@@ -20,7 +20,7 @@
     </mat-form-field>
     <form formGroupName="data">
       <mat-form-field class="node-form-field">
-        <mat-label>Image</mat-label>
+        <mat-label>{{"NEW_NODE_DIALOG.IMAGE" | translate}}</mat-label>
         <input
           matInput
           name="nodeImage"
@@ -29,7 +29,7 @@
         />
       </mat-form-field>
       <mat-form-field class="node-form-field">
-        <mat-label>Video</mat-label>
+        <mat-label>{{"NEW_NODE_DIALOG.VIDEO" | translate}}</mat-label>
         <input
           matInput
           name="nodeVideo"
@@ -38,18 +38,18 @@
         />
       </mat-form-field>
       <mat-form-field class="node-form-field">
-        <mat-label>Text</mat-label>
+        <mat-label>{{"NEW_NODE_DIALOG.TEXT" | translate}}</mat-label>
         <input
           matInput
           name="nodeText"
           formControlName="text"
-          placeholder="This is your bedroom"
+          placeholder="{{'NEW_NODE_DIALOG.TEXT_PLACEHOLDER' | translate}}"
         />
       </mat-form-field>
     </form>
   </form>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-button color="accent" (click)="addNewNode()">Save</button>
-  <button mat-button [mat-dialog-close]="true">Close</button>
+  <button mat-button color="accent" (click)="addNewNode()">{{"COMMON.SAVE" | translate}}</button>
+  <button mat-button [mat-dialog-close]="true">{{"COMMON.CLOSE" | translate}}</button>
 </div>
