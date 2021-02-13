@@ -111,6 +111,7 @@ export class GameService {
   async fetchGMStats() {
     if (this.player.role == 'player') {
       let gmStats = {
+        gmEnabled: true,
         currentLevel: null,
         points: null,
       };
@@ -130,6 +131,7 @@ export class GameService {
           }
         })
         .catch((err) => {
+          gmStats.gmEnabled = false;
           console.log(err);
         });
 
@@ -141,6 +143,7 @@ export class GameService {
           gmStats.points = points;
         })
         .catch((err) => {
+          gmStats.gmEnabled = false;
           console.log(err);
         });
 
@@ -150,6 +153,12 @@ export class GameService {
     }
     else {
       console.log('Current user is not a player (Gamification not activated)');
+      let gmStats = {
+        gmEnabled: false
+      }
+      this.gmStats = gmStats;
+      this.gmStatsEmitChange(this.gmStats);
+      console.log('gmStats: ', this.gmStats);
     }
   }
 }

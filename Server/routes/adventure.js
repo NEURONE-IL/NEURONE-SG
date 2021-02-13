@@ -97,4 +97,19 @@ router.put(
   }
 );
 
+// router.delete('/:adventure_id',  [verifyToken, authMiddleware.isAdmin] , async (req, res) => {
+router.delete('/:adventure_id',  [] , async (req, res) => {
+  const _id = req.params.adventure_id;
+  Adventure.deleteOne({_id: _id}, (err, adventure) => {
+      if (err) {
+          return res.status(404).json({
+              err
+          });
+      }
+      res.status(200).json({
+          adventure
+      });
+  })
+});
+
 module.exports = router;

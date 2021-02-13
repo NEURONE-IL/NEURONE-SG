@@ -14,7 +14,7 @@
       <mat-label>{{"NEW_NODE_DIALOG.TYPE" | translate}}</mat-label>
       <mat-select name="nodeType" formControlName="type">
         <mat-option *ngFor="let type of nodeTypes" [value]="type.value">
-          {{ type.viewValue }}
+          {{ type.viewValue | translate }}
         </mat-option>
       </mat-select>
     </mat-form-field>

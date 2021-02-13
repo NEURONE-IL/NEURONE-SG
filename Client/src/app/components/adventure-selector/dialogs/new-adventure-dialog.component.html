@@ -1,27 +1,27 @@
-<h1 mat-dialog-title>Create a new adventure</h1>
+<h1 mat-dialog-title>{{"NEW_ADVENTURE.TITLE" | translate}}</h1>
 <div mat-dialog-content>
   <form class="new-link-form" [formGroup]="newAdventureForm">
     <mat-form-field class="form-field">
-      <mat-label>Name</mat-label>
+      <mat-label>{{"NEW_ADVENTURE.NAME" | translate}}</mat-label>
       <input
         matInput
         name="adventureName"
         formControlName="name"
-        placeholder="The greatest adventure!"
+        placeholder="{{'NEW_ADVENTURE.NAME_PLACEHOLDER' | translate}}"
       />
     </mat-form-field>
     <mat-form-field class="form-field">
-      <mat-label>Description</mat-label>
+      <mat-label>{{"NEW_ADVENTURE.DESCRIPTION" | translate}}</mat-label>
       <input
         matInput
         name="adventureDescription"
         formControlName="description"
-        placeholder="This is a pretty exciting adventure where you will save the world!"
+        placeholder="{{'NEW_ADVENTURE.DESCRIPTION_PLACEHOLDER' | translate}}"
       />
     </mat-form-field>
   </form>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-button color="accent" (click)="addNewAdventure()">Save</button>
-  <button mat-button [mat-dialog-close]="true">Close</button>
+  <button mat-button color="accent" (click)="addNewAdventure()">{{"COMMON.SAVE" | translate}}</button>
+  <button mat-button [mat-dialog-close]="true">{{"COMMON.CLOSE" | translate}}</button>
 </div>

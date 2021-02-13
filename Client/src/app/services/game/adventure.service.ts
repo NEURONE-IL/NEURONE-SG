@@ -48,4 +48,8 @@ export class AdventureService {
     console.log(adventure);
     return this.http.put(this.uri + '/' + id, body);
   }
+
+  deleteAdventure(adventure): Observable<any> {
+    return this.http.delete(this.uri + '/' + adventure._id);
+  }
 }

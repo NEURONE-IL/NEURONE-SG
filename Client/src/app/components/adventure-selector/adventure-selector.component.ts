@@ -62,6 +62,20 @@ export class AdventureSelectorComponent implements OnInit {
     });
   }
 
+  deleteAdventure(adventure: any) {
+    // await this.gameService.init(adventure).then(() => {
+    //   this.searchService.init();
+    //   this.router.navigate(['game']);
+    // });
+    this.adventureService.deleteAdventure(adventure).subscribe((res) => {
+      console.log('adventure deleted');
+      this.reloadPage();
+    },
+    (err) => {
+      console.log(err);
+    })
+  }
+
   showNewAdventureDialog(): void {
     const nodeDialogRef = this.newAdventureDialog.open(
       NewAdventureDialogComponent,

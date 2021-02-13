@@ -4,7 +4,8 @@
     "SAVE": "Guardar",
     "CLOSE": "Cerrar",
     "SUBMIT": "Enviar",
-    "GAMIFY": "Ludificar"
+    "GAMIFY": "Ludificar",
+    "FINISH": "Finalizar"
   },
   "GAMIFICATION": {
     "TITLE": "Ludificación",
@@ -21,7 +22,8 @@
   },
   "SELECTOR": {
     "CARD_PLAY": "JUGAR",
-    "CARD_EDIT": "EDITAR"
+    "CARD_EDIT": "EDITAR",
+    "CARD_DELETE": "ELIMINAR"
   },
   "REGISTER": {
     "TITLE": "Registrarse",
@@ -75,7 +77,12 @@
     "LABEL_PLACEHOLDER": "Abrir la puerta de la izquierda",
     "ADD_ACTIVATOR": "Agregar activador",
     "ACTIVATOR_NODE": "Nodo",
-    "ACTIVATOR_CONDITION": "Condición"
+    "ACTIVATOR_CONDITION": "Condición",
+    "ACTIVATOR_TYPES": {
+      "CORRECT_ANSWER": "Desafío correcto",
+      "WRONG_ANSWER": "Desafío incorrecto",
+      "LEVEL": "Nivel"
+    }
   },
   "NEW_NODE_DIALOG": {
     "TITLE": "Agregar un nuevo nodo",
@@ -103,5 +110,20 @@
     "CORRECT_OPTION": "¿Correcta?",
     "OPTION_MAXLIMIT_MSG": "El límite máximo de opciones es 5",
     "NEW_OPTION": "Nueva opción"
+  },
+  "GAMEBAR": {
+    "ANSWER_INPUT": "Ingrese su respuesta aquí...",
+    "ENDING_REACHED": "Has llegado al final de la aventura."
+  },
+  "NEW_ADVENTURE": {
+    "TITLE": "Crear una nueva aventura",
+    "NAME": "Nombre",
+    "DESCRIPTION": "Descripción",
+    "NAME_PLACEHOLDER": "Aventura en el espacio",
+    "DESCRIPTION_PLACEHOLDER": "¡Esta es una aventura increíble donde salvarás el planeta!"
+  },
+  "DEFAULT_CHALLENGE": {
+    "QUESTION": "¿Cuánto es 5*5?",
+    "ANSWER": "25"
   }
 }

@@ -1,1 +1,9 @@
-<p>question-form works!</p>
+<h3>{{ question }}</h3>
+<form [formGroup]="answerForm">
+  <mat-form-field class="form-field">
+    <mat-label>{{ "GAMEBAR.ANSWER_INPUT" | translate }}</mat-label>
+    <input matInput name="answerInput" formControlName="answer" />
+    <mat-icon matSuffix (click)="sendAnswer()" class="submit-icon">send</mat-icon>
+  </mat-form-field>
+  <button class="hidden-btn" (click)="sendAnswer()"></button>
+</form>

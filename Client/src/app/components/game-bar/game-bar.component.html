@@ -3,8 +3,12 @@
     <mat-card-header>
       <div mat-card-avatar class="player-avatar"></div>
       <mat-card-title>{{ player.username }}</mat-card-title>
-      <mat-card-subtitle *ngIf="gmStats && playerLevel">{{playerLevel}}</mat-card-subtitle>
-      <p *ngIf="gmStats && playerPoints">{{playerPoints}} {{"GAMIFICATION.POINTS" | translate}}</p>
+      <mat-card-subtitle *ngIf="gmStats && playerLevel">{{
+        playerLevel
+      }}</mat-card-subtitle>
+      <p *ngIf="gmStats && playerPoints">
+        {{ playerPoints }} {{ "GAMIFICATION.POINTS" | translate }}
+      </p>
     </mat-card-header>
     <mat-divider [inset]="true" class="bar-divider"></mat-divider>
     <mat-card-content *ngIf="!challengePending; else challengeContent">
@@ -23,23 +27,31 @@
       </div>
       <ng-template #endingPanel>
         <div class="ending-panel">
-          <p>You've reached an ending, congrats!</p>
+          <p>{{"GAMEBAR.ENDING_REACHED" |  translate}}</p>
           <button mat-raised-button color="primary" (click)="finish()">
-            Finish
+            {{"COMMON.FINISH" | translate}}
           </button>
         </div>
       </ng-template>
     </mat-card-content>
   </mat-card>
   <ng-template #challengeContent>
-      <mat-card-content *ngIf="currentChallenge.type == 'multiple'">
-        <app-multiple-form
-          [challenge]="currentChallenge"
-          [adventure]="adventure"
-          [currentNode]="currentNode"
-          (challengeFinishedEvent)="finishChallenge($event)"
-        ></app-multiple-form>
-      </mat-card-content>
+    <mat-card-content *ngIf="currentChallenge.type == 'question'">
+      <app-question-form
+        [challenge]="currentChallenge"
+        [adventure]="adventure"
+        [currentNode]="currentNode"
+        (challengeFinishedEvent)="finishChallenge($event)"
+      ></app-question-form>
+    </mat-card-content>
+    <mat-card-content *ngIf="currentChallenge.type == 'multiple'">
+      <app-multiple-form
+        [challenge]="currentChallenge"
+        [adventure]="adventure"
+        [currentNode]="currentNode"
+        (challengeFinishedEvent)="finishChallenge($event)"
+      ></app-multiple-form>
+    </mat-card-content>
   </ng-template>
   <button class="neurone-btn" mat-fab color="accent" (click)="toggleSearch()">
     <mat-icon *ngIf="!searchEnabled">search</mat-icon>

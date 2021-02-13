@@ -63,6 +63,13 @@
           >
             {{ "SELECTOR.CARD_EDIT" | translate }}
           </button>
+          <button
+            mat-button
+            (click)="deleteAdventure(adventure)"
+            *ngIf="role == 'admin' || role == 'creator'"
+          >
+            {{ "SELECTOR.CARD_DELETE" | translate }}
+          </button>
         </mat-card-actions>
       </mat-card>
     </div>
