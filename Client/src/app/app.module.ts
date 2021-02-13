@@ -10,6 +10,7 @@ import { AdventureComponent } from './components/adventure/adventure.component';
 import { AdventureEditorComponent } from './components/adventure-editor/adventure-editor.component';
 import { NewNodeDialogComponent } from './components/adventure-editor/dialogs/NewNodeDialogComponent';
 import { NewLinkDialogComponent } from './components/adventure-editor/dialogs/NewLinkDialogComponent';
+import { LinksTableDialog } from './components/adventure-editor/dialogs/LinksTableDialog';
 import { ChallengeDialogComponent } from './components/adventure-editor/dialogs/ChallengeDialogComponent';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -57,6 +58,7 @@ import { SearchResultsComponent } from './components/search-results/search-resul
 import { ViewPageComponent } from './components/view-page/view-page.component';
 import { SafeurlPipe } from './helpers/safeUrl/safeurl.pipe';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTableModule } from '@angular/material/table';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -75,6 +77,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AdventureMetaEditorComponent,
     NewNodeDialogComponent,
     NewLinkDialogComponent,
+    LinksTableDialog,
     ChallengeDialogComponent,
     QuestionFormComponent,
     MultipleFormComponent,
@@ -116,6 +119,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatTabsModule,
     MatCheckboxModule,
     MatSlideToggleModule,
+    MatTableModule,
     ToastrModule.forRoot(),
     TranslateModule.forRoot({
       loader: {

@@ -1,5 +1,4 @@
 {
-  "welcomeMessage": "Thanks for joining, {{ firstName }}! It's great to have you!",
   "COMMON": {
     "SAVE": "Guardar",
     "CLOSE": "Cerrar",
@@ -56,6 +55,7 @@
       "TEXT": "Texto",
       "TEXT_PLACEHOLDER": "Te encuentras en una habitación cerrada.",
       "TYPES": {
+        "INITIAL": "Inicial",
         "TRANSITION": "Transición",
         "ENDING": "Final",
         "CHALLENGE": "Desafío"
@@ -72,6 +72,14 @@
   },
   "LINKS_DIALOG": {
     "TITLE": "Gestionar ramas",
+    "LABEL": "Etiqueta",
+    "SOURCE": "Origen",
+    "TARGET": "Destino",
+    "ACTIONS": "Acciones",
+    "ADD_LINK": "Agregar rama"
+  },
+  "NEW_LINK_DIALOG": {
+    "TITLE": "Agregar una nueva rama",
     "TARGET": "Nodo de destino",
     "LABEL": "Etiqueta",
     "LABEL_PLACEHOLDER": "Abrir la puerta de la izquierda",

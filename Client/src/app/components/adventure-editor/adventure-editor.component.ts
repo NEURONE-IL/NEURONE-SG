@@ -10,6 +10,7 @@ import { NewNodeDialogComponent } from './dialogs/NewNodeDialogComponent';
 import { NewLinkDialogComponent } from './dialogs/NewLinkDialogComponent';
 import { ChallengeDialogComponent } from './dialogs/ChallengeDialogComponent';
 import { nanoid } from 'nanoid';
+import { LinksTableDialog } from './dialogs/LinksTableDialog';
 
 @Component({
   selector: 'app-adventure-editor',
@@ -39,8 +40,8 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     private editorService: EditorService,
     private formBuilder: FormBuilder,
     public newNodeDialog: MatDialog,
-    public newLinkDialog: MatDialog,
-    public challengeDialog: MatDialog
+    public challengeDialog: MatDialog,
+    public linksDialog: MatDialog,
   ) {
     this.updateSubscription = this.editorService
       .getRefreshRequest()
@@ -81,6 +82,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
       }),
     });
     this.nodeTypes = [
+      { value: 'initial', viewValue: 'EDITOR.NODE_EDITOR.TYPES.INITIAL' },
       { value: 'transition', viewValue: 'EDITOR.NODE_EDITOR.TYPES.TRANSITION' },
       { value: 'ending', viewValue: 'EDITOR.NODE_EDITOR.TYPES.ENDING' },
       { value: 'challenge', viewValue: 'EDITOR.NODE_EDITOR.TYPES.CHALLENGE' },
@@ -92,6 +94,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     this.currentNodeSubscription.unsubscribe();
     this.updatingSubscription.unsubscribe();
     this.updateSubscription.unsubscribe();
+    this.closeDialogs();
   }
 
   closeEditor() {
@@ -103,8 +106,8 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
 
   closeDialogs() {
     if (this.newNodeDialog) this.newNodeDialog.closeAll();
-    if (this.newLinkDialog) this.newLinkDialog.closeAll();
     if (this.challengeDialog) this.challengeDialog.closeAll();
+    if (this.linksDialog) this.linksDialog.closeAll();
   }
 
   openEditor(node: any) {
@@ -136,16 +139,6 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  addLink(newLink) {
-    if ('activators' in newLink) {
-      if (newLink.activators.length == 0) {
-        delete newLink.activators;
-      }
-    }
-    this.links.push(newLink);
-    this.refreshGraph();
-  }
-
   addNode(newNode) {
     newNode.id = nanoid(13);
     this.nodes.push(newNode);
@@ -153,6 +146,8 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   }
 
   refreshGraph() {
+    this.closeDialogs();
+    this.closeEditor();
     this.updateGraph.next(true);
     console.log(this.adventure);
   }
@@ -172,22 +167,26 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     });
   }
 
-  showNewLinkDialog() {
-    const linkDialogRef = this.newLinkDialog.open(NewLinkDialogComponent, {
-      width: '400px',
+  showLinksDialog() {
+    const linksDialogRef = this.linksDialog.open(LinksTableDialog, {
+      width: '70rem',
       data: {
+        links: this.adventure.links,
         nodes: this.nodes,
         node: this.currentNode,
         targetNodes: this.targetNodes,
       },
     });
 
-    linkDialogRef.afterClosed().subscribe((result) => {
-      console.log('closed linkDialog');
-      if (result.newLink) {
-        console.log('new link: ', result.newLink);
-        this.addLink(result.newLink);
+    linksDialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+      if (result.links) {
+        this.adventure.links = result.links;
+        this.refreshGraph();
       }
+    },
+    (err) => {
+      console.log(err);
     });
   }
 

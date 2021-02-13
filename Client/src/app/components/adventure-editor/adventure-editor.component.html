@@ -19,6 +19,7 @@
               name="nodeType"
               formControlName="type"
               (selectionChange)="updateNodeType($event.value)"
+              [disabled]="currentNode.type=='initial'"
             >
               <mat-option *ngFor="let type of nodeTypes" [value]="type.value">
                 {{ type.viewValue | translate }}
@@ -87,7 +88,7 @@
           <button
             mat-stroked-button
             color="accent"
-            (click)="showNewLinkDialog()"
+            (click)="showLinksDialog()"
           >
           {{"EDITOR.NODE_EDITOR.LINKS_BTN" | translate}}
           </button>

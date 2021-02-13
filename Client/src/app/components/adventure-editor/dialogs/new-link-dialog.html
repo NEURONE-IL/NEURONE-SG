@@ -1,8 +1,8 @@
-<h1 mat-dialog-title>{{"LINKS_DIALOG.TITLE" | translate}}</h1>
+<h1 mat-dialog-title>{{"NEW_LINK_DIALOG.TITLE" | translate}}</h1>
 <div mat-dialog-content>
   <form class="new-link-form" [formGroup]="linkForm">
     <mat-form-field appearance="fill" class="node-form-field">
-      <mat-label>{{"LINKS_DIALOG.TARGET" | translate}}</mat-label>
+      <mat-label>{{"NEW_LINK_DIALOG.TARGET" | translate}}</mat-label>
       <mat-select name="linkTarget" formControlName="target">
         <mat-option *ngFor="let node of targetNodes" [value]="node.id"
           >{{ node.label }}</mat-option
@@ -10,16 +10,16 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field class="node-form-field">
-      <mat-label>{{"LINKS_DIALOG.LABEL" | translate}}</mat-label>
+      <mat-label>{{"NEW_LINK_DIALOG.LABEL" | translate}}</mat-label>
       <input
         matInput
         name="linkLabel"
         formControlName="label"
-        placeholder="{{'LINKS_DIALOG.LABEL_PLACEHOLDER' | translate}}"
+        placeholder="{{'NEW_LINK_DIALOG.LABEL_PLACEHOLDER' | translate}}"
       />
     </mat-form-field>
     <button mat-button color="primary" (click)="addActivator()">
-      {{"LINKS_DIALOG.ADD_ACTIVATOR" | translate}}
+      {{"NEW_LINK_DIALOG.ADD_ACTIVATOR" | translate}}
     </button>
     <!-- <div *ngFor="let activator of activatorItems; let i=index" formArrayName="activators">-->
     <div
@@ -28,7 +28,7 @@
     >
       <div [formGroupName]="i">
         <mat-form-field class="node-form-field">
-          <mat-label>{{"LINKS_DIALOG.ACTIVATOR_CONDITION" | translate}}</mat-label>
+          <mat-label>{{"NEW_LINK_DIALOG.ACTIVATOR_CONDITION" | translate}}</mat-label>
           <mat-select name="condition" formControlName="condition">
             <mat-option *ngFor="let type of activatorTypes" [value]="type.value"
               >{{ type.viewValue | translate }}</mat-option
@@ -39,7 +39,7 @@
           <mat-icon>remove</mat-icon>
         </button>
         <mat-form-field appearance="fill" class="node-form-field" *ngIf="activatorNeedsNode(activator)">
-          <mat-label>{{"LINKS_DIALOG.ACTIVATOR_NODE" | translate}}</mat-label>
+          <mat-label>{{"NEW_LINK_DIALOG.ACTIVATOR_NODE" | translate}}</mat-label>
           <mat-select name="node" formControlName="node">
             <mat-option *ngFor="let node of challengeNodes" [value]="node.id"
               >{{ node.label }}</mat-option
@@ -47,7 +47,7 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field appearance="fill" class="node-form-field" *ngIf="activatorNeedsLevel(activator)">
-          <mat-label>{{"LINKS_DIALOG.LEVEL" | translate}}</mat-label>
+          <mat-label>{{"NEW_LINK_DIALOG.LEVEL" | translate}}</mat-label>
           <mat-select name="level" formControlName="level">
             <mat-option *ngFor="let level of GMlevels" [value]="level.value"
               >{{ level.viewValue }}</mat-option
@@ -59,6 +59,6 @@
   </form>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-button color="accent" (click)="addNewLink()">{{"COMMON.SAVE" | translate}}</button>
+  <button mat-button color="primary" (click)="addNewLink()">{{"COMMON.SAVE" | translate}}</button>
   <button mat-button [mat-dialog-close]="true">{{"COMMON.CLOSE" | translate}}</button>
 </div>
