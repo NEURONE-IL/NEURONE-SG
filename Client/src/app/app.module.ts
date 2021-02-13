@@ -8,10 +8,10 @@ import { AppComponent } from './app.component';
 import { SearchInterfaceComponent } from './components/search-interface/search-interface.component';
 import { AdventureComponent } from './components/adventure/adventure.component';
 import { AdventureEditorComponent } from './components/adventure-editor/adventure-editor.component';
-import { NewNodeDialogComponent } from './components/adventure-editor/dialogs/NewNodeDialogComponent';
-import { NewLinkDialogComponent } from './components/adventure-editor/dialogs/NewLinkDialogComponent';
-import { LinksTableDialog } from './components/adventure-editor/dialogs/LinksTableDialog';
-import { ChallengeDialogComponent } from './components/adventure-editor/dialogs/ChallengeDialogComponent';
+import { NewNodeDialogComponent } from './components/editor-dialogs/new-node-dialog/NewNodeDialogComponent';
+import { NewLinkDialogComponent } from './components/editor-dialogs/new-link-dialog/NewLinkDialogComponent';
+import { LinksTableDialog } from './components/editor-dialogs/links-table-dialog/LinksTableDialog';
+import { ChallengeDialogComponent } from './components/editor-dialogs/challenge-dialog/ChallengeDialogComponent';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
@@ -53,12 +53,14 @@ import { LoginCardComponent } from './components/login-card/login-card.component
 import { RegisterCardComponent } from './components/register-card/register-card.component';
 import { AdventureSelectorComponent } from './components/adventure-selector/adventure-selector.component';
 import { AdventureSelectionComponent } from './views/adventure-selection/adventure-selection.component';
-import { NewAdventureDialogComponent } from './components/adventure-selector/dialogs/new-adventure-dialog.component';
+import { NewAdventureDialogComponent } from './components/adventure-selector/dialogs/new-adventure/new-adventure-dialog.component';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
 import { ViewPageComponent } from './components/view-page/view-page.component';
 import { SafeurlPipe } from './helpers/safeUrl/safeurl.pipe';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
+import { WebResourcesTableComponent } from './components/web-resources/web-resources-table/web-resources-table.component';
+import { NewWebResourcesDialogComponent } from './components/web-resources/new-web-resources-dialog/new-web-resources-dialog.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -91,6 +93,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SearchResultsComponent,
     ViewPageComponent,
     SafeurlPipe,
+    WebResourcesTableComponent,
+    NewWebResourcesDialogComponent,
   ],
   imports: [
     BrowserModule,

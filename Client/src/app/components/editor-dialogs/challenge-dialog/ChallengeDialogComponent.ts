@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-challenge-dialog',
   templateUrl: 'challenge-dialog.html',
-  styleUrls: ['dialogs.scss'],
+  styleUrls: ['challenge-dialog.scss'],
 })
 export class ChallengeDialogComponent {
   challengeForm: FormGroup;

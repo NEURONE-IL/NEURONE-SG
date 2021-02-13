@@ -6,11 +6,10 @@ import { Subject } from 'rxjs';
 import { EditorService } from 'src/app/services/game/editor.service';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { NewNodeDialogComponent } from './dialogs/NewNodeDialogComponent';
-import { NewLinkDialogComponent } from './dialogs/NewLinkDialogComponent';
-import { ChallengeDialogComponent } from './dialogs/ChallengeDialogComponent';
+import { NewNodeDialogComponent } from '../editor-dialogs/new-node-dialog/NewNodeDialogComponent';
+import { ChallengeDialogComponent } from '../editor-dialogs/challenge-dialog/ChallengeDialogComponent';
 import { nanoid } from 'nanoid';
-import { LinksTableDialog } from './dialogs/LinksTableDialog';
+import { LinksTableDialog } from '../editor-dialogs/links-table-dialog/LinksTableDialog';
 
 @Component({
   selector: 'app-adventure-editor',

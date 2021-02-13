@@ -1,14 +1,12 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { RouterLinkWithHref } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { NewLinkDialogComponent } from './NewLinkDialogComponent';
+import { NewLinkDialogComponent } from '../new-link-dialog/NewLinkDialogComponent';
 
 @Component({
   selector: 'app-links-table-dialog',
   templateUrl: 'links-table-dialog.html',
-  styleUrls: ['dialogs.scss'],
+  styleUrls: ['links-table-dialog.scss'],
 })
 export class LinksTableDialog implements OnInit {
 

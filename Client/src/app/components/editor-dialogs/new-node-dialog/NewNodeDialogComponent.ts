@@ -7,7 +7,7 @@ import { EditorService } from 'src/app/services/game/editor.service';
 @Component({
   selector: 'app-new-node-dialog',
   templateUrl: 'new-node-dialog.html',
-  styleUrls: ['dialogs.scss'],
+  styleUrls: ['new-node-dialog.scss'],
 })
 export class NewNodeDialogComponent {
   newNodeForm: FormGroup;

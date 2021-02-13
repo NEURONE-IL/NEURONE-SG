@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-new-link-dialog',
   templateUrl: 'new-link-dialog.html',
-  styleUrls: ['dialogs.scss'],
+  styleUrls: ['new-link-dialog.scss'],
 })
 export class NewLinkDialogComponent {
   linkForm: FormGroup;

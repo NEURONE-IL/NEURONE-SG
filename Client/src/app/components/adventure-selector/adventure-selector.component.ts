@@ -6,7 +6,7 @@ import { AdventureService } from 'src/app/services/game/adventure.service';
 import { EditorService } from 'src/app/services/game/editor.service';
 import { GameService } from 'src/app/services/game/game.service';
 import { SearchService } from 'src/app/services/search/search.service';
-import { NewAdventureDialogComponent } from './dialogs/new-adventure-dialog.component';
+import { NewAdventureDialogComponent } from './dialogs/new-adventure/new-adventure-dialog.component';
 import { GamificationService } from 'src/app/services/game/gamification.service';
 
 @Component({
