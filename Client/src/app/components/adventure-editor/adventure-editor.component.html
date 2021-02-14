@@ -12,7 +12,7 @@
       <div class="form-container" *ngIf="currentNode != null">
         <h3>{{"EDITOR.NODE_EDITOR.TITLE" | translate}}</h3>
         <form class="node-form" [formGroup]="nodeForm">
-          <mat-form-field appearance="fill" class="node-form-field">
+          <mat-form-field appearance="fill" class="node-form-field" *ngIf="currentNode.type!='initial'">
             <mat-label>{{"EDITOR.NODE_EDITOR.TYPE" | translate}}</mat-label>
             <mat-select
               [ngModel]="currentNode.type"
@@ -22,6 +22,20 @@
               [disabled]="currentNode.type=='initial'"
             >
               <mat-option *ngFor="let type of nodeTypes" [value]="type.value">
+                {{ type.viewValue | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="node-form-field" *ngIf="currentNode.type=='initial'">
+            <mat-label>{{"EDITOR.NODE_EDITOR.TYPE" | translate}}</mat-label>
+            <mat-select
+              [ngModel]="currentNode.type"
+              name="nodeType"
+              formControlName="type"
+              (selectionChange)="updateNodeType($event.value)"
+              [disabled]="currentNode.type=='initial'"
+            >
+              <mat-option *ngFor="let type of initialType" [value]="type.value">
                 {{ type.viewValue | translate }}
               </mat-option>
             </mat-select>

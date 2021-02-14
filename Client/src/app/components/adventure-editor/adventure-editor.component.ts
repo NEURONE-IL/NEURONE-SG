@@ -29,6 +29,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   updating: boolean;
 
   nodeTypes: any;
+  initialType: any;
 
   // Subscriptions to editor service
   updateSubscription: Subscription;
@@ -83,11 +84,11 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
       }),
     });
     this.nodeTypes = [
-      { value: 'initial', viewValue: 'EDITOR.NODE_EDITOR.TYPES.INITIAL' },
       { value: 'transition', viewValue: 'EDITOR.NODE_EDITOR.TYPES.TRANSITION' },
       { value: 'ending', viewValue: 'EDITOR.NODE_EDITOR.TYPES.ENDING' },
       { value: 'challenge', viewValue: 'EDITOR.NODE_EDITOR.TYPES.CHALLENGE' },
     ];
+    this.initialType = [{ value: 'initial', viewValue: 'EDITOR.NODE_EDITOR.TYPES.INITIAL' }];
   }
 
   ngOnDestroy(): void {
