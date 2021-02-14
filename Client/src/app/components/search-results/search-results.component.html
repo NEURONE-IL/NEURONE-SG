@@ -1,9 +1,9 @@
 <div class="search-interface-container">
   <mat-card class="results-card">
     <mat-tab-group *ngIf="!fetching">
-      <mat-tab label="Todo">
+      <mat-tab label="{{'SEARCH_INTERFACE.TABS.ALL' | translate}}">
         <ng-template matTabContent>
-          <p class="soft">Se han encontrado {{documents.length}} resultados.</p>
+          <p class="soft" *ngIf="documents.length > 0">{{"SEARCH_INTERFACE.RESULTS_FOUND_MSG" | translate:{count: documents.length} }}</p>
           <div class="documents-container">
             <div *ngFor="let doc of documents">
               <mat-card class="cardStyle doc-card">
@@ -17,12 +17,12 @@
               <br>
             </div>
             <div *ngIf="documents.length <= 0" class="text-center">
-              <h3>No results found for your search</h3>
+              <h3>{{"SEARCH_INTERFACE.NO_RESULTS_MSG" | translate}}</h3>
             </div>
           </div>
         </ng-template>
       </mat-tab>
-      <mat-tab label="Imagenes">
+      <mat-tab label="{{'SEARCH_INTERFACE.TABS.IMAGES' | translate}}">
         <div class="image-container">
 
           <mat-grid-list cols="12" [gutterSize]="'12px'">
@@ -42,7 +42,7 @@
 
         </div>
       </mat-tab>
-      <mat-tab label="Video"></mat-tab>
+      <mat-tab label="{{'SEARCH_INTERFACE.TABS.VIDEOS' | translate}}"></mat-tab>
     </mat-tab-group>
   </mat-card>
 </div>

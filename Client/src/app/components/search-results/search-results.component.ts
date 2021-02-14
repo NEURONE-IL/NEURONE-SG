@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { GameService } from 'src/app/services/game/game.service';
 import { SearchService } from 'src/app/services/search/search.service';
 import { environment } from '../../../environments/environment';
 
@@ -14,21 +16,32 @@ export class SearchResultsComponent implements OnInit {
   query: string;
   coreRoot = environment.coreRoot;
 
-  constructor(private search: SearchService, private route: ActivatedRoute) {}
+  constructor(
+    private search: SearchService,
+    private route: ActivatedRoute,
+    private gameService: GameService
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.query = params.get('query');
-      this.search.getDocuments(this.query, null, null).subscribe(
-        (res) => {
-          console.log(res);
-          this.documents = res;
-          this.fetching = false;
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+      this.search
+        .fetchResults(
+          this.query,
+          null,
+          this.gameService.adventure,
+          this.gameService.currentNode
+        )
+        .subscribe(
+          (res) => {
+            console.log(res);
+            this.documents = res;
+            this.fetching = false;
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
     });
   }
 }

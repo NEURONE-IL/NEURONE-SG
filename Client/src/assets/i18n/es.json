@@ -6,6 +6,10 @@
     "GAMIFY": "Ludificar",
     "FINISH": "Finalizar"
   },
+  "ERRORS": {
+    "REQUIRED": "El valor es requerido",
+    "SELECTION_REQUIRED": "Debe seleccionar un valor"
+  },
   "GAMIFICATION": {
     "TITLE": "Ludificación",
     "GAMIFY": "Ludificar",
@@ -76,7 +80,8 @@
     "SOURCE": "Origen",
     "TARGET": "Destino",
     "ACTIONS": "Acciones",
-    "ADD_LINK": "Agregar rama"
+    "ADD_LINK": "Agregar rama",
+    "NO_LINKS": "No existen ramas para este nodo"
   },
   "NEW_LINK_DIALOG": {
     "TITLE": "Agregar una nueva rama",
@@ -133,5 +138,56 @@
   "DEFAULT_CHALLENGE": {
     "QUESTION": "¿Cuánto es 5*5?",
     "ANSWER": "25"
+  },
+  "WEB_RESOURCES_TABLE": {
+    "TITLE": "Recursos web",
+    "TYPE": "Tipo",
+    "PAGE_TITLE": "Título",
+    "URL": "Enlace",
+    "ACTIONS": "Acciones",
+    "TYPES": {
+      "PAGE": "Página web",
+      "VIDEO": "Video",
+      "BOOK": "Libro",
+      "IMAGE": "Imagen"
+    },
+    "ADD_RESOURCE": "Agregar recurso",
+    "REMOVE_RESOURCE": {
+      "OK": "Recurso eliminado correctamente",
+      "ERROR": "Error al eliminar el recurso"
+    },
+    "NO_RESOURCES": "No existen recursos cargados para esta aventura"
+  },
+  "NEW_WEB_RESOURCE_DIALOG": {
+    "TITLE": "Agregar un nuevo recurso",
+    "FORM": {
+      "NAME": "Nombre",
+      "TYPE": "Tipo",
+      "TITLE": "Título",
+      "LOCALE": "Idioma",
+      "URL": "Enlace",
+      "MASKED_URL": "URL visible al jugador",
+      "NODE": "Nodo",
+      "NO_NODE": "Ninguno"
+    },
+    "LOCALES": {
+      "SPANISH": "Español",
+      "ENGLISH": "Inglés"
+    },
+    "UPLOAD_BTN": "Subir",
+    "MESSAGES": {
+      "INVALID_FORM": "Por favor complete los valores correctamente",
+      "SUCCESS": "Recurso cargado correctamente",
+      "ERROR": "No ha sido posible cargar el recurso"
+    }
+  },
+  "SEARCH_INTERFACE": {
+    "RESULTS_FOUND_MSG": "Se han encontrado {{count}} resultados.",
+    "NO_RESULTS_MSG": "No se han encontrado resultados",
+    "TABS": {
+      "ALL": "Todo",
+      "VIDEOS": "Videos",
+      "IMAGES": "Imágenes"
+    }
   }
 }

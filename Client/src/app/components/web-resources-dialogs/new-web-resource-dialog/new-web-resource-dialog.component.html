@@ -1,0 +1,139 @@
+<h1 mat-dialog-title>{{ "NEW_WEB_RESOURCE_DIALOG.TITLE" | translate }}</h1>
+<div mat-dialog-content *ngIf="!uploading">
+  <form [formGroup]="resourceForm">
+    <mat-grid-list cols="2" rowHeight="5:1">
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>{{
+            "NEW_WEB_RESOURCE_DIALOG.FORM.NAME" | translate
+          }}</mat-label>
+          <input
+            matInput
+            formControlName="docName"
+            required
+            minLength="2"
+            maxLength="50"
+          />
+          <mat-error *ngIf="resourceFormCtrls.docName.hasError('required')">
+            {{ "ERRORS.REQUIRED" | translate }}
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>{{
+            "NEW_WEB_RESOURCE_DIALOG.FORM.TYPE" | translate
+          }}</mat-label>
+          <mat-select formControlName="type" required>
+            <mat-option *ngFor="let type of resTypes" [value]="type.value">{{
+              type.viewValue | translate
+            }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="resourceFormCtrls.type.hasError('required')">
+            {{ "ERRORS.SELECTION_REQUIRED" | translate }}
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>
+            {{ "NEW_WEB_RESOURCE_DIALOG.FORM.TITLE" | translate }}
+          </mat-label>
+          <input
+            matInput
+            formControlName="title"
+            required
+            minLength="2"
+            maxLength="50"
+          />
+          <mat-error *ngIf="resourceFormCtrls.title.hasError('required')">
+            {{ "ERRORS.REQUIRED" | translate }}
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>{{
+            "NEW_WEB_RESOURCE_DIALOG.FORM.LOCALE" | translate
+          }}</mat-label>
+          <mat-select formControlName="locale" required>
+            <mat-option *ngFor="let locale of locales" [value]="locale.value">{{
+              locale.viewValue | translate
+            }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="resourceFormCtrls.locale.hasError('required')">
+            {{ "ERRORS.SELECTION_REQUIRED" | translate }}
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>{{
+            "NEW_WEB_RESOURCE_DIALOG.FORM.URL" | translate
+          }}</mat-label>
+          <input
+            matInput
+            formControlName="url"
+            required
+            #inputURL
+            maxlength="200"
+          />
+          <mat-error *ngIf="resourceFormCtrls.url.hasError('required')">
+            {{ "ERRORS.REQUIRED" | translate }}
+          </mat-error>
+          <mat-error *ngIf="resourceFormCtrls.url.hasError('minlength')">
+            {{ "ERRORS.MIN_LENGTH_5" | translate }}
+          </mat-error>
+          <mat-error *ngIf="resourceFormCtrls.url.hasError('maxlength')">
+            {{ "ERRORS.MAX_LENGTH_200" | translate }}
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>{{
+            "NEW_WEB_RESOURCE_DIALOG.FORM.MASKED_URL" | translate
+          }}</mat-label>
+          <input
+            matInput
+            formControlName="maskedURL"
+            #inputMaskedURL
+            maxlength="200"
+          />
+          <mat-error *ngIf="resourceFormCtrls.maskedURL.hasError('minlength')">
+            {{ "ERRORS.UNREQUIRED_MIN_LENGTH_5" | translate }}
+          </mat-error>
+          <mat-error *ngIf="resourceFormCtrls.maskedURL.hasError('maxlength')">
+            {{ "ERRORS.MAX_LENGTH_200" | translate }}
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>{{
+            "NEW_WEB_RESOURCE_DIALOG.FORM.NODE" | translate
+          }}</mat-label>
+          <mat-select formControlName="task" required>
+            <mat-option *ngFor="let node of nodes" [value]="node.id">{{
+              node.id ? node.label : node.label | translate
+            }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="resourceFormCtrls.task.hasError('required')">
+            {{ "ERRORS.SELECTION_REQUIRED" | translate }}
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </form>
+</div>
+<div *ngIf="uploading">
+  <mat-spinner class="spinner"></mat-spinner>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" (click)="uploadResource()" [disabled]="uploading">
+    {{ "NEW_WEB_RESOURCE_DIALOG.UPLOAD_BTN" | translate }}
+  </button>
+  <button mat-button [mat-dialog-close]="true" [disabled]="uploading">
+    {{ "COMMON.CLOSE" | translate }}
+  </button>
+</div>

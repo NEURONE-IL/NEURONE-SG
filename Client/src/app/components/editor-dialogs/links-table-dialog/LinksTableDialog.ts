@@ -92,4 +92,12 @@ export class LinksTableDialog implements OnInit {
     this.dialogRef.close({ links: this.links });
   }
 
+  viewTable() {
+    const nodeLinks = this.dataSource.data.filter(link => link.source == this.currentNode.id);
+    if(nodeLinks.length > 0) {
+      return true;
+    }
+    return false;
+  }
+
 }

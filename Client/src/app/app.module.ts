@@ -59,8 +59,8 @@ import { ViewPageComponent } from './components/view-page/view-page.component';
 import { SafeurlPipe } from './helpers/safeUrl/safeurl.pipe';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
-import { WebResourcesTableComponent } from './components/web-resources/web-resources-table/web-resources-table.component';
-import { NewWebResourcesDialogComponent } from './components/web-resources/new-web-resources-dialog/new-web-resources-dialog.component';
+import { WebResourcesTableDialogComponent } from './components/web-resources-dialogs/web-resources-table-dialog/web-resources-table-dialog.component';
+import { NewWebResourceDialogComponent } from './components/web-resources-dialogs/new-web-resource-dialog/new-web-resource-dialog.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -93,8 +93,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SearchResultsComponent,
     ViewPageComponent,
     SafeurlPipe,
-    WebResourcesTableComponent,
-    NewWebResourcesDialogComponent,
+    WebResourcesTableDialogComponent,
+    NewWebResourceDialogComponent,
   ],
   imports: [
     BrowserModule,

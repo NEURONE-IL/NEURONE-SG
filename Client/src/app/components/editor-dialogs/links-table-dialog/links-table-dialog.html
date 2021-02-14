@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>{{"LINKS_DIALOG.TITLE" | translate}}</h1>
 <div mat-dialog-content>
-  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" *ngIf="viewTable()">
     <!-- SOURCE Column -->
     <ng-container matColumnDef="source">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -31,13 +31,14 @@
         {{"LINKS_DIALOG.ACTIONS" | translate}}
       </th>
       <td mat-cell *matCellDef="let link; let idx = index">
-        <mat-icon (click)="deleteLink(idx)">delete</mat-icon>
+        <mat-icon (click)="deleteLink(idx)" class="icon-action">delete</mat-icon>
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'hidden': hideRow(row)}"></tr>
   </table>
+  <div *ngIf="!viewTable()">{{"LINKS_DIALOG.NO_LINKS" | translate}}</div>
 </div>
 <div mat-dialog-actions align="end">
   <button mat-button color="accent" (click)="showNewLinkDialog()">

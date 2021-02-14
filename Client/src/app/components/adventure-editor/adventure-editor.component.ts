@@ -10,6 +10,7 @@ import { NewNodeDialogComponent } from '../editor-dialogs/new-node-dialog/NewNod
 import { ChallengeDialogComponent } from '../editor-dialogs/challenge-dialog/ChallengeDialogComponent';
 import { nanoid } from 'nanoid';
 import { LinksTableDialog } from '../editor-dialogs/links-table-dialog/LinksTableDialog';
+import { WebResourcesTableDialogComponent } from '../web-resources-dialogs/web-resources-table-dialog/web-resources-table-dialog.component';
 
 @Component({
   selector: 'app-adventure-editor',
@@ -41,6 +42,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     public newNodeDialog: MatDialog,
     public challengeDialog: MatDialog,
     public linksDialog: MatDialog,
+    public webDialog: MatDialog
   ) {
     this.updateSubscription = this.editorService
       .getRefreshRequest()
@@ -178,7 +180,6 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     });
 
     linksDialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
       if (result.links) {
         this.adventure.links = result.links;
         this.refreshGraph();
@@ -205,6 +206,24 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
         console.log('closed challengeDialog');
         console.log('challenge: ', result.challenge);
         this.currentNode.challenge = result.challenge;
+      }
+    });
+  }
+
+  showWebDialog() {
+    const webDialogRef = this.webDialog.open(
+      WebResourcesTableDialogComponent,
+      {
+        width: '60rem',
+        data: {
+          adventure: this.adventure
+        },
+      }
+    );
+
+    webDialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log(result);
       }
     });
   }

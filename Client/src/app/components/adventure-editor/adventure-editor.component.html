@@ -185,6 +185,14 @@
           <mat-icon>add</mat-icon>
         </button>
         <button
+          class="web-btn"
+          mat-fab
+          color="accent"
+          (click)="showWebDialog()"
+        >
+          <mat-icon>web</mat-icon>
+        </button>
+        <button
           class="refresh-btn"
           mat-fab
           color="accent"
@@ -199,6 +207,6 @@
 
 <ng-template #serviceUpdating>
   <div class="adventure-editor-container">
-    <mat-progress-spinner></mat-progress-spinner>
+    <mat-spinner></mat-spinner>
   </div>
 </ng-template>

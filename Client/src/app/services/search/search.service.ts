@@ -5,19 +5,17 @@ import { ReplaySubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SearchService {
-
   uri = environment.coreUrl;
 
-  // Show/hide search interface
+  // Search interface enabled/disabled
   searchEnabled: boolean;
   searchEnabledSubject = new ReplaySubject<boolean>(1);
   searchEnabledEmitter = this.searchEnabledSubject.asObservable();
 
-
-  constructor(protected http: HttpClient) { }
+  constructor(protected http: HttpClient) {}
 
   init() {
     this.reset();
@@ -27,11 +25,43 @@ export class SearchService {
     this.setSearch(true);
   }
 
-  getDocuments(query, locale, domain){
-    const body = JSON.stringify({query: query});
+  fetchResults(query, locale, adventure, node) {
+    let body: any = {};
+    body.query = query;
+    if (adventure) {
+      body.domain = adventure._id;
+    }
+    if (node) {
+      body.task = node.id;
+    }
+    if (locale) {
+      body.locale = locale;
+    }
     let header = new HttpHeaders();
     header = header.append('Content-Type', 'text/plain');
-    return this.http.post(this.uri+'/document/search', body, {headers: header});
+    return this.http.post(this.uri + '/document/search', body, {
+      headers: header,
+    });
+  }
+
+  upload(resource) {
+    let cleanResource = Object.assign(new Object(), resource);
+    delete cleanResource.checked;
+    cleanResource.domain = cleanResource.domain.split();
+    cleanResource.task = cleanResource.task.split();
+    let header = new HttpHeaders();
+    header = header.append('Content-Type', 'text/plain');
+    return this.http.post(this.uri + '/document/load', cleanResource, {
+      headers: header,
+    });
+  }
+
+  delete(resource) {
+    let header = new HttpHeaders();
+    header = header.append('Content-Type', 'text/plain');
+    return this.http.post(this.uri + '/document/delete', resource, {
+      headers: header,
+    });
   }
 
   setSearch(value: boolean) {
@@ -47,5 +77,4 @@ export class SearchService {
   searchEnabledEmitChange(searchEnabled: boolean) {
     this.searchEnabledSubject.next(searchEnabled);
   }
-
 }
