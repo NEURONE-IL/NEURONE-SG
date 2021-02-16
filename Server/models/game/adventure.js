@@ -47,8 +47,10 @@ const adventureSchema = new Schema({
         activators: {
           type: [
             {
-              node: { type: String },
               condition: { type: String, required: true },
+              node: { type: String },
+              links_count: { type: Number },
+              level: { type: String },
             },
           ],
           default: undefined,
@@ -67,11 +69,11 @@ adventureSchema.set("toJSON", {
     if (returnedObject.nodes) {
       returnedObject.nodes.forEach((node) => {
         // delete node._id;
-        if(node.challenge) {
-          if(node.challenge.options) {
-            node.challenge.options.forEach(option => {
+        if (node.challenge) {
+          if (node.challenge.options) {
+            node.challenge.options.forEach((option) => {
               delete option._id;
-            })
+            });
           }
         }
       });

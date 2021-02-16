@@ -33,6 +33,10 @@ export class HeaderComponent implements OnInit {
     this.reloadPage();
   }
 
+  goHome() {
+    this.router.navigate(['/']);
+  }
+
   reloadPage(): void {
     window.location.reload();
   }

@@ -67,7 +67,7 @@ export class LinksTableDialog implements OnInit {
 
   showNewLinkDialog() {
     const linkDialogRef = this.newLinkDialog.open(NewLinkDialogComponent, {
-      width: '400px',
+      width: '40rem',
       data: {
         nodes: this.nodes,
         node: this.currentNode,

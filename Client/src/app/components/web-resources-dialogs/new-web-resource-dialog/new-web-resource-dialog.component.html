@@ -115,7 +115,7 @@
           }}</mat-label>
           <mat-select formControlName="task" required>
             <mat-option *ngFor="let node of nodes" [value]="node.id">{{
-              node.id ? node.label : node.label | translate
+              node.id!="NO_NODE" ? node.label : node.label | translate
             }}</mat-option>
           </mat-select>
           <mat-error *ngIf="resourceFormCtrls.task.hasError('required')">

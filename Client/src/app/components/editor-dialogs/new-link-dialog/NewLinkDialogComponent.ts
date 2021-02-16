@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -27,13 +27,14 @@ export class NewLinkDialogComponent {
     this.activatorTypes = [
       {
         value: 'correct_answer',
-        viewValue: 'LINKS_DIALOG.ACTIVATOR_TYPES.CORRECT_ANSWER',
+        viewValue: 'NEW_LINK_DIALOG.ACTIVATOR_TYPES.CORRECT_ANSWER',
       },
       {
         value: 'wrong_answer',
-        viewValue: 'LINKS_DIALOG.ACTIVATOR_TYPES.WRONG_ANSWER',
+        viewValue: 'NEW_LINK_DIALOG.ACTIVATOR_TYPES.WRONG_ANSWER',
       },
-      { value: 'level', viewValue: 'LINKS_DIALOG.ACTIVATOR_TYPES.LEVEL' },
+      { value: 'level', viewValue: 'NEW_LINK_DIALOG.ACTIVATOR_TYPES.LEVEL' },
+      { value: 'relevant_links', viewValue: 'NEW_LINK_DIALOG.ACTIVATOR_TYPES.RELEVANT_LINKS' }
     ];
     this.GMlevels = [
       {
@@ -66,9 +67,9 @@ export class NewLinkDialogComponent {
       },
     ];
     this.linkForm = this.formBuilder.group({
-      label: [],
+      label: ['', [Validators.required]],
       source: [this.node.id],
-      target: [],
+      target: ['', [Validators.required]],
       activators: this.formBuilder.array([]),
     });
   }
@@ -76,8 +77,17 @@ export class NewLinkDialogComponent {
   ngOnInit(): void {}
 
   addNewLink() {
-    console.log(this.linkForm.value);
     const newLink = this.linkForm.value;
+    if (newLink.activators.length == 0) {
+      delete newLink.activators;
+    }
+    else {
+      newLink.activators.forEach(activator => {
+        if (!activator.node) delete activator.node;
+        if (!activator.level) delete activator.level;
+        if (!activator.links_count) delete activator.links_count;
+      });
+    }
     this.dialogRef.close({ newLink: newLink });
   }
 
@@ -87,8 +97,10 @@ export class NewLinkDialogComponent {
 
   addActivator() {
     const newActivator = this.formBuilder.group({
-      node: '',
+      node: undefined,
       condition: '',
+      level: undefined,
+      links_count: undefined
     });
 
     this.activatorsArray.push(newActivator);
@@ -124,6 +136,14 @@ export class NewLinkDialogComponent {
     }
     return false;
   }
+
+  activatorNeedsLinksValue(activator) {
+    if (activator.get('condition').value == 'relevant_links') {
+      return true;
+    }
+    return false;
+  }
+
   get challengeNodes() {
     return this.nodes.filter(node => node.type == 'challenge');
   }

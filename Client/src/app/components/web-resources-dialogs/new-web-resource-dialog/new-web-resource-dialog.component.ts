@@ -31,11 +31,11 @@ export class NewWebResourceDialogComponent implements OnInit {
       { value: 'video', viewValue: 'WEB_RESOURCES_TABLE.TYPES.VIDEO' },
     ];
     this.locales = [
-      { value: 'en-US', viewValue: 'NEW_WEB_RESOURCE_DIALOG.LOCALES.ENGLISH' },
       { value: 'es-CL', viewValue: 'NEW_WEB_RESOURCE_DIALOG.LOCALES.SPANISH' },
+      { value: 'en-US', viewValue: 'NEW_WEB_RESOURCE_DIALOG.LOCALES.ENGLISH' },
     ];
     this.adventure = this.data.adventure;
-    this.nodes.push({id: null, label: "NEW_WEB_RESOURCE_DIALOG.FORM.NO_NODE"})
+    this.nodes.push({id: "NO_NODE", label: "NEW_WEB_RESOURCE_DIALOG.FORM.NO_NODE"})
     this.nodes = this.nodes.concat(this.adventure.nodes);
     this.setForm();
   }

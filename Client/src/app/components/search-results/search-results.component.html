@@ -9,7 +9,7 @@
               <mat-card class="cardStyle doc-card">
                 <mat-card-content>
                   <h5 class="url-bar">{{doc.url}}</h5>
-                  <a [routerLink]="['/game/view-page', doc.route]"  class="document-link">{{doc.title}}</a>
+                  <a [routerLink]="['/game/view-page', doc.route]" [state]="{ doc: doc }" class="document-link">{{doc.title}}</a>
                   <p>{{doc.searchSnippet}}</p>
                 </mat-card-content>
               </mat-card>

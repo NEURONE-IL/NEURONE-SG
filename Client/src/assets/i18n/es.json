@@ -90,11 +90,14 @@
     "LABEL_PLACEHOLDER": "Abrir la puerta de la izquierda",
     "ADD_ACTIVATOR": "Agregar activador",
     "ACTIVATOR_NODE": "Nodo",
+    "ACTIVATOR_LEVEL": "Nivel",
     "ACTIVATOR_CONDITION": "Condición",
+    "RELEVANT_LINKS_VALUE": "Cantidad de páginas relevantes visitadas",
     "ACTIVATOR_TYPES": {
       "CORRECT_ANSWER": "Desafío correcto",
       "WRONG_ANSWER": "Desafío incorrecto",
-      "LEVEL": "Nivel"
+      "LEVEL": "Nivel",
+      "RELEVANT_LINKS": "Páginas relevantes visitadas"
     }
   },
   "NEW_NODE_DIALOG": {

@@ -80,8 +80,8 @@ export class AdventureSelectorComponent implements OnInit {
     const nodeDialogRef = this.newAdventureDialog.open(
       NewAdventureDialogComponent,
       {
-        width: '50em',
-        height: '20em',
+        width: '50rem',
+        height: '20rem',
       }
     );
 

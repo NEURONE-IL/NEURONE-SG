@@ -16,6 +16,12 @@ export class GameService {
   // Player data
   player: any;
 
+  // Activators
+  activators = [];
+
+  // Relevant resources visited
+  relevantDocsVisited = [];
+
   // Current node
   currentNode: any;
   currentNodeSubject = new ReplaySubject<any>(1);
@@ -45,15 +51,16 @@ export class GameService {
     await this.fetchGMStats();
     await new Promise((r) => setTimeout(r, 1000));
     this.setLoading(false);
-    console.log('init complete');
     return Promise.resolve(1);
   }
 
   reset() {
+    this.loading = true;
     this.adventure = undefined;
     this.player = undefined;
-    this.loading = true;
     this.currentNode = undefined;
+    this.activators = [];
+    this.relevantDocsVisited = [];
     this.adventureEmitChange(this.adventure);
     this.loadingEmitChange(this.loading);
     this.currentNodeEmitChange(this.currentNode);
@@ -108,6 +115,67 @@ export class GameService {
     return this.adventure.nodes;
   }
 
+  checkRelevantDoc(doc) {
+    if (doc) {
+      const docDomain = doc.domain ? doc.domain : undefined;
+      const docTask = doc.task ? doc.task : undefined;
+
+      const domain = this.adventure._id;
+      const task = this.currentNode.id;
+
+      if (docDomain == domain && docTask == task) {
+        console.log('RELEVANT');
+        if (
+          !this.relevantDocsVisited.some((visitedDoc) => {
+            return visitedDoc._id == doc._id;
+          })
+        ) {
+          this.relevantDocsVisited.push(doc);
+          if (
+            !this.activators.some((activator) => {
+              return activator.condition == 'relevant_links';
+            })
+          ) {
+            let relevantLinksActivator = {
+              condition: 'relevant_links',
+              links_count: 1,
+            };
+            this.pushActivator(relevantLinksActivator);
+          } else {
+            let currentActivator = this.activators.find(
+              (activator) => activator.condition == 'relevant_links'
+            );
+            currentActivator.links_count++;
+          }
+        }
+      } else {
+        console.log('NOT RELEVANT');
+      }
+      console.log(this.activators);
+    }
+  }
+
+  pushActivator(activator) {
+    if (
+      activator.condition == 'wrong_answer' ||
+      activator.condition == 'correct_answer'
+    ) {
+      const found = this.activators.some((currentActivator) => {
+        return (
+          currentActivator.condition == activator.condition &&
+          currentActivator.node == activator.node
+        );
+      });
+      if (!found) {
+        this.activators.push(activator);
+      }
+    }
+    else {
+      this.activators.push(activator);
+    }
+    console.log(this.activators);
+  }
+
   async fetchGMStats() {
     if (this.player.role == 'player') {
       let gmStats = {
@@ -150,12 +218,11 @@ export class GameService {
       this.gmStats = gmStats;
       this.gmStatsEmitChange(this.gmStats);
       console.log('gmStats: ', this.gmStats);
-    }
-    else {
+    } else {
       console.log('Current user is not a player (Gamification not activated)');
       let gmStats = {
-        gmEnabled: false
-      }
+        gmEnabled: false,
+      };
       this.gmStats = gmStats;
       this.gmStatsEmitChange(this.gmStats);
       console.log('gmStats: ', this.gmStats);

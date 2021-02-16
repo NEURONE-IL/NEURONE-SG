@@ -1,4 +1,4 @@
-.page-container{
+.page-container {
   min-width: 70vw;
   max-width: 70vw;
   height: 100%;
@@ -10,11 +10,8 @@
   min-width: 100%;
   height: 100%;
   box-sizing: border-box;
+  padding: 0.5rem;
   // overflow-y: scroll;
-}
-
-iframe {
-  overflow-y: scroll;
 }
 
 ::-webkit-scrollbar {
@@ -27,4 +24,9 @@ iframe {
 ::-webkit-scrollbar-thumb {
   background: #283593;
   border-radius: 3em;
+}
+
+.page-frame {
+  display: block;
+  width: 100%;
 }

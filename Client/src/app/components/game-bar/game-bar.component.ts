@@ -20,7 +20,6 @@ export class GameBarComponent implements OnInit, OnDestroy {
   adventure: any;
   answerForm: FormGroup;
   challengePending = false;
-  activators = [];
   currentLinks = [];
   gmStats: any;
 
@@ -99,7 +98,7 @@ export class GameBarComponent implements OnInit, OnDestroy {
       (res) => {
         console.log(res);
         if (res.activator) {
-          this.activators.push(res.activator);
+          this.gameService.pushActivator(res.activator);
         }
         this.setCurrentLinks();
         this.challengePending = false;
@@ -118,7 +117,7 @@ export class GameBarComponent implements OnInit, OnDestroy {
     );
     this.currentLinks = ActivatorsUtils.checkActivators(
       currentLinks,
-      this.activators
+      this.gameService.activators
     );
   }
 

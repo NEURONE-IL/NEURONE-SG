@@ -156,7 +156,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
 
   showNewNodeForm(): void {
     const nodeDialogRef = this.newNodeDialog.open(NewNodeDialogComponent, {
-      width: '400px',
+      width: '40rem',
       data: { node: this.editorService.adventure },
     });
 
@@ -195,7 +195,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     const challengeDialogRef = this.challengeDialog.open(
       ChallengeDialogComponent,
       {
-        width: '400px',
+        width: '40rem',
         data: {
           node: this.currentNode,
         },
@@ -215,7 +215,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     const webDialogRef = this.webDialog.open(
       WebResourcesTableDialogComponent,
       {
-        width: '60rem',
+        width: '70rem',
         data: {
           adventure: this.adventure
         },

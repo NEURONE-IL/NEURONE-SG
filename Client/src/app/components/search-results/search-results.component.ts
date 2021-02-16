@@ -30,7 +30,7 @@ export class SearchResultsComponent implements OnInit {
           this.query,
           null,
           this.gameService.adventure,
-          this.gameService.currentNode
+          null
         )
         .subscribe(
           (res) => {
@@ -43,5 +43,9 @@ export class SearchResultsComponent implements OnInit {
           }
         );
     });
+  }
+
+  visitResult() {
+
   }
 }
