@@ -38,31 +38,31 @@ export class NewLinkDialogComponent {
     ];
     this.GMlevels = [
       {
-        key: 'principiante_1',
+        value: 'adventure_level_Principiante',
         viewValue: 'Principiante',
       },
       {
-        key: 'aprendiz_1',
+        value: 'adventure_level_Aprendiz',
         viewValue: 'Aprendiz',
       },
       {
-        key: 'adepto_1',
+        value: 'adventure_level_Adepto',
         viewValue: 'Adepto',
       },
       {
-        key: 'graduado_1',
+        value: 'adventure_level_Graduado',
         viewValue: 'Graduado',
       },
       {
-        key: 'experto_1',
+        value: 'adventure_level_Experto',
         viewValue: 'Experto',
       },
       {
-        key: 'maestro_1',
+        value: 'adventure_level_Maestro',
         viewValue: 'Maestro',
       },
       {
-        key: 'leyenda_1',
+        value: 'adventure_level_Leyenda',
         viewValue: 'Leyenda',
       },
     ];
@@ -77,6 +77,7 @@ export class NewLinkDialogComponent {
   ngOnInit(): void {}
 
   addNewLink() {
+    console.log('linkForm: ', this.linkForm.value)
     const newLink = this.linkForm.value;
     if (newLink.activators.length == 0) {
       delete newLink.activators;
@@ -110,10 +111,6 @@ export class NewLinkDialogComponent {
   }
   removeActivator(idx) {
     this.activatorsArray.removeAt(idx);
-  }
-
-  printActivator(activator) {
-    console.log(activator.get('condition'));
   }
 
   getActivatorCondition(activator) {

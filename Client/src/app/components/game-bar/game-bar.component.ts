@@ -67,6 +67,7 @@ export class GameBarComponent implements OnInit, OnDestroy {
     this.gmStatsSubscription = this.gameService.gmStatsEmitter.subscribe(
       (gmStats) => {
         this.gmStats = gmStats;
+        this.setCurrentLinks();
       }
     )
   }
@@ -100,9 +101,9 @@ export class GameBarComponent implements OnInit, OnDestroy {
         if (res.activator) {
           this.gameService.pushActivator(res.activator);
         }
+        this.gameService.fetchGMStats();
         this.setCurrentLinks();
         this.challengePending = false;
-        this.gameService.fetchGMStats();
       },
       (err) => {
         console.log(err);
@@ -112,13 +113,16 @@ export class GameBarComponent implements OnInit, OnDestroy {
 
   setCurrentLinks() {
     console.log('getCurrentLinks called');
+    console.log('all links:',this.links);
     let currentLinks = this.links.filter(
       (link) => link.source == this.currentNode.id
     );
+    console.log('pre links:',currentLinks);
     this.currentLinks = ActivatorsUtils.checkActivators(
       currentLinks,
       this.gameService.activators
     );
+    console.log('post links:',this.currentLinks);
   }
 
   goTo(targetNodeId) {

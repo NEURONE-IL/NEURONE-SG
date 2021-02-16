@@ -169,11 +169,31 @@ export class GameService {
       if (!found) {
         this.activators.push(activator);
       }
-    }
-    else {
+    } else {
       this.activators.push(activator);
     }
     console.log(this.activators);
+  }
+
+  pushLevelActivator(level) {
+    const levelActivator = {
+      condition: 'level',
+      level: level,
+    };
+    if (
+      !this.activators.some((activator) => {
+        return activator.condition == 'level';
+      })
+    ) {
+      this.pushActivator(levelActivator);
+    } else {
+      this.activators.forEach((activator, i) => {
+        if (activator.condition == 'level') {
+          this.activators.splice(i, 1);
+          this.pushActivator(levelActivator);
+        }
+      });
+    }
   }
 
   async fetchGMStats() {
@@ -216,6 +236,11 @@ export class GameService {
         });
 
       this.gmStats = gmStats;
+      if (gmStats.currentLevel) {
+        console.log('level: ', gmStats.currentLevel.level.code);
+        const level = gmStats.currentLevel.level.code;
+        this.pushLevelActivator(level);
+      }
       this.gmStatsEmitChange(this.gmStats);
       console.log('gmStats: ', this.gmStats);
     } else {
