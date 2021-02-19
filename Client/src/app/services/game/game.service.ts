@@ -160,14 +160,27 @@ export class GameService {
       activator.condition == 'wrong_answer' ||
       activator.condition == 'correct_answer'
     ) {
-      const found = this.activators.some((currentActivator) => {
+      let found = this.activators.some((currentActivator, idx) => {
         return (
-          currentActivator.condition == activator.condition &&
+          (activator.condition == 'wrong_answer' ||
+            activator.condition == 'correct_answer') &&
           currentActivator.node == activator.node
         );
       });
       if (!found) {
         this.activators.push(activator);
+      } else {
+        if (activator.condition == 'correct_answer') {
+          let wrongIdx = this.activators.findIndex(
+            (a) => a.condition == 'wrong_answer' && a.node == activator.node
+          );
+          console.log('wrongIdx: ', wrongIdx);
+          if (wrongIdx >= 0) {
+            console.log('wrongIdx inside: ', wrongIdx);
+            this.activators.splice(wrongIdx, 1);
+            this.activators.push(activator);
+          }
+        }
       }
     } else {
       this.activators.push(activator);

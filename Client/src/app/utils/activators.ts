@@ -16,7 +16,6 @@ export default class ActivatorsUtils {
 
   private static includesActivator(array, activator) {
     let found = false
-
     console.log("ACTIVATORS: ", array);
     array.forEach(element => {
       if (activator.condition == "correct_answer" || activator.condition == "wrong_answer") {
