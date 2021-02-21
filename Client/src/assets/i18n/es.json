@@ -2,6 +2,7 @@
   "COMMON": {
     "SAVE": "Guardar",
     "CLOSE": "Cerrar",
+    "CANCEL": "Cancelar",
     "SUBMIT": "Enviar",
     "GAMIFY": "Ludificar",
     "FINISH": "Finalizar"
@@ -39,14 +40,27 @@
     "PASSWORD": "Contraseña",
     "ENTER": "Registrarse",
     "TOGGLE_LOGIN": "Iniciar sesión",
-    "REQUIRED": "El valor es requerido"
+    "REQUIRED": "El valor es requerido",
+    "ERRORS": {
+      "USERNAME_REQUIRED": "Debe ingresar un nombre de usuario",
+      "USERNAME_TOOSHORT": "Debe ingresar un nombre de usuario mayor a 4 caracteres",
+      "EMAIL_REQUIRED": "Debe ingresar un correo electrónico",
+      "EMAIL_INVALID": "Debe ingresar un correo electrónico válido",
+      "PASSWORD_REQUIRED": "Debe ingresar una contraseña"
+    }
   },
   "LOGIN": {
     "TITLE": "Iniciar sesión",
     "EMAIL": "Correo electrónico",
     "PASSWORD": "Contraseña",
     "TOGGLE_REGISTER": "Registrarse",
-    "ENTER": "Iniciar sesión"
+    "ENTER": "Iniciar sesión",
+    "TOASTR": {
+      "USER_NOT_CONFIRMED": "Debes confirmar tu correo electrónico antes de ingresar, por favor revise su bandeja de entrada y spam",
+      "EMAIL_NOT_FOUND": "Correo no encontrado",
+      "INVALID_PASSWORD": "Credenciales incorrectas",
+      "SUCCESS": "Sesión iniciada satisfactoriamente"
+    }
   },
   "GAME": {},
   "EDITOR": {
@@ -81,7 +95,10 @@
     "TARGET": "Destino",
     "ACTIONS": "Acciones",
     "ADD_LINK": "Agregar rama",
-    "NO_LINKS": "No existen ramas para este nodo"
+    "NO_LINKS": "No existen ramas para este nodo",
+    "TOOLTIPS": {
+      "ADD_LINK": "Agregar una nueva rama a partir de este nodo"
+    }
   },
   "NEW_LINK_DIALOG": {
     "TITLE": "Agregar una nueva rama",
@@ -98,6 +115,9 @@
       "WRONG_ANSWER": "Desafío incorrecto",
       "LEVEL": "Nivel",
       "RELEVANT_LINKS": "Páginas relevantes visitadas"
+    },
+    "TOOLTIPS": {
+      "ADD_ACTIVATOR": "Agregar una nueva condición lógica que active esta rama durante una sesión de juego"
     }
   },
   "NEW_NODE_DIALOG": {

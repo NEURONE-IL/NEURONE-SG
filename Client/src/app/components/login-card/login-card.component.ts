@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
@@ -18,7 +20,9 @@ export class LoginCardComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private auth: AuthService,
-    public router: Router
+    public router: Router,
+    private translate: TranslateService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -36,19 +40,37 @@ export class LoginCardComponent implements OnInit {
       email: this.loginForm.value.email,
       password: this.loginForm.value.password,
     };
-    this.auth.login(credentials).subscribe(
-      (data) => {
-        this.auth.saveToken(data.token);
-        this.auth.saveUser(data.user);
 
-        this.isLoginFailed = false;
-        this.auth.userEmitChange(this.auth.getUser());
-        this.reloadPage();
-      },
-      (err) => {
-        this.isLoginFailed = true;
-      }
-    );
+    this.translate.get('LOGIN.TOASTR').subscribe((toastr) => {
+      this.auth.login(credentials).subscribe(
+        (data) => {
+          this.auth.saveToken(data.token);
+          this.auth.saveUser(data.user);
+
+          this.isLoginFailed = false;
+          this.toastr.success(toastr.SUCCESS);
+          this.auth.userEmitChange(this.auth.getUser());
+          this.reloadPage();
+        },
+        (err) => {
+          this.isLoginFailed = true;
+          if (err.error=="EMAIL_NOT_FOUND") {
+            this.toastr.error(toastr.EMAIL_NOT_FOUND);
+          }
+          if (err.error=="INVALID_PASSWORD") {
+            this.toastr.error(toastr.INVALID_PASSWORD);
+          }
+          if (err.error=="USER_NOT_CONFIRMED") {
+            this.toastr.error(toastr.USER_NOT_CONFIRMED);
+          }
+          console.log(err);
+        }
+      );
+    },
+    (err) => {
+      console.log(err);
+      this.isLoginFailed = true;
+    });
   }
 
   toggleRegister() {

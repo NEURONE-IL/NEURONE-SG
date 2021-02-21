@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
@@ -38,9 +39,9 @@ export class RegisterCardComponent implements OnInit {
     ];
     this.registerForm = this.formBuilder.group({
       username: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
-      role: [this.roles[0].value, Validators.required]
+      role: [this.roles[0].value, Validators.required],
     });
     if (this.router.url === '/login/confirmedOK') {
       console.log('confirmed');

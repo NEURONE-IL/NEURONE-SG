@@ -44,6 +44,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { QuestionFormComponent } from './components/game-bar/question-form/question-form.component';
 import { MultipleFormComponent } from './components/game-bar/multiple-form/multiple-form.component';
 import { SynthesisFormComponent } from './components/game-bar/synthesis-form/synthesis-form.component';
@@ -124,6 +125,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatCheckboxModule,
     MatSlideToggleModule,
     MatTableModule,
+    MatTooltipModule,
     ToastrModule.forRoot(),
     TranslateModule.forRoot({
       loader: {

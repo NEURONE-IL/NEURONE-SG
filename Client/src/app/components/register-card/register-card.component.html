@@ -11,7 +11,7 @@
             </mat-option>
           </mat-select>
           <mat-error>
-            {{ "REGISTER.REQUIRED" | translate }}
+            {{ "REGISTER.ERRORS.ROLE_REQUIRED" | translate }}
           </mat-error>
         </mat-form-field>
       </p>
@@ -21,7 +21,7 @@
           <mat-label>{{ "REGISTER.USERNAME" | translate }}</mat-label>
           <input type="text" matInput formControlName="username" />
           <mat-error>
-            {{ "REGISTER.REQUIRED" | translate }}
+            {{ "REGISTER.ERRORS.USERNAME_REQUIRED" | translate }}
           </mat-error>
         </mat-form-field>
       </p>
@@ -30,8 +30,11 @@
         <mat-form-field>
           <mat-label>{{ "REGISTER.EMAIL" | translate }}</mat-label>
           <input type="text" matInput formControlName="email" />
-          <mat-error>
-            {{ "REGISTER.REQUIRED" | translate }}
+          <mat-error *ngIf="registerForm.controls.email.hasError('required')">
+            {{ "REGISTER.ERRORS.EMAIL_REQUIRED" | translate }}
+          </mat-error>
+          <mat-error *ngIf="registerForm.controls.email.hasError('email')">
+            {{ "REGISTER.ERRORS.EMAIL_INVALID" | translate }}
           </mat-error>
         </mat-form-field>
       </p>
@@ -41,7 +44,7 @@
           <mat-label>{{ "REGISTER.PASSWORD" | translate }}</mat-label>
           <input type="password" matInput formControlName="password" />
           <mat-error>
-            {{ "REGISTER.REQUIRED" | translate }}
+            {{ "REGISTER.ERRORS.PASSWORD_REQUIRED" | translate }}
           </mat-error>
         </mat-form-field>
       </p>

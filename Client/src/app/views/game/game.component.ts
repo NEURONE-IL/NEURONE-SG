@@ -11,18 +11,23 @@ import { SearchService } from '../../services/search/search.service';
 export class GameComponent implements OnInit {
 
   searchEnabled: boolean;
+  loading: boolean;
 
   searchEnabledSubscription: Subscription;
+  loadingSubscription: Subscription;
 
   constructor(
-    public searchService: SearchService,
-    public gameService: GameService
+    private searchService: SearchService,
+    private gameService: GameService
   ) {
     this.searchEnabledSubscription = this.searchService.searchEnabledEmitter.subscribe(
       (searchEnabled) => {
         this.searchEnabled = searchEnabled;
       }
     );
+    this.loadingSubscription = this.gameService.loadingEmitter.subscribe((loading) => {
+      this.loading = loading;
+    });
   }
 
   ngOnInit(): void {}
