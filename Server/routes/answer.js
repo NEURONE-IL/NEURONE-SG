@@ -80,7 +80,6 @@ router.get("", [verifyToken], async (req, res) => {
     "/:answer_id",
     [answerMiddleware.verifyBody, verifyToken],
     async (req, res) => {
-      console.log('updating!!');
       const id = req.params.answer_id;
       if(req.body.type=='question') {
         Answer.findOne({ _id: id }, (err, answer) => {
