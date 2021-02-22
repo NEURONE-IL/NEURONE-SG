@@ -20,7 +20,6 @@ const gamificationRoutes = require('./routes/gamification');
 // Setup DB
 mongoose.connect(config.DBHost, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
     .then(()=>{
-        console.log("MongoDB: Successfully connected.");
         initial();
     });
 let db = mongoose.connection;

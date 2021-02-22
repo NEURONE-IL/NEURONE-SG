@@ -257,7 +257,7 @@ describe("Answers API", () => {
   });
 
   describe("POST question type answer success", () => {
-    it("should POST an answer succesfully", (done) => {
+    it("should POST a question type answer succesfully", (done) => {
       let answer = {
         node: existingChallengeId,
         user: existingUserId,
@@ -278,7 +278,7 @@ describe("Answers API", () => {
   });
 
   describe("POST multiple type answer success", () => {
-    it("should POST an answer succesfully", (done) => {
+    it("should POST a multiple type answer succesfully", (done) => {
       let multipleAnswer = {
         answer: [
           { checked: true, value: "Elvis Presley" },
