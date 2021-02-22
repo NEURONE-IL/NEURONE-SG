@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Adventure = require("../models/game/adventure");
-const { nanoid } = require('nanoid');
+const { nanoid } = require("nanoid");
 
 const adventureMiddleware = require("../middlewares/adventureMiddleware");
 const verifyToken = require("../middlewares/verifyToken");
@@ -32,47 +32,55 @@ router.get("/:adventure_id", [verifyToken], async (req, res) => {
 });
 
 // router.post('',  [verifyToken, authMiddleware.isAdmin, adventureMiddleware.verifyBody], async (req, res) => {
-router.post("", [adventureMiddleware.verifyBody], async (req, res) => {
-  const newAdventure = new Adventure(req.body);
-  newAdventure.save((err, adventure) => {
-    if (err) {
-      return res.status(404).json({
-        err,
-      });
-    }
-    res.status(200).json(adventure);
-  });
-});
+router.post(
+  "",
+  [adventureMiddleware.verifyBody, verifyToken],
+  async (req, res) => {
+    const newAdventure = new Adventure(req.body);
+    newAdventure.save((err, adventure) => {
+      if (err) {
+        return res.status(404).json({
+          err,
+        });
+      }
+      res.status(200).json(adventure);
+    });
+  }
+);
 
-router.post("/new", [adventureMiddleware.verifyNewBody], async (req, res) => {
-  const initialAdventure = req.body;
-  initialAdventure.nodes = [
-    {
-      id: nanoid(13),
-      type: "initial",
-      label: "Start",
-      data: {
-        image: "",
-        video: "",
-        text: "sample text",
+router.post(
+  "/new",
+  [adventureMiddleware.verifyNewBody, verifyToken],
+  async (req, res) => {
+    const initialAdventure = req.body;
+    initialAdventure.nodes = [
+      {
+        id: nanoid(13),
+        type: "initial",
+        label: "Start",
+        data: {
+          image: "",
+          video: "",
+          text: "sample text",
+        },
       },
-    },
-  ];
-  const newAdventure = new Adventure(initialAdventure);
-  newAdventure.save((err, adventure) => {
-    if (err) {
-      return res.status(404).json({
-        err,
-      });
-    }
-    res.status(200).json(adventure);
-  });
-});
+    ];
+    const newAdventure = new Adventure(initialAdventure);
+    newAdventure.save((err, adventure) => {
+      if (err) {
+        return res.status(404).json({
+          err,
+        });
+      }
+      res.status(200).json(adventure);
+    });
+  }
+);
 
 // router.put('/:adventure_id',  [verifyToken, authMiddleware.isAdmin, adventureMiddleware.verifyBody], async (req, res) => {
 router.put(
   "/:adventure_id",
-  [adventureMiddleware.verifyBody],
+  [adventureMiddleware.verifyBody, verifyToken],
   async (req, res) => {
     const id = req.params.adventure_id;
     Adventure.findOne({ _id: id }, (err, adventure) => {
@@ -99,18 +107,18 @@ router.put(
 );
 
 // router.delete('/:adventure_id',  [verifyToken, authMiddleware.isAdmin] , async (req, res) => {
-router.delete('/:adventure_id',  [] , async (req, res) => {
+router.delete("/:adventure_id", [], async (req, res) => {
   const _id = req.params.adventure_id;
-  Adventure.deleteOne({_id: _id}, (err, adventure) => {
-      if (err) {
-          return res.status(404).json({
-              err
-          });
-      }
-      res.status(200).json({
-          adventure
+  Adventure.deleteOne({ _id: _id }, (err, adventure) => {
+    if (err) {
+      return res.status(404).json({
+        err,
       });
-  })
+    }
+    res.status(200).json({
+      adventure,
+    });
+  });
 });
 
 module.exports = router;
