@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon app.js localhost 3000",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --timeout 10000 --exit"
   },
   "author": "Cristóbal Becerra",
   "license": "AGPLv3",
@@ -13,6 +13,8 @@
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "chai": "^4.3.0",
+    "chai-http": "^4.3.0",
     "config": "^3.3.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -20,6 +22,7 @@
     "joi": "^17.3.0",
     "js-levenshtein": "^1.1.6",
     "jsonwebtoken": "^8.5.1",
+    "mocha": "^8.3.0",
     "mongoose": "^5.11.11",
     "nanoid": "^3.1.20",
     "nodemailer": "^6.4.17",
