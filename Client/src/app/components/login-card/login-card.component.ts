@@ -50,7 +50,7 @@ export class LoginCardComponent implements OnInit {
           this.isLoginFailed = false;
           this.toastr.success(toastr.SUCCESS);
           this.auth.userEmitChange(this.auth.getUser());
-          this.reloadPage();
+          this.router.navigate(['/']);
         },
         (err) => {
           this.isLoginFailed = true;

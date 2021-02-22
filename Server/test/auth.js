@@ -29,9 +29,9 @@ describe("Auth API", () => {
       name: "creator",
     });
     // Save roles
-    adminRole.save();
-    playerRole.save();
-    creatorRole.save();
+    await adminRole.save();
+    await playerRole.save();
+    await creatorRole.save();
 
     // Create users
     const salt = await bcrypt.genSalt(10);

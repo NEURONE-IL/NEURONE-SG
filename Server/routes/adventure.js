@@ -4,8 +4,9 @@ const Adventure = require("../models/game/adventure");
 const { nanoid } = require('nanoid');
 
 const adventureMiddleware = require("../middlewares/adventureMiddleware");
+const verifyToken = require("../middlewares/verifyToken");
 
-router.get("", [], async (req, res) => {
+router.get("", [verifyToken], async (req, res) => {
   Adventure.find({}, (err, adventures) => {
     if (err) {
       return res.status(404).json({
@@ -17,7 +18,7 @@ router.get("", [], async (req, res) => {
   });
 });
 
-router.get("/:adventure_id", [], async (req, res) => {
+router.get("/:adventure_id", [verifyToken], async (req, res) => {
   const _id = req.params.adventure_id;
   Adventure.findOne({ _id: _id }, (err, adventure) => {
     if (err) {
