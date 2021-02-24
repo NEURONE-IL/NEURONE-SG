@@ -12,8 +12,9 @@ const checkAnswer = async (node, challenge, answer) => {
     },
   };
 
-  // GM constants
+  // GM constants and variables
   const user = await User.findOne({ _id: answer.user });
+  let points = 0;
   const pointElement = await GameElement.findOne({ key: "exp_1" });
   const answerAction = await GameElement.findOne({
     key: "responder_pregunta_1",
@@ -27,8 +28,10 @@ const checkAnswer = async (node, challenge, answer) => {
     );
     if (distance < 2) {
       answerCheck.activator.condition = "correct_answer";
+      points += 100;
     } else {
       answerCheck.activator.condition = "wrong_answer";
+      points += 10;
     }
     console.log("answerCheck", answerCheck);
   } else if (answer.type == "multiple") {
@@ -40,8 +43,10 @@ const checkAnswer = async (node, challenge, answer) => {
     });
     if (correct) {
       answerCheck.activator.condition = "correct_answer";
+      points += 100;
     } else {
       answerCheck.activator.condition = "wrong_answer";
+      points += 10;
     }
   }
 
@@ -50,7 +55,7 @@ const checkAnswer = async (node, challenge, answer) => {
     let post = {
       point_code: pointElement.gm_code,
       date: answer.createdAt,
-      amount: 100,
+      amount: points,
     };
     pointService.givePoints(post, user.gm_code, (err, data) => {
       if (err) {
