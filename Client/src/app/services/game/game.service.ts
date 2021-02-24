@@ -222,14 +222,14 @@ export class GameService {
         .toPromise()
         .then((res) => {
           let levels = res;
-          gmStats.currentLevel = levels[0];
-          for (let i = 0; i < levels.length; i++) {
-            if (
-              levels[i].point_threshold < gmStats.currentLevel.point_threshold
-            ) {
-              gmStats.currentLevel = levels[i];
-            }
-          }
+          gmStats.currentLevel = levels[levels.length - 1];
+          // for (let i = 0; i < levels.length; i++) {
+          //   if (
+          //     levels[i].point_threshold < gmStats.currentLevel.point_threshold
+          //   ) {
+          //     gmStats.currentLevel = levels[i];
+          //   }
+          // }
         })
         .catch((err) => {
           gmStats.gmEnabled = false;
@@ -257,7 +257,7 @@ export class GameService {
       this.gmStatsEmitChange(this.gmStats);
       console.log('gmStats: ', this.gmStats);
     } else {
-      console.log('Current user is not a player (Gamification not activated)');
+      console.log('Current user is not a player (Gamification disabled)');
       let gmStats = {
         gmEnabled: false,
       };
