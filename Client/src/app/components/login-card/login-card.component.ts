@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
+import { ConfigService } from 'src/app/services/game/config.service';
 import { StoreSessionService } from 'src/app/services/tracking/store-session.service';
 import { AuthService } from '../../services/auth/auth.service';
 
@@ -14,6 +15,7 @@ import { AuthService } from '../../services/auth/auth.service';
 export class LoginCardComponent implements OnInit {
   loginForm: FormGroup;
   isLoginFailed = false;
+  config: any;
 
   @Output()
   switchToRegister = new EventEmitter<boolean>();
@@ -24,10 +26,9 @@ export class LoginCardComponent implements OnInit {
     public router: Router,
     private translate: TranslateService,
     private toastr: ToastrService,
-    private storeSession: StoreSessionService
-  ) {}
-
-  ngOnInit(): void {
+    private storeSession: StoreSessionService,
+    private configService: ConfigService
+  ) {
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
@@ -35,6 +36,10 @@ export class LoginCardComponent implements OnInit {
     if (this.router.url === '/login/confirmedOK') {
       console.log('confirmed');
     }
+  }
+
+  async ngOnInit(): Promise<void> {
+    await this.fetchConfig();
   }
 
   onSubmit() {
@@ -53,7 +58,9 @@ export class LoginCardComponent implements OnInit {
             this.isLoginFailed = false;
 
             // Post session login to server
-            this.postSessionLogin(data);
+            if (this.config.sessionTracking) {
+              this.postSessionLogin(data);
+            }
 
             this.toastr.success(toastr.SUCCESS);
             this.auth.userEmitChange(this.auth.getUser());
@@ -83,14 +90,26 @@ export class LoginCardComponent implements OnInit {
 
   private postSessionLogin(data: any) {
     if (this.auth.getUser().role == 'player') {
-    let sessionLog = {
-      userId: data.user._id,
-      userEmail: data.user.email,
-      state: 'login',
-      localTimeStamp: Date.now(),
-    };
-    this.storeSession.postSessionLog(sessionLog);
+      let sessionLog = {
+        userId: data.user._id,
+        userEmail: data.user.email,
+        state: 'login',
+        localTimeStamp: Date.now(),
+      };
+      this.storeSession.postSessionLog(sessionLog);
+    }
   }
+
+  async fetchConfig() {
+    await this.configService
+      .getConfig()
+      .toPromise()
+      .then((config) => {
+        this.config = config;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   toggleRegister() {

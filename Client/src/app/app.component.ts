@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   NavigationEnd,
   NavigationError,
@@ -8,33 +8,39 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from './services/auth/auth.service';
 import { StoreLinkService } from './services/tracking/store-link.service';
-import { StoreSessionService } from './services/tracking/store-session.service';
+import { ConfigService } from './services/game/config.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
   title = 'NEURONE-ADVENTURE';
+  config: any;
 
   constructor(
     public translate: TranslateService,
     private router: Router,
     private storeLink: StoreLinkService,
-    private auth: AuthService
+    private auth: AuthService,
+    private configService: ConfigService
   ) {
     translate.addLangs(['es', 'en']);
     translate.setDefaultLang('es');
     translate.use('es');
-
-    this.trackVisitedLinks();
+  }
+  async ngOnInit(): Promise<void> {
+    await this.fetchConfig();
+    if(this.config.LinksTracking) {
+      this.trackVisitedLinks();
+    }
   }
 
   private trackVisitedLinks() {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
-        console.log('NAVIGATION STARTS!!!!!!!!!!!!!!!!!!!');
         if (this.auth.getUser() && this.auth.getUser().role == 'player') {
           let visitedLink = {
             url: event.url,
@@ -47,7 +53,6 @@ export class AppComponent {
       }
 
       if (event instanceof NavigationEnd) {
-        console.log('NAVIGATION ENDSSS!!!!!!!!!!!!!!!!!!!');
         if (this.auth.getUser() && this.auth.getUser().role == 'player') {
           let visitedLink = {
             url: event.url,
@@ -63,5 +68,17 @@ export class AppComponent {
         console.log(event.error);
       }
     });
+  }
+
+  async fetchConfig() {
+    await this.configService
+      .getConfig()
+      .toPromise()
+      .then((config) => {
+        this.config = config;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }

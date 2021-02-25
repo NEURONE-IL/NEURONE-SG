@@ -4,7 +4,7 @@ const Config = require("../models/game/config");
 const verifyToken = require("../middlewares/verifyToken");
 const configMiddleware = require("../middlewares/configMiddleware");
 
-router.get("", [verifyToken], async (req, res) => {
+router.get("", [], async (req, res) => {
   Config.findOne({}, (err, configs) => {
     if (err) {
       return res.status(404).json({

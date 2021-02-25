@@ -28,8 +28,8 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['game']);
   }
 
-  logout() {
-    this.auth.signOut();
+  async logout() {
+    await this.auth.signOut();
     this.reloadPage();
   }
 

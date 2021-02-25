@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, resolveForwardRef } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { StoreSessionService } from '../tracking/store-session.service';
+import { ConfigService } from '../game/config.service';
 
 const AUTH_API = environment.apiUrl + '/auth';
 const TOKEN_KEY = 'auth-token';
@@ -21,7 +22,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private storeSession: StoreSessionService
+    private storeSession: StoreSessionService,
+    private configService: ConfigService
   ) {}
 
   login(credentials): Observable<any> {
@@ -58,20 +60,23 @@ export class AuthService {
     this.user.next(usr);
   }
 
-  signOut(): void {
-    this.storeSessionLogout();
+  async signOut(): Promise<void> {
+    await this.storeSessionLogout();
     window.sessionStorage.clear();
   }
 
-  private storeSessionLogout() {
-    if (this.getUser().role == 'player') {
-      let sessionLog = {
-        userId: this.getUser()._id,
-        userEmail: this.getUser().email,
-        state: 'logout',
-        localTimeStamp: Date.now(),
-      };
-      this.storeSession.postSessionLog(sessionLog);
+  private async storeSessionLogout() {
+    let config: any = await this.fetchConfig();
+    if (config.sessionTracking) {
+      if (this.getUser().role == 'player') {
+        let sessionLog = {
+          userId: this.getUser()._id,
+          userEmail: this.getUser().email,
+          state: 'logout',
+          localTimeStamp: Date.now(),
+        };
+        this.storeSession.postSessionLog(sessionLog);
+      }
     }
   }
 
@@ -95,5 +100,19 @@ export class AuthService {
 
   public getRole(): any {
     return JSON.parse(sessionStorage.getItem(USER_KEY)).role;
+  }
+
+  async fetchConfig() {
+    let config: any;
+    await this.configService
+      .getConfig()
+      .toPromise()
+      .then((res) => {
+        config = res;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    return config;
   }
 }
