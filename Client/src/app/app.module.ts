@@ -62,6 +62,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
 import { WebResourcesTableDialogComponent } from './components/web-resources-dialogs/web-resources-table-dialog/web-resources-table-dialog.component';
 import { NewWebResourceDialogComponent } from './components/web-resources-dialogs/new-web-resource-dialog/new-web-resource-dialog.component';
+import { GamificationConfigComponent } from './components/gamification-config/gamification-config.component';
+import { GeneralConfigComponent } from './components/general-config/general-config.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -96,6 +98,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SafeurlPipe,
     WebResourcesTableDialogComponent,
     NewWebResourceDialogComponent,
+    GamificationConfigComponent,
+    GeneralConfigComponent,
   ],
   imports: [
     BrowserModule,

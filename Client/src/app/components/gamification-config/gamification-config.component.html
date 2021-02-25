@@ -1,0 +1,25 @@
+<mat-card class="gm-card" *ngIf="!GMloading">
+  <mat-card-title>{{ "GAMIFICATION.TITLE" | translate }}</mat-card-title>
+  <mat-card-content>
+    <p>
+      {{ "GAMIFICATION.GAMIFICATION_STATUS" | translate }}
+      <mat-icon *ngIf="gamified">check</mat-icon>
+      <mat-icon *ngIf="!gamified">close</mat-icon>
+    </p>
+    <p>
+      {{ "GAMIFICATION.GM_CONNECTION_STATUS" | translate }}
+      <mat-icon *ngIf="connected">check</mat-icon>
+      <mat-icon *ngIf="!connected">close</mat-icon>
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button
+      mat-button
+      color="accent"
+      (click)="gamify()"
+      [disabled]="gamified"
+    >
+      {{ "GAMIFICATION.GAMIFY" | translate }}
+    </button>
+  </mat-card-actions>
+</mat-card>

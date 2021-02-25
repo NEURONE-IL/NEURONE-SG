@@ -1,4 +1,5 @@
 const Role = require('../models/auth/role');
+const Config = require('../models/game/config');
 
 async function initial() {
   Role.estimatedDocumentCount((err, count) => {
@@ -34,6 +35,20 @@ async function initial() {
       });
     }
   });
+
+  Config.estimatedDocumentCount((err, count) => {
+    if(!err && count < 1) {
+      new Config({
+        KMtracker: false
+      }).save(err => {
+        if(err) {
+          console.log("error:", err);
+        }
+        console.log("added initial default config");
+      })
+    }
+  })
+
 }
 
 exports.initial = initial;

@@ -3,6 +3,8 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { AdventureService } from '../../services/game/adventure.service';
 import { AuthService } from '../auth/auth.service';
 import { GamificationService } from './gamification.service';
+import { KmTrackerService } from '../../services/tracking/kmtracker.service';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +17,9 @@ export class GameService {
 
   // Player data
   player: any;
+
+  // Game config
+  config: any;
 
   // Activators
   activators = [];
@@ -40,7 +45,9 @@ export class GameService {
   constructor(
     public adventureService: AdventureService,
     private auth: AuthService,
-    private gmService: GamificationService
+    private gmService: GamificationService,
+    private configService: ConfigService,
+    private kmTracker: KmTrackerService
   ) {}
 
   async init(adventure) {
@@ -49,13 +56,18 @@ export class GameService {
     this.setInitialNode();
     this.player = this.auth.getUser();
     await this.fetchGMStats();
+    await this.fetchConfig();
     await new Promise((r) => setTimeout(r, 1000));
+    if (this.player.role=='player' && this.config.kmTracking) {
+      this.kmTracker.start();
+    }
     this.setLoading(false);
     return Promise.resolve(1);
   }
 
   reset() {
     this.loading = true;
+    this.kmTracker.stop();
     this.adventure = undefined;
     this.player = undefined;
     this.currentNode = undefined;
@@ -265,5 +277,17 @@ export class GameService {
       this.gmStatsEmitChange(this.gmStats);
       console.log('gmStats: ', this.gmStats);
     }
+  }
+
+  async fetchConfig() {
+    await this.configService
+      .getConfig()
+      .toPromise()
+      .then((config) => {
+        this.config = config;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }

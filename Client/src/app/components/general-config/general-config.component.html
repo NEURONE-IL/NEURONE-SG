@@ -1,0 +1,45 @@
+<mat-card class="config-card" *ngIf="!loading">
+  <mat-card-title>{{ "CONFIG.TITLE" | translate }}</mat-card-title>
+  <mat-card-content>
+    <p>
+      <!-- <span class="config-label">{{ "CONFIG.KM_TRACKING" | translate }}</span> -->
+      <mat-slide-toggle
+        class="config-slider"
+        [(ngModel)]="config.kmTracking"
+        (change)="configTouched()"
+      >
+        {{ "CONFIG.KM_TRACKING" | translate }}
+      </mat-slide-toggle>
+    </p>
+    <p>
+      <!-- <span class="config-label">{{ "CONFIG.LINKS_TRACKING" | translate }}</span> -->
+      <mat-slide-toggle
+        class="config-slider"
+        [(ngModel)]="config.linksTracking"
+        (change)="configTouched()"
+      >
+        {{ "CONFIG.LINKS_TRACKING" | translate }}
+      </mat-slide-toggle>
+    </p>
+    <p>
+      <!-- <span class="config-label">{{ "CONFIG.SESSION_TRACKING" | translate }}</span> -->
+      <mat-slide-toggle
+        class="config-slider"
+        [(ngModel)]="config.sessionTracking"
+        (change)="configTouched()"
+      >
+        {{ "CONFIG.SESSION_TRACKING" | translate }}
+      </mat-slide-toggle>
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button
+      mat-button
+      color="accent"
+      [disabled]="!touched"
+      (click)="updateConfig()"
+    >
+      {{ "COMMON.SAVE" | translate }}
+    </button>
+  </mat-card-actions>
+</mat-card>

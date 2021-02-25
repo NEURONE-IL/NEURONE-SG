@@ -19,6 +19,16 @@
     "POINTS": "Puntos",
     "LEVEL": "Nivel: "
   },
+  "CONFIG": {
+    "TITLE": "Configuración",
+    "KM_TRACKING": "Captura de teclado y ratón",
+    "LINKS_TRACKING": "Captura de links visitados",
+    "SESSION_TRACKING": "Captura de sesiones",
+    "TOASTR": {
+      "SUCCESS": "Configuración actualizada exitosamente",
+      "ERROR": "Error al actualizar la configuración"
+    }
+  },
   "HEADER": {
     "GAME": "Juego",
     "EDITOR": "Editor",

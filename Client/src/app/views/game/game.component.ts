@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GameService } from 'src/app/services/game/game.service';
 import { SearchService } from '../../services/search/search.service';
@@ -8,7 +8,7 @@ import { SearchService } from '../../services/search/search.service';
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss'],
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy {
 
   searchEnabled: boolean;
   loading: boolean;
@@ -28,6 +28,9 @@ export class GameComponent implements OnInit {
     this.loadingSubscription = this.gameService.loadingEmitter.subscribe((loading) => {
       this.loading = loading;
     });
+  }
+  ngOnDestroy(): void {
+    this.gameService.reset();
   }
 
   ngOnInit(): void {}

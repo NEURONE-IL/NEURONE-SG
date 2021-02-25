@@ -16,6 +16,16 @@ const confirmationRoutes = require('./routes/confirmation');
 const adventureRoutes = require('./routes/adventure');
 const answerRoutes = require('./routes/answer');
 const gamificationRoutes = require('./routes/gamification');
+const configRoutes = require('./routes/config');
+
+// Import tracking routes
+const keystrokeRoutes = require('./routes/tracking/keystroke');
+const mouseClickRoutes = require('./routes/tracking/mouseClick');
+const mouseCoordinateRoutes = require('./routes/tracking/mouseCoordinate');
+const queryRoutes = require('./routes/tracking/query');
+const sessionLogRoutes = require('./routes/tracking/sessionLog');
+const visitedLinkRoutes = require('./routes/tracking/visitedLink');
+const ScrollRoutes = require('./routes/tracking/scroll');
 
 // Setup DB
 mongoose.connect(config.DBHost, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
@@ -34,12 +44,22 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: 'application/json'}));
 
-// Express routes
+// Use game routes
 app.use('/api/auth', authRoutes);
 app.use('/api/adventure', adventureRoutes);
 app.use('/api/answer', answerRoutes);
 app.use('/api/gamification', gamificationRoutes);
+app.use('/api/config', configRoutes);
 app.use('/', confirmationRoutes);
+
+// Use tracking routes
+app.use('/api/keystroke', keystrokeRoutes);
+app.use('/api/mouseClick', mouseClickRoutes);
+app.use('/api/mouseCoordinate', mouseCoordinateRoutes);
+app.use('/api/query', queryRoutes);
+app.use('/api/sessionLog', sessionLogRoutes);
+app.use('/api/visitedLink', visitedLinkRoutes);
+app.use('/api/scroll', ScrollRoutes);
 
 app.get('/', (req, res) => {
   res.send('Welcome to NEURONE-adv REST API!')
