@@ -2,45 +2,56 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { StoreSessionService } from '../tracking/store-session.service';
 
 const AUTH_API = environment.apiUrl + '/auth';
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
 };
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   user = new Subject<any>();
   userEmitter = this.user.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private storeSession: StoreSessionService
+  ) {}
 
   login(credentials): Observable<any> {
-    return this.http.post(AUTH_API + '/login', {
-      email: credentials.email,
-      password: credentials.password
-    }, httpOptions);
+    return this.http.post(
+      AUTH_API + '/login',
+      {
+        email: credentials.email,
+        password: credentials.password,
+      },
+      httpOptions
+    );
   }
 
   register(user, role): Observable<any> {
-    let url = AUTH_API + '/register'
-    if (role=='creator') {
+    let url = AUTH_API + '/register';
+    if (role == 'creator') {
       url = url + '/creator';
     }
-    if(role=='admin') {
+    if (role == 'admin') {
       url = url + '/admin';
     }
-    return this.http.post(url, {
-      username: user.username,
-      email: user.email,
-      password: user.password
-    }, httpOptions);
+    return this.http.post(
+      url,
+      {
+        username: user.username,
+        email: user.email,
+        password: user.password,
+      },
+      httpOptions
+    );
   }
 
   userEmitChange(usr: any) {
@@ -48,7 +59,20 @@ export class AuthService {
   }
 
   signOut(): void {
+    this.storeSessionLogout();
     window.sessionStorage.clear();
+  }
+
+  private storeSessionLogout() {
+    if (this.getUser().role == 'player') {
+      let sessionLog = {
+        userId: this.getUser()._id,
+        userEmail: this.getUser().email,
+        state: 'logout',
+        localTimeStamp: Date.now(),
+      };
+      this.storeSession.postSessionLog(sessionLog);
+    }
   }
 
   public saveToken(token: string): void {
