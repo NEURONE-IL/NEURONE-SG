@@ -13,11 +13,10 @@ export class StoreTrackService {
   scrollUri = environment.apiUrl + '/scroll';
   keyStrokeUri = environment.apiUrl + '/keystroke';
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private http: HttpClient) { }
 
   // Save mouse clicks
   postMouseClick(data) {
-      data.userId = this.authService.getUser()._id;
       this.http.post(this.mouseClickUri, data)
       .subscribe((resp: any) => {
         },
@@ -30,9 +29,6 @@ export class StoreTrackService {
 
   // Save mouse coordinates
   postMouseCoordinates(data) {
-      let user = this.authService.getUser();
-      data.userId = user._id;
-      data.userEmail = user.email;
       this.http.post(this.mouseCoordinateUri, data)
       .subscribe((resp: any) => {
         },
@@ -44,9 +40,6 @@ export class StoreTrackService {
 
   // Save scrolls
   postScroll(data) {
-      let user = this.authService.getUser();
-      data.userId = user._id;
-      data.userEmail = user.email;
       this.http.post(this.scrollUri, data)
       .subscribe((resp: any) => {
         },
@@ -58,7 +51,6 @@ export class StoreTrackService {
 
   // Save keystrokes
   postKeyStroke(data) {
-      data.userId = this.authService.getUser()._id;
       this.http.post(this.keyStrokeUri, data)
       .subscribe((resp: any) => {
         },

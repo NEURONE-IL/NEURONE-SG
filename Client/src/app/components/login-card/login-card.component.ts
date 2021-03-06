@@ -92,7 +92,7 @@ export class LoginCardComponent implements OnInit {
     if (this.auth.getUser().role == 'player') {
       let sessionLog = {
         userId: data.user._id,
-        userEmail: data.user.email,
+        username: data.user.username || data.user.email,
         state: 'login',
         localTimeStamp: Date.now(),
       };

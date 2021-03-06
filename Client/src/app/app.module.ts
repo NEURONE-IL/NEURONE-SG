@@ -45,6 +45,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { FileUploadModule } from 'ng2-file-upload';
 import { QuestionFormComponent } from './components/game-bar/question-form/question-form.component';
 import { MultipleFormComponent } from './components/game-bar/multiple-form/multiple-form.component';
 import { SynthesisFormComponent } from './components/game-bar/synthesis-form/synthesis-form.component';
@@ -86,13 +87,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     ChallengeDialogComponent,
     QuestionFormComponent,
     MultipleFormComponent,
+    NewAdventureDialogComponent,
     SynthesisFormComponent,
     LoginRegisterComponent,
     LoginCardComponent,
     RegisterCardComponent,
     AdventureSelectorComponent,
     AdventureSelectionComponent,
-    NewAdventureDialogComponent,
     SearchResultsComponent,
     ViewPageComponent,
     SafeurlPipe,
@@ -130,6 +131,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatSlideToggleModule,
     MatTableModule,
     MatTooltipModule,
+    FileUploadModule,
     ToastrModule.forRoot(),
     TranslateModule.forRoot({
       loader: {

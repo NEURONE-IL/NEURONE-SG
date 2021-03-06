@@ -71,7 +71,7 @@ export class AuthService {
       if (this.getUser().role == 'player') {
         let sessionLog = {
           userId: this.getUser()._id,
-          userEmail: this.getUser().email,
+          username: this.getUser().username || this.getUser().email,
           state: 'logout',
           localTimeStamp: Date.now(),
         };

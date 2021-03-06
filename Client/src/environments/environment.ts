@@ -4,9 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://198.199.75.148:3002/api',
-  coreUrl: 'http://198.199.75.148:3000/v1',
-  coreRoot: 'http://198.199.75.148:3000'
+  root: 'http://localhost:3002',
+  apiUrl: 'http://localhost:3002/api',
+  coreUrl: 'http://localhost:3000/v1',
+  coreRoot: 'http://localhost:3000'
 };
 
 /*

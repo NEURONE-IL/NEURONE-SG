@@ -222,5 +222,10 @@
       "VIDEOS": "Videos",
       "IMAGES": "Imágenes"
     }
+  },
+  "IMAGE": {
+    "UPLOAD": "Subir",
+    "TEXT": "Selecciona un archivo de imagen:",
+    "CHOOSE_TEXT": "Elegir archivo"
   }
 }

@@ -16,7 +16,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'prefix',
-    redirectTo: 'select'
+    redirectTo: 'select',
   },
   {
     path: 'game',
@@ -41,7 +41,7 @@ const routes: Routes = [
     path: 'editor',
     canActivate: [AuthGuard, DirectAccessGuard],
     data: {
-      role: 'admin'
+      role: 'admin',
     },
     component: EditorComponent,
   },
@@ -54,7 +54,8 @@ const routes: Routes = [
     path: 'select',
     canActivate: [AuthGuard],
     component: AdventureSelectionComponent,
-  }
+  },
+  { path: '**', redirectTo: 'select' },
 ];
 
 @NgModule({

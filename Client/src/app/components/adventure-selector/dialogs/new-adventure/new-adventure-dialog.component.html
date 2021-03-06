@@ -19,6 +19,12 @@
         placeholder="{{'NEW_ADVENTURE.DESCRIPTION_PLACEHOLDER' | translate}}"
       />
     </mat-form-field>
+    <div class="file-upload">
+      <input type="file" name="image" ng2FileSelect [uploader]="uploader" accept="image/x-png,image/gif,image/jpeg" />
+      <button type="button" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+        Upload
+      </button>
+    </div>
   </form>
 </div>
 <div mat-dialog-actions align="end">

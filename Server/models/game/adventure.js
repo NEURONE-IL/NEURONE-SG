@@ -5,6 +5,11 @@ const adventureSchema = new Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
 
+  img: {
+    data: Buffer,
+    contentType: String,
+  },
+
   nodes: {
     type: [
       {

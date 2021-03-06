@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const QuerySchema = new Schema({
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true},
-    userEmail: {type: String},
+    username: {type: String},
     query: {type: String},
     title: {type: String},
     url: {type: String},
