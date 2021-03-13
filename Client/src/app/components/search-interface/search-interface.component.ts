@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { GameService } from 'src/app/services/game/game.service';
-import { SearchService } from 'src/app/services/search/search.service';
+import { StoreQueryService } from 'src/app/services/tracking/store-query.service';
 
 @Component({
   selector: 'app-search-interface',
@@ -20,7 +20,7 @@ export class SearchInterfaceComponent implements OnInit, OnDestroy {
   adventureSubscription: Subscription;
   currentNodeSubscription: Subscription;
   constructor(public router: Router,
-    private searchService: SearchService,
+    private storeQueryService: StoreQueryService,
     private gameService: GameService) { }
 
   ngOnInit(): void {
@@ -40,6 +40,13 @@ export class SearchInterfaceComponent implements OnInit, OnDestroy {
 
   search(){
     if(this.query){
+      let queryData = {
+        query: this.query,
+        title: document.title,
+        url: this.router.url,
+        localTimeStamp: Date.now(),
+      };
+      this.storeQueryService.postQuery(queryData);
       this.router.navigate(['game/results/' + this.query])
     }
     else {

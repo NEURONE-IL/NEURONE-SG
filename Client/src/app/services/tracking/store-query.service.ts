@@ -6,17 +6,17 @@ import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class StoreLinkService {
+export class StoreQueryService {
 
-  visitedLinkUri = environment.apiUrl + '/visitedLink';
+  queryUri= environment.apiUrl + '/visitedLink';
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private authService: AuthService, private http: HttpClient) { }
 
-  // Post visited link
-  postVisitedLink(data) {
+  // Post query
+  postQuery(data) {
     if(this.authService.getUser() && this.authService.getUser().role=='player'){
       data.userId = this.authService.getUser()._id;
-      this.http.post(this.visitedLinkUri, data)
+      this.http.post(this.queryUri, data)
       .subscribe((resp: any) => {
         },
         (error) => {

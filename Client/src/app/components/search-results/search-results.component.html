@@ -1,48 +1,238 @@
 <div class="search-interface-container">
   <mat-card class="results-card">
+    <div class="toolbar" >
+      <img class="logo" src="assets/images/neurone_logo.png" [routerLink]="['/session/search']">
+      <mat-form-field appearance="outline" class="search-box" >
+        <mat-icon matSuffix (click)="search()" style="cursor: pointer;">search</mat-icon>
+        <input matInput [(ngModel)]="query" (keydown.enter)="search()" >
+      </mat-form-field>
+    </div>
     <mat-tab-group *ngIf="!fetching">
-      <mat-tab label="{{'SEARCH_INTERFACE.TABS.ALL' | translate}}">
+      <mat-tab label="{{ 'SEARCH_INTERFACE.TABS.ALL' | translate }}">
         <ng-template matTabContent>
-          <p class="soft" *ngIf="documents.length > 0">{{"SEARCH_INTERFACE.RESULTS_FOUND_MSG" | translate:{count: documents.length} }}</p>
+          <p class="soft">
+            {{
+              "SEARCH_INTERFACE.RESULTS_FOUND_MSG"
+                | translate: { count: web.length }
+            }}
+          </p>
           <div class="documents-container">
-            <div *ngFor="let doc of documents">
-              <mat-card class="cardStyle doc-card">
+            <div *ngFor="let doc of web">
+              <!--Images -->
+              <mat-card
+                class="cardStyle doc-card"
+                [routerLink]="['/game/view-page', doc.route]"
+                [state]="{ doc: doc }"
+                *ngIf="doc.type && doc.type == 'image' && false"
+              >
                 <mat-card-content>
-                  <h5 class="url-bar">{{doc.url}}</h5>
-                  <a [routerLink]="['/game/view-page', doc.route]" [state]="{ doc: doc }" class="document-link">{{doc.title}}</a>
-                  <p>{{doc.searchSnippet}}</p>
+                  <div class="row">
+                    <div class="col-md-2">
+                      <img
+                        class="img-fluid thumbnail searchImageMini"
+                        src="{{ rootPath + doc.img }}"
+                        alt="thumbnail"
+                      />
+                    </div>
+                    <div class="col-md-10">
+                      <h5 class="url-bar">
+                        {{ doc.docName }}
+                      </h5>
+                      <a
+                        [routerLink]="['/game/view-page', doc.route]"
+                        [state]="{ doc: doc }"
+                        class="document-link"
+                        >{{ doc.title }}</a
+                      >
+                      <p>{{ doc.searchSnippet }}</p>
+                    </div>
+                  </div>
                 </mat-card-content>
               </mat-card>
 
-              <br>
+              <!--Videos-->
+              <mat-card
+                class="cardStyle doc-card"
+                *ngIf="doc.type && doc.type == 'video'"
+              >
+                <mat-card-content>
+                  <div class="row">
+                    <div class="col-md-2">
+                      <img
+                        class="img-fluid thumbnail searchImageMini"
+                        [src]="getThumb(doc.url)"
+                        alt="thumbnail"
+                      />
+                    </div>
+                    <div class="col-md-10">
+                      <h5 class="url-bar">{{ doc.url }}</h5>
+                      <a
+                        [routerLink]="['/game/view-page', doc.route]"
+                        [state]="{ doc: doc }"
+                        class="document-link"
+                        >{{ doc.title }}</a
+                      >
+                      <p>{{ doc.searchSnippet }}</p>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <!--Documents-->
+              <mat-card
+                class="cardStyle doc-card"
+                [routerLink]="['/session/view-page', doc.title, doc.route]"
+                *ngIf="!doc.type || doc.type=='book'"
+              >
+                <mat-card-content>
+                  <h5 class="url-bar">
+                    {{ doc.docName }}
+                  </h5>
+                  <a
+                    [routerLink]="['/game/view-page', doc.route]"
+                    [state]="{ doc: doc }"
+                    class="document-link"
+                    >{{ doc.title }}</a
+                  >
+                  <p>{{ doc.searchSnippet }}</p>
+                </mat-card-content>
+              </mat-card>
+
+              <br />
             </div>
-            <div *ngIf="documents.length <= 0" class="text-center">
-              <h3>{{"SEARCH_INTERFACE.NO_RESULTS_MSG" | translate}}</h3>
+            <div *ngIf="documents.length <= 0 && !fetching" class="text-center">
+              <h3>{{ "SEARCH_INTERFACE.NO_RESULTS_MSG" | translate }}</h3>
             </div>
           </div>
         </ng-template>
       </mat-tab>
-      <mat-tab label="{{'SEARCH_INTERFACE.TABS.IMAGES' | translate}}">
+      <mat-tab label="{{ 'SEARCH_INTERFACE.TABS.IMAGES' | translate }}">
+        <p class="soft">
+          {{
+            "SEARCH_INTERFACE.RESULTS_FOUND_MSG"
+              | translate: { count: images.length }
+          }}
+        </p>
         <div class="image-container">
-
           <mat-grid-list cols="12" [gutterSize]="'12px'">
-            <div *ngFor="let doc of documents">
-              <mat-grid-tile class="image-card"  colspan="3" rowspan="3"  *ngIf="doc.type=='image'">
-                <mat-card class="cardStyle">
-                  <img mat-card-image src="{{ coreRoot + '/' + doc.img}}">
+            <div *ngFor="let doc of images">
+              <mat-grid-tile
+                class="image-card"
+                colspan="3"
+                rowspan="3"
+                *ngIf="doc.type == 'image'"
+                [routerLink]="['/game/view-page', doc.title, doc.url]"
+              >
+                <mat-card
+                  class="cardStyle"
+                  [routerLink]="['/game/view-page', doc.title, doc.url]"
+                >
+                  <img
+                    class="img-fluid thumbnail searchImage"
+                    src="{{ rootPath + doc.img }}"
+                    alt="thumbnail"
+                  />
                   <mat-card-content>
-                    <h5 class="url-bar">{{doc.url}}</h5>
-                    <a [routerLink]="['/game/view-page', doc.title, doc.route]"  class="document-link">{{doc.title}}</a>
+                    <h5 class="url-bar">
+                      {{ doc.docName }}
+                    </h5>
+                    <a
+                      [routerLink]="['/game/view-page', doc.title, doc.route]"
+                      class="document-link"
+                      >{{ doc.title }}</a
+                    >
                   </mat-card-content>
                 </mat-card>
               </mat-grid-tile>
             </div>
           </mat-grid-list>
-
-
         </div>
       </mat-tab>
-      <mat-tab label="{{'SEARCH_INTERFACE.TABS.VIDEOS' | translate}}"></mat-tab>
+      <mat-tab label="{{ 'SEARCH_INTERFACE.TABS.VIDEOS' | translate }}">
+        <p class="soft">
+          {{
+            "SEARCH_INTERFACE.RESULTS_FOUND_MSG"
+              | translate: { count: videos.length }
+          }}
+        </p>
+        <div class="video-container">
+          <mat-grid-list cols="12" [gutterSize]="'12px'">
+            <div *ngFor="let doc of videos">
+              <mat-grid-tile
+                class="video-card"
+                colspan="12"
+                *ngIf="doc.type == 'video'"
+              >
+                <div>
+                  <img
+                    [src]="getThumb(doc.url)"
+                    [routerLink]="['/game/view-page', doc.title, doc.route]"
+                    alt="thumbnail"
+                  />
+                </div>
+                <mat-card
+                  class="cardStyle doc-card"
+                  [routerLink]="['/game/view-page', doc.title, doc.route]"
+                >
+                  <mat-card-content>
+                    <h5 class="url-bar">{{ doc.url }}</h5>
+                    <a
+                      [routerLink]="['/game/view-page', doc.title, doc.route]"
+                      class="document-link"
+                      >{{ doc.title }}</a
+                    >
+                    <p>{{ doc.searchSnippet }}</p>
+                  </mat-card-content>
+                </mat-card>
+              </mat-grid-tile>
+            </div>
+            <div *ngIf="documents.length <= 0" class="text-center">
+              <h3>{{ "SEARCH_INTERFACE.NO_RESULTS_MSG" | translate }}</h3>
+            </div>
+          </mat-grid-list>
+        </div>
+      </mat-tab>
+      <mat-tab label="{{ 'SEARCH_INTERFACE.TABS.BOOKS' | translate }}">
+        <ng-template matTabContent>
+          <p class="soft">
+            {{
+              "SEARCH_INTERFACE.RESULTS_FOUND_MSG"
+                | translate: { count: books.length }
+            }}
+          </p>
+          <div class="documents-container">
+            <div *ngFor="let doc of books">
+              <mat-card
+                class="cardStyle doc-card"
+                [routerLink]="['/session/view-page', doc.title, doc.route]"
+                *ngIf="doc.type == 'book'"
+              >
+                <mat-card-content>
+                  <h5 class="url-bar">
+                    {{ doc.docName }}
+                  </h5>
+                  <a
+                    [routerLink]="['/game/view-page', doc.route]"
+                    [state]="{ doc: doc }"
+                    class="document-link"
+                    >{{ doc.title }}</a
+                  >
+                  <p>{{ doc.searchSnippet }}</p>
+                </mat-card-content>
+              </mat-card>
+
+              <br />
+            </div>
+            <div *ngIf="documents.length <= 0 && !fetching" class="text-center">
+              <h3>{{ "SEARCH_INTERFACE.NO_RESULTS_MSG" | translate }}</h3>
+            </div>
+          </div>
+        </ng-template>
+      </mat-tab>
     </mat-tab-group>
+    <div *ngIf="fetching" class="spinner">
+      <mat-spinner></mat-spinner>
+      <span>{{ 'SEARCH_INTERFACE.SEARCHING' | translate}}</span>
+    </div>
   </mat-card>
 </div>

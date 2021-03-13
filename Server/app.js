@@ -77,17 +77,13 @@ app.use("/api/files", uploadRoutes);
 app.use("/assets/", express.static(process.env.NEURONE_DOCS));
 
 // Set client on root
-// serve static content
-app.use(express.static('public'));
 
-// serve index
+// - Serve static content
+app.use(express.static('public'));
+// - Serve index
 app.get('*',function(req,res){
   res.sendFile(path.join(__dirname+'/public/index.html'));
 });
-
-// app.get('/', (req, res) => {
-//   res.send('Welcome to NEURONE-adv REST API!')
-// })
 
 app.listen(process.env.PORT, () => {
   console.log(

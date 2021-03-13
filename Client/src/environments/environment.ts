@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  root: 'http://198.199.75.148:3002',
+  root: 'http://198.199.75.148:3002/',
   apiUrl: 'http://198.199.75.148:3002/api',
   coreUrl: 'http://198.199.75.148:3000/v1',
   coreRoot: 'http://198.199.75.148:3000'

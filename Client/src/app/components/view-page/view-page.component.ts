@@ -42,7 +42,7 @@ export class ViewPageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.pathSubscription = this.route.paramMap.subscribe(
       (params: ParamMap) => {
         this.path = params.get('path');
-        this.docUrl = environment.root + '/' + this.path;
+        this.docUrl = environment.root + this.path;
         this.fetchingDoc = false;
         this.gameService.checkRelevantDoc(this.doc);
       }

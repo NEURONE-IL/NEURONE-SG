@@ -217,10 +217,12 @@
   "SEARCH_INTERFACE": {
     "RESULTS_FOUND_MSG": "Se han encontrado {{count}} resultados.",
     "NO_RESULTS_MSG": "No se han encontrado resultados",
+    "SEARCHING": "Buscando resultados...",
     "TABS": {
       "ALL": "Todo",
       "VIDEOS": "Videos",
-      "IMAGES": "Imágenes"
+      "IMAGES": "Imágenes",
+      "BOOKS": "Libros"
     }
   },
   "IMAGE": {

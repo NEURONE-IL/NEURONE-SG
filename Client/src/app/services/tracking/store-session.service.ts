@@ -11,7 +11,7 @@ export class StoreSessionService {
 
   constructor(private http: HttpClient) { }
 
-  // Post session data to server
+  // Post session data
   postSessionLog(data) {
     this.http.post(this.sessionLogUri, data)
     .subscribe((resp: any) => {
