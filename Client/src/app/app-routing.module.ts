@@ -41,7 +41,7 @@ const routes: Routes = [
     path: 'editor',
     canActivate: [AuthGuard, DirectAccessGuard],
     data: {
-      role: 'admin',
+      role: ['admin', 'creator'],
     },
     component: EditorComponent,
   },

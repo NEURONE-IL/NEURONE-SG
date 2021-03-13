@@ -18,6 +18,7 @@ export default class ActivatorsUtils {
     let found = false
     console.log("ACTIVATORS: ", array);
     array.forEach(element => {
+      // Check correct and wrong answer activators
       if (activator.condition == "correct_answer" || activator.condition == "wrong_answer") {
         if((element.node == activator.node) && (element.condition == activator.condition)) {
           console.log('encontrado!');
@@ -26,6 +27,7 @@ export default class ActivatorsUtils {
           found = true;
         }
       }
+      // Check user level activator
       else if (activator.condition == "level") {
         console.log('Level ACTIVATOR!!!');
         if(element.level == activator.level) {
@@ -35,8 +37,9 @@ export default class ActivatorsUtils {
           found = true;
         }
       }
+      // Check relevant links visited activator
       else if (activator.condition == "relevant_links") {
-        if(element.links_count == activator.links_count) {
+        if(element.links_count <= activator.links_count) {
           console.log('encontrado links_count!')
           console.log(element);
           console.log(activator);

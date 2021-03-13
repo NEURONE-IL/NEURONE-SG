@@ -67,6 +67,8 @@ router.post(
           err,
         });
       }
+      // Send confirmation email
+      sendConfirmationEmail(user, res, req);
       res.status(200).json({code: "USER_REGISTERED", user});
     });
   }
@@ -131,6 +133,8 @@ router.post(
           err,
         });
       }
+      // Send confirmation email
+      sendConfirmationEmail(user, res, req);
       res.status(200).json({code: "USER_REGISTERED", user});
     });
   }

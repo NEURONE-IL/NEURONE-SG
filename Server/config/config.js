@@ -21,4 +21,4 @@ process.env.GAME_CLIENT = 'http://localhost:4200';
 process.env.UPLOAD_PATH = './images'
 
 // NEURONE Docs path
-process.env.NEURONE_DOCS = '/home/cristobal/Projects/neurone/assets'
+process.env.NEURONE_DOCS = '/home/neurone/neuroneAssets'
