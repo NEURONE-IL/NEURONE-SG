@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
 })
 export class StoreQueryService {
 
-  queryUri= environment.apiUrl + '/visitedLink';
+  queryUri= environment.apiUrl + '/query';
 
   constructor(private authService: AuthService, private http: HttpClient) { }
 
@@ -16,6 +16,7 @@ export class StoreQueryService {
   postQuery(data) {
     if(this.authService.getUser() && this.authService.getUser().role=='player'){
       data.userId = this.authService.getUser()._id;
+      data.username = this.authService.getUser().username;
       this.http.post(this.queryUri, data)
       .subscribe((resp: any) => {
         },
