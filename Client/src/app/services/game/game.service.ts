@@ -5,6 +5,7 @@ import { AuthService } from '../auth/auth.service';
 import { GamificationService } from './gamification.service';
 import { KmTrackerService } from '../../services/tracking/kmtracker.service';
 import { ConfigService } from './config.service';
+import { ProgressService } from './progress.service';
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +48,8 @@ export class GameService {
     private auth: AuthService,
     private gmService: GamificationService,
     private configService: ConfigService,
-    private kmTracker: KmTrackerService
+    private kmTracker: KmTrackerService,
+    private progressService: ProgressService
   ) {}
 
   async init(adventure) {
@@ -58,11 +60,35 @@ export class GameService {
     await this.fetchGMStats();
     await this.fetchConfig();
     await new Promise((r) => setTimeout(r, 1000));
-    if (this.player.role=='player' && this.config.kmTracking) {
+    if (this.player.role == 'player' && this.config.kmTracking) {
       this.kmTracker.start();
     }
     this.setLoading(false);
     return Promise.resolve(1);
+  }
+
+  async resume(adventure) {
+    try {
+      console.log('RESUMING ADVENTURE!');
+      this.reset();
+      let progress = adventure.progress;
+      this.setAdventure(adventure);
+      this.activators = progress.activators;
+      this.relevantDocsVisited = progress.relevantDocsVisited;
+      this.setCurrentNode(progress.currentNode);
+      this.player = this.auth.getUser();
+      await this.fetchGMStats();
+      await this.fetchConfig();
+      await new Promise((r) => setTimeout(r, 1000));
+      if (this.player.role == 'player' && this.config.kmTracking) {
+        this.kmTracker.start();
+      }
+      this.setLoading(false);
+      return Promise.resolve(1);
+    } catch {
+      console.log('Error resuming adventure');
+      this.init(adventure);
+    }
   }
 
   reset() {
@@ -91,6 +117,7 @@ export class GameService {
   setCurrentNode(targetNodeId) {
     this.currentNode = this.nodes.find((node) => node.id == targetNodeId);
     this.currentNodeEmitChange(this.currentNode);
+    this.storeProgress();
   }
 
   setInitialNode() {
@@ -289,5 +316,26 @@ export class GameService {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  storeProgress() {
+    console.log('------------');
+    console.log('PROGRESS');
+    const progress = {
+      user: this.auth.getUser()._id,
+      adventure: this.adventure._id,
+      currentNode: this.currentNode.id,
+      activators: this.activators,
+      relevantDocsVisited: this.relevantDocsVisited,
+    };
+
+    this.progressService.postProgress(progress).subscribe(
+      (res) => {
+        console.log(res);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 }

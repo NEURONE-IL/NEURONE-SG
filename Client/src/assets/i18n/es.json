@@ -36,6 +36,7 @@
   },
   "SELECTOR": {
     "CARD_PLAY": "JUGAR",
+    "CARD_CONTINUE": "CONTINUAR",
     "CARD_EDIT": "EDITAR",
     "CARD_DELETE": "ELIMINAR"
   },

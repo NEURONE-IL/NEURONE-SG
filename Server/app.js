@@ -18,6 +18,7 @@ const adventureRoutes = require("./routes/adventure");
 const answerRoutes = require("./routes/answer");
 const gamificationRoutes = require("./routes/gamification");
 const configRoutes = require("./routes/config");
+const progressRoutes = require("./routes/progress");
 
 // Import tracking routes
 const keystrokeRoutes = require("./routes/tracking/keystroke");
@@ -59,6 +60,7 @@ app.use("/api/adventure", adventureRoutes);
 app.use("/api/answer", answerRoutes);
 app.use("/api/gamification", gamificationRoutes);
 app.use("/api/config", configRoutes);
+app.use("/api/progress", progressRoutes);
 app.use("/", confirmationRoutes);
 
 // Use tracking routes

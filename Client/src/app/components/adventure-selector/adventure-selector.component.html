@@ -37,8 +37,11 @@
           </p>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-button (click)="play(adventure)">
+          <button mat-button (click)="play(adventure)" *ngIf="!adventure.progress">
             {{ "SELECTOR.CARD_PLAY" | translate }}
+          </button>
+          <button mat-button (click)="resume(adventure)" *ngIf="adventure.progress">
+            {{ "SELECTOR.CARD_CONTINUE" | translate }}
           </button>
           <button
             mat-button
