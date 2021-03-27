@@ -5,10 +5,8 @@ const adventureSchema = new Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
 
-  img: {
-    data: Buffer,
-    contentType: String,
-  },
+  image_filename: { type: String },
+  image_id: { type: String },
 
   nodes: {
     type: [
@@ -17,15 +15,15 @@ const adventureSchema = new Schema({
         label: { type: String, required: true },
         type: { type: String, required: true },
         data: {
-          image: { type: String, default: "" },
-          video: { type: String, default: "" },
+          image_filename: { type: String },
+          image_id: { type: String },
+          video: { type: String },
           text: { type: String, default: "", required: true },
         },
         challenge: {
           question: { type: String },
           answer: { type: String },
           type: { type: String },
-          // options: { type: [{ type: String }], default: undefined },
           options: {
             type: [
               {

@@ -9,14 +9,14 @@ const schema = Joi.object({
     description: Joi.string()
         .required(),
 
-    image: Joi.string(),
+    image_filename: Joi.string().allow(''),
+    image_id: Joi.string().allow(''),
 
     nodes: Joi.array().items(Joi.object({
         id: Joi.string().required(),
         label: Joi.string().required(),
         type: Joi.string().required(),
         data: Joi.object({
-            image: Joi.string().allow(''),
             video: Joi.string().allow(''),
             text: Joi.string().required(),
         }).required(),
@@ -52,9 +52,6 @@ const newSchema = Joi.object({
 
     description: Joi.string()
         .required(),
-
-    image: Joi.string(),
-
 })
 
 

@@ -15,6 +15,7 @@ const URL = environment.apiUrl + '/files/upload';
 export class NewAdventureDialogComponent implements OnInit {
 
   newAdventureForm: FormGroup;
+  file: File;
 
   public uploader: FileUploader = new FileUploader({
     url: URL,
@@ -42,6 +43,16 @@ export class NewAdventureDialogComponent implements OnInit {
 
   addNewAdventure() {
     const newAdventure = this.newAdventureForm.value;
-    this.dialogRef.close({newAdventure: newAdventure});
+    let adventureFormData = new FormData();
+    adventureFormData.append('name', newAdventure.name);
+    adventureFormData.append('description', newAdventure.description);
+    if(this.file) {
+      adventureFormData.append('file', this.file);
+    }
+    this.dialogRef.close({newAdventure: adventureFormData});
+  }
+
+  handleFileInput(files: FileList) {
+    this.file = files.item(0);
   }
 }

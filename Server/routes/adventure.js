@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Adventure = require("../models/game/adventure");
 const { nanoid } = require("nanoid");
+const path = require("path");
 
+const imagesGridFS = require("../middlewares/imagesGridFS");
 const adventureMiddleware = require("../middlewares/adventureMiddleware");
 const verifyToken = require("../middlewares/verifyToken");
 
@@ -34,7 +36,7 @@ router.get("/:adventure_id", [verifyToken], async (req, res) => {
 // router.post('',  [verifyToken, authMiddleware.isAdmin, adventureMiddleware.verifyBody], async (req, res) => {
 router.post(
   "",
-  [adventureMiddleware.verifyBody, verifyToken],
+  [verifyToken, adventureMiddleware.verifyBody],
   async (req, res) => {
     const newAdventure = new Adventure(req.body);
     newAdventure.save((err, adventure) => {
@@ -50,9 +52,18 @@ router.post(
 
 router.post(
   "/new",
-  [adventureMiddleware.verifyNewBody, verifyToken],
+  [
+    verifyToken,
+    imagesGridFS.upload.single("file"),
+    adventureMiddleware.verifyNewBody,
+  ],
   async (req, res) => {
     const initialAdventure = req.body;
+    if (req.file) {
+      let image_filename = req.file.filename;
+      initialAdventure.image_filename = image_filename;
+      initialAdventure.image_id = req.file.id;
+    }
     initialAdventure.nodes = [
       {
         id: nanoid(13),

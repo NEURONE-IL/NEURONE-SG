@@ -8,6 +8,7 @@ import { GameService } from 'src/app/services/game/game.service';
 import { ProgressService } from 'src/app/services/game/progress.service';
 import { SearchService } from 'src/app/services/search/search.service';
 import { NewAdventureDialogComponent } from './dialogs/new-adventure/new-adventure-dialog.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-adventure-selector',
@@ -24,6 +25,8 @@ export class AdventureSelectorComponent implements OnInit {
 
   GMloading = true;
   adventuresLoading = true;
+
+  apiUrl = environment.apiUrl;
 
   constructor(
     private adventureService: AdventureService,

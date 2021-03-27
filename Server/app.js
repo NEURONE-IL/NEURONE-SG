@@ -19,6 +19,7 @@ const answerRoutes = require("./routes/answer");
 const gamificationRoutes = require("./routes/gamification");
 const configRoutes = require("./routes/config");
 const progressRoutes = require("./routes/progress");
+const imageRoutes = require('./routes/image');
 
 // Import tracking routes
 const keystrokeRoutes = require("./routes/tracking/keystroke");
@@ -28,9 +29,6 @@ const queryRoutes = require("./routes/tracking/query");
 const sessionLogRoutes = require("./routes/tracking/sessionLog");
 const visitedLinkRoutes = require("./routes/tracking/visitedLink");
 const ScrollRoutes = require("./routes/tracking/scroll");
-
-// Import upload route
-const uploadRoutes = require("./routes/upload");
 
 // Setup DB
 mongoose
@@ -61,6 +59,7 @@ app.use("/api/answer", answerRoutes);
 app.use("/api/gamification", gamificationRoutes);
 app.use("/api/config", configRoutes);
 app.use("/api/progress", progressRoutes);
+app.use('/api/image', imageRoutes);
 app.use("/", confirmationRoutes);
 
 // Use tracking routes
@@ -71,9 +70,6 @@ app.use("/api/query", queryRoutes);
 app.use("/api/sessionLog", sessionLogRoutes);
 app.use("/api/visitedLink", visitedLinkRoutes);
 app.use("/api/scroll", ScrollRoutes);
-
-// Use upload route
-app.use("/api/files", uploadRoutes);
 
 // Serve neurone docs
 app.use("/assets/", express.static(process.env.NEURONE_DOCS));

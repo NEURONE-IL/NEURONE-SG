@@ -20,10 +20,9 @@
       />
     </mat-form-field>
     <div class="file-upload">
-      <input type="file" name="image" ng2FileSelect [uploader]="uploader" accept="image/x-png,image/gif,image/jpeg" />
-      <button type="button" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
-        Upload
-      </button>
+      <input type="file"
+					id="file"
+					(change)="handleFileInput($event.target.files)">
     </div>
   </form>
 </div>
