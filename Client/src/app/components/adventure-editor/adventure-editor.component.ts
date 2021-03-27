@@ -11,6 +11,7 @@ import { ChallengeDialogComponent } from '../editor-dialogs/challenge-dialog/Cha
 import { nanoid } from 'nanoid';
 import { LinksTableDialog } from '../editor-dialogs/links-table-dialog/LinksTableDialog';
 import { WebResourcesTableDialogComponent } from '../web-resources-dialogs/web-resources-table-dialog/web-resources-table-dialog.component';
+import { ImageService } from 'src/app/services/game/image.service';
 
 @Component({
   selector: 'app-adventure-editor',
@@ -43,7 +44,8 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     public newNodeDialog: MatDialog,
     public challengeDialog: MatDialog,
     public linksDialog: MatDialog,
-    public webDialog: MatDialog
+    public webDialog: MatDialog,
+    private imageService: ImageService
   ) {
     this.updateSubscription = this.editorService
       .getRefreshRequest()
@@ -78,7 +80,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
       type: [],
       challenge: [],
       data: this.formBuilder.group({
-        image: [],
+        image_id: [],
         video: [],
         text: [],
       }),
@@ -232,6 +234,18 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   updateNodeType(type) {
     this.currentNode.type = type;
     console.log(this.currentNode);
+  }
+
+  handleFileInput(files: FileList) {
+    let image = files.item(0);
+    this.imageService.upload(image).subscribe((res) => {
+      let imageData: any = res;
+      this.nodeForm.get('data.image_id').setValue(imageData.id);
+      console.log(this.nodeForm.value);
+    },
+    (err) => {
+      console.log(err);
+    });
   }
 
   get nodes() {

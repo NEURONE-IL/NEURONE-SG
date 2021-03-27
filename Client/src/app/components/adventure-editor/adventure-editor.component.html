@@ -61,7 +61,7 @@
             />
           </mat-form-field>
           <form formGroupName="data">
-            <mat-form-field class="node-form-field">
+            <!-- <mat-form-field class="node-form-field">
               <mat-label>{{"EDITOR.NODE_EDITOR.IMAGE" | translate}}</mat-label>
               <input
                 matInput
@@ -70,7 +70,12 @@
                 placeholder="background.jpg"
                 [ngModel]="currentNode.data.image"
               />
-            </mat-form-field>
+            </mat-form-field> -->
+            <div class="file-upload">
+              <input type="file"
+                  id="file"
+                  (change)="handleFileInput($event.target.files)">
+            </div>
             <mat-form-field class="node-form-field">
               <mat-label>{{"EDITOR.NODE_EDITOR.VIDEO" | translate}}</mat-label>
               <input
