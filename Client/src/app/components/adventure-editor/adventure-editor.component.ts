@@ -12,6 +12,7 @@ import { nanoid } from 'nanoid';
 import { LinksTableDialog } from '../editor-dialogs/links-table-dialog/LinksTableDialog';
 import { WebResourcesTableDialogComponent } from '../web-resources-dialogs/web-resources-table-dialog/web-resources-table-dialog.component';
 import { ImageService } from 'src/app/services/game/image.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-adventure-editor',
@@ -31,6 +32,11 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
 
   nodeTypes: any;
   initialType: any;
+  mediaTypes: any;
+  currentMediaType: string;
+  currentImg: string;
+
+  apiUrl = environment.apiUrl;
 
   // Subscriptions to editor service
   updateSubscription: Subscription;
@@ -74,6 +80,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.currentMediaType='none';
     this.nodeForm = this.formBuilder.group({
       id: [],
       label: [],
@@ -91,6 +98,11 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
       { value: 'challenge', viewValue: 'EDITOR.NODE_EDITOR.TYPES.CHALLENGE' },
     ];
     this.initialType = [{ value: 'initial', viewValue: 'EDITOR.NODE_EDITOR.TYPES.INITIAL' }];
+    this.mediaTypes = [
+      { value: 'none', viewValue: 'EDITOR.NODE_EDITOR.MEDIA_TYPES.NONE' },
+      { value: 'image', viewValue: 'EDITOR.NODE_EDITOR.MEDIA_TYPES.IMAGE' },
+      { value: 'video', viewValue: 'EDITOR.NODE_EDITOR.MEDIA_TYPES.VIDEO' }
+    ];
   }
 
   ngOnDestroy(): void {
@@ -116,11 +128,17 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
 
   openEditor(node: any) {
     this.editorService.setCurrentNode(node);
+    if(this.currentNode.data.image_id) {
+      this.currentMediaType = 'image';
+      this.currentImg = this.currentNode.data.image_id;
+    }
+    else if(this.currentNode.data.video) this.currentMediaType == 'video';
+    else this.currentMediaType = 'none';
     this.nodeEditor.open();
   }
 
   updateNode() {
-    const newNode = this.nodeForm.value;
+    let newNode = this.nodeForm.value;
     if(this.nodeForm.valid) {
       this.nodes.forEach((node, index) => {
         if (node.id == this.currentNode.id) {
@@ -135,7 +153,6 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
           link.target = newNode.id;
         }
       });
-
       this.editorService.setAdventure(this.adventure);
       console.log(this.adventure);
       this.closeEditor();
@@ -241,7 +258,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     this.imageService.upload(image).subscribe((res) => {
       let imageData: any = res;
       this.nodeForm.get('data.image_id').setValue(imageData.id);
-      console.log(this.nodeForm.value);
+      this.currentImg = imageData.id;
     },
     (err) => {
       console.log(err);

@@ -39,3 +39,15 @@ button {
   bottom: 20px;
   right: 20px;
 }
+
+.img-upload {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.img-thumb {
+  border: 1px solid #ddd; /* Gray border */
+  border-radius: 4px;  /* Rounded border */
+  padding: 5px; /* Some padding */
+  height: 5rem; /* Set a small width */
+}

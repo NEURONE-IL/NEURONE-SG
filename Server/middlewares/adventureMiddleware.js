@@ -9,15 +9,15 @@ const schema = Joi.object({
     description: Joi.string()
         .required(),
 
-    image_id: Joi.string().allow(''),
+    image_id: Joi.string().allow('').allow(null),
 
     nodes: Joi.array().items(Joi.object({
         id: Joi.string().required(),
         label: Joi.string().required(),
         type: Joi.string().required(),
         data: Joi.object({
-            image_id: Joi.string().allow(''),
-            video: Joi.string().allow(''),
+            image_id: Joi.string().allow('').allow(null),
+            video: Joi.string().allow('').allow(null),
             text: Joi.string().required(),
         }).required(),
         challenge: Joi.object({
@@ -52,12 +52,27 @@ const newSchema = Joi.object({
 
     description: Joi.string()
         .required(),
+
+    image_id: Joi.string().allow('').allow(null)
 })
 
 
 const verifyBody = async (req, res, next) => {
     try {
         const validation = await schema.validateAsync(req.body);
+        if(!req.body.image_id || req.body.image_id=='') {
+            delete req.body.image_id;
+        }
+        if (req.body.nodes) {
+            req.body.nodes.forEach(node => {
+                if(!node.data.image_id || node.data.image_id=='') {
+                    delete node.data.image_id;
+                }
+                if(!node.data.video || node.data.video=='') {
+                    delete node.data.video;
+                }       
+            });
+        }
         next();
     }
     catch (err) {
@@ -71,6 +86,9 @@ const verifyBody = async (req, res, next) => {
 const verifyNewBody = async (req, res, next) => {
     try {
         const validation = await newSchema.validateAsync(req.body);
+        if(!req.body.image_id || req.body.image_id=='') {
+            delete req.body.image_id;
+        }
         next();
     }
     catch (err) {

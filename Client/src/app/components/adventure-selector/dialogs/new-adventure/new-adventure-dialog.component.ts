@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FileUploader } from 'ng2-file-upload';
-import { environment } from './../../../../../environments/environment';
+import { ImageService } from 'src/app/services/game/image.service';
+import { environment } from 'src/environments/environment';
 
 const URL = environment.apiUrl + '/files/upload';
 
@@ -11,24 +12,27 @@ const URL = environment.apiUrl + '/files/upload';
   templateUrl: './new-adventure-dialog.component.html',
   styleUrls: ['./new-adventure-dialog.component.scss'],
 })
-
 export class NewAdventureDialogComponent implements OnInit {
-
   newAdventureForm: FormGroup;
-  file: File;
+  image: File;
+  currentImg: string;
+  loading = false;
+  apiUrl = environment.apiUrl;
 
   public uploader: FileUploader = new FileUploader({
     url: URL,
-    itemAlias: 'image'
+    itemAlias: 'image',
   });
 
   constructor(
     private formBuilder: FormBuilder,
-    public dialogRef: MatDialogRef<NewAdventureDialogComponent>
+    public dialogRef: MatDialogRef<NewAdventureDialogComponent>,
+    private imageService: ImageService
   ) {
     this.newAdventureForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
+      image_id: [],
     });
   }
 
@@ -42,17 +46,23 @@ export class NewAdventureDialogComponent implements OnInit {
   }
 
   addNewAdventure() {
-    const newAdventure = this.newAdventureForm.value;
-    let adventureFormData = new FormData();
-    adventureFormData.append('name', newAdventure.name);
-    adventureFormData.append('description', newAdventure.description);
-    if(this.file) {
-      adventureFormData.append('file', this.file);
+    if (!this.loading) {
+      const newAdventure = this.newAdventureForm.value;
+      this.dialogRef.close({ newAdventure: newAdventure });
     }
-    this.dialogRef.close({newAdventure: adventureFormData});
   }
 
   handleFileInput(files: FileList) {
-    this.file = files.item(0);
+    let image = files.item(0);
+    this.imageService.upload(image).subscribe(
+      (res) => {
+        let imageData: any = res;
+        this.newAdventureForm.controls.image_id.setValue(imageData.id);
+        this.currentImg = imageData.id;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 }

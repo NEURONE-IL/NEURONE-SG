@@ -90,7 +90,13 @@
         "CHALLENGE": "Desafío"
       },
       "LINKS_BTN": "Ramas",
-      "CHALLENGE_BTN": "Desafío"
+      "CHALLENGE_BTN": "Desafío",
+      "MEDIA_TYPE": "Audiovisual",
+      "MEDIA_TYPES": {
+        "NONE": "Ninguno",
+        "VIDEO": "Video",
+        "IMAGE": "Imagen"
+      }
     }
   },
   "META_EDITOR": {

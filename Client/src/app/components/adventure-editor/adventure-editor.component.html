@@ -10,30 +10,38 @@
       disableClose
     >
       <div class="form-container" *ngIf="currentNode != null">
-        <h3>{{"EDITOR.NODE_EDITOR.TITLE" | translate}}</h3>
+        <h3>{{ "EDITOR.NODE_EDITOR.TITLE" | translate }}</h3>
         <form class="node-form" [formGroup]="nodeForm">
-          <mat-form-field appearance="fill" class="node-form-field" *ngIf="currentNode.type!='initial'">
-            <mat-label>{{"EDITOR.NODE_EDITOR.TYPE" | translate}}</mat-label>
+          <mat-form-field
+            appearance="fill"
+            class="node-form-field"
+            *ngIf="currentNode.type != 'initial'"
+          >
+            <mat-label>{{ "EDITOR.NODE_EDITOR.TYPE" | translate }}</mat-label>
             <mat-select
               [ngModel]="currentNode.type"
               name="nodeType"
               formControlName="type"
               (selectionChange)="updateNodeType($event.value)"
-              [disabled]="currentNode.type=='initial'"
+              [disabled]="currentNode.type == 'initial'"
             >
               <mat-option *ngFor="let type of nodeTypes" [value]="type.value">
                 {{ type.viewValue | translate }}
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field appearance="fill" class="node-form-field" *ngIf="currentNode.type=='initial'">
-            <mat-label>{{"EDITOR.NODE_EDITOR.TYPE" | translate}}</mat-label>
+          <mat-form-field
+            appearance="fill"
+            class="node-form-field"
+            *ngIf="currentNode.type == 'initial'"
+          >
+            <mat-label>{{ "EDITOR.NODE_EDITOR.TYPE" | translate }}</mat-label>
             <mat-select
               [ngModel]="currentNode.type"
               name="nodeType"
               formControlName="type"
               (selectionChange)="updateNodeType($event.value)"
-              [disabled]="currentNode.type=='initial'"
+              [disabled]="currentNode.type == 'initial'"
             >
               <mat-option *ngFor="let type of initialType" [value]="type.value">
                 {{ type.viewValue | translate }}
@@ -51,7 +59,7 @@
             />
           </mat-form-field> -->
           <mat-form-field class="node-form-field">
-            <mat-label>{{"EDITOR.NODE_EDITOR.LABEL" | translate}}</mat-label>
+            <mat-label>{{ "EDITOR.NODE_EDITOR.LABEL" | translate }}</mat-label>
             <input
               matInput
               name="nodeLabel"
@@ -71,13 +79,33 @@
                 [ngModel]="currentNode.data.image"
               />
             </mat-form-field> -->
-            <div class="file-upload">
-              <input type="file"
-                  id="file"
-                  (change)="handleFileInput($event.target.files)">
-            </div>
             <mat-form-field class="node-form-field">
-              <mat-label>{{"EDITOR.NODE_EDITOR.VIDEO" | translate}}</mat-label>
+              <mat-label>{{
+                "EDITOR.NODE_EDITOR.MEDIA_TYPE" | translate
+              }}</mat-label>
+              <mat-select [(value)]="currentMediaType">
+                <mat-option
+                  *ngFor="let type of mediaTypes"
+                  [value]="type.value"
+                >
+                  {{ type.viewValue | translate }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="img-upload" *ngIf="currentMediaType=='image'">
+              <div *ngIf="currentImg">
+                <img class="img-thumb" src="{{ apiUrl + '/image/' + currentImg }}" alt="...">
+              </div>
+              <input
+                type="file"
+                id="file"
+                (change)="handleFileInput($event.target.files)"
+              />
+            </div>
+            <mat-form-field class="node-form-field" *ngIf="currentMediaType=='video'">
+              <mat-label>{{
+                "EDITOR.NODE_EDITOR.VIDEO" | translate
+              }}</mat-label>
               <input
                 matInput
                 name="nodeVideo"
@@ -87,29 +115,32 @@
               />
             </mat-form-field>
             <mat-form-field class="node-form-field">
-              <mat-label>{{"EDITOR.NODE_EDITOR.TEXT" | translate}}</mat-label>
+              <mat-label>{{ "EDITOR.NODE_EDITOR.TEXT" | translate }}</mat-label>
               <input
                 matInput
                 name="nodeText"
                 formControlName="text"
-                placeholder="{{'EDITOR.NODE_EDITOR.TEXT_PLACEHOLDER' | translate}}"
+                placeholder="{{
+                  'EDITOR.NODE_EDITOR.TEXT_PLACEHOLDER' | translate
+                }}"
                 [ngModel]="currentNode.data.text"
               />
             </mat-form-field>
           </form>
-          <input type="hidden" formControlName="challenge" [ngModel]="currentNode.challenge">
-          <input type="hidden" formControlName="id" [ngModel]="currentNode.id">
+          <input
+            type="hidden"
+            formControlName="challenge"
+            [ngModel]="currentNode.challenge"
+          />
+          <input
+            type="hidden"
+            formControlName="id"
+            [ngModel]="currentNode.id"
+          />
         </form>
-        <div
-          class="sidebar-button-panel"
-          *ngIf="currentNode.type != 'ending'"
-        >
-          <button
-            mat-stroked-button
-            color="accent"
-            (click)="showLinksDialog()"
-          >
-          {{"EDITOR.NODE_EDITOR.LINKS_BTN" | translate}}
+        <div class="sidebar-button-panel" *ngIf="currentNode.type != 'ending'">
+          <button mat-stroked-button color="accent" (click)="showLinksDialog()">
+            {{ "EDITOR.NODE_EDITOR.LINKS_BTN" | translate }}
           </button>
           <button
             *ngIf="currentNode.type == 'challenge'"
@@ -117,14 +148,16 @@
             color="accent"
             (click)="showChallengeDialog()"
           >
-          {{"EDITOR.NODE_EDITOR.CHALLENGE_BTN" | translate}}
+            {{ "EDITOR.NODE_EDITOR.CHALLENGE_BTN" | translate }}
           </button>
         </div>
         <div class="sidebar-button-panel">
           <button mat-raised-button color="primary" (click)="updateNode()">
-            {{"COMMON.SAVE" | translate}}
+            {{ "COMMON.SAVE" | translate }}
           </button>
-          <button mat-raised-button (click)="closeEditor()">{{"COMMON.CLOSE" | translate}}</button>
+          <button mat-raised-button (click)="closeEditor()">
+            {{ "COMMON.CLOSE" | translate }}
+          </button>
         </div>
       </div>
     </mat-sidenav>

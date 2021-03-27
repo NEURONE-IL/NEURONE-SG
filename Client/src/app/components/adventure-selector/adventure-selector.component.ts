@@ -115,7 +115,7 @@ export class AdventureSelectorComponent implements OnInit {
       NewAdventureDialogComponent,
       {
         width: '50rem',
-        height: '20rem',
+        height: 'auto',
       }
     );
 

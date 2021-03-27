@@ -24,6 +24,9 @@
 					id="file"
 					(change)="handleFileInput($event.target.files)">
     </div>
+    <div>
+      <img *ngIf="currentImg" class="img-thumb" src="{{ apiUrl + '/image/' + currentImg }}" alt="...">
+    </div>
   </form>
 </div>
 <div mat-dialog-actions align="end">
