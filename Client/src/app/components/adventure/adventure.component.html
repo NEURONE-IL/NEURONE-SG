@@ -1,11 +1,16 @@
 <div class="adventure">
   <mat-card class="adventure-card">
     <div class="img-wrapper">
-      <img class="node-img" src="{{currentNode.data.image || '../../../../../assets/images/placeholder.png' }}" alt="" />
+      <img
+        class="node-img"
+        src="{{ apiUrl + '/image/' + currentNode.data.image_id }}"
+        onerror="this.src='../../../../../assets/images/placeholder.png';"
+        alt=""
+      />
     </div>
     <div class="text-wrapper">
-      <h3>{{currentNode.label}}</h3>
-      <p>{{currentNode.data.text}}</p>
+      <h3>{{ currentNode.label }}</h3>
+      <p>{{ currentNode.data.text }}</p>
     </div>
   </mat-card>
 </div>

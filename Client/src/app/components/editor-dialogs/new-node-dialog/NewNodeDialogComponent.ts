@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { EditorService } from 'src/app/services/game/editor.service';
+import { ImageService } from 'src/app/services/game/image.service';
 
 @Component({
   selector: 'app-new-node-dialog',
@@ -11,6 +12,7 @@ import { EditorService } from 'src/app/services/game/editor.service';
 })
 export class NewNodeDialogComponent {
   newNodeForm: FormGroup;
+  image: File;
 
   nodeTypes = [
     { value: 'transition', viewValue: 'EDITOR.NODE_EDITOR.TYPES.TRANSITION' },
@@ -22,7 +24,8 @@ export class NewNodeDialogComponent {
     private formBuilder: FormBuilder,
     public editorService: EditorService,
     private translate: TranslateService,
-    public dialogRef: MatDialogRef<NewNodeDialogComponent>
+    public dialogRef: MatDialogRef<NewNodeDialogComponent>,
+    private imageService: ImageService
   ) {}
 
   ngOnInit(): void {
@@ -30,7 +33,6 @@ export class NewNodeDialogComponent {
       label: ['', Validators.required],
       type: ['', Validators.required],
       data: this.formBuilder.group({
-        image_filename: [''],
         image_id: [''],
         video: [''],
         text: ['', Validators.required],
@@ -38,8 +40,20 @@ export class NewNodeDialogComponent {
     });
   }
 
+  handleFileInput(files: FileList) {
+    this.image = files.item(0);
+    this.imageService.upload(this.image).subscribe((res) => {
+      let imageData: any = res;
+      this.newNodeForm.get('data.image_id').setValue(imageData.id);
+    },
+    (err) => {
+      console.log(err);
+    });
+  }
+
   addNewNode() {
     const newNode = this.newNodeForm.value;
+
     if (newNode.type == 'challenge') {
       let defaultChallenge = {
         type: 'question',

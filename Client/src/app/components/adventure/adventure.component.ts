@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GameService } from '../../services/game/game.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-adventure',
@@ -13,6 +14,8 @@ export class AdventureComponent implements OnInit, OnDestroy {
 
   adventureSubscription: Subscription;
   currentNodeSubscription: Subscription;
+
+  apiUrl = environment.apiUrl;
 
   constructor(private gameService: GameService) {}
 

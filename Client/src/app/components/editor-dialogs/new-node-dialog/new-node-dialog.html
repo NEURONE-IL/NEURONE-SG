@@ -19,15 +19,20 @@
       </mat-select>
     </mat-form-field>
     <form formGroupName="data">
-      <mat-form-field class="node-form-field">
+      <!-- <mat-form-field class="node-form-field">
         <mat-label>{{"NEW_NODE_DIALOG.IMAGE" | translate}}</mat-label>
         <input
           matInput
           name="nodeImage"
-          formControlName="image_url"
+          formControlName="image_id"
           placeholder="background.jpg"
         />
-      </mat-form-field>
+      </mat-form-field> -->
+      <div class="file-upload">
+        <input type="file"
+            id="file"
+            (change)="handleFileInput($event.target.files)">
+      </div>
       <mat-form-field class="node-form-field">
         <mat-label>{{"NEW_NODE_DIALOG.VIDEO" | translate}}</mat-label>
         <input

@@ -6,7 +6,8 @@ const imagesGridFS = require("../middlewares/imagesGridFS");
 const verifyToken = require("../middlewares/verifyToken");
 
 router.get("/:id", async (req, res) => {
-  const image_id = new mongoose.mongo.ObjectId(req.params.id)
+  try {
+    const image_id = new mongoose.mongo.ObjectId(req.params.id)
   imagesGridFS.gfs
     .find({ _id: image_id })
     .toArray((err, files) => {
@@ -30,10 +31,17 @@ router.get("/:id", async (req, res) => {
           .pipe(res);
       } else {
         return res.status(404).json({
-          err: "No Image",
+          msg: "ERROR_FETCHING_IMAGE",
         });
       }
     });
+  }
+  catch {
+    return res.status(404).json({
+      msg: "ERROR_FETCHING_IMAGE",
+    });
+  }
+  
 });
 
 router.get("", async (req, res) => {
