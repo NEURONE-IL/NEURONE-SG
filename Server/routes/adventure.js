@@ -60,8 +60,6 @@ router.post(
   async (req, res) => {
     const initialAdventure = req.body;
     if (req.file) {
-      let image_filename = req.file.filename;
-      initialAdventure.image_filename = image_filename;
       initialAdventure.image_id = req.file.id;
     }
     initialAdventure.nodes = [
@@ -70,8 +68,6 @@ router.post(
         type: "initial",
         label: "Start",
         data: {
-          image: "",
-          video: "",
           text: "sample text",
         },
       },

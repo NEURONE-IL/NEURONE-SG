@@ -9,7 +9,6 @@ const schema = Joi.object({
     description: Joi.string()
         .required(),
 
-    image_filename: Joi.string().allow(''),
     image_id: Joi.string().allow(''),
 
     nodes: Joi.array().items(Joi.object({
@@ -17,6 +16,7 @@ const schema = Joi.object({
         label: Joi.string().required(),
         type: Joi.string().required(),
         data: Joi.object({
+            image_id: Joi.string().allow(''),
             video: Joi.string().allow(''),
             text: Joi.string().required(),
         }).required(),

@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
+const mongoose = require("mongoose");
 
 const imagesGridFS = require("../middlewares/imagesGridFS");
 const verifyToken = require("../middlewares/verifyToken");
 
-router.get("/:filename", async (req, res) => {
+router.get("/:id", async (req, res) => {
+  const image_id = new mongoose.mongo.ObjectId(req.params.id)
   imagesGridFS.gfs
-    .find({ filename: req.params.filename })
+    .find({ _id: image_id })
     .toArray((err, files) => {
       if (err) {
         return res.status(404).json({
@@ -16,7 +18,7 @@ router.get("/:filename", async (req, res) => {
       }
       if (!files || files.length === 0) {
         return res.status(404).json({
-          err: "No files exist",
+          msg: "FILE_NOT_FOUND",
         });
       }
       if (
@@ -24,7 +26,7 @@ router.get("/:filename", async (req, res) => {
         files[0].contentType === "image/png"
       ) {
         imagesGridFS.gfs
-          .openDownloadStreamByName(req.params.filename)
+          .openDownloadStream(image_id)
           .pipe(res);
       } else {
         return res.status(404).json({

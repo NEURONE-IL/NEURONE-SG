@@ -15,7 +15,6 @@ const adventureSchema = new Schema({
         label: { type: String, required: true },
         type: { type: String, required: true },
         data: {
-          image_filename: { type: String },
           image_id: { type: String },
           video: { type: String },
           text: { type: String, default: "", required: true },

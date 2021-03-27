@@ -30,7 +30,8 @@ export class NewNodeDialogComponent {
       label: ['', Validators.required],
       type: ['', Validators.required],
       data: this.formBuilder.group({
-        image: [''],
+        image_filename: [''],
+        image_id: [''],
         video: [''],
         text: ['', Validators.required],
       }),
