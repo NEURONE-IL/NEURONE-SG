@@ -28,12 +28,38 @@
           placeholder="background.jpg"
         />
       </mat-form-field> -->
-      <div class="file-upload">
+      <!-- <div class="file-upload">
         <input type="file"
             id="file"
             (change)="handleFileInput($event.target.files)">
       </div>
+      <div>
+        <img *ngIf="currentImg" class="img-thumb" src="{{ apiUrl + '/image/' + currentImg }}" alt="...">
+      </div> -->
       <mat-form-field class="node-form-field">
+        <mat-label>{{
+          "EDITOR.NODE_EDITOR.MEDIA_TYPE" | translate
+        }}</mat-label>
+        <mat-select [(value)]="currentMediaType">
+          <mat-option
+            *ngFor="let type of mediaTypes"
+            [value]="type.value"
+          >
+            {{ type.viewValue | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="img-upload" *ngIf="currentMediaType=='image'">
+        <div *ngIf="currentImg">
+          <img class="img-thumb" src="{{ apiUrl + '/image/' + currentImg }}" alt="...">
+        </div>
+        <input
+          type="file"
+          id="file"
+          (change)="handleFileInput($event.target.files)"
+        />
+      </div>
+      <mat-form-field class="node-form-field" *ngIf="currentMediaType=='video'">
         <mat-label>{{"NEW_NODE_DIALOG.VIDEO" | translate}}</mat-label>
         <input
           matInput

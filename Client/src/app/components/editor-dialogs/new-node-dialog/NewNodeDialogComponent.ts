@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { EditorService } from 'src/app/services/game/editor.service';
 import { ImageService } from 'src/app/services/game/image.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-new-node-dialog',
@@ -13,6 +14,11 @@ import { ImageService } from 'src/app/services/game/image.service';
 export class NewNodeDialogComponent {
   newNodeForm: FormGroup;
   image: File;
+  loading = false;
+  apiUrl = environment.apiUrl;
+  currentImg: string;
+  currentMediaType = 'image';
+  mediaTypes: any;
 
   nodeTypes = [
     { value: 'transition', viewValue: 'EDITOR.NODE_EDITOR.TYPES.TRANSITION' },
@@ -29,6 +35,11 @@ export class NewNodeDialogComponent {
   ) {}
 
   ngOnInit(): void {
+    this.mediaTypes = [
+      { value: 'none', viewValue: 'EDITOR.NODE_EDITOR.MEDIA_TYPES.NONE' },
+      { value: 'image', viewValue: 'EDITOR.NODE_EDITOR.MEDIA_TYPES.IMAGE' },
+      { value: 'video', viewValue: 'EDITOR.NODE_EDITOR.MEDIA_TYPES.VIDEO' }
+    ];
     this.newNodeForm = this.formBuilder.group({
       label: ['', Validators.required],
       type: ['', Validators.required],
@@ -45,6 +56,7 @@ export class NewNodeDialogComponent {
     this.imageService.upload(this.image).subscribe((res) => {
       let imageData: any = res;
       this.newNodeForm.get('data.image_id').setValue(imageData.id);
+      this.currentImg = imageData.id;
     },
     (err) => {
       console.log(err);
