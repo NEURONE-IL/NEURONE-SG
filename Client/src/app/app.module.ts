@@ -65,6 +65,7 @@ import { WebResourcesTableDialogComponent } from './components/web-resources-dia
 import { NewWebResourceDialogComponent } from './components/web-resources-dialogs/new-web-resource-dialog/new-web-resource-dialog.component';
 import { GamificationConfigComponent } from './components/gamification-config/gamification-config.component';
 import { GeneralConfigComponent } from './components/general-config/general-config.component';
+import { EmbeddedMediaModule } from 'ngx-embedded-media';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -100,7 +101,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     WebResourcesTableDialogComponent,
     NewWebResourceDialogComponent,
     GamificationConfigComponent,
-    GeneralConfigComponent,
+    GeneralConfigComponent
   ],
   imports: [
     BrowserModule,
@@ -132,6 +133,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatTableModule,
     MatTooltipModule,
     FileUploadModule,
+    EmbeddedMediaModule,
     ToastrModule.forRoot(),
     TranslateModule.forRoot({
       loader: {

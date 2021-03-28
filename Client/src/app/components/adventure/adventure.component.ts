@@ -16,6 +16,7 @@ export class AdventureComponent implements OnInit, OnDestroy {
   currentNodeSubscription: Subscription;
 
   apiUrl = environment.apiUrl;
+  currentMedia: string;
 
   constructor(private gameService: GameService) {}
 
@@ -26,6 +27,9 @@ export class AdventureComponent implements OnInit, OnDestroy {
     });
     this.currentNodeSubscription = this.gameService.currentNodeEmitter.subscribe((node) => {
       this.currentNode = node;
+      if(this.currentNode.data.image_id) this.currentMedia = 'image';
+      else if(this.currentNode.data.video) this.currentMedia = 'video';
+      else this.currentMedia = 'none';
       console.log('adventureComponent currentNode: ', this.currentNode);
     });
   }
