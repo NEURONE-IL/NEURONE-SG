@@ -15,6 +15,11 @@ export class SearchService {
   searchEnabledSubject = new ReplaySubject<boolean>(1);
   searchEnabledEmitter = this.searchEnabledSubject.asObservable();
 
+  // Current page
+  currentPage: any;
+  currentPageSubject = new ReplaySubject<any>(1);
+  currentPageEmitter = this.currentPageSubject.asObservable();
+
   constructor(protected http: HttpClient) {}
 
   init() {
@@ -23,13 +28,14 @@ export class SearchService {
 
   reset() {
     this.setSearch(true);
+    this.setCurrentPage(null);
   }
 
-  fetchResults(query, locale, adventure, node) {
+  fetchResults(query, locale, adventureId, node) {
     let body: any = {};
     body.query = query;
-    if (adventure) {
-      body.domain = adventure._id;
+    if (adventureId) {
+      body.domain = adventureId;
     }
     if (node) {
       body.task = node.id;
@@ -76,5 +82,14 @@ export class SearchService {
 
   searchEnabledEmitChange(searchEnabled: boolean) {
     this.searchEnabledSubject.next(searchEnabled);
+  }
+
+  setCurrentPage(currentPage: any) {
+    this.currentPage = currentPage;
+    this.currentPageEmitChange(this.currentPage);
+  }
+
+  currentPageEmitChange(currentPage: any) {
+    this.currentPageSubject.next(currentPage);
   }
 }

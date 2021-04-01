@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 const multipleAnswerSchema = new Schema({
 
     adventure: { type: Schema.Types.ObjectId, ref: 'Adventure'},
-    escaperoom: { type: Schema.Types.ObjectId, ref: 'Escaperoom'},
     node: { type: Schema.Types.ObjectId, required: true },
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true},
     type: { type: String, required: true },

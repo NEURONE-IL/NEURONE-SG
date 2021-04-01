@@ -66,6 +66,7 @@ import { NewWebResourceDialogComponent } from './components/web-resources-dialog
 import { GamificationConfigComponent } from './components/gamification-config/gamification-config.component';
 import { GeneralConfigComponent } from './components/general-config/general-config.component';
 import { EmbeddedMediaModule } from 'ngx-embedded-media';
+import { BookmarkFormComponent } from './components/game-bar/bookmark-form/bookmark-form.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -101,7 +102,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     WebResourcesTableDialogComponent,
     NewWebResourceDialogComponent,
     GamificationConfigComponent,
-    GeneralConfigComponent
+    GeneralConfigComponent,
+    BookmarkFormComponent
   ],
   imports: [
     BrowserModule,

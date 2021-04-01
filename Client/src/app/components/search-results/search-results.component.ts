@@ -34,7 +34,7 @@ export class SearchResultsComponent implements OnInit {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.query = params.get('query');
       this.searchService
-        .fetchResults(this.query, null, this.gameService.adventure, null)
+        .fetchResults(this.query, null, this.gameService.adventure._id, null)
         .subscribe(
           (res) => {
             console.log(res);

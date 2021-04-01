@@ -27,9 +27,9 @@
       </div>
       <ng-template #endingPanel>
         <div class="ending-panel">
-          <p>{{"GAMEBAR.ENDING_REACHED" |  translate}}</p>
+          <p>{{ "GAMEBAR.ENDING_REACHED" | translate }}</p>
           <button mat-raised-button color="primary" (click)="finish()">
-            {{"COMMON.FINISH" | translate}}
+            {{ "COMMON.FINISH" | translate }}
           </button>
         </div>
       </ng-template>
@@ -51,6 +51,14 @@
         [currentNode]="currentNode"
         (challengeFinishedEvent)="finishChallenge($event)"
       ></app-multiple-form>
+    </mat-card-content>
+    <mat-card-content *ngIf="currentChallenge.type == 'bookmark'">
+      <app-bookmark-form
+        [challenge]="currentChallenge"
+        [adventure]="adventure"
+        [currentNode]="currentNode"
+        (challengeFinishedEvent)="finishChallenge($event)"
+      ></app-bookmark-form>
     </mat-card-content>
   </ng-template>
   <button class="neurone-btn" mat-fab color="accent" (click)="toggleSearch()">

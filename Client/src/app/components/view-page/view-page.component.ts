@@ -1,3 +1,4 @@
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import {
   ActivatedRoute,
@@ -8,6 +9,7 @@ import {
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { GameService } from 'src/app/services/game/game.service';
+import { SearchService } from 'src/app/services/search/search.service';
 import { environment } from '../../../environments/environment';
 import { KmTrackerIframeService } from '../../services/tracking/kmtracker-iframe.service';
 
@@ -27,12 +29,17 @@ export class ViewPageComponent implements OnInit, OnDestroy, AfterViewInit {
   docSubscription: Subscription;
   pathSubscription: Subscription;
 
-  constructor(private route: ActivatedRoute, private gameService: GameService, private kmTrackerIframe: KmTrackerIframeService) {
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private gameService: GameService,
+    private searchService: SearchService,
+    private kmTrackerIframe: KmTrackerIframeService
+  ) {}
   ngAfterViewInit(): void {
     this.isInited = true;
   }
   ngOnDestroy(): void {
+    this.searchService.setCurrentPage(this.doc);
     this.kmTrackerIframe.stop();
     this.pathSubscription.unsubscribe();
   }
@@ -47,11 +54,12 @@ export class ViewPageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gameService.checkRelevantDoc(this.doc);
       }
     );
+    this.searchService.setCurrentPage(this.doc);
   }
 
   trackIFrame() {
     if (this.isInited) {
-        this.kmTrackerIframe.start();
+      this.kmTrackerIframe.start();
     }
   }
 }

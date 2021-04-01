@@ -41,7 +41,6 @@ export class GameBarComponent implements OnInit, OnDestroy {
     this.adventureSubscription = this.gameService.adventureEmitter.subscribe(
       (adventure) => {
         this.adventure = adventure;
-        console.log('gameBar adventure: ', this.adventure);
       }
     );
     // Subscribe to current node
@@ -49,12 +48,10 @@ export class GameBarComponent implements OnInit, OnDestroy {
       (node) => {
         this.currentNode = node;
         if (this.currentNode.type == 'challenge') {
-          console.log('challenge node!');
           this.challengePending = true;
         } else {
           this.setCurrentLinks();
         }
-        console.log('gameBar currentNode: ', this.currentNode);
       }
     );
     // Subscribe to search enabled boolean

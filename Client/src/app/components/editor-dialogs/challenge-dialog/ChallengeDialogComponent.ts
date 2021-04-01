@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EditorService } from 'src/app/services/game/editor.service';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
+import { SearchService } from 'src/app/services/search/search.service';
 
 @Component({
   selector: 'app-challenge-dialog',
@@ -15,6 +16,8 @@ export class ChallengeDialogComponent {
   targetNodes: any;
   challenge: any;
   types: any;
+  documents: any;
+  loading = true;
 
   errors = [];
 
@@ -24,9 +27,22 @@ export class ChallengeDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private toastr: ToastrService,
     private translate: TranslateService,
-    public dialogRef: MatDialogRef<ChallengeDialogComponent>
+    public dialogRef: MatDialogRef<ChallengeDialogComponent>,
+    private search: SearchService
   ) {
     const node = data.node;
+    const adventureId = data.adventure;
+    console.log('AVENTURA:  ', adventureId);
+    this.search.fetchResults('*', null, adventureId, null).subscribe(
+      (documents) => {
+        this.documents = documents;
+        this.documents = this.documents.filter((r) => r.type != 'image');
+        this.loading = false;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
     if (node.challenge) {
       this.challenge = node.challenge;
     } else {
@@ -39,6 +55,7 @@ export class ChallengeDialogComponent {
     this.challengeForm = this.formBuilder.group({
       type: [Validators.required],
       question: [Validators.required],
+      document: [],
       answer: [],
       options: this.formBuilder.array([]),
     });
@@ -51,6 +68,10 @@ export class ChallengeDialogComponent {
         value: 'multiple',
         viewValue: 'CHALLENGE_DIALOG.TYPES.MULTIPLE',
       },
+      {
+        value: 'bookmark',
+        viewValue: 'CHALLENGE_DIALOG.TYPES.BOOKMARK',
+      },
     ];
     this.fetchOptions();
   }
@@ -61,8 +82,14 @@ export class ChallengeDialogComponent {
     let challenge = this.challengeForm.value;
     if (challenge.type == 'multiple') {
       delete challenge.answer;
+      delete challenge.document;
     }
     if (challenge.type == 'question') {
+      delete challenge.options;
+      delete challenge.document;
+    }
+    if (challenge.type == 'bookmark') {
+      delete challenge.answer;
       delete challenge.options;
     }
     this.dialogRef.close({ challenge: challenge });
@@ -71,7 +98,6 @@ export class ChallengeDialogComponent {
   updateType(type) {
     console.log(type);
     console.log(this.challengeForm.value);
-    console.log('challenge: ', this.challenge);
   }
 
   addOption() {

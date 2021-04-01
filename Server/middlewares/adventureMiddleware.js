@@ -24,6 +24,7 @@ const schema = Joi.object({
             type: Joi.string().required(),
             question: Joi.string(),
             answer: Joi.string(),
+            document: Joi.string(),
             // options: Joi.array().items(Joi.string())
             options: Joi.array().items(Joi.object({
                 value: Joi.string().allow(''),

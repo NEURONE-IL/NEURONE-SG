@@ -217,6 +217,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
         width: '40rem',
         data: {
           node: this.currentNode,
+          adventure: this.adventure._id
         },
       }
     );

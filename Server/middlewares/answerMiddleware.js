@@ -6,7 +6,6 @@ const simpleSchema = Joi.object({
   user: Joi.string().required(),
   type: Joi.string().required(),
   adventure: Joi.string(),
-  escaperoom: Joi.string(),
 });
 
 const multipleSchema = Joi.object({
@@ -14,7 +13,6 @@ const multipleSchema = Joi.object({
   user: Joi.string().required(),
   type: Joi.string().required(),
   adventure: Joi.string(),
-  escaperoom: Joi.string(),
   answer: Joi.array().items(
     Joi.object({
       value: Joi.string().allow(""),
@@ -24,6 +22,15 @@ const multipleSchema = Joi.object({
   ),
 });
 
+const bookmarkSchema = Joi.object({
+  document: Joi.string().required(),
+  answer: Joi.string().required(),
+  node: Joi.string().required(),
+  user: Joi.string().required(),
+  type: Joi.string().required(),
+  adventure: Joi.string(),
+});
+
 const verifyBody = async (req, res, next) => {
   try {
     if (req.body.type == "question") {
@@ -31,6 +38,9 @@ const verifyBody = async (req, res, next) => {
     }
     if (req.body.type == "multiple") {
       const multipleValidation = await multipleSchema.validateAsync(req.body);
+    }
+    if (req.body.type == "bookmark") {
+      const bookmarkValidation = await bookmarkSchema.validateAsync(req.body);
     }
     next();
   } catch (err) {

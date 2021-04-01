@@ -22,6 +22,7 @@ const adventureSchema = new Schema({
         challenge: {
           question: { type: String },
           answer: { type: String },
+          document: { type: String },
           type: { type: String },
           options: {
             type: [

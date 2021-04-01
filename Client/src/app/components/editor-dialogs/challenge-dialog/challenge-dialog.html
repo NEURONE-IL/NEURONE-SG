@@ -34,6 +34,17 @@
         placeholder="{{'CHALLENGE_DIALOG.ANSWER_PLACEHOLDER' | translate}}"
       />
     </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field" *ngIf="!loading">
+      <mat-label>{{"CHALLENGE_DIALOG.DOCUMENT" | translate}}</mat-label>
+      <mat-select
+        name="challengeDocument"
+        formControlName="document"
+      >
+        <mat-option *ngFor="let doc of documents" [value]="doc._id">
+          {{ doc.docName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
     <ng-container *ngIf="challenge.type=='multiple'">
       <div
         formArrayName="options"
@@ -54,7 +65,13 @@
           <mat-slide-toggle class="correct-slider" formControlName="correct">
             {{"CHALLENGE_DIALOG.CORRECT_OPTION" | translate }}
           </mat-slide-toggle>
-          <button mat-mini-fab color="warn" class="remove-option-btn" aria-label="Remove option" (click)="removeOption(i)">
+          <button
+            mat-mini-fab
+            color="warn"
+            class="remove-option-btn"
+            aria-label="Remove option"
+            (click)="removeOption(i)"
+          >
             <mat-icon>remove</mat-icon>
           </button>
         </div>

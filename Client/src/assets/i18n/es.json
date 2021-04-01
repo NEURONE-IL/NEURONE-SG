@@ -153,9 +153,11 @@
     "QUESTION_PLACEHOLDER": "¿Cuánto es 5*5?",
     "ANSWER_PLACEHOLDER": "25",
     "TYPE": "Tipo de desafío",
+    "DOCUMENT": "Documento",
     "TYPES": {
       "QUESTION": "Pregunta y respuesta",
-      "MULTIPLE": "Selección múltiple"
+      "MULTIPLE": "Selección múltiple",
+      "BOOKMARK": "Marcar página"
     },
     "OPTION": "Alternativa {{idx}}",
     "ADD_OPTION": "Agregar alternativa",

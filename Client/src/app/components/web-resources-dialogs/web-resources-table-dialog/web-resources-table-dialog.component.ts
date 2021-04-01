@@ -34,7 +34,7 @@ export class WebResourcesTableDialogComponent implements OnInit {
   ) {
     this.displayedColumns = ['type', 'title', 'url', 'actions'];
     this.adventure = this.data.adventure;
-    this.search.fetchResults('*', null, this.adventure, null).subscribe(
+    this.search.fetchResults('*', null, this.adventure._id, null).subscribe(
       (resources) => {
         this.resources = resources;
         this.resources = this.resources.filter((r) => r.type != 'image');
@@ -68,7 +68,7 @@ export class WebResourcesTableDialogComponent implements OnInit {
     resourceDialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.fetching = true;
-        this.search.fetchResults('*', null, this.adventure, null).subscribe(
+        this.search.fetchResults('*', null, this.adventure._id, null).subscribe(
           (resources) => {
             this.resources = resources;
             this.resources = this.resources.filter((r) => r.type != 'image');
@@ -91,7 +91,7 @@ export class WebResourcesTableDialogComponent implements OnInit {
         this.search.delete(resource).subscribe(
           (res) => {
             this.toastr.success(msg.OK);
-            this.search.fetchResults('*', null, this.adventure, null).subscribe(
+            this.search.fetchResults('*', null, this.adventure._id, null).subscribe(
               (resources) => {
                 this.resources = resources;
                 this.resources = this.resources.filter((r) => r.type != 'image');

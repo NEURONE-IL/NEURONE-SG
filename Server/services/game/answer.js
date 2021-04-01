@@ -19,7 +19,6 @@ const checkAnswer = async (node, challenge, answer) => {
   const answerAction = await GameElement.findOne({
     key: "responder_pregunta_1",
   });
-  console.log("ANSWER: ", answer);
 
   if (answer.type == "question") {
     const distance = await normalizeAndDistance(
@@ -33,7 +32,6 @@ const checkAnswer = async (node, challenge, answer) => {
       answerCheck.activator.condition = "wrong_answer";
       points += 10;
     }
-    console.log("answerCheck", answerCheck);
   } else if (answer.type == "multiple") {
     let correct = true;
     challenge.options.forEach((option, idx) => {
@@ -42,6 +40,14 @@ const checkAnswer = async (node, challenge, answer) => {
       }
     });
     if (correct) {
+      answerCheck.activator.condition = "correct_answer";
+      points += 100;
+    } else {
+      answerCheck.activator.condition = "wrong_answer";
+      points += 10;
+    }
+  } else if (answer.type == "bookmark") {
+    if (challenge.document == answer.document) {
       answerCheck.activator.condition = "correct_answer";
       points += 100;
     } else {
