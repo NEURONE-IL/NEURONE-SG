@@ -1,17 +1,41 @@
-<h3>{{ question }}</h3>
 <form [formGroup]="answerForm">
-  <div *ngIf="currentPage">
-    <button class="bookmark-btn" mat-fab color="accent" (click)="bookmarkPage()" *ngIf="bookmarkedPage==null || bookmarkedPage==undefined">
-      <mat-icon>bookmark_add</mat-icon>
-    </button>
-    <button class="bookmark-btn" mat-fab color="accent" (click)="unBookmarkPage()" *ngIf="bookmarkedPage">
-      <mat-icon>bookmark_remove</mat-icon>
-    </button>
+  <div class="container">
+    <div class="question-wrapper">
+      <h3>{{ question }}</h3>
+      <mat-form-field class="form-field">
+        <mat-label>{{ "GAMEBAR.BOOKMARK_INPUT" | translate }}</mat-label>
+        <input matInput name="answerInput" formControlName="answer" />
+        <mat-icon matSuffix (click)="sendAnswer()" class="submit-icon"
+          >send</mat-icon
+        >
+      </mat-form-field>
+      <button class="hidden-btn" (click)="sendAnswer()"></button>
+    </div>
+
+    <div class="bookmark-wrapper">
+      <button
+        class="bookmark-btn"
+        mat-fab
+        color="accent"
+        (click)="bookmarkPage()"
+        [disabled]="!currentPage"
+        *ngIf="bookmarkedPage == null || bookmarkedPage == undefined"
+      >
+        <mat-icon>bookmark_add</mat-icon>
+      </button>
+      <button
+        class="bookmark-btn"
+        mat-fab
+        color="accent"
+        (click)="unBookmarkPage()"
+        [disabled]="!bookmarkedPage"
+        *ngIf="bookmarkedPage"
+      >
+        <mat-icon>bookmark_remove</mat-icon>
+      </button>
+      <h3 *ngIf="bookmarkedPage && bookmarkedPage.docName">
+        {{ bookmarkedPage.docName }}
+      </h3>
+    </div>
   </div>
-  <mat-form-field class="form-field">
-    <mat-label>{{ "GAMEBAR.ANSWER_INPUT" | translate }}</mat-label>
-    <input matInput name="answerInput" formControlName="answer" />
-    <mat-icon matSuffix (click)="sendAnswer()" class="submit-icon">send</mat-icon>
-  </mat-form-field>
-  <button class="hidden-btn" (click)="sendAnswer()"></button>
 </form>

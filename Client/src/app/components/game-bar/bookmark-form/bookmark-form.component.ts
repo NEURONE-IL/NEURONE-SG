@@ -73,10 +73,12 @@ export class BookmarkFormComponent implements OnInit {
 
   bookmarkPage() {
     this.answerForm.controls.document.setValue(this.currentPage._id);
-    this.bookmarkedPage = this.currentPage as any;
+    this.bookmarkedPage = this.currentPage;
+    console.log('bookmarked page: ', this.bookmarkedPage);
   }
   unBookmarkPage() {
     this.answerForm.controls.document.setValue(null);
     this.bookmarkedPage = null;
+    console.log('bookmarked page: ', this.bookmarkedPage);
   }
 }

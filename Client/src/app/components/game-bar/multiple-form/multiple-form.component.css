@@ -1,3 +1,18 @@
 .hidden-btn {
   visibility: hidden;
 }
+
+.container {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: row;
+}
+
+.btn-wrapper {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.submit-btn {
+  min-width: 30%;
+}

@@ -168,7 +168,8 @@
   },
   "GAMEBAR": {
     "ANSWER_INPUT": "Ingrese su respuesta aquí...",
-    "ENDING_REACHED": "Has llegado al final de la aventura."
+    "ENDING_REACHED": "Has llegado al final de la aventura.",
+    "BOOKMARK_INPUT": "Justifique el documento seleccionado aquí..."
   },
   "NEW_ADVENTURE": {
     "TITLE": "Crear una nueva aventura",

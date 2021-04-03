@@ -34,7 +34,7 @@
         placeholder="{{'CHALLENGE_DIALOG.ANSWER_PLACEHOLDER' | translate}}"
       />
     </mat-form-field>
-    <mat-form-field appearance="fill" class="form-field" *ngIf="!loading">
+    <mat-form-field appearance="fill" class="form-field" *ngIf="!loading && challenge.type=='bookmark'">
       <mat-label>{{"CHALLENGE_DIALOG.DOCUMENT" | translate}}</mat-label>
       <mat-select
         name="challengeDocument"

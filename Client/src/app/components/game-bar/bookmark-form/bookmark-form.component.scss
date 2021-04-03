@@ -3,9 +3,28 @@
 }
 
 .form-field {
-  width: 40%;
+  width: 50%;
 }
 
 .bookmark-btn {
 
+}
+
+.container {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: row;
+}
+
+.question-wrapper {
+  min-width: 65%;
+}
+
+.bookmark-wrapper {
+  min-width: 35%;
+  display: flex;
+}
+
+.bookmark-wrapper h3 {
+  margin-left: 1em;
 }
