@@ -21,7 +21,7 @@
               <!--Images -->
               <mat-card
                 class="cardStyle doc-card"
-                [routerLink]="['/game/view-page', doc.route]"
+                [routerLink]="['/game/view-page', doc.url]"
                 [state]="{ doc: doc }"
                 *ngIf="doc.type && doc.type == 'image' && false"
               >
@@ -39,7 +39,7 @@
                         {{ doc.docName }}
                       </h5>
                       <a
-                        [routerLink]="['/game/view-page', doc.route]"
+                        [routerLink]="['/game/view-page', doc.url]"
                         [state]="{ doc: doc }"
                         class="document-link"
                         >{{ doc.title }}</a
