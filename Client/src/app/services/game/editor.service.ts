@@ -89,6 +89,8 @@ export class EditorService {
   updateMeta(newMeta) {
     this.adventure.name = newMeta.name;
     this.adventure.description = newMeta.description;
+    this.adventure.image_id = newMeta.image_id;
+    this.adventure.preconditions = newMeta.preconditions;
     this.adventureEmitChange(this.adventure);
   }
 

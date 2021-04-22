@@ -1,54 +1,70 @@
-<h1 mat-dialog-title>{{"NEW_ADVENTURE.TITLE" | translate}}</h1>
+<h1 mat-dialog-title>{{ "NEW_ADVENTURE.TITLE" | translate }}</h1>
 <div mat-dialog-content>
   <form class="new-link-form" [formGroup]="newAdventureForm">
-    <mat-form-field class="form-field">
-      <mat-label>{{"NEW_ADVENTURE.NAME" | translate}}</mat-label>
-      <input
-        matInput
-        name="adventureName"
-        formControlName="name"
-        placeholder="{{'NEW_ADVENTURE.NAME_PLACEHOLDER' | translate}}"
-      />
-    </mat-form-field>
-    <mat-form-field class="form-field">
-      <mat-label>{{"NEW_ADVENTURE.DESCRIPTION" | translate}}</mat-label>
-      <input
-        matInput
-        name="adventureDescription"
-        formControlName="description"
-        placeholder="{{'NEW_ADVENTURE.DESCRIPTION_PLACEHOLDER' | translate}}"
-      />
-    </mat-form-field>
-    <mat-form-field class="form-field">
-      <mat-label>{{"NEW_ADVENTURE.PRECONDITIONS" | translate}}</mat-label>
-      <mat-select formControlName="preconditions" multiple>
-        <mat-option *ngFor="let adventure of adventures" [value]="adventure._id">{{adventure.name}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field class="form-field">
-      <mat-label>{{
-        "NEW_ADVENTURE.IMAGE" | translate
-      }}</mat-label>
-      <mat-select [(value)]="currentMediaType">
-        <mat-option
-          *ngFor="let type of mediaTypes"
-          [value]="type.value"
-        >
-          {{ type.viewValue | translate }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <div class="file-upload" *ngIf="currentMediaType=='image'">
-      <input type="file"
-					id="file"
-					(change)="handleFileInput($event.target.files)">
+    <div>
+      <mat-form-field class="form-field">
+        <mat-label>{{ "NEW_ADVENTURE.NAME" | translate }}</mat-label>
+        <input
+          matInput
+          name="adventureName"
+          formControlName="name"
+          placeholder="{{ 'NEW_ADVENTURE.NAME_PLACEHOLDER' | translate }}"
+        />
+      </mat-form-field>
+      <mat-form-field class="form-field">
+        <mat-label>{{ "NEW_ADVENTURE.DESCRIPTION" | translate }}</mat-label>
+        <input
+          matInput
+          name="adventureDescription"
+          formControlName="description"
+          placeholder="{{
+            'NEW_ADVENTURE.DESCRIPTION_PLACEHOLDER' | translate
+          }}"
+        />
+      </mat-form-field>
     </div>
     <div>
-      <img *ngIf="currentImg" class="img-thumb" src="{{ apiUrl + '/image/' + currentImg }}" alt="...">
+      <mat-form-field class="form-field">
+        <mat-label>{{ "NEW_ADVENTURE.PRECONDITIONS" | translate }}</mat-label>
+        <mat-select formControlName="preconditions" multiple>
+          <mat-option
+            *ngFor="let adventure of adventures"
+            [value]="adventure._id"
+            >{{ adventure.name }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field">
+        <mat-label>{{ "NEW_ADVENTURE.IMAGE" | translate }}</mat-label>
+        <mat-select [(value)]="currentMediaType">
+          <mat-option *ngFor="let type of mediaTypes" [value]="type.value">
+            {{ type.viewValue | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="file-upload" *ngIf="currentMediaType == 'image'">
+        <input
+          type="file"
+          id="file"
+          (change)="handleFileInput($event.target.files)"
+        />
+      </div>
+      <div>
+        <img
+          *ngIf="currentImg"
+          class="img-thumb"
+          src="{{ apiUrl + '/image/' + currentImg }}"
+          alt="..."
+        />
+      </div>
     </div>
   </form>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-button color="accent" (click)="addNewAdventure()">{{"COMMON.SAVE" | translate}}</button>
-  <button mat-button [mat-dialog-close]="true">{{"COMMON.CLOSE" | translate}}</button>
+  <button mat-button color="accent" (click)="addNewAdventure()">
+    {{ "COMMON.SAVE" | translate }}
+  </button>
+  <button mat-button [mat-dialog-close]="true">
+    {{ "COMMON.CLOSE" | translate }}
+  </button>
 </div>

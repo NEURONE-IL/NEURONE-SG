@@ -124,6 +124,8 @@ router.put(
       adventure.description = req.body.description;
       adventure.nodes = req.body.nodes;
       adventure.links = req.body.links;
+      if (req.body.image_id) adventure.image_id = req.body.image_id;
+      if (req.body.preconditions) adventure.preconditions = req.body.preconditions;
       adventure.save((err, result) => {
         if (err) {
           return res.status(400).json({
