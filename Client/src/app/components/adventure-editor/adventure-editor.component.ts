@@ -131,8 +131,10 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   openEditor(node: any) {
     this.editorService.setCurrentNode(node);
     if (this.currentNode.data.image_id) {
+      const imageId = this.currentNode.data.image_id;
+      this.nodeForm.get('data.image_id').setValue(imageId)
       this.currentMediaType = 'image';
-      this.currentImg = this.currentNode.data.image_id;
+      this.currentImg = imageId;
     } else if (this.currentNode.data.video) this.currentMediaType == 'video';
     else this.currentMediaType = 'none';
     this.nodeEditor.open();
