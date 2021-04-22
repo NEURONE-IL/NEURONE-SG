@@ -16,6 +16,10 @@ export class AdventureService {
     return this.http.get(this.uri);
   }
 
+  getPlayerAdventures(playerId): Observable<any> {
+    return this.http.get(this.uri + '/user/' + playerId);
+  }
+
   postAdventure(adventure): Observable<any> {
     return this.http.post(this.uri, adventure);
   }

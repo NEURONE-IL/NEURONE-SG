@@ -41,7 +41,8 @@ export class AdventureSelectorComponent implements OnInit {
 
   ngOnInit(): void {
     this.role = this.auth.getRole();
-    this.adventureService.getAdventures().subscribe(
+    const playerId = this.auth.getUser()._id;
+    this.adventureService.getPlayerAdventures(playerId).subscribe(
       (res) => {
         this.adventures = res;
         if (this.auth.getRole() == 'player') {
@@ -92,16 +93,14 @@ export class AdventureSelectorComponent implements OnInit {
       this.adventures[foundIdx].progress = progress;
     });
     this.adventures.sort((adv1, adv2) => (adv1.progress && !adv2.progress) ? -1 : 1);
+    this.adventures = this.adventures.filter((adventure) => {
+      return (adventure.progress && !adventure.progress.finished) || (!adventure.progress);
+    });
   }
 
   deleteAdventure(adventure: any) {
-    // await this.gameService.init(adventure).then(() => {
-    //   this.searchService.init();
-    //   this.router.navigate(['game']);
-    // });
     this.adventureService.deleteAdventure(adventure).subscribe(
       (res) => {
-        console.log('adventure deleted');
         this.reloadPage();
       },
       (err) => {

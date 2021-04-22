@@ -17,6 +17,7 @@ const progressSchema = new Schema({
     default: undefined,
   },
   relevantDocsVisited: { type: Schema.Types.Mixed },
+  finished: { type: Boolean },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

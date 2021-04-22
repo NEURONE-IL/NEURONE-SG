@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Adventure = require("../models/game/adventure");
+const Progress = require("../models/game/progress");
 const { nanoid } = require("nanoid");
 const path = require("path");
 
@@ -17,6 +18,28 @@ router.get("", [verifyToken], async (req, res) => {
       });
     }
     res.status(200).json(adventures);
+  });
+});
+
+router.get("/user/:user_id", [verifyToken], async (req, res) => {
+  const userId = req.params.user_id;
+  Progress.find({user: userId}, (err, progresses) => {
+    if (err) {
+      return res.status(404).json({
+        ok: false,
+        err,
+      });
+    }
+    Adventure.find({}, (err, adventures) => {
+      if (err) {
+        return res.status(404).json({
+          ok: false,
+          err,
+        });
+      }
+      let availableAdventures = adventures;
+      res.status(200).json(availableAdventures);
+    });
   });
 });
 

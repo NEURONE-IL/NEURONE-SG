@@ -5,7 +5,8 @@ const schema = Joi.object({
   adventure: Joi.string().required(),
   currentNode: Joi.string().required(),
   activators: Joi.array().items(Joi.object()),
-  relevantDocsVisited: Joi.array().items(Joi.object())
+  relevantDocsVisited: Joi.array().items(Joi.object()),
+  finished: Joi.bool()
 });
 
 const verifyBody = async (req, res, next) => {

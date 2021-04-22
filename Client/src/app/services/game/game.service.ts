@@ -350,7 +350,12 @@ export class GameService {
       currentNode: this.currentNode.id,
       activators: this.activators,
       relevantDocsVisited: this.relevantDocsVisited,
+      finished: false
     };
+
+    if (this.currentNode.type == 'ending') {
+      progress.finished = true;
+    }
 
     this.progressService.postProgress(progress).subscribe(
       (res) => {
