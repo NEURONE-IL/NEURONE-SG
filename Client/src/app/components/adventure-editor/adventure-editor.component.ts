@@ -80,7 +80,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.currentMediaType='none';
+    this.currentMediaType = 'none';
     this.nodeForm = this.formBuilder.group({
       id: [],
       label: [],
@@ -97,11 +97,13 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
       { value: 'ending', viewValue: 'EDITOR.NODE_EDITOR.TYPES.ENDING' },
       { value: 'challenge', viewValue: 'EDITOR.NODE_EDITOR.TYPES.CHALLENGE' },
     ];
-    this.initialType = [{ value: 'initial', viewValue: 'EDITOR.NODE_EDITOR.TYPES.INITIAL' }];
+    this.initialType = [
+      { value: 'initial', viewValue: 'EDITOR.NODE_EDITOR.TYPES.INITIAL' },
+    ];
     this.mediaTypes = [
       { value: 'none', viewValue: 'EDITOR.NODE_EDITOR.MEDIA_TYPES.NONE' },
       { value: 'image', viewValue: 'EDITOR.NODE_EDITOR.MEDIA_TYPES.IMAGE' },
-      { value: 'video', viewValue: 'EDITOR.NODE_EDITOR.MEDIA_TYPES.VIDEO' }
+      { value: 'video', viewValue: 'EDITOR.NODE_EDITOR.MEDIA_TYPES.VIDEO' },
     ];
   }
 
@@ -128,35 +130,59 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
 
   openEditor(node: any) {
     this.editorService.setCurrentNode(node);
-    if(this.currentNode.data.image_id) {
+    if (this.currentNode.data.image_id) {
       this.currentMediaType = 'image';
       this.currentImg = this.currentNode.data.image_id;
-    }
-    else if(this.currentNode.data.video) this.currentMediaType == 'video';
+    } else if (this.currentNode.data.video) this.currentMediaType == 'video';
     else this.currentMediaType = 'none';
     this.nodeEditor.open();
   }
 
   updateNode() {
-    let newNode = this.nodeForm.value;
-    if(this.nodeForm.valid) {
-      this.nodes.forEach((node, index) => {
-        if (node.id == this.currentNode.id) {
-          this.nodes[index] = newNode;
-        }
-      });
-      this.links.forEach((link, index) => {
-        if (link.source == this.currentNode.id) {
-          link.source = newNode.id;
-        }
-        if (link.target == this.currentNode.id) {
-          link.target = newNode.id;
-        }
-      });
-      this.editorService.setAdventure(this.adventure);
-      console.log(this.adventure);
-      this.closeEditor();
-      this.refreshGraph();
+    try {
+      let newNode = this.nodeForm.value;
+      if (this.nodeForm.valid) {
+        this.nodes.forEach((node, index) => {
+          if (node.id == this.currentNode.id) {
+            this.nodes[index] = newNode;
+          }
+        });
+        this.links.forEach((link, index) => {
+          if (link.source == this.currentNode.id) {
+            link.source = newNode.id;
+          }
+          if (link.target == this.currentNode.id) {
+            link.target = newNode.id;
+          }
+        });
+        this.editorService.setAdventure(this.adventure);
+        this.closeEditor();
+        this.refreshGraph();
+      }
+    } catch (error) {
+      console.log('error updating node: ', error);
+    }
+  }
+
+  deleteNode() {
+    try {
+      if (this.currentNode && this.currentNode.type != 'initial') {
+        this.nodes = this.nodes.filter((node) => {
+          return node.id != this.currentNode.id;
+        });
+        this.links = this.links.filter((link) => {
+          return (
+            link.source != this.currentNode.id &&
+            link.target != this.currentNode.id
+          );
+        });
+        console.log(this.adventure);
+        this.editorService.setAdventure(this.adventure);
+        this.closeEditor();
+        this.refreshGraph();
+      }
+    } catch (error) {
+      console.log('error deleting node: ', error);
     }
   }
 
@@ -199,15 +225,17 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
       },
     });
 
-    linksDialogRef.afterClosed().subscribe((result) => {
-      if (result.links) {
-        this.adventure.links = result.links;
-        this.refreshGraph();
+    linksDialogRef.afterClosed().subscribe(
+      (result) => {
+        if (result.links) {
+          this.adventure.links = result.links;
+          this.refreshGraph();
+        }
+      },
+      (err) => {
+        console.log(err);
       }
-    },
-    (err) => {
-      console.log(err);
-    });
+    );
   }
 
   showChallengeDialog() {
@@ -217,7 +245,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
         width: '40rem',
         data: {
           node: this.currentNode,
-          adventure: this.adventure._id
+          adventure: this.adventure._id,
         },
       }
     );
@@ -232,15 +260,12 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   }
 
   showWebDialog() {
-    const webDialogRef = this.webDialog.open(
-      WebResourcesTableDialogComponent,
-      {
-        width: '70rem',
-        data: {
-          adventure: this.adventure
-        },
-      }
-    );
+    const webDialogRef = this.webDialog.open(WebResourcesTableDialogComponent, {
+      width: '70rem',
+      data: {
+        adventure: this.adventure,
+      },
+    });
 
     webDialogRef.afterClosed().subscribe((result) => {
       if (result) {
@@ -256,22 +281,32 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
 
   handleFileInput(files: FileList) {
     let image = files.item(0);
-    this.imageService.upload(image).subscribe((res) => {
-      let imageData: any = res;
-      this.nodeForm.get('data.image_id').setValue(imageData.id);
-      this.currentImg = imageData.id;
-    },
-    (err) => {
-      console.log(err);
-    });
+    this.imageService.upload(image).subscribe(
+      (res) => {
+        let imageData: any = res;
+        this.nodeForm.get('data.image_id').setValue(imageData.id);
+        this.currentImg = imageData.id;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
   get nodes() {
     return this.adventure.nodes;
   }
 
+  set nodes(nodes) {
+    this.adventure.nodes = nodes;
+  }
+
   get links() {
     return this.adventure.links;
+  }
+
+  set links(links) {
+    this.adventure.links = links;
   }
 
   get targetNodes() {

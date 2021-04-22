@@ -5,7 +5,8 @@
     "CANCEL": "Cancelar",
     "SUBMIT": "Enviar",
     "GAMIFY": "Ludificar",
-    "FINISH": "Finalizar"
+    "FINISH": "Finalizar",
+    "DELETE": "Eliminar"
   },
   "ERRORS": {
     "REQUIRED": "El valor es requerido",

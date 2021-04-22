@@ -92,9 +92,13 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <div class="img-upload" *ngIf="currentMediaType=='image'">
+            <div class="img-upload" *ngIf="currentMediaType == 'image'">
               <div *ngIf="currentImg">
-                <img class="img-thumb" src="{{ apiUrl + '/image/' + currentImg }}" alt="...">
+                <img
+                  class="img-thumb"
+                  src="{{ apiUrl + '/image/' + currentImg }}"
+                  alt="..."
+                />
               </div>
               <input
                 type="file"
@@ -102,7 +106,10 @@
                 (change)="handleFileInput($event.target.files)"
               />
             </div>
-            <mat-form-field class="node-form-field" *ngIf="currentMediaType=='video'">
+            <mat-form-field
+              class="node-form-field"
+              *ngIf="currentMediaType == 'video'"
+            >
               <mat-label>{{
                 "EDITOR.NODE_EDITOR.VIDEO" | translate
               }}</mat-label>
@@ -154,6 +161,14 @@
         <div class="sidebar-button-panel">
           <button mat-raised-button color="primary" (click)="updateNode()">
             {{ "COMMON.SAVE" | translate }}
+          </button>
+          <button
+            mat-raised-button
+            color="accent"
+            (click)="deleteNode()"
+            [disabled]="currentNode.type == 'initial'"
+          >
+            {{ "COMMON.DELETE" | translate }}
           </button>
           <button mat-raised-button (click)="closeEditor()">
             {{ "COMMON.CLOSE" | translate }}
