@@ -11,6 +11,8 @@ const schema = Joi.object({
 
     image_id: Joi.string().allow('').allow(null),
 
+    preconditions: Joi.array().items(Joi.string()),
+
     nodes: Joi.array().items(Joi.object({
         id: Joi.string().required(),
         label: Joi.string().required(),
@@ -54,7 +56,9 @@ const newSchema = Joi.object({
     description: Joi.string()
         .required(),
 
-    image_id: Joi.string().allow('').allow(null)
+    image_id: Joi.string().allow('').allow(null),
+
+    preconditions: Joi.array().items(Joi.string())
 })
 
 

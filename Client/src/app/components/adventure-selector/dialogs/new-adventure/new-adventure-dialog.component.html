@@ -19,7 +19,26 @@
         placeholder="{{'NEW_ADVENTURE.DESCRIPTION_PLACEHOLDER' | translate}}"
       />
     </mat-form-field>
-    <div class="file-upload">
+    <mat-form-field class="form-field">
+      <mat-label>{{"NEW_ADVENTURE.PRECONDITIONS" | translate}}</mat-label>
+      <mat-select formControlName="preconditions" multiple>
+        <mat-option *ngFor="let adventure of adventures" [value]="adventure._id">{{adventure.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="form-field">
+      <mat-label>{{
+        "NEW_ADVENTURE.IMAGE" | translate
+      }}</mat-label>
+      <mat-select [(value)]="currentMediaType">
+        <mat-option
+          *ngFor="let type of mediaTypes"
+          [value]="type.value"
+        >
+          {{ type.viewValue | translate }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="file-upload" *ngIf="currentMediaType=='image'">
       <input type="file"
 					id="file"
 					(change)="handleFileInput($event.target.files)">

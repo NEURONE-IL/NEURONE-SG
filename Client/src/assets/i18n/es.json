@@ -6,7 +6,9 @@
     "SUBMIT": "Enviar",
     "GAMIFY": "Ludificar",
     "FINISH": "Finalizar",
-    "DELETE": "Eliminar"
+    "DELETE": "Eliminar",
+    "YES": "Si",
+    "NO": "No"
   },
   "ERRORS": {
     "REQUIRED": "El valor es requerido",
@@ -178,7 +180,9 @@
     "NAME": "Nombre",
     "DESCRIPTION": "Descripción",
     "NAME_PLACEHOLDER": "Aventura en el espacio",
-    "DESCRIPTION_PLACEHOLDER": "¡Esta es una aventura increíble donde salvarás el planeta!"
+    "DESCRIPTION_PLACEHOLDER": "¡Esta es una aventura increíble donde salvarás el planeta!",
+    "PRECONDITIONS": "Precondiciones",
+    "IMAGE": "¿Agregar imagen?"
   },
   "DEFAULT_CHALLENGE": {
     "QUESTION": "¿Cuánto es 5*5?",

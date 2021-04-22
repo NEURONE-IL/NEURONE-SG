@@ -8,6 +8,10 @@ const adventureSchema = new Schema({
   image_filename: { type: String },
   image_id: { type: String },
 
+  preconditions: [
+    { type: Schema.Types.ObjectId, ref: "Adventure", default: [] },
+  ],
+
   nodes: {
     type: [
       {

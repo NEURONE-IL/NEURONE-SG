@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FileUploader } from 'ng2-file-upload';
+import { AdventureService } from 'src/app/services/game/adventure.service';
 import { ImageService } from 'src/app/services/game/image.service';
 import { environment } from 'src/environments/environment';
 
@@ -16,8 +17,11 @@ export class NewAdventureDialogComponent implements OnInit {
   newAdventureForm: FormGroup;
   image: File;
   currentImg: string;
-  loading = false;
+  loading = true;
   apiUrl = environment.apiUrl;
+  adventures: any;
+  currentMediaType: string = 'none';
+  mediaTypes: any;
 
   public uploader: FileUploader = new FileUploader({
     url: URL,
@@ -27,12 +31,24 @@ export class NewAdventureDialogComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<NewAdventureDialogComponent>,
-    private imageService: ImageService
+    private imageService: ImageService,
+    private adventureService: AdventureService
   ) {
     this.newAdventureForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
       image_id: [],
+      preconditions: [[]],
+    });
+    this.mediaTypes = [
+      { value: 'none', viewValue: 'COMMON.NO' },
+      { value: 'image', viewValue: 'COMMON.YES' }
+    ];
+    this.adventureService.getAdventures().subscribe((res) => {
+      this.adventures = res;
+      this.loading = false;
+    }, (err) => {
+      console.log('error fetching adventures: ', err);
     });
   }
 
