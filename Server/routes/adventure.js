@@ -8,6 +8,7 @@ const path = require("path");
 const imagesGridFS = require("../middlewares/imagesGridFS");
 const adventureMiddleware = require("../middlewares/adventureMiddleware");
 const verifyToken = require("../middlewares/verifyToken");
+const imageHelper = require("../helpers/imagesHelper");
 
 router.get("", [verifyToken], async (req, res) => {
   Adventure.find({}, (err, adventures) => {
@@ -125,8 +126,10 @@ router.put(
       adventure.nodes = req.body.nodes;
       adventure.links = req.body.links;
       if (req.body.image_id) {
+        imageHelper.deleteImage(adventure.image_id);
         adventure.image_id = req.body.image_id;
       } else {
+        imageHelper.deleteImage(adventure.image_id);
         adventure.image_id = undefined;
       }
       if (req.body.preconditions) {
