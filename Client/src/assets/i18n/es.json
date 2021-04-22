@@ -17,7 +17,8 @@
     "GAMIFICATION_STATUS": "Estado de ludificación: ",
     "GM_CONNECTION_STATUS": "Conectado a NEURONE-GM: ",
     "POINTS": "Puntos",
-    "LEVEL": "Nivel: "
+    "LEVEL": "Nivel: ",
+    "RANK_TEXT": "{{rank}}° lugar en el ranking."
   },
   "CONFIG": {
     "TITLE": "Configuración",

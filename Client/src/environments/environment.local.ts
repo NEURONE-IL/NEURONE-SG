@@ -3,5 +3,6 @@ export const environment = {
   root: 'http://localhost:3002/',
   apiUrl: 'http://localhost:3002/api',
   coreUrl: 'http://localhost:3000/v1',
-  coreRoot: 'http://localhost:3000'
+  coreRoot: 'http://localhost:3000',
+  gmTimeout: 2000
 };

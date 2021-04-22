@@ -209,6 +209,7 @@ router.post("/login", async (req, res) => {
       email: user.email,
       role: user.role.name,
       username: user.username,
+      gm_code: user.gm_code
     },
   };
   res.header("x-access-token", token).send(response);

@@ -256,7 +256,7 @@ router.get('/userRankings/:user_id/:key' , verifyToken, async (req, res) => {
                 err
             });
         }
-    }).populate('study');
+    });
     const rankingName = await GameElement.findOne({type: "leaderboard", key: key}, err => {
         if (err) {
             return res.status(404).json({
@@ -264,8 +264,8 @@ router.get('/userRankings/:user_id/:key' , verifyToken, async (req, res) => {
             });
         }
     })
-    console.log(rankingName)
-    await leaderboardService.getLeaderboardByGroup(rankingName.gm_code, {group_code: user.study.gm_code}, (err, leaderboard) => {
+    console.log('ranking: ', rankingName)
+    await leaderboardService.getLeaderboardByGroup(rankingName.gm_code, {}, (err, leaderboard) => {
         if(err){
             res.status(404).send(err);
         }

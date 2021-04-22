@@ -6,6 +6,7 @@ import { GamificationService } from './gamification.service';
 import { KmTrackerService } from '../../services/tracking/kmtracker.service';
 import { ConfigService } from './config.service';
 import { ProgressService } from './progress.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -254,6 +255,8 @@ export class GameService {
         gmEnabled: true,
         currentLevel: null,
         points: null,
+        ranking: null,
+        userRankings: null,
       };
 
       await this.gmService
@@ -262,13 +265,6 @@ export class GameService {
         .then((res) => {
           let levels = res;
           gmStats.currentLevel = levels[levels.length - 1];
-          // for (let i = 0; i < levels.length; i++) {
-          //   if (
-          //     levels[i].point_threshold < gmStats.currentLevel.point_threshold
-          //   ) {
-          //     gmStats.currentLevel = levels[i];
-          //   }
-          // }
         })
         .catch((err) => {
           gmStats.gmEnabled = false;
@@ -286,6 +282,35 @@ export class GameService {
           gmStats.gmEnabled = false;
           console.log(err);
         });
+
+      await this.gmService
+        .userRankings(this.player._id, 'ranking_exp')
+        .toPromise()
+        .then((res) => {
+          let ranking = res;
+          gmStats.ranking = ranking;
+        })
+        .catch((err) => {
+          gmStats.gmEnabled = false;
+          console.log(err);
+        });
+
+      // Get user position
+      try {
+        let userRanks = [];
+        for (let i = 0; i < gmStats.ranking.leaderboardResult.length; i++) {
+          if (
+            gmStats.ranking.leaderboardResult[i].code === this.player.gm_code
+          ) {
+            userRanks.push(
+              gmStats.ranking.leaderboardResult[i].rank.toString()
+            );
+          }
+        }
+        gmStats.userRankings = userRanks;
+      } catch (error) {
+        console.log("GAMIFICATION: couldn't set user ranking");
+      }
 
       this.gmStats = gmStats;
       if (gmStats.currentLevel) {
@@ -319,8 +344,6 @@ export class GameService {
   }
 
   storeProgress() {
-    console.log('------------');
-    console.log('PROGRESS');
     const progress = {
       user: this.auth.getUser()._id,
       adventure: this.adventure._id,

@@ -7,7 +7,8 @@
         playerLevel
       }}</mat-card-subtitle>
       <p *ngIf="gmStats && playerPoints">
-        {{ playerPoints }} {{ "GAMIFICATION.POINTS" | translate }}
+        {{ playerPoints }} {{ "GAMIFICATION.POINTS" | translate }} -
+        {{ "GAMIFICATION.RANK_TEXT" | translate: { rank: palyerRank } }}
       </p>
     </mat-card-header>
     <mat-divider [inset]="true" class="bar-divider"></mat-divider>
