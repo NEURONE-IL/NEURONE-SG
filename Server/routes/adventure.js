@@ -23,7 +23,7 @@ router.get("", [verifyToken], async (req, res) => {
 
 router.get("/user/:user_id", [verifyToken], async (req, res) => {
   const userId = req.params.user_id;
-  Progress.find({user: userId}, (err, progresses) => {
+  Progress.find({ user: userId }, (err, progresses) => {
     if (err) {
       return res.status(404).json({
         ok: false,
@@ -124,8 +124,16 @@ router.put(
       adventure.description = req.body.description;
       adventure.nodes = req.body.nodes;
       adventure.links = req.body.links;
-      if (req.body.image_id) adventure.image_id = req.body.image_id;
-      if (req.body.preconditions) adventure.preconditions = req.body.preconditions;
+      if (req.body.image_id) {
+        adventure.image_id = req.body.image_id;
+      } else {
+        adventure.image_id = undefined;
+      }
+      if (req.body.preconditions) {
+        adventure.preconditions = req.body.preconditions;
+      } else {
+        adventure.preconditions = undefined;
+      }
       adventure.save((err, result) => {
         if (err) {
           return res.status(400).json({

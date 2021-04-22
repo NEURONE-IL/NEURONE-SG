@@ -36,7 +36,7 @@
     </mat-form-field>
     <mat-form-field class="meta-form-field">
       <mat-label>{{ "NEW_ADVENTURE.IMAGE" | translate }}</mat-label>
-      <mat-select [(value)]="currentMediaType">
+      <mat-select [(value)]="currentMediaType" (selectionChange)="imageSelectorChange($event)">
         <mat-option *ngFor="let type of mediaTypes" [value]="type.value">
           {{ type.viewValue | translate }}
         </mat-option>

@@ -74,6 +74,14 @@ export class AdventureMetaEditorComponent implements OnInit {
     );
   }
 
+  imageSelectorChange(evt) {
+    if (evt.value != 'image') {
+      console.log('delete image now');
+      this.currentImg = undefined;
+      this.metaForm.controls.image_id.setValue(undefined);
+    }
+  }
+
   saveAllChanges() {
     this.editorService.setUpdating(true);
     this.editorService.updateMeta(this.metaForm.value);
