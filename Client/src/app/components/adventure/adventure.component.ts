@@ -38,8 +38,4 @@ export class AdventureComponent implements OnInit, OnDestroy {
     this.adventureSubscription.unsubscribe();
     this.currentNodeSubscription.unsubscribe();
   }
-
-  printData() {
-    console.log(this.gameService.currentNode);
-  }
 }

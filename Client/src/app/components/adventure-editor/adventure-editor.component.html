@@ -83,7 +83,7 @@
               <mat-label>{{
                 "EDITOR.NODE_EDITOR.MEDIA_TYPE" | translate
               }}</mat-label>
-              <mat-select [(value)]="currentMediaType">
+              <mat-select [(value)]="currentMediaType" (selectionChange)="nodeMediaChange($event)">
                 <mat-option
                   *ngFor="let type of mediaTypes"
                   [value]="type.value"

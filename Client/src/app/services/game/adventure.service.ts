@@ -17,7 +17,7 @@ export class AdventureService {
   }
 
   getPlayerAdventures(playerId): Observable<any> {
-    return this.http.get(this.uri + '/user/' + playerId);
+    return this.http.get(this.uri + '/player/' + playerId);
   }
 
   postAdventure(adventure): Observable<any> {

@@ -43,6 +43,7 @@ export class AdventureMetaEditorComponent implements OnInit {
     this.adventureService.getAdventures().subscribe(
       (res) => {
         this.adventures = res;
+        this.adventures = this.adventures.filter(adv => { return adv._id != this.adventure._id });
         this.loading = false;
       },
       (err) => {

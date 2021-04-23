@@ -132,11 +132,14 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     this.editorService.setCurrentNode(node);
     if (this.currentNode.data.image_id) {
       const imageId = this.currentNode.data.image_id;
-      this.nodeForm.get('data.image_id').setValue(imageId)
+      this.nodeForm.get('data.image_id').setValue(imageId);
       this.currentMediaType = 'image';
       this.currentImg = imageId;
-    } else if (this.currentNode.data.video) this.currentMediaType == 'video';
-    else this.currentMediaType = 'none';
+    } else if (this.currentNode.data.video) {
+      this.currentMediaType = 'video';
+    } else {
+      this.currentMediaType = 'none';
+    }
     this.nodeEditor.open();
   }
 
@@ -293,6 +296,21 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
         console.log(err);
       }
     );
+  }
+
+  nodeMediaChange(evt) {
+    if (evt.value == 'none') {
+      this.currentImg = undefined;
+      this.nodeForm.get('data.image_id').setValue(undefined);
+      this.nodeForm.get('data.video').setValue(undefined);
+    }
+    if (evt.value == 'video') {
+      this.currentImg = undefined;
+      this.nodeForm.get('data.image_id').setValue(undefined);
+    }
+    if (evt.value == 'image') {
+      this.nodeForm.get('data.video').setValue(undefined);
+    }
   }
 
   get nodes() {

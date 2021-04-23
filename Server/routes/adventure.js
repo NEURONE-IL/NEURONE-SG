@@ -22,7 +22,7 @@ router.get("", [verifyToken], async (req, res) => {
   });
 });
 
-router.get("/user/:user_id", [verifyToken], async (req, res) => {
+router.get("/player/:user_id", [verifyToken], async (req, res) => {
   const userId = req.params.user_id;
   Progress.find({ user: userId }, (err, progresses) => {
     if (err) {
@@ -38,8 +38,9 @@ router.get("/user/:user_id", [verifyToken], async (req, res) => {
           err,
         });
       }
-      let availableAdventures = adventures;
-      res.status(200).json(availableAdventures);
+      let playableAdventures = [];
+      validatePreconditions(adventures, progresses, playableAdventures);
+      res.status(200).json(playableAdventures);
     });
   });
 });
@@ -164,4 +165,24 @@ router.delete("/:adventure_id", [verifyToken], async (req, res) => {
   });
 });
 
+function validatePreconditions(adventures, progresses, playableAdventures) {
+  adventures.forEach((adv) => {
+    if (adv.preconditions && adv.preconditions.length > 0) {
+      let count = 0;
+      adv.preconditions.forEach((pre) => {
+        let foundProgress = progresses.filter((pro) => {
+          return pre.equals(pro.adventure) && pro.finished;
+        });
+        if (foundProgress.length > 0) count++;
+      });
+      if (count == adv.preconditions.length) {
+        playableAdventures.push(adv);
+      }
+    } else {
+      playableAdventures.push(adv);
+    }
+  });
+}
+
 module.exports = router;
+

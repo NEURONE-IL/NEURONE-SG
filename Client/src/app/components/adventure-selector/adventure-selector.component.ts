@@ -42,22 +42,58 @@ export class AdventureSelectorComponent implements OnInit {
   ngOnInit(): void {
     this.role = this.auth.getRole();
     const playerId = this.auth.getUser()._id;
+    if (this.role == 'player') {
+      this.fetchPlayableAdventures(playerId);
+    } else {
+      this.fetchAllAdventures();
+    }
+  }
+
+  private fetchAllAdventures() {
+    this.adventureService.getAdventures().subscribe(
+      (res) => {
+        this.adventures = res;
+        if (this.auth.getRole() == 'player') {
+          let user = this.auth.getUser();
+          this.progresService.getUserProgress(user._id).subscribe(
+            (res) => {
+              this.userProgress = res;
+              console.log('user progress: ', this.userProgress);
+              this.validateProgress();
+              this.adventuresLoading = false;
+            },
+            (err) => {
+              this.adventuresLoading = false;
+            }
+          );
+        } else {
+          this.adventuresLoading = false;
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  private fetchPlayableAdventures(playerId: any) {
     this.adventureService.getPlayerAdventures(playerId).subscribe(
       (res) => {
         this.adventures = res;
         if (this.auth.getRole() == 'player') {
           let user = this.auth.getUser();
-          this.progresService.getUserProgress(user._id).subscribe((res) => {
-            this.userProgress = res;
-            console.log("user progress: ", this.userProgress);
-            this.validateProgress();
-            this.adventuresLoading = false;
-          },
-          (err) => {
-            this.adventuresLoading = false;
-          });
-        }
-        else {
+          this.progresService.getUserProgress(user._id).subscribe(
+            (res) => {
+              this.userProgress = res;
+              console.log('user progress: ', this.userProgress);
+              this.validateProgress();
+              this.adventuresLoading = false;
+            },
+            (err) => {
+              this.adventuresLoading = false;
+            }
+          );
+        } else {
           this.adventuresLoading = false;
         }
       },
@@ -88,13 +124,20 @@ export class AdventureSelectorComponent implements OnInit {
   }
 
   validateProgress() {
-    this.userProgress.forEach(progress => {
-      let foundIdx = this.adventures.findIndex(adv => adv._id == progress.adventure);
+    this.userProgress.forEach((progress) => {
+      let foundIdx = this.adventures.findIndex(
+        (adv) => adv._id == progress.adventure
+      );
       this.adventures[foundIdx].progress = progress;
     });
-    this.adventures.sort((adv1, adv2) => (adv1.progress && !adv2.progress) ? -1 : 1);
+    this.adventures.sort((adv1, adv2) =>
+      adv1.progress && !adv2.progress ? -1 : 1
+    );
     this.adventures = this.adventures.filter((adventure) => {
-      return (adventure.progress && !adventure.progress.finished) || (!adventure.progress);
+      return (
+        (adventure.progress && !adventure.progress.finished) ||
+        !adventure.progress
+      );
     });
   }
 
