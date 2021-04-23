@@ -4,7 +4,7 @@ const Adventure = require("../models/game/adventure");
 const Progress = require("../models/game/progress");
 const { nanoid } = require("nanoid");
 const path = require("path");
-
+const jwt = require("jsonwebtoken");
 const imagesGridFS = require("../middlewares/imagesGridFS");
 const adventureMiddleware = require("../middlewares/adventureMiddleware");
 const verifyToken = require("../middlewares/verifyToken");
@@ -93,11 +93,23 @@ router.post(
         type: "initial",
         label: "Start",
         data: {
-          text: "sample text",
+          text: "...",
         },
       },
     ];
+
     const newAdventure = new Adventure(initialAdventure);
+
+    try {
+      let authToken = req.header("x-access-token");
+      let userId = jwt.verify(authToken, process.env.TOKEN_SECRET)._id;
+      if (userId) {
+        newAdventure.user = userId;
+      }
+    } catch (error) {
+      console.log("couldn't set user adventure relationship.");
+    }
+
     newAdventure.save((err, adventure) => {
       if (err) {
         return res.status(404).json({
@@ -185,4 +197,3 @@ function validatePreconditions(adventures, progresses, playableAdventures) {
 }
 
 module.exports = router;
-

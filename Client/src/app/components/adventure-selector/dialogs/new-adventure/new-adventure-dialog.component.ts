@@ -42,14 +42,17 @@ export class NewAdventureDialogComponent implements OnInit {
     });
     this.mediaTypes = [
       { value: 'none', viewValue: 'COMMON.NO' },
-      { value: 'image', viewValue: 'COMMON.YES' }
+      { value: 'image', viewValue: 'COMMON.YES' },
     ];
-    this.adventureService.getAdventures().subscribe((res) => {
-      this.adventures = res;
-      this.loading = false;
-    }, (err) => {
-      console.log('error fetching adventures: ', err);
-    });
+    this.adventureService.getAdventures().subscribe(
+      (res) => {
+        this.adventures = res;
+        this.loading = false;
+      },
+      (err) => {
+        console.log('error fetching adventures: ', err);
+      }
+    );
   }
 
   ngOnInit(): void {
@@ -63,30 +66,35 @@ export class NewAdventureDialogComponent implements OnInit {
 
   addNewAdventure() {
     if (this.newAdventureForm.valid && !this.loading) {
-      this.imageService.upload(this.image).subscribe(
-        (res) => {
-          let imageData: any = res;
-          this.newAdventureForm.controls.image_id.setValue(imageData.id);
-          const newAdventure = this.newAdventureForm.value;
-          this.dialogRef.close({ newAdventure: newAdventure });
-        },
-        (err) => {
-          console.log(err);
-          const newAdventure = this.newAdventureForm.value;
-          this.dialogRef.close({ newAdventure: newAdventure });
-        }
-      );
+      if (this.image) {
+        this.imageService.upload(this.image).subscribe(
+          (res) => {
+            let imageData: any = res;
+            this.newAdventureForm.controls.image_id.setValue(imageData.id);
+            const newAdventure = this.newAdventureForm.value;
+            this.dialogRef.close({ newAdventure: newAdventure });
+          },
+          (err) => {
+            console.log(err);
+            const newAdventure = this.newAdventureForm.value;
+            this.dialogRef.close({ newAdventure: newAdventure });
+          }
+        );
+      } else {
+        const newAdventure = this.newAdventureForm.value;
+        this.dialogRef.close({ newAdventure: newAdventure });
+      }
     }
   }
 
   handleFileInput(files: FileList) {
     this.image = files.item(0);
     let reader = new FileReader();
-          reader.onload = (event:any) => {
-              this.imagePreview = event.target.result;
-              console.log('read!');
-              console.log(this.imagePreview);
-          }
-          reader.readAsDataURL(this.image);
+    reader.onload = (event: any) => {
+      this.imagePreview = event.target.result;
+      console.log('read!');
+      console.log(this.imagePreview);
+    };
+    reader.readAsDataURL(this.image);
   }
 }

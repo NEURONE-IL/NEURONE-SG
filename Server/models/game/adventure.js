@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const adventureSchema = new Schema({
+
   name: { type: String, required: true },
   description: { type: String, required: true },
 
@@ -11,6 +12,8 @@ const adventureSchema = new Schema({
   preconditions: [
     { type: Schema.Types.ObjectId, ref: "Adventure" },
   ],
+
+  user: { type: Schema.Types.ObjectId, ref: "User" },
 
   nodes: {
     type: [

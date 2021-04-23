@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Progress = require("../models/game/progress");
 const verifyToken = require("../middlewares/verifyToken");
+const authMiddleware = require("../middlewares/authMiddleware");
 const progressMiddleware = require("../middlewares/progressMiddleware");
 
 router.get("", [verifyToken], async (req, res) => {
