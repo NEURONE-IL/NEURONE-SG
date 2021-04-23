@@ -51,9 +51,9 @@
       </div>
       <div>
         <img
-          *ngIf="currentImg"
+          *ngIf="imagePreview"
           class="img-thumb"
-          src="{{ apiUrl + '/image/' + currentImg }}"
+          [src]="imagePreview"
           alt="..."
         />
       </div>

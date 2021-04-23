@@ -16,6 +16,7 @@ export class AdventureMetaEditorComponent implements OnInit {
   adventureSubscription: Subscription;
   adventures: any;
   image: File;
+  imagePreview: string;
   currentImg: string;
   loading = true;
   currentMediaType: string = 'none';
@@ -36,15 +37,18 @@ export class AdventureMetaEditorComponent implements OnInit {
       }
     );
     this.mediaTypes = [
+      { value: 'image', viewValue: 'COMMON.YES' },
       { value: 'none', viewValue: 'COMMON.NO' },
-      { value: 'image', viewValue: 'COMMON.YES' }
     ];
-    this.adventureService.getAdventures().subscribe((res) => {
-      this.adventures = res;
-      this.loading = false;
-    }, (err) => {
-      console.log('error fetching adventures: ', err);
-    });
+    this.adventureService.getAdventures().subscribe(
+      (res) => {
+        this.adventures = res;
+        this.loading = false;
+      },
+      (err) => {
+        console.log('error fetching adventures: ', err);
+      }
+    );
   }
 
   ngOnInit(): void {
@@ -61,30 +65,55 @@ export class AdventureMetaEditorComponent implements OnInit {
   }
 
   handleFileInput(files: FileList) {
-    let image = files.item(0);
-    this.imageService.upload(image).subscribe(
-      (res) => {
-        let imageData: any = res;
-        this.metaForm.controls.image_id.setValue(imageData.id);
-        this.currentImg = imageData.id;
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    this.image = files.item(0);
+    let reader = new FileReader();
+    reader.onload = (event: any) => {
+      this.imagePreview = event.target.result;
+      console.log('read!');
+      console.log(this.imagePreview);
+    };
+    reader.readAsDataURL(this.image);
   }
 
   imageSelectorChange(evt) {
     if (evt.value != 'image') {
       console.log('delete image now');
       this.currentImg = undefined;
+      this.imagePreview = undefined;
       this.metaForm.controls.image_id.setValue(undefined);
+    } else {
+      if (this.adventure.image_id) {
+        this.image = undefined;
+        this.currentImg = this.adventure.image_id;
+        this.metaForm.controls.image_id.setValue(this.adventure.image_id);
+      }
     }
   }
 
   saveAllChanges() {
-    this.editorService.setUpdating(true);
-    this.editorService.updateMeta(this.metaForm.value);
-    this.editorService.updateAdventure();
+    if (this.metaForm.valid) {
+      this.editorService.setUpdating(true);
+      if (this.image) {
+        this.imageService.upload(this.image).subscribe(
+          (res) => {
+            let imageData: any = res;
+            this.metaForm.controls.image_id.setValue(imageData.id);
+            this.currentImg = imageData.id;
+            this.editorService.updateMeta(this.metaForm.value);
+            this.imagePreview = undefined;
+            this.image = undefined;
+            this.editorService.updateAdventure();
+          },
+          (err) => {
+            console.log("couldn't upload image", err);
+            this.editorService.updateMeta(this.metaForm.value);
+            this.editorService.updateAdventure();
+          }
+        );
+      } else {
+        this.editorService.updateMeta(this.metaForm.value);
+        this.editorService.updateAdventure();
+      }
+    }
   }
 }

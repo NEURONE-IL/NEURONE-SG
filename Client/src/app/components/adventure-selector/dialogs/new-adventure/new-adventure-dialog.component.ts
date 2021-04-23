@@ -16,7 +16,7 @@ const URL = environment.apiUrl + '/files/upload';
 export class NewAdventureDialogComponent implements OnInit {
   newAdventureForm: FormGroup;
   image: File;
-  currentImg: string;
+  imagePreview: string;
   loading = true;
   apiUrl = environment.apiUrl;
   adventures: any;
@@ -62,23 +62,31 @@ export class NewAdventureDialogComponent implements OnInit {
   }
 
   addNewAdventure() {
-    if (!this.loading) {
-      const newAdventure = this.newAdventureForm.value;
-      this.dialogRef.close({ newAdventure: newAdventure });
+    if (this.newAdventureForm.valid && !this.loading) {
+      this.imageService.upload(this.image).subscribe(
+        (res) => {
+          let imageData: any = res;
+          this.newAdventureForm.controls.image_id.setValue(imageData.id);
+          const newAdventure = this.newAdventureForm.value;
+          this.dialogRef.close({ newAdventure: newAdventure });
+        },
+        (err) => {
+          console.log(err);
+          const newAdventure = this.newAdventureForm.value;
+          this.dialogRef.close({ newAdventure: newAdventure });
+        }
+      );
     }
   }
 
   handleFileInput(files: FileList) {
-    let image = files.item(0);
-    this.imageService.upload(image).subscribe(
-      (res) => {
-        let imageData: any = res;
-        this.newAdventureForm.controls.image_id.setValue(imageData.id);
-        this.currentImg = imageData.id;
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    this.image = files.item(0);
+    let reader = new FileReader();
+          reader.onload = (event:any) => {
+              this.imagePreview = event.target.result;
+              console.log('read!');
+              console.log(this.imagePreview);
+          }
+          reader.readAsDataURL(this.image);
   }
 }
