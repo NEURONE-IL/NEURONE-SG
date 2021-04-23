@@ -344,26 +344,28 @@ export class GameService {
   }
 
   storeProgress() {
-    const progress = {
-      user: this.auth.getUser()._id,
-      adventure: this.adventure._id,
-      currentNode: this.currentNode.id,
-      activators: this.activators,
-      relevantDocsVisited: this.relevantDocsVisited,
-      finished: false
-    };
+    if (this.auth.getRole() == 'player') {
+      const progress = {
+        user: this.auth.getUser()._id,
+        adventure: this.adventure._id,
+        currentNode: this.currentNode.id,
+        activators: this.activators,
+        relevantDocsVisited: this.relevantDocsVisited,
+        finished: false,
+      };
 
-    if (this.currentNode.type == 'ending') {
-      progress.finished = true;
-    }
-
-    this.progressService.postProgress(progress).subscribe(
-      (res) => {
-        console.log(res);
-      },
-      (err) => {
-        console.log(err);
+      if (this.currentNode.type == 'ending') {
+        progress.finished = true;
       }
-    );
+
+      this.progressService.postProgress(progress).subscribe(
+        (res) => {
+          console.log(res);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
   }
 }
