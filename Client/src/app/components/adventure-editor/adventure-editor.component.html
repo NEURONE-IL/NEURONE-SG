@@ -47,17 +47,10 @@
                 {{ type.viewValue | translate }}
               </mat-option>
             </mat-select>
+            <mat-error *ngIf="nodeForm.controls.type.hasError('required')">
+              {{ "EDITOR.NODE_EDITOR.ERRORS.TYPE_REQUIRED" | translate }}
+            </mat-error>
           </mat-form-field>
-          <!-- <mat-form-field class="node-form-field">
-            <mat-label>ID</mat-label>
-            <input
-              matInput
-              name="nodeId"
-              formControlName="id"
-              placeholder="room1"
-              [ngModel]="currentNode.id"
-            />
-          </mat-form-field> -->
           <mat-form-field class="node-form-field">
             <mat-label>{{ "EDITOR.NODE_EDITOR.LABEL" | translate }}</mat-label>
             <input
@@ -67,18 +60,11 @@
               placeholder="B"
               [ngModel]="currentNode.label"
             />
+            <mat-error *ngIf="nodeForm.controls.label.hasError('required')">
+              {{ "EDITOR.NODE_EDITOR.ERRORS.LABEL_REQUIRED" | translate }}
+            </mat-error>
           </mat-form-field>
           <form formGroupName="data">
-            <!-- <mat-form-field class="node-form-field">
-              <mat-label>{{"EDITOR.NODE_EDITOR.IMAGE" | translate}}</mat-label>
-              <input
-                matInput
-                name="nodeImage"
-                formControlName="image"
-                placeholder="background.jpg"
-                [ngModel]="currentNode.data.image"
-              />
-            </mat-form-field> -->
             <mat-form-field class="node-form-field">
               <mat-label>{{
                 "EDITOR.NODE_EDITOR.MEDIA_TYPE" | translate
@@ -121,6 +107,9 @@
                 placeholder="https://www.youtube.com/watch?v=xxZvQPeNBh0"
                 [ngModel]="currentNode.data.video"
               />
+              <mat-error *ngIf="nodeForm.get('data.video').hasError('required')">
+                {{ "EDITOR.NODE_EDITOR.ERRORS.VIDEO_REQUIRED" | translate }}
+              </mat-error>
             </mat-form-field>
             <mat-form-field class="node-form-field">
               <mat-label>{{ "EDITOR.NODE_EDITOR.TEXT" | translate }}</mat-label>
@@ -133,6 +122,9 @@
                 }}"
                 [ngModel]="currentNode.data.text"
               />
+              <mat-error *ngIf="nodeForm.get('data.text').hasError('required')">
+                {{ "EDITOR.NODE_EDITOR.ERRORS.TEXT_REQUIRED" | translate }}
+              </mat-error>
             </mat-form-field>
           </form>
           <input

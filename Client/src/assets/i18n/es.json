@@ -11,7 +11,8 @@
     "NO": "No",
     "TOASTR": {
       "INVALID_FORM": "Por favor complete el formulario correctamente",
-      "IMG_NOT_SELECTED":"Debe seleccionar una imagen antes de continuar"
+      "IMG_NOT_SELECTED":"Debe seleccionar una imagen antes de continuar",
+      "UPDATE_FAILURE": "Error al guardar los cambios"
     }
   },
   "ERRORS": {
@@ -96,7 +97,6 @@
       "PASSWORD_REQUIRED": "Debe ingresar su contraseña"
     }
   },
-  "GAME": {},
   "EDITOR": {
     "NODE_EDITOR": {
       "TITLE": "Editor de nodo",
@@ -119,6 +119,15 @@
         "NONE": "Ninguno",
         "VIDEO": "Video",
         "IMAGE": "Imagen"
+      },
+      "TOASTR": {
+        "DELETE_FAILURE":"Error al eliminar el nodo"
+      },
+      "ERRORS": {
+        "LABEL_REQUIRED": "Debe ingresar una etiqueta",
+        "TYPE_REQUIRED": "Debe seleccionar un tipo",
+        "TEXT_REQUIRED": "Debe ingresar un texto",
+        "VIDEO_REQUIRED": "Debe ingresar un enlace de video"
       }
     }
   },

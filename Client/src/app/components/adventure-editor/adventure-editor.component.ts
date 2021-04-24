@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { EditorService } from 'src/app/services/game/editor.service';
 import { Subscription } from 'rxjs';
@@ -13,6 +13,8 @@ import { LinksTableDialog } from '../editor-dialogs/links-table-dialog/LinksTabl
 import { WebResourcesTableDialogComponent } from '../web-resources-dialogs/web-resources-table-dialog/web-resources-table-dialog.component';
 import { ImageService } from 'src/app/services/game/image.service';
 import { environment } from 'src/environments/environment';
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-adventure-editor',
@@ -51,7 +53,9 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     public challengeDialog: MatDialog,
     public linksDialog: MatDialog,
     public webDialog: MatDialog,
-    private imageService: ImageService
+    private imageService: ImageService,
+    private translate: TranslateService,
+    private toastr: ToastrService
   ) {
     this.updateSubscription = this.editorService
       .getRefreshRequest()
@@ -82,14 +86,14 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.currentMediaType = 'none';
     this.nodeForm = this.formBuilder.group({
-      id: [],
-      label: [],
-      type: [],
+      id: ['', Validators.required],
+      label: ['', Validators.required],
+      type: ['', Validators.required],
       challenge: [],
       data: this.formBuilder.group({
         image_id: [],
         video: [],
-        text: [],
+        text: ['', Validators.required],
       }),
     });
     this.nodeTypes = [
@@ -143,29 +147,61 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     this.nodeEditor.open();
   }
 
+  // Updates node changes directly into the adventure
   updateNode() {
     try {
       let newNode = this.nodeForm.value;
       if (this.nodeForm.valid) {
+        // Validate selected media
+        this.validateMedia(newNode);
+        // Attach updated node to adventure
         this.nodes.forEach((node, index) => {
           if (node.id == this.currentNode.id) {
             this.nodes[index] = newNode;
           }
         });
-        this.links.forEach((link, index) => {
-          if (link.source == this.currentNode.id) {
-            link.source = newNode.id;
-          }
-          if (link.target == this.currentNode.id) {
-            link.target = newNode.id;
-          }
-        });
+        // Update referenced links
+        this.updateLinks(newNode);
+
         this.editorService.setAdventure(this.adventure);
         this.closeEditor();
         this.refreshGraph();
+      } else {
+        this.translate.get('COMMON.TOASTR').subscribe((res) => {
+          this.toastr.warning(res.INVALID_FORM);
+        });
       }
     } catch (error) {
+      this.translate.get('COMMON.TOASTR').subscribe((res) => {
+        this.toastr.error(res.UPDATE_FAILURE);
+      });
       console.log('error updating node: ', error);
+    }
+  }
+
+  // Update links in case the referenced source or target changes ID
+  private updateLinks(newNode: any) {
+    this.links.forEach((link) => {
+      if (link.source == this.currentNode.id) {
+        link.source = newNode.id;
+      }
+      if (link.target == this.currentNode.id) {
+        link.target = newNode.id;
+      }
+    });
+  }
+
+  // Validates that media data is OK for every case
+  private validateMedia(newNode: any) {
+    if (this.currentMediaType == 'video') {
+      delete newNode.data.image_id;
+    }
+    if (this.currentMediaType == 'image') {
+      delete newNode.data.video;
+    }
+    if (this.currentMediaType == 'none') {
+      delete newNode.data.video;
+      delete newNode.data.image_id;
     }
   }
 
@@ -175,20 +211,30 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
         this.nodes = this.nodes.filter((node) => {
           return node.id != this.currentNode.id;
         });
-        this.links = this.links.filter((link) => {
-          return (
-            link.source != this.currentNode.id &&
-            link.target != this.currentNode.id
-          );
-        });
-        console.log(this.adventure);
+        // Clean orphaned links
+        this.cleanOrphanedLinks();
         this.editorService.setAdventure(this.adventure);
         this.closeEditor();
         this.refreshGraph();
       }
     } catch (error) {
+      this.translate.get('EDITOR.NODE_EDITOR.TOASTR').subscribe((res) => {
+        this.toastr.error(res.DELETE_FAILURE);
+      });
       console.log('error deleting node: ', error);
     }
+  }
+
+  // Deletes orphaned links
+  // For example, when a node gets deleted, these links will no longer work,
+  // so they must be deleted.
+  private cleanOrphanedLinks() {
+    this.links = this.links.filter((link) => {
+      return (
+        link.source != this.currentNode.id &&
+        link.target != this.currentNode.id
+      );
+    });
   }
 
   addNode(newNode) {
@@ -300,16 +346,16 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
 
   nodeMediaChange(evt) {
     if (evt.value == 'none') {
-      this.currentImg = undefined;
-      this.nodeForm.get('data.image_id').setValue(undefined);
-      this.nodeForm.get('data.video').setValue(undefined);
+      this.nodeForm.get('data.video').setErrors(null);
+      this.nodeForm.get('data.video').clearValidators();
     }
     if (evt.value == 'video') {
-      this.currentImg = undefined;
-      this.nodeForm.get('data.image_id').setValue(undefined);
+      this.nodeForm.get('data.video').setErrors(null);
+      this.nodeForm.get('data.video').setValidators(Validators.required);
     }
     if (evt.value == 'image') {
-      this.nodeForm.get('data.video').setValue(undefined);
+      this.nodeForm.get('data.video').setErrors(null);
+      this.nodeForm.get('data.video').clearValidators();
     }
   }
 
