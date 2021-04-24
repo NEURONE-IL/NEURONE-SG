@@ -64,6 +64,9 @@ const newSchema = Joi.object({
 
 const verifyBody = async (req, res, next) => {
     try {
+        if (req.body.user) {
+            delete req.body.user;
+        }
         const validation = await schema.validateAsync(req.body);
         if(!req.body.image_id || req.body.image_id=='') {
             delete req.body.image_id;
@@ -90,6 +93,9 @@ const verifyBody = async (req, res, next) => {
 
 const verifyNewBody = async (req, res, next) => {
     try {
+        if (req.body.user) {
+            delete req.body.user;
+        }
         const validation = await newSchema.validateAsync(req.body);
         if(!req.body.image_id || req.body.image_id=='') {
             delete req.body.image_id;

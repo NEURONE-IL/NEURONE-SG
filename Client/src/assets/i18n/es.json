@@ -8,7 +8,11 @@
     "FINISH": "Finalizar",
     "DELETE": "Eliminar",
     "YES": "Si",
-    "NO": "No"
+    "NO": "No",
+    "TOASTR": {
+      "INVALID_FORM": "Por favor complete el formulario correctamente",
+      "IMG_NOT_SELECTED":"Debe seleccionar una imagen antes de continuar"
+    }
   },
   "ERRORS": {
     "REQUIRED": "El valor es requerido",
@@ -163,7 +167,13 @@
     "IMAGE": "Imagen",
     "VIDEO": "Video",
     "TEXT": "Texto",
-    "TEXT_PLACEHOLDER": "Te encuentras en una habitación cerrada."
+    "TEXT_PLACEHOLDER": "Te encuentras en una habitación cerrada.",
+    "ERRORS": {
+      "LABEL_REQUIRED": "Debe ingresar una etiqueta",
+      "TYPE_REQUIRED": "Debe seleccionar un tipo",
+      "TEXT_REQUIRED": "Debe ingresar un texto",
+      "VIDEO_REQUIRED": "Debe ingresar un enlace de video"
+    }
   },
   "CHALLENGE_DIALOG": {
     "TITLE": "Editar desafío",

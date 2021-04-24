@@ -1,7 +1,14 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 import { EditorService } from 'src/app/services/game/editor.service';
 import { ImageService } from 'src/app/services/game/image.service';
 import { environment } from 'src/environments/environment';
@@ -17,7 +24,7 @@ export class NewNodeDialogComponent {
   image: File;
   loading = false;
   apiUrl = environment.apiUrl;
-  currentImg: string;
+  imagePreview: string;
   currentMediaType = 'image';
   mediaTypes: any;
 
@@ -30,9 +37,10 @@ export class NewNodeDialogComponent {
   constructor(
     private formBuilder: FormBuilder,
     public editorService: EditorService,
-    private translate: TranslateService,
     public dialogRef: MatDialogRef<NewNodeDialogComponent>,
-    private imageService: ImageService
+    private imageService: ImageService,
+    private translate: TranslateService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -54,49 +62,103 @@ export class NewNodeDialogComponent {
 
   handleFileInput(files: FileList) {
     this.image = files.item(0);
-    this.imageService.upload(this.image).subscribe(
-      (res) => {
-        let imageData: any = res;
-        this.newNodeForm.get('data.image_id').setValue(imageData.id);
-        this.currentImg = imageData.id;
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    let reader = new FileReader();
+    reader.onload = (event: any) => {
+      this.imagePreview = event.target.result;
+    };
+    reader.readAsDataURL(this.image);
   }
 
-  addNewNode() {
-    if (this.newNodeForm.valid) {
-      const newNode = this.newNodeForm.value;
-
-      if (newNode.type == 'challenge') {
-        let defaultChallenge = {
-          type: 'question',
-          question: "What's 10 + 15",
-          answer: '25',
-        };
-
-        this.translate.get('DEFAULT_CHALLENGE').subscribe(
-          (res) => {
-            if (res.QUESTION && res.ANSWER) {
-              defaultChallenge.question = res.QUESTION;
-              defaultChallenge.answer = res.ANSWER;
-            }
-          },
-          (err) => {
-            console.log('error fetching default challenge translations');
-            console.log(err);
-          }
-        );
-
-        newNode.challenge = defaultChallenge;
-      }
-      this.dialogRef.close({ newNode: newNode });
+  nodeMediaChange(evt) {
+    if (evt.value == 'none') {
+      this.imagePreview = undefined;
+      this.image = undefined;
+      this.newNodeForm.get('data.image_id').setValue(undefined);
+      this.newNodeForm.get('data.video').setValue(undefined);
+      this.newNodeForm.get('data.video').setErrors(null);
+      this.newNodeForm.get('data.video').clearValidators();
     }
-    else {
-      console.log('form invalid');
-      console.log(Utils.getFormErrors(this.newNodeForm));
+    if (evt.value == 'video') {
+      this.imagePreview = undefined;
+      this.image = undefined;
+      this.newNodeForm.get('data.image_id').setValue(undefined);
+      this.newNodeForm.get('data.video').setErrors(null);
+      this.newNodeForm.get('data.video').setValidators(Validators.required);
+    }
+    if (evt.value == 'image') {
+      this.newNodeForm.get('data.video').setValue(undefined);
+      this.newNodeForm.get('data.video').setErrors(null);
+      this.newNodeForm.get('data.video').clearValidators();
+    }
+  }
+
+  async addNewNode() {
+    Utils.markFormGroupTouched(this.newNodeForm);
+    console.log(this.newNodeForm);
+    if (this.newNodeForm.valid) {
+      // Upload image if necessary
+      if (this.currentMediaType == 'image') {
+        if (this.image) {
+          await this.uploadImage();
+          // Set default challenge if necessary
+          this.setDefaultChallenge(this.newNodeForm.value);
+          this.dialogRef.close({ newNode: this.newNodeForm.value });
+        } else {
+          this.translate.get('COMMON.TOASTR').subscribe((res) => {
+            this.toastr.warning(res.IMG_NOT_SELECTED);
+          });
+        }
+      } else {
+        // Set default challenge if necessary
+        this.setDefaultChallenge(this.newNodeForm.value);
+        this.dialogRef.close({ newNode: this.newNodeForm.value });
+      }
+    } else {
+      this.translate.get('COMMON.TOASTR').subscribe((res) => {
+        this.toastr.warning(res.INVALID_FORM);
+      });
+    }
+  }
+
+  private async uploadImage() {
+    let uploadedImage;
+    await this.imageService
+      .upload(this.image)
+      .toPromise()
+      .then((res) => {
+        uploadedImage = res;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    console.log('uploadedImage: ', uploadedImage);
+    if (uploadedImage) {
+      this.newNodeForm.get('data.image_id').setValue(uploadedImage.id);
+    }
+  }
+
+  private setDefaultChallenge(newNode: any) {
+    if (newNode.type == 'challenge') {
+      let defaultChallenge = {
+        type: 'question',
+        question: "What's 10 + 15",
+        answer: '25',
+      };
+
+      this.translate.get('DEFAULT_CHALLENGE').subscribe(
+        (res) => {
+          if (res.QUESTION && res.ANSWER) {
+            defaultChallenge.question = res.QUESTION;
+            defaultChallenge.answer = res.ANSWER;
+          }
+        },
+        (err) => {
+          console.log('error fetching default challenge translations');
+          console.log(err);
+        }
+      );
+
+      newNode.challenge = defaultChallenge;
     }
   }
 }

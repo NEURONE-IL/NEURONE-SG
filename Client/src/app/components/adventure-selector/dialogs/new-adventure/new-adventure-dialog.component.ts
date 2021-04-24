@@ -40,8 +40,8 @@ export class NewAdventureDialogComponent implements OnInit {
     private toastr: ToastrService
   ) {
     this.newAdventureForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
+      name: ['', [Validators.required]],
+      description: ['', [Validators.required]],
       image_id: [],
       preconditions: [[]],
     });

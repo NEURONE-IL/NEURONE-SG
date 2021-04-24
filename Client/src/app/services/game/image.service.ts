@@ -16,8 +16,4 @@ export class ImageService {
     formdata.append('file', image);
     return this.http.post(this.uri, formdata);
   }
-
-  // get(imageid) {
-  //   return this.http.get(this.uri + '/' + imageid);
-  // }
 }

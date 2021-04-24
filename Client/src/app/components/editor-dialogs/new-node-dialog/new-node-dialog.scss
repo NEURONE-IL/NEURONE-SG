@@ -1,5 +1,6 @@
-.form-field {
-  width: 100%;
+.node-form-field {
+  width: 70%;
+  margin-bottom: 1rem;
 }
 
 table {
@@ -19,4 +20,8 @@ th.mat-sort-header-sorted {
   border-radius: 4px;
   padding: 5px;
   height: 5rem;
+}
+
+.img-upload {
+  margin-bottom: 1rem;
 }
