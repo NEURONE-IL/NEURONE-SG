@@ -90,7 +90,7 @@ export class LoginCardComponent implements OnInit {
     }
     else {
       this.translate.get('LOGIN.TOASTR').subscribe(res => {
-        this.toastr.info(res.INVALID_FORM);
+        this.toastr.warning(res.INVALID_FORM);
       });
     }
   }

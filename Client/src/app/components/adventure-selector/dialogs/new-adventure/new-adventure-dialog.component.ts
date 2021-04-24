@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AdventureService } from 'src/app/services/game/adventure.service';
 import { ImageService } from 'src/app/services/game/image.service';
 import { environment } from 'src/environments/environment';
+import Utils from 'src/app/utils/utils';
 
 const URL = environment.apiUrl + '/files/upload';
 
@@ -69,6 +70,7 @@ export class NewAdventureDialogComponent implements OnInit {
   }
 
   addNewAdventure() {
+    Utils.markFormGroupTouched(this.newAdventureForm);
     if (this.newAdventureForm.valid && !this.loading) {
       if (this.image) {
         this.imageService.upload(this.image).subscribe(
@@ -86,15 +88,18 @@ export class NewAdventureDialogComponent implements OnInit {
         );
       } else {
         if (this.currentMediaType != 'none') {
-          this.translate.get("NEW_ADVENTURE.TOASTR").subscribe(res => {
-            this.toastr.info(res.IMG_NOT_SELECTED);
-          })
-        }
-        else {
+          this.translate.get('NEW_ADVENTURE.TOASTR').subscribe((res) => {
+            this.toastr.warning(res.IMG_NOT_SELECTED);
+          });
+        } else {
           const newAdventure = this.newAdventureForm.value;
           this.dialogRef.close({ newAdventure: newAdventure });
         }
       }
+    } else {
+      this.translate.get('NEW_ADVENTURE.TOASTR').subscribe((res) => {
+        this.toastr.warning(res.INVALID_FORM);
+      });
     }
   }
 

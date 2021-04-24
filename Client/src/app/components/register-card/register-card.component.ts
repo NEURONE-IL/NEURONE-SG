@@ -76,7 +76,7 @@ export class RegisterCardComponent implements OnInit {
       );
     } else {
       this.translate.get('REGISTER.TOASTR').subscribe((res) => {
-        this.toastr.info(res.INVALID_FORM);
+        this.toastr.warning(res.INVALID_FORM);
       });
     }
   }

@@ -205,7 +205,8 @@
     "TOASTR": {
       "SUCCESS": "Aventura creada correctamente",
       "FAILURE": "Error al crear la aventura",
-      "IMG_NOT_SELECTED": "Debe seleccionar una imagen antes de continuar"
+      "IMG_NOT_SELECTED": "Debe seleccionar una imagen antes de continuar",
+      "INVALID_FORM":"Por favor complete el formulario correctamente"
     }
   },
   "DEFAULT_CHALLENGE": {

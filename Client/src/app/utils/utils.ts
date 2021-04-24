@@ -22,4 +22,15 @@ export default class Utils {
       return Object.keys(formErrors).length > 0 ? formErrors : null;
     }
   }
+
+  // Mark form controls as touched
+  static markFormGroupTouched(formGroup: FormGroup) {
+    (<any>Object).values(formGroup.controls).forEach((control) => {
+      control.markAsTouched();
+
+      if (control.controls) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
 }
