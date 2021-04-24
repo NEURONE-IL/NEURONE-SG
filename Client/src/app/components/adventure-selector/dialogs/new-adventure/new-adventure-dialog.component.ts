@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { FileUploader } from 'ng2-file-upload';
+import { ToastrService } from 'ngx-toastr';
 import { AdventureService } from 'src/app/services/game/adventure.service';
 import { ImageService } from 'src/app/services/game/image.service';
 import { environment } from 'src/environments/environment';
@@ -32,7 +34,9 @@ export class NewAdventureDialogComponent implements OnInit {
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<NewAdventureDialogComponent>,
     private imageService: ImageService,
-    private adventureService: AdventureService
+    private adventureService: AdventureService,
+    private translate: TranslateService,
+    private toastr: ToastrService
   ) {
     this.newAdventureForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -81,8 +85,15 @@ export class NewAdventureDialogComponent implements OnInit {
           }
         );
       } else {
-        const newAdventure = this.newAdventureForm.value;
-        this.dialogRef.close({ newAdventure: newAdventure });
+        if (this.currentMediaType != 'none') {
+          this.translate.get("NEW_ADVENTURE.TOASTR").subscribe(res => {
+            this.toastr.info(res.IMG_NOT_SELECTED);
+          })
+        }
+        else {
+          const newAdventure = this.newAdventureForm.value;
+          this.dialogRef.close({ newAdventure: newAdventure });
+        }
       }
     }
   }

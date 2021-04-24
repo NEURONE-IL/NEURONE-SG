@@ -9,6 +9,8 @@ import { ProgressService } from 'src/app/services/game/progress.service';
 import { SearchService } from 'src/app/services/search/search.service';
 import { NewAdventureDialogComponent } from './dialogs/new-adventure/new-adventure-dialog.component';
 import { environment } from 'src/environments/environment';
+import { TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-adventure-selector',
@@ -36,7 +38,9 @@ export class AdventureSelectorComponent implements OnInit {
     private searchService: SearchService,
     public router: Router,
     public newAdventureDialog: MatDialog,
-    private progresService: ProgressService
+    private progresService: ProgressService,
+    private translate: TranslateService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -144,9 +148,15 @@ export class AdventureSelectorComponent implements OnInit {
   deleteAdventure(adventure: any) {
     this.adventureService.deleteAdventure(adventure).subscribe(
       (res) => {
+        this.translate.get("SELECTOR.TOASTR").subscribe(res => {
+          this.toastr.success(res.DELETE_SUCCESS);
+        });
         this.reloadPage();
       },
       (err) => {
+        this.translate.get("SELECTOR.TOASTR").subscribe(res => {
+          this.toastr.error(res.DELETE_FAILURE);
+        });
         console.log(err);
       }
     );
@@ -167,9 +177,15 @@ export class AdventureSelectorComponent implements OnInit {
         console.log('new adventure: ', result.newAdventure);
         this.adventureService.createAdventure(result.newAdventure).subscribe(
           (res) => {
+            this.translate.get("NEW_ADVENTURE.TOASTR").subscribe(res => {
+              this.toastr.success(res.SUCCESS);
+            });
             this.reloadPage();
           },
           (err) => {
+            this.translate.get("NEW_ADVENTURE.TOASTR").subscribe(res => {
+              this.toastr.error(res.FAILURE);
+            });
             console.log(err);
           }
         );
@@ -178,6 +194,7 @@ export class AdventureSelectorComponent implements OnInit {
   }
 
   reloadPage(): void {
-    window.location.reload();
+    // window.location.reload();
+    this.ngOnInit();
   }
 }

@@ -48,44 +48,51 @@ export class LoginCardComponent implements OnInit {
       password: this.loginForm.value.password,
     };
 
-    this.translate.get('LOGIN.TOASTR').subscribe(
-      (toastr) => {
-        this.auth.login(credentials).subscribe(
-          (data) => {
-            this.auth.saveToken(data.token);
-            this.auth.saveUser(data.user);
+    if (this.loginForm.valid) {
+      this.translate.get('LOGIN.TOASTR').subscribe(
+        (toastr) => {
+          this.auth.login(credentials).subscribe(
+            (data) => {
+              this.auth.saveToken(data.token);
+              this.auth.saveUser(data.user);
 
-            this.isLoginFailed = false;
+              this.isLoginFailed = false;
 
-            // Post session login to server
-            if (this.config.sessionTracking) {
-              this.postSessionLogin(data);
-            }
+              // Post session login to server
+              if (this.config.sessionTracking) {
+                this.postSessionLogin(data);
+              }
 
-            this.toastr.success(toastr.SUCCESS);
-            this.auth.userEmitChange(this.auth.getUser());
-            this.router.navigate(['/']);
-          },
-          (err) => {
-            this.isLoginFailed = true;
-            if (err.error == 'EMAIL_NOT_FOUND') {
-              this.toastr.error(toastr.EMAIL_NOT_FOUND);
+              this.toastr.success(toastr.SUCCESS);
+              this.auth.userEmitChange(this.auth.getUser());
+              this.router.navigate(['/']);
+            },
+            (err) => {
+              this.isLoginFailed = true;
+              if (err.error == 'EMAIL_NOT_FOUND') {
+                this.toastr.error(toastr.EMAIL_NOT_FOUND);
+              }
+              if (err.error == 'INVALID_PASSWORD') {
+                this.toastr.error(toastr.INVALID_PASSWORD);
+              }
+              if (err.error == 'USER_NOT_CONFIRMED') {
+                this.toastr.error(toastr.USER_NOT_CONFIRMED);
+              }
+              console.log(err);
             }
-            if (err.error == 'INVALID_PASSWORD') {
-              this.toastr.error(toastr.INVALID_PASSWORD);
-            }
-            if (err.error == 'USER_NOT_CONFIRMED') {
-              this.toastr.error(toastr.USER_NOT_CONFIRMED);
-            }
-            console.log(err);
-          }
-        );
-      },
-      (err) => {
-        console.log(err);
-        this.isLoginFailed = true;
-      }
-    );
+          );
+        },
+        (err) => {
+          console.log(err);
+          this.isLoginFailed = true;
+        }
+      );
+    }
+    else {
+      this.translate.get('LOGIN.TOASTR').subscribe(res => {
+        this.toastr.info(res.INVALID_FORM);
+      });
+    }
   }
 
   private postSessionLogin(data: any) {
@@ -114,9 +121,5 @@ export class LoginCardComponent implements OnInit {
 
   toggleRegister() {
     this.switchToRegister.emit(true);
-  }
-
-  reloadPage(): void {
-    window.location.reload();
   }
 }

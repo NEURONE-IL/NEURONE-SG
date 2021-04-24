@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
@@ -19,7 +20,9 @@ export class RegisterCardComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     public router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    private translate: TranslateService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -49,28 +52,36 @@ export class RegisterCardComponent implements OnInit {
   }
 
   onSubmit() {
-    const registerBody = {
-      username: this.registerForm.value.username,
-      email: this.registerForm.value.email,
-      password: this.registerForm.value.password,
-    };
-    const role = this.registerForm.value.role;
-    this.auth.register(registerBody, role).subscribe(
-      (data) => {
-        this.isRegisterFailed = false;
-        this.reloadPage();
-      },
-      (err) => {
-        this.isRegisterFailed = true;
-      }
-    );
+    if (this.registerForm.valid) {
+      const registerBody = {
+        username: this.registerForm.value.username,
+        email: this.registerForm.value.email,
+        password: this.registerForm.value.password,
+      };
+      const role = this.registerForm.value.role;
+      this.auth.register(registerBody, role).subscribe(
+        (data) => {
+          this.isRegisterFailed = false;
+          this.translate.get('REGISTER.TOASTR').subscribe((res) => {
+            this.toastr.success(res.SUCCESS);
+          });
+          this.toggleLogin();
+        },
+        (err) => {
+          this.translate.get('REGISTER.TOASTR').subscribe((res) => {
+            this.toastr.error(res.FAILURE);
+          });
+          this.isRegisterFailed = true;
+        }
+      );
+    } else {
+      this.translate.get('REGISTER.TOASTR').subscribe((res) => {
+        this.toastr.info(res.INVALID_FORM);
+      });
+    }
   }
 
   toggleLogin() {
     this.switchToLogin.emit(true);
-  }
-
-  reloadPage(): void {
-    window.location.reload();
   }
 }

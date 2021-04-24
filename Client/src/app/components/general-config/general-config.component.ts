@@ -23,6 +23,7 @@ export class GeneralConfigComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.touched = false;
     this.configService.getConfig().subscribe(
       (res) => {
         this.config = res;

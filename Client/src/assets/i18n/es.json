@@ -18,7 +18,7 @@
     "TITLE": "Ludificación",
     "GAMIFY": "Ludificar",
     "GAMIFICATION_STATUS": "Estado de ludificación: ",
-    "GM_CONNECTION_STATUS": "Conectado a NEURONE-GM: ",
+    "GM_CONNECTION_STATUS": "Aplicación registrada en NEURONE-GM: ",
     "POINTS": "Puntos",
     "LEVEL": "Nivel: ",
     "RANK_TEXT": "{{rank}}° lugar en el ranking."
@@ -42,7 +42,11 @@
     "CARD_PLAY": "JUGAR",
     "CARD_CONTINUE": "CONTINUAR",
     "CARD_EDIT": "EDITAR",
-    "CARD_DELETE": "ELIMINAR"
+    "CARD_DELETE": "ELIMINAR",
+    "TOASTR": {
+      "DELETE_SUCCESS": "Aventura eliminada correctamente",
+      "DELETE_FAILURE": "Error al eliminar la aventura"
+    }
   },
   "REGISTER": {
     "TITLE": "Registrarse",
@@ -62,6 +66,11 @@
       "EMAIL_REQUIRED": "Debe ingresar un correo electrónico",
       "EMAIL_INVALID": "Debe ingresar un correo electrónico válido",
       "PASSWORD_REQUIRED": "Debe ingresar una contraseña"
+    },
+    "TOASTR": {
+      "SUCCESS": "Se ha registrado exitosamente",
+      "FAILURE": "Error al realizar el registro",
+      "INVALID_FORM": "Por favor complete el formulario correctamente"
     }
   },
   "LOGIN": {
@@ -74,7 +83,8 @@
       "USER_NOT_CONFIRMED": "Debes confirmar tu correo electrónico antes de ingresar, por favor revise su bandeja de entrada y spam",
       "EMAIL_NOT_FOUND": "Correo no encontrado",
       "INVALID_PASSWORD": "Credenciales incorrectas",
-      "SUCCESS": "Sesión iniciada satisfactoriamente"
+      "SUCCESS": "Sesión iniciada satisfactoriamente",
+      "INVALID_FORM":"Por favor ingrese sus credenciales correctamente"
     },
     "ERRORS": {
       "EMAIL_REQUIRED": "Debe ingresar su correo electrónico",
@@ -187,7 +197,16 @@
     "NAME_PLACEHOLDER": "Aventura en el espacio",
     "DESCRIPTION_PLACEHOLDER": "¡Esta es una aventura increíble donde salvarás el planeta!",
     "PRECONDITIONS": "Precondiciones",
-    "IMAGE": "¿Agregar imagen?"
+    "IMAGE": "¿Agregar imagen?",
+    "ERRORS": {
+      "NAME_REQUIRED": "Debe ingresar un nombre",
+      "DESCRIPTION_REQUIRED": "Debe ingresar una descripción"
+    },
+    "TOASTR": {
+      "SUCCESS": "Aventura creada correctamente",
+      "FAILURE": "Error al crear la aventura",
+      "IMG_NOT_SELECTED": "Debe seleccionar una imagen antes de continuar"
+    }
   },
   "DEFAULT_CHALLENGE": {
     "QUESTION": "¿Cuánto es 5*5?",

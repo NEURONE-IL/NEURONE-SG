@@ -10,6 +10,9 @@
           formControlName="name"
           placeholder="{{ 'NEW_ADVENTURE.NAME_PLACEHOLDER' | translate }}"
         />
+        <mat-error *ngIf="newAdventureForm.controls.name.hasError('required')">
+          {{ "NEW_ADVENTURE.ERRORS.NAME_REQUIRED" | translate }}
+        </mat-error>
       </mat-form-field>
       <mat-form-field class="form-field">
         <mat-label>{{ "NEW_ADVENTURE.DESCRIPTION" | translate }}</mat-label>
@@ -21,6 +24,9 @@
             'NEW_ADVENTURE.DESCRIPTION_PLACEHOLDER' | translate
           }}"
         />
+        <mat-error *ngIf="newAdventureForm.controls.description.hasError('required')">
+          {{ "NEW_ADVENTURE.ERRORS.DESCRIPTION_REQUIRED" | translate }}
+        </mat-error>
       </mat-form-field>
     </div>
     <div>
