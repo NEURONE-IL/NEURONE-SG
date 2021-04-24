@@ -36,7 +36,10 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   initialType: any;
   mediaTypes: any;
   currentMediaType: string;
-  currentImg: string;
+
+  image: File;  // image file selected
+  imagePreview: string; // selected image file preview
+  currentImg: string; // existing image from db
 
   apiUrl = environment.apiUrl;
 
@@ -148,10 +151,14 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   }
 
   // Updates node changes directly into the adventure
-  updateNode() {
+  async updateNode() {
     try {
       let newNode = this.nodeForm.value;
       if (this.nodeForm.valid) {
+        // Upload image if necessary
+        if(this.image) {
+          await this.uploadImage(newNode);
+        }
         // Validate selected media
         this.validateMedia(newNode);
         // Attach updated node to adventure
@@ -205,6 +212,8 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Removes a node from current adventure
+  // and cleans referenced links
   deleteNode() {
     try {
       if (this.currentNode && this.currentNode.type != 'initial') {
@@ -331,17 +340,12 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   }
 
   handleFileInput(files: FileList) {
-    let image = files.item(0);
-    this.imageService.upload(image).subscribe(
-      (res) => {
-        let imageData: any = res;
-        this.nodeForm.get('data.image_id').setValue(imageData.id);
-        this.currentImg = imageData.id;
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    this.image = files.item(0);
+    let reader = new FileReader();
+    reader.onload = (event: any) => {
+      this.imagePreview = event.target.result;
+    };
+    reader.readAsDataURL(this.image);
   }
 
   nodeMediaChange(evt) {
@@ -356,6 +360,22 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     if (evt.value == 'image') {
       this.nodeForm.get('data.video').setErrors(null);
       this.nodeForm.get('data.video').clearValidators();
+    }
+  }
+
+  private async uploadImage(newNode) {
+    let uploadedImage;
+    await this.imageService
+      .upload(this.image)
+      .toPromise()
+      .then((res) => {
+        uploadedImage = res;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    if (uploadedImage) {
+      newNode.data.image_id = uploadedImage.id;
     }
   }
 

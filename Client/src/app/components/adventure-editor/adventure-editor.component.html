@@ -79,10 +79,17 @@
               </mat-select>
             </mat-form-field>
             <div class="img-upload" *ngIf="currentMediaType == 'image'">
-              <div *ngIf="currentImg">
+              <div *ngIf="currentImg && !imagePreview">
                 <img
                   class="img-thumb"
                   src="{{ apiUrl + '/image/' + currentImg }}"
+                  alt="..."
+                />
+              </div>
+              <div *ngIf="imagePreview">
+                <img
+                  class="img-thumb"
+                  [src]="imagePreview"
                   alt="..."
                 />
               </div>
