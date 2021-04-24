@@ -167,6 +167,15 @@
     },
     "TOOLTIPS": {
       "ADD_ACTIVATOR": "Agregar una nueva condición lógica que active esta rama durante una sesión de juego"
+    },
+    "ERRORS": {
+      "TARGET_NODE_REQUIRED": "Debe ingresar un nodo de destino",
+      "LABEL_REQUIRED": "Debe ingresar una etiqueta",
+      "CONDITION_REQUIRED": "Debe seleccionar una condición",
+      "CHALLENGE_NODE_REQUIRED": "Debe seleccionar un nodo de desafío",
+      "LINKS_COUNT_REQUIRED": "Debe ingresar la cantidad de páginas relevantes mínima",
+      "LEVEL_REQUIRED": "Debe seleccionar un nivel",
+      "LINKS_COUNT_MINIMUM": "Debe seleccionar un valor mayor a 1"
     }
   },
   "NEW_NODE_DIALOG": {

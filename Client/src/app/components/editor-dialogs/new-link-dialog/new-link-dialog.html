@@ -1,19 +1,22 @@
 <h1 mat-dialog-title>{{"NEW_LINK_DIALOG.TITLE" | translate}}</h1>
 <div mat-dialog-content>
-  <mat-grid-list cols="2" rowHeight="5:1">
+  <mat-grid-list cols="2" rowHeight="4:1">
     <form class="new-link-form" [formGroup]="linkForm">
       <mat-grid-tile>
-        <mat-form-field appearance="fill" class="node-form-field">
+        <mat-form-field appearance="fill" class="form-field">
           <mat-label>{{"NEW_LINK_DIALOG.TARGET" | translate}}</mat-label>
           <mat-select name="linkTarget" formControlName="target">
             <mat-option *ngFor="let node of targetNodes" [value]="node.id"
               >{{ node.label }}</mat-option
             >
           </mat-select>
+          <mat-error *ngIf="linkForm.controls.target.hasError('required')">
+            {{ "NEW_LINK_DIALOG.ERRORS.TARGET_NODE_REQUIRED" | translate }}
+          </mat-error>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile>
-        <mat-form-field class="node-form-field">
+        <mat-form-field class="form-field">
           <mat-label>{{"NEW_LINK_DIALOG.LABEL" | translate}}</mat-label>
           <input
             matInput
@@ -21,44 +24,41 @@
             formControlName="label"
             placeholder="{{'NEW_LINK_DIALOG.LABEL_PLACEHOLDER' | translate}}"
           />
+          <mat-error *ngIf="linkForm.controls.label.hasError('required')">
+            {{ "NEW_LINK_DIALOG.ERRORS.LABEL_REQUIRED" | translate }}
+          </mat-error>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile colspan="2">
-        <button mat-button color="accent" (click)="addActivator()" matTooltip="{{'NEW_LINK_DIALOG.TOOLTIPS.ADD_ACTIVATOR' | translate}}">
+        <button mat-button color="accent" type="button" (click)="addActivator()" matTooltip="{{'NEW_LINK_DIALOG.TOOLTIPS.ADD_ACTIVATOR' | translate}}">
           {{"NEW_LINK_DIALOG.ADD_ACTIVATOR" | translate}}
         </button>
       </mat-grid-tile>
-      <!-- <div *ngFor="let activator of activatorItems; let i=index" formArrayName="activators">-->
       <div
         formArrayName="activators"
         *ngFor="let activator of activatorsArray.controls; let i = index;"
       >
         <div [formGroupName]="i">
           <mat-grid-tile colspan="2">
-            <mat-form-field class="node-form-field">
+            <mat-form-field class="activator-form-field">
               <mat-label
                 >{{"NEW_LINK_DIALOG.ACTIVATOR_CONDITION" |
                 translate}}</mat-label
               >
-              <mat-select name="condition" formControlName="condition">
+              <mat-select name="condition" formControlName="condition" (selectionChange)="onTypeChange($event, activator)">
                 <mat-option
                   *ngFor="let type of activatorTypes"
                   [value]="type.value"
                   >{{ type.viewValue | translate }}</mat-option
                 >
               </mat-select>
+              <mat-error *ngIf="activator.get('condition').hasError('required')">
+                {{ "NEW_LINK_DIALOG.ERRORS.CONDITION_REQUIRED" | translate }}
+              </mat-error>
             </mat-form-field>
-            <button
-              mat-mini-fab
-              color="warn"
-              aria-label="Remove option"
-              (click)="removeActivator(i)"
-            >
-              <mat-icon>remove</mat-icon>
-            </button>
             <mat-form-field
               appearance="fill"
-              class="node-form-field"
+              class="activator-form-field"
               *ngIf="activatorNeedsNode(activator)"
             >
               <mat-label
@@ -71,10 +71,13 @@
                   >{{ node.label }}</mat-option
                 >
               </mat-select>
+              <mat-error *ngIf="activator.get('node').hasError('required')">
+                {{ "NEW_LINK_DIALOG.ERRORS.CHALLENGE_NODE_REQUIRED" | translate }}
+              </mat-error>
             </mat-form-field>
             <mat-form-field
               appearance="fill"
-              class="node-form-field"
+              class="activator-form-field"
               *ngIf="activatorNeedsLevel(activator)"
             >
               <mat-label
@@ -85,10 +88,13 @@
                   >{{ level.viewValue }}</mat-option
                 >
               </mat-select>
+              <mat-error *ngIf="activator.get('level').hasError('required')">
+                {{ "NEW_LINK_DIALOG.ERRORS.LEVEL_REQUIRED" | translate }}
+              </mat-error>
             </mat-form-field>
             <mat-form-field
               appearance="fill"
-              class="node-form-field"
+              class="activator-form-field"
               *ngIf="activatorNeedsLinksValue(activator)"
             >
               <mat-label
@@ -99,9 +105,21 @@
                 matInput
                 type="number"
                 name="links"
+                min="1"
                 formControlName="links_count"
               />
+              <mat-error *ngIf="activator.get('links_count').hasError('required')">
+                {{ "NEW_LINK_DIALOG.ERRORS.LINKS_COUNT_REQUIRED" | translate }}
+              </mat-error>
             </mat-form-field>
+            <button
+              mat-mini-fab
+              color="warn"
+              aria-label="Remove option"
+              (click)="removeActivator(i)"
+            >
+              <mat-icon>remove</mat-icon>
+            </button>
           </mat-grid-tile>
         </div>
       </div>

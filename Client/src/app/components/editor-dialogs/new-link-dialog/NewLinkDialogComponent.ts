@@ -1,6 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
+import Utils from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-new-link-dialog',
@@ -19,7 +22,9 @@ export class NewLinkDialogComponent {
   constructor(
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<NewLinkDialogComponent>
+    public dialogRef: MatDialogRef<NewLinkDialogComponent>,
+    private translate: TranslateService,
+    private toastr: ToastrService
   ) {
     this.nodes = data.nodes;
     this.targetNodes = data.targetNodes;
@@ -34,7 +39,10 @@ export class NewLinkDialogComponent {
         viewValue: 'NEW_LINK_DIALOG.ACTIVATOR_TYPES.WRONG_ANSWER',
       },
       { value: 'level', viewValue: 'NEW_LINK_DIALOG.ACTIVATOR_TYPES.LEVEL' },
-      { value: 'relevant_links', viewValue: 'NEW_LINK_DIALOG.ACTIVATOR_TYPES.RELEVANT_LINKS' }
+      {
+        value: 'relevant_links',
+        viewValue: 'NEW_LINK_DIALOG.ACTIVATOR_TYPES.RELEVANT_LINKS',
+      },
     ];
     this.GMlevels = [
       {
@@ -77,19 +85,25 @@ export class NewLinkDialogComponent {
   ngOnInit(): void {}
 
   addNewLink() {
-    console.log('linkForm: ', this.linkForm.value)
-    const newLink = this.linkForm.value;
-    if (newLink.activators.length == 0) {
-      delete newLink.activators;
-    }
-    else {
-      newLink.activators.forEach(activator => {
-        if (!activator.node) delete activator.node;
-        if (!activator.level) delete activator.level;
-        if (!activator.links_count) delete activator.links_count;
+    console.log('linkForm: ', this.linkForm.value);
+    Utils.markFormGroupTouched(this.linkForm);
+    if (this.linkForm.valid) {
+      const newLink = this.linkForm.value;
+      if (newLink.activators.length == 0) {
+        delete newLink.activators;
+      } else {
+        newLink.activators.forEach((activator) => {
+          if (!activator.node) delete activator.node;
+          if (!activator.level) delete activator.level;
+          if (!activator.links_count) delete activator.links_count;
+        });
+      }
+      this.dialogRef.close({ newLink: newLink });
+    } else {
+      this.translate.get('COMMON.TOASTR').subscribe((res) => {
+        this.toastr.warning(res.INVALID_FORM);
       });
     }
-    this.dialogRef.close({ newLink: newLink });
   }
 
   get activatorsArray() {
@@ -98,10 +112,10 @@ export class NewLinkDialogComponent {
 
   addActivator() {
     const newActivator = this.formBuilder.group({
-      node: undefined,
-      condition: '',
-      level: undefined,
-      links_count: undefined
+      node: [],
+      condition: ['', Validators.required],
+      level: [],
+      links_count: [],
     });
 
     this.activatorsArray.push(newActivator);
@@ -141,7 +155,32 @@ export class NewLinkDialogComponent {
     return false;
   }
 
+  onTypeChange(evt, activatorForm) {
+    let activatorCtrls = activatorForm.controls;
+    if (evt.value == 'correct_answer' || evt.value == 'wrong_answer') {
+      activatorCtrls.node.setValidators([Validators.required]);
+      activatorCtrls.links_count.clearValidators();
+      activatorCtrls.links_count.setErrors(null);
+      activatorCtrls.level.clearValidators();
+      activatorCtrls.level.setErrors(null);
+    }
+    if (evt.value == 'level') {
+      activatorCtrls.level.setValidators([Validators.required]);
+      activatorCtrls.node.clearValidators();
+      activatorCtrls.node.setErrors(null);
+      activatorCtrls.links_count.clearValidators();
+      activatorCtrls.links_count.setErrors(null);
+    }
+    if (evt.value == 'relevant_links') {
+      activatorCtrls.links_count.setValidators([Validators.required, Validators.min(1)]);
+      activatorCtrls.node.clearValidators();
+      activatorCtrls.node.setErrors(null);
+      activatorCtrls.level.clearValidators();
+      activatorCtrls.level.setErrors(null);
+    }
+  }
+
   get challengeNodes() {
-    return this.nodes.filter(node => node.type == 'challenge');
+    return this.nodes.filter((node) => node.type == 'challenge');
   }
 }
