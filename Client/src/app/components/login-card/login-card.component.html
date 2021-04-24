@@ -7,8 +7,11 @@
         <mat-form-field style="margin-top: 5%">
           <mat-label>{{ "LOGIN.EMAIL" | translate }}</mat-label>
           <input type="text" matInput formControlName="email" />
-          <mat-error>
-            {{ "LOGIN.REQUIRED" | translate }}
+          <mat-error *ngIf="loginForm.controls.email.hasError('required')">
+            {{ "LOGIN.ERRORS.EMAIL_REQUIRED" | translate }}
+          </mat-error>
+          <mat-error *ngIf="loginForm.controls.email.hasError('email')">
+            {{ "LOGIN.ERRORS.EMAIL_INVALID" | translate }}
           </mat-error>
         </mat-form-field>
       </p>
@@ -18,7 +21,7 @@
           <mat-label>{{ "LOGIN.PASSWORD" | translate }}</mat-label>
           <input type="password" matInput formControlName="password" />
           <mat-error>
-            {{ "LOGIN.REQUIRED" | translate }}
+            {{ "LOGIN.ERRORS.PASSWORD_REQUIRED" | translate }}
           </mat-error>
         </mat-form-field>
       </p>

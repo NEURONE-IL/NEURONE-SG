@@ -30,7 +30,7 @@ export class LoginCardComponent implements OnInit {
     private configService: ConfigService
   ) {
     this.loginForm = this.formBuilder.group({
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
     if (this.router.url === '/login/confirmedOK') {

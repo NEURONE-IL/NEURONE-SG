@@ -75,6 +75,11 @@
       "EMAIL_NOT_FOUND": "Correo no encontrado",
       "INVALID_PASSWORD": "Credenciales incorrectas",
       "SUCCESS": "Sesión iniciada satisfactoriamente"
+    },
+    "ERRORS": {
+      "EMAIL_REQUIRED": "Debe ingresar su correo electrónico",
+      "EMAIL_INVALID": "Debe ingresar su correo electrónico válido",
+      "PASSWORD_REQUIRED": "Debe ingresar su contraseña"
     }
   },
   "GAME": {},
