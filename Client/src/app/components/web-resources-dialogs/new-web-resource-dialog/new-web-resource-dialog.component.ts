@@ -35,7 +35,10 @@ export class NewWebResourceDialogComponent implements OnInit {
       { value: 'en-US', viewValue: 'NEW_WEB_RESOURCE_DIALOG.LOCALES.ENGLISH' },
     ];
     this.adventure = this.data.adventure;
-    this.nodes.push({id: "NO_NODE", label: "NEW_WEB_RESOURCE_DIALOG.FORM.NO_NODE"})
+    this.nodes.push({
+      id: 'NO_NODE',
+      label: 'NEW_WEB_RESOURCE_DIALOG.FORM.NO_NODE',
+    });
     this.nodes = this.nodes.concat(this.adventure.nodes);
     this.setForm();
   }
@@ -71,7 +74,14 @@ export class NewWebResourceDialogComponent implements OnInit {
       locale: [null, [Validators.required]],
       task: [null, [Validators.required]],
       /*NEURONE required*/
-      maskedURL: [null, [Validators.minLength(5), Validators.maxLength(200)]],
+      maskedURL: [
+        null,
+        [
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(200),
+        ],
+      ],
       relevant: false,
       searchSnippet: '',
       keywords: [[]],
@@ -86,28 +96,31 @@ export class NewWebResourceDialogComponent implements OnInit {
 
   uploadResource() {
     this.resourceForm.markAllAsTouched();
-    this.translate.get("NEW_WEB_RESOURCE_DIALOG.MESSAGES").subscribe((messages) => {
-      if(!this.resourceForm.valid) {
-        this.toastr.warning(messages.INVALID_FORM);
+    this.translate.get('NEW_WEB_RESOURCE_DIALOG.MESSAGES').subscribe(
+      (messages) => {
+        if (!this.resourceForm.valid) {
+          this.toastr.warning(messages.INVALID_FORM);
+        } else {
+          this.uploading = true;
+          this.search.upload(this.resourceForm.value).subscribe(
+            (res) => {
+              console.log(res);
+              this.toastr.success(messages.SUCCESS);
+              this.setForm();
+              this.uploading = false;
+            },
+            (err) => {
+              this.setForm();
+              this.uploading = false;
+              console.log(err);
+              this.toastr.success(messages.ERROR);
+            }
+          );
+        }
+      },
+      (err) => {
+        console.log(err);
       }
-      else {
-        this.uploading = true;
-        this.search.upload(this.resourceForm.value).subscribe((res) => {
-          console.log(res);
-          this.toastr.success(messages.SUCCESS);
-          this.setForm();
-          this.uploading = false;
-        },
-        (err) => {
-          this.setForm();
-          this.uploading = false;
-          console.log(err);
-          this.toastr.success(messages.ERROR);
-        })
-      }
-    },
-    (err) => {
-      console.log(err);
-    });
+    );
   }
 }

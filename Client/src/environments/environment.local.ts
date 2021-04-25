@@ -4,5 +4,7 @@ export const environment = {
   apiUrl: 'http://localhost:3002/api',
   coreUrl: 'http://localhost:3000/v1',
   coreRoot: 'http://localhost:3000',
-  gmTimeout: 2000
+  gmTimeout: 2000,
+  coreUploadTimeout: 120000,
+  coreFetchTimeout: 10000
 };

@@ -142,7 +142,7 @@ export class GameBarComponent implements OnInit, OnDestroy {
     }
   }
 
-  get palyerRank() {
+  get playerRank() {
     try {
       return this.gmStats.userRankings[0];
     } catch (error) {

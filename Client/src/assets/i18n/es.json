@@ -17,7 +17,9 @@
   },
   "ERRORS": {
     "REQUIRED": "El valor es requerido",
-    "SELECTION_REQUIRED": "Debe seleccionar un valor"
+    "SELECTION_REQUIRED": "Debe seleccionar un valor",
+    "MIN_LENGTH": "Debe ingresar al menos {{length}} caracteres",
+    "MAX_LENGTH": "Debe ingresar un máximo de {{length}} caracteres"
   },
   "GAMIFICATION": {
     "TITLE": "Ludificación",
@@ -269,7 +271,17 @@
       "OK": "Recurso eliminado correctamente",
       "ERROR": "Error al eliminar el recurso"
     },
-    "NO_RESOURCES": "No existen recursos cargados para esta aventura"
+    "NO_RESOURCES": "No existen recursos cargados para esta aventura",
+    "ERRORS": {
+      "NAME_REQUIRED": "Debe ingresar un nombre",
+      "TYPE_REQUIRED": "Debe seleccionar un tipo",
+      "TITLE_REQUIRED": "Debe ingresar un título",
+      "LOCALE_REQUIRED": "Debe seleccionar un idioma",
+      "LINK_REQUIRED": "Debe ingresar el enlace del recurso a cargar",
+      "MASKED_URL_REQUIRED": "Debe ingresar el enlace que desea mostrar al jugador",
+      "NODE_REQUIRED": "Debe seleccionar si este recurso es relevante para algun nodo"
+
+    }
   },
   "NEW_WEB_RESOURCE_DIALOG": {
     "TITLE": "Agregar un nuevo recurso",

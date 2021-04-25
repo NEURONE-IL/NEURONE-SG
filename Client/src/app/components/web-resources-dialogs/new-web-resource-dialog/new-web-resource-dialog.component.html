@@ -1,9 +1,9 @@
 <h1 mat-dialog-title>{{ "NEW_WEB_RESOURCE_DIALOG.TITLE" | translate }}</h1>
 <div mat-dialog-content *ngIf="!uploading">
   <form [formGroup]="resourceForm">
-    <mat-grid-list cols="2" rowHeight="5:1">
+    <mat-grid-list cols="2" rowHeight="4:1">
       <mat-grid-tile>
-        <mat-form-field>
+        <mat-form-field class="resource-form-field">
           <mat-label>{{
             "NEW_WEB_RESOURCE_DIALOG.FORM.NAME" | translate
           }}</mat-label>
@@ -15,12 +15,12 @@
             maxLength="50"
           />
           <mat-error *ngIf="resourceFormCtrls.docName.hasError('required')">
-            {{ "ERRORS.REQUIRED" | translate }}
+            {{ "WEB_RESOURCES_TABLE.ERRORS.NAME_REQUIRED" | translate }}
           </mat-error>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile>
-        <mat-form-field>
+        <mat-form-field class="resource-form-field">
           <mat-label>{{
             "NEW_WEB_RESOURCE_DIALOG.FORM.TYPE" | translate
           }}</mat-label>
@@ -30,12 +30,12 @@
             }}</mat-option>
           </mat-select>
           <mat-error *ngIf="resourceFormCtrls.type.hasError('required')">
-            {{ "ERRORS.SELECTION_REQUIRED" | translate }}
+            {{ "WEB_RESOURCES_TABLE.ERRORS.TYPE_REQUIRED" | translate }}
           </mat-error>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile>
-        <mat-form-field>
+        <mat-form-field class="resource-form-field">
           <mat-label>
             {{ "NEW_WEB_RESOURCE_DIALOG.FORM.TITLE" | translate }}
           </mat-label>
@@ -47,12 +47,12 @@
             maxLength="50"
           />
           <mat-error *ngIf="resourceFormCtrls.title.hasError('required')">
-            {{ "ERRORS.REQUIRED" | translate }}
+            {{ "WEB_RESOURCES_TABLE.ERRORS.TITLE_REQUIRED" | translate }}
           </mat-error>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile>
-        <mat-form-field>
+        <mat-form-field class="resource-form-field">
           <mat-label>{{
             "NEW_WEB_RESOURCE_DIALOG.FORM.LOCALE" | translate
           }}</mat-label>
@@ -62,12 +62,12 @@
             }}</mat-option>
           </mat-select>
           <mat-error *ngIf="resourceFormCtrls.locale.hasError('required')">
-            {{ "ERRORS.SELECTION_REQUIRED" | translate }}
+            {{ "WEB_RESOURCES_TABLE.ERRORS.LOCALE_REQUIRED" | translate }}
           </mat-error>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile>
-        <mat-form-field>
+        <mat-form-field class="resource-form-field">
           <mat-label>{{
             "NEW_WEB_RESOURCE_DIALOG.FORM.URL" | translate
           }}</mat-label>
@@ -79,18 +79,18 @@
             maxlength="200"
           />
           <mat-error *ngIf="resourceFormCtrls.url.hasError('required')">
-            {{ "ERRORS.REQUIRED" | translate }}
+            {{ "WEB_RESOURCES_TABLE.ERRORS.LINK_REQUIRED" | translate }}
           </mat-error>
           <mat-error *ngIf="resourceFormCtrls.url.hasError('minlength')">
-            {{ "ERRORS.MIN_LENGTH_5" | translate }}
+            {{ "ERRORS.MIN_LENGTH" | translate: { length: 5 } }}
           </mat-error>
           <mat-error *ngIf="resourceFormCtrls.url.hasError('maxlength')">
-            {{ "ERRORS.MAX_LENGTH_200" | translate }}
+            {{ "ERRORS.MAX_LENGTH_200" | translate: { length: 200 } }}
           </mat-error>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile>
-        <mat-form-field>
+        <mat-form-field class="resource-form-field">
           <mat-label>{{
             "NEW_WEB_RESOURCE_DIALOG.FORM.MASKED_URL" | translate
           }}</mat-label>
@@ -100,16 +100,19 @@
             #inputMaskedURL
             maxlength="200"
           />
+          <mat-error *ngIf="resourceFormCtrls.maskedURL.hasError('required')">
+            {{ "WEB_RESOURCES_TABLE.ERRORS.MASKED_URL_REQUIRED" | translate }}
+          </mat-error>
           <mat-error *ngIf="resourceFormCtrls.maskedURL.hasError('minlength')">
-            {{ "ERRORS.UNREQUIRED_MIN_LENGTH_5" | translate }}
+            {{ "ERRORS.MIN_LENGTH" | translate: { length: 5 } }}
           </mat-error>
           <mat-error *ngIf="resourceFormCtrls.maskedURL.hasError('maxlength')">
-            {{ "ERRORS.MAX_LENGTH_200" | translate }}
+            {{ "ERRORS.MAX_LENGTH_200" | translate: { length: 200 } }}
           </mat-error>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile>
-        <mat-form-field>
+        <mat-form-field class="resource-form-field">
           <mat-label>{{
             "NEW_WEB_RESOURCE_DIALOG.FORM.NODE" | translate
           }}</mat-label>
@@ -119,7 +122,7 @@
             }}</mat-option>
           </mat-select>
           <mat-error *ngIf="resourceFormCtrls.task.hasError('required')">
-            {{ "ERRORS.SELECTION_REQUIRED" | translate }}
+            {{ "WEB_RESOURCES_TABLE.ERRORS.NODE_REQUIRED" | translate }}
           </mat-error>
         </mat-form-field>
       </mat-grid-tile>

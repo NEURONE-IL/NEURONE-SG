@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { timeout } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -9,6 +9,8 @@ import { environment } from '../../../environments/environment';
 })
 export class SearchService {
   uri = environment.coreUrl;
+  uploadTimeout = environment.coreUploadTimeout;
+  fetchTimeout = environment.coreFetchTimeout;
 
   // Search interface enabled/disabled
   searchEnabled: boolean;
@@ -47,7 +49,7 @@ export class SearchService {
     header = header.append('Content-Type', 'text/plain');
     return this.http.post(this.uri + '/document/search', body, {
       headers: header,
-    });
+    }).pipe(timeout(this.fetchTimeout));
   }
 
   upload(resource) {
@@ -59,7 +61,7 @@ export class SearchService {
     header = header.append('Content-Type', 'text/plain');
     return this.http.post(this.uri + '/document/load', cleanResource, {
       headers: header,
-    });
+    }).pipe(timeout(this.uploadTimeout));
   }
 
   delete(resource) {
@@ -67,7 +69,7 @@ export class SearchService {
     header = header.append('Content-Type', 'text/plain');
     return this.http.post(this.uri + '/document/delete', resource, {
       headers: header,
-    });
+    }).pipe(timeout(this.fetchTimeout));
   }
 
   setSearch(value: boolean) {
