@@ -108,8 +108,6 @@ export class NewAdventureDialogComponent implements OnInit {
     let reader = new FileReader();
     reader.onload = (event: any) => {
       this.imagePreview = event.target.result;
-      console.log('read!');
-      console.log(this.imagePreview);
     };
     reader.readAsDataURL(this.image);
   }

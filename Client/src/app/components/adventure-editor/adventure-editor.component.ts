@@ -312,8 +312,6 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
 
     challengeDialogRef.afterClosed().subscribe((result) => {
       if (result.challenge) {
-        console.log('closed challengeDialog');
-        console.log('challenge: ', result.challenge);
         this.currentNode.challenge = result.challenge;
       }
     });

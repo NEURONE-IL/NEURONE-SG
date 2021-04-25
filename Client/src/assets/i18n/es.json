@@ -135,7 +135,18 @@
     "TITLE": "Metadatos",
     "NAME": "Nombre",
     "DESCRIPTION": "Descripción",
-    "SAVE_ALL": "Guardar todos los cambios"
+    "NAME_PLACEHOLDER": "Aventura en el espacio",
+    "DESCRIPTION_PLACEHOLDER": "¡Esta es una aventura increíble donde salvarás el planeta!",
+    "PRECONDITIONS": "Precondiciones",
+    "IMAGE": "¿Agregar imagen?",
+    "SAVE_ALL": "Guardar todos los cambios",
+    "ERRORS": {
+      "NAME_REQUIRED": "Debe ingresar un nombre",
+      "DESCRIPTION_REQUIRED": "Debe ingresar una descripción"
+    },
+    "TOASTR": {
+      "INVALID_FORM":"Por favor complete el formulario de metadatos correctamente"
+    }
   },
   "LINKS_DIALOG": {
     "TITLE": "Gestionar ramas",

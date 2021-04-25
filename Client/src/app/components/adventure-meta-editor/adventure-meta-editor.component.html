@@ -8,9 +8,12 @@
         matInput
         name="metaName"
         formControlName="name"
-        placeholder="Space adventure"
+        placeholder="{{ 'META_EDITOR.NAME_PLACEHOLDER' | translate }}"
         [ngModel]="adventure.name"
       />
+      <mat-error *ngIf="metaForm.controls.name.hasError('required')">
+        {{ "META_EDITOR.ERRORS.NAME_REQUIRED" | translate }}
+      </mat-error>
     </mat-form-field>
     <mat-form-field class="meta-form-field">
       <mat-label>{{ "META_EDITOR.DESCRIPTION" | translate }}</mat-label>
@@ -18,14 +21,17 @@
         matInput
         name="metaDescription"
         formControlName="description"
-        placeholder="An adventure in the planet of Mars."
+        placeholder="{{ 'META_EDITOR.DESCRIPTION_PLACEHOLDER' | translate }}"
         [ngModel]="adventure.description"
       />
+      <mat-error *ngIf="metaForm.controls.description.hasError('required')">
+        {{ "META_EDITOR.ERRORS.DESCRIPTION_REQUIRED" | translate }}
+      </mat-error>
     </mat-form-field>
   </div>
   <div class="form-item">
     <mat-form-field class="meta-form-field">
-      <mat-label>{{ "NEW_ADVENTURE.PRECONDITIONS" | translate }}</mat-label>
+      <mat-label>{{ "META_EDITOR.PRECONDITIONS" | translate }}</mat-label>
       <mat-select formControlName="preconditions" multiple [ngModel]="adventure.preconditions">
         <mat-option
           *ngFor="let adventure of adventures"
@@ -35,7 +41,7 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field class="meta-form-field">
-      <mat-label>{{ "NEW_ADVENTURE.IMAGE" | translate }}</mat-label>
+      <mat-label>{{ "META_EDITOR.IMAGE" | translate }}</mat-label>
       <mat-select [(value)]="currentMediaType" (selectionChange)="imageSelectorChange($event)">
         <mat-option *ngFor="let type of mediaTypes" [value]="type.value">
           {{ type.viewValue | translate }}

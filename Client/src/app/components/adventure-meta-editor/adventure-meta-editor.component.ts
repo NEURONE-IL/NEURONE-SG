@@ -1,5 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { AdventureService } from 'src/app/services/game/adventure.service';
 import { EditorService } from 'src/app/services/game/editor.service';
@@ -29,7 +31,9 @@ export class AdventureMetaEditorComponent implements OnInit {
     private formBuilder: FormBuilder,
     public editorService: EditorService,
     private imageService: ImageService,
-    private adventureService: AdventureService
+    private adventureService: AdventureService,
+    private translate: TranslateService,
+    private toastr: ToastrService
   ) {
     this.adventureSubscription = this.editorService.adventureEmitter.subscribe(
       (adventure) => {
@@ -43,7 +47,9 @@ export class AdventureMetaEditorComponent implements OnInit {
     this.adventureService.getAdventures().subscribe(
       (res) => {
         this.adventures = res;
-        this.adventures = this.adventures.filter(adv => { return adv._id != this.adventure._id });
+        this.adventures = this.adventures.filter((adv) => {
+          return adv._id != this.adventure._id;
+        });
         this.loading = false;
       },
       (err) => {
@@ -70,15 +76,12 @@ export class AdventureMetaEditorComponent implements OnInit {
     let reader = new FileReader();
     reader.onload = (event: any) => {
       this.imagePreview = event.target.result;
-      console.log('read!');
-      console.log(this.imagePreview);
     };
     reader.readAsDataURL(this.image);
   }
 
   imageSelectorChange(evt) {
     if (evt.value != 'image') {
-      console.log('delete image now');
       this.currentImg = undefined;
       this.imagePreview = undefined;
       this.metaForm.controls.image_id.setValue(undefined);
@@ -87,34 +90,51 @@ export class AdventureMetaEditorComponent implements OnInit {
         this.image = undefined;
         this.currentImg = this.adventure.image_id;
         this.metaForm.controls.image_id.setValue(this.adventure.image_id);
+        console.log(this.metaForm.value);
       }
     }
   }
 
   saveAllChanges() {
     if (this.metaForm.valid) {
-      this.editorService.setUpdating(true);
-      if (this.image) {
-        this.imageService.upload(this.image).subscribe(
-          (res) => {
-            let imageData: any = res;
-            this.metaForm.controls.image_id.setValue(imageData.id);
-            this.currentImg = imageData.id;
-            this.editorService.updateMeta(this.metaForm.value);
-            this.imagePreview = undefined;
-            this.image = undefined;
-            this.editorService.updateAdventure();
-          },
-          (err) => {
-            console.log("couldn't upload image", err);
-            this.editorService.updateMeta(this.metaForm.value);
-            this.editorService.updateAdventure();
-          }
-        );
+      if (this.currentMediaType == 'image') {
+        if (this.image) {
+          this.imageService.upload(this.image).subscribe(
+            (res) => {
+              this.editorService.setUpdating(true);
+              let imageData: any = res;
+              this.metaForm.controls.image_id.setValue(imageData.id);
+              this.currentImg = imageData.id;
+              this.editorService.updateMeta(this.metaForm.value);
+              this.imagePreview = undefined;
+              this.image = undefined;
+              this.editorService.updateAdventure();
+            },
+            (err) => {
+              this.editorService.setUpdating(true);
+              this.editorService.updateMeta(this.metaForm.value);
+              this.editorService.updateAdventure();
+            }
+          );
+        } else if (this.currentImg && this.metaForm.value.image_id) {
+          this.editorService.setUpdating(true);
+          this.editorService.updateMeta(this.metaForm.value);
+          this.editorService.updateAdventure();
+        } else {
+          console.log(this.metaForm.value);
+          this.translate.get('COMMON.TOASTR').subscribe((res) => {
+            this.toastr.warning(res.IMG_NOT_SELECTED);
+          });
+        }
       } else {
+        this.editorService.setUpdating(true);
         this.editorService.updateMeta(this.metaForm.value);
         this.editorService.updateAdventure();
       }
+    } else {
+      this.translate.get('META_EDITOR.TOASTR').subscribe((res) => {
+        this.toastr.warning(res.INVALID_FORM);
+      });
     }
   }
 }

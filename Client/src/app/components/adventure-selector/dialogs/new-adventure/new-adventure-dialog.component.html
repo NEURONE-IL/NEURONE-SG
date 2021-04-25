@@ -20,11 +20,11 @@
           matInput
           name="adventureDescription"
           formControlName="description"
-          placeholder="{{
-            'NEW_ADVENTURE.DESCRIPTION_PLACEHOLDER' | translate
-          }}"
+          placeholder="{{ 'NEW_ADVENTURE.DESCRIPTION_PLACEHOLDER' | translate }}"
         />
-        <mat-error *ngIf="newAdventureForm.controls.description.hasError('required')">
+        <mat-error
+          *ngIf="newAdventureForm.controls.description.hasError('required')"
+        >
           {{ "NEW_ADVENTURE.ERRORS.DESCRIPTION_REQUIRED" | translate }}
         </mat-error>
       </mat-form-field>

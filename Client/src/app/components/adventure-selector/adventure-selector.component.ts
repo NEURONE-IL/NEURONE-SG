@@ -194,7 +194,6 @@ export class AdventureSelectorComponent implements OnInit {
   }
 
   reloadPage(): void {
-    // window.location.reload();
     this.ngOnInit();
   }
 }
