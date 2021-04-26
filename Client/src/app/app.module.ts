@@ -45,6 +45,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { FileUploadModule } from 'ng2-file-upload';
 import { QuestionFormComponent } from './components/game-bar/question-form/question-form.component';
 import { MultipleFormComponent } from './components/game-bar/multiple-form/multiple-form.component';
@@ -67,6 +68,8 @@ import { GamificationConfigComponent } from './components/gamification-config/ga
 import { GeneralConfigComponent } from './components/general-config/general-config.component';
 import { EmbeddedMediaModule } from 'ngx-embedded-media';
 import { BookmarkFormComponent } from './components/game-bar/bookmark-form/bookmark-form.component';
+import { CustomPaginatorDirective } from './utils/custom-paginator.directive';
+import { PaginatorComponent } from './components/paginator/paginator.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -103,7 +106,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     NewWebResourceDialogComponent,
     GamificationConfigComponent,
     GeneralConfigComponent,
-    BookmarkFormComponent
+    BookmarkFormComponent,
+    CustomPaginatorDirective,
+    PaginatorComponent
   ],
   imports: [
     BrowserModule,
@@ -134,6 +139,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatSlideToggleModule,
     MatTableModule,
     MatTooltipModule,
+    MatPaginatorModule,
     FileUploadModule,
     EmbeddedMediaModule,
     ToastrModule.forRoot(),

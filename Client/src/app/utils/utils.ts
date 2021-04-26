@@ -33,4 +33,26 @@ export default class Utils {
       }
     });
   }
+
+  // Paginate results
+  static paginate(results, itemsPerPage) {
+    let paginatedResults = [];
+
+    let size = results.length;
+    let pages = Math.floor(size / itemsPerPage);
+
+    if (size % itemsPerPage > 0) pages++;
+
+    let page = [];
+    results.forEach((result) => {
+      page.push(result);
+      if (page.length == itemsPerPage) {
+        paginatedResults.push(page);
+        page = [];
+      }
+    });
+    if (page.length > 0) paginatedResults.push(page);
+
+    return paginatedResults;
+  }
 }

@@ -1,13 +1,19 @@
 <div class="search-interface-container">
   <mat-card class="results-card">
-    <div class="toolbar" >
-      <img class="logo" src="assets/images/neurone_logo.png" [routerLink]="['/session/search']">
-      <mat-form-field appearance="outline" class="search-box" >
-        <mat-icon matSuffix (click)="search()" style="cursor: pointer;">search</mat-icon>
-        <input matInput [(ngModel)]="query" (keydown.enter)="search()" >
+    <div class="toolbar">
+      <img
+        class="logo"
+        src="assets/images/neurone_logo.png"
+        [routerLink]="['/session/search']"
+      />
+      <mat-form-field appearance="outline" class="search-box">
+        <mat-icon matSuffix (click)="search()" style="cursor: pointer"
+          >search</mat-icon
+        >
+        <input matInput [(ngModel)]="query" (keydown.enter)="search()" />
       </mat-form-field>
     </div>
-    <mat-tab-group *ngIf="!fetching">
+    <mat-tab-group *ngIf="!fetching" (selectedTabChange)="onTabChange($event)">
       <mat-tab label="{{ 'SEARCH_INTERFACE.TABS.ALL' | translate }}">
         <ng-template matTabContent>
           <p class="soft">
@@ -17,7 +23,7 @@
             }}
           </p>
           <div class="documents-container">
-            <div *ngFor="let doc of web">
+            <div *ngFor="let doc of webPaginated[currentPage - 1]">
               <!--Images -->
               <mat-card
                 class="cardStyle doc-card"
@@ -82,7 +88,7 @@
               <mat-card
                 class="cardStyle doc-card"
                 [routerLink]="['/session/view-page', doc.title, doc.route]"
-                *ngIf="!doc.type || doc.type=='book'"
+                *ngIf="!doc.type || doc.type == 'book'"
               >
                 <mat-card-content>
                   <h5 class="url-bar">
@@ -104,6 +110,13 @@
               <h3>{{ "SEARCH_INTERFACE.NO_RESULTS_MSG" | translate }}</h3>
             </div>
           </div>
+          <div class="paginator-wrapper">
+            <app-paginator
+              [totalItems]="webLength"
+              [pageSize]="pageSize"
+              (pageChanged)="onPageChange($event)"
+            ></app-paginator>
+          </div>
         </ng-template>
       </mat-tab>
       <mat-tab label="{{ 'SEARCH_INTERFACE.TABS.IMAGES' | translate }}">
@@ -115,7 +128,7 @@
         </p>
         <div class="image-container">
           <mat-grid-list cols="12" [gutterSize]="'12px'">
-            <div *ngFor="let doc of images">
+            <div *ngFor="let doc of imagesPaginated[currentPage - 1]">
               <mat-grid-tile
                 class="image-card"
                 colspan="3"
@@ -147,6 +160,13 @@
             </div>
           </mat-grid-list>
         </div>
+        <div class="paginator-wrapper">
+          <app-paginator
+            [totalItems]="imagesLength"
+            [pageSize]="pageSize"
+            (pageChanged)="onPageChange($event)"
+          ></app-paginator>
+        </div>
       </mat-tab>
       <mat-tab label="{{ 'SEARCH_INTERFACE.TABS.VIDEOS' | translate }}">
         <p class="soft">
@@ -157,7 +177,7 @@
         </p>
         <div class="video-container">
           <mat-grid-list cols="12" [gutterSize]="'12px'">
-            <div *ngFor="let doc of videos">
+            <div *ngFor="let doc of videosPaginated[currentPage - 1]">
               <mat-grid-tile
                 class="video-card"
                 colspan="12"
@@ -191,6 +211,13 @@
             </div>
           </mat-grid-list>
         </div>
+        <div class="paginator-wrapper">
+          <app-paginator
+            [totalItems]="videosLength"
+            [pageSize]="pageSize"
+            (pageChanged)="onPageChange($event)"
+          ></app-paginator>
+        </div>
       </mat-tab>
       <mat-tab label="{{ 'SEARCH_INTERFACE.TABS.BOOKS' | translate }}">
         <ng-template matTabContent>
@@ -201,7 +228,7 @@
             }}
           </p>
           <div class="documents-container">
-            <div *ngFor="let doc of books">
+            <div *ngFor="let doc of books[currentPage - 1]">
               <mat-card
                 class="cardStyle doc-card"
                 [routerLink]="['/session/view-page', doc.title, doc.route]"
@@ -227,12 +254,19 @@
               <h3>{{ "SEARCH_INTERFACE.NO_RESULTS_MSG" | translate }}</h3>
             </div>
           </div>
+          <div class="paginator-wrapper">
+            <app-paginator
+              [totalItems]="booksLength"
+              [pageSize]="pageSize"
+              (pageChanged)="onPageChange($event)"
+            ></app-paginator>
+          </div>
         </ng-template>
       </mat-tab>
     </mat-tab-group>
     <div *ngIf="fetching" class="spinner">
       <mat-spinner></mat-spinner>
-      <span>{{ 'SEARCH_INTERFACE.SEARCHING' | translate}}</span>
+      <span>{{ "SEARCH_INTERFACE.SEARCHING" | translate }}</span>
     </div>
   </mat-card>
 </div>

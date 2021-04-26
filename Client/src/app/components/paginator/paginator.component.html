@@ -1,0 +1,44 @@
+<!-- Paginator component template -->
+<!-- Adapted from: https://stackoverflow.com/questions/55564200/google-style-pagination -->
+<!-- See answer by: Iman -->
+
+<nav *ngIf="totalItems > pageSize">
+  <ul class="pages-wrapper">
+    <div [class.disabled]="currentPage == 1">
+      <button
+        mat-mini-fab
+        color="accent"
+        class="page-button"
+        (click)="previous()"
+        aria-label="Previous"
+      >
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+    </div>
+    <div
+      [class.active]="currentPage == page"
+      *ngFor="let page of pages"
+      (click)="changePage(page)"
+    >
+      <button
+        mat-mini-fab
+        [color]="currentPage == page ? 'primary' : ''"
+        class="page-button"
+        *ngIf="page < currentPage + 5 && page > currentPage - 5"
+      >
+        {{ page }}
+      </button>
+    </div>
+    <div [class.disabled]="currentPage == pages.length">
+      <button
+        mat-mini-fab
+        color="accent"
+        class="page-button"
+        (click)="next()"
+        aria-label="Next"
+      >
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </ul>
+</nav>
