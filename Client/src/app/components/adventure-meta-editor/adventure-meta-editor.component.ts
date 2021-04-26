@@ -68,6 +68,7 @@ export class AdventureMetaEditorComponent implements OnInit {
     if (this.adventure.image_id) {
       this.currentMediaType = 'image';
       this.currentImg = this.adventure.image_id;
+      this.metaForm.controls.image_id.setValue(this.adventure.image_id);
     }
   }
 
