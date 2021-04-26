@@ -134,11 +134,11 @@
                 colspan="3"
                 rowspan="3"
                 *ngIf="doc.type == 'image'"
-                [routerLink]="['/game/view-page', doc.title, doc.url]"
+                [routerLink]="['/game/view-page',  doc.url]"
               >
                 <mat-card
                   class="cardStyle"
-                  [routerLink]="['/game/view-page', doc.title, doc.url]"
+                  [routerLink]="['/game/view-page', doc.url]"
                 >
                   <img
                     class="img-fluid thumbnail searchImage"
@@ -150,7 +150,7 @@
                       {{ doc.docName }}
                     </h5>
                     <a
-                      [routerLink]="['/game/view-page', doc.title, doc.route]"
+                      [routerLink]="['/game/view-page', doc.url]"
                       class="document-link"
                       >{{ doc.title }}</a
                     >
