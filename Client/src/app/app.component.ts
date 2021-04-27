@@ -17,7 +17,7 @@ import { ConfigService } from './services/game/config.service';
 })
 export class AppComponent implements OnInit {
 
-  title = 'NEURONE-ADVENTURE';
+  title = 'NEURONE-SG';
   config: any;
 
   constructor(
