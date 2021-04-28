@@ -11,7 +11,7 @@
     "NO": "No",
     "TOASTR": {
       "INVALID_FORM": "Por favor complete el formulario correctamente",
-      "IMG_NOT_SELECTED":"Debe seleccionar una imagen antes de continuar",
+      "IMG_NOT_SELECTED": "Debe seleccionar una imagen antes de continuar",
       "UPDATE_FAILURE": "Error al guardar los cambios"
     }
   },
@@ -91,7 +91,7 @@
       "EMAIL_NOT_FOUND": "Correo no encontrado",
       "INVALID_PASSWORD": "Credenciales incorrectas",
       "SUCCESS": "Sesión iniciada satisfactoriamente",
-      "INVALID_FORM":"Por favor ingrese sus credenciales correctamente"
+      "INVALID_FORM": "Por favor ingrese sus credenciales correctamente"
     },
     "ERRORS": {
       "EMAIL_REQUIRED": "Debe ingresar su correo electrónico",
@@ -123,7 +123,7 @@
         "IMAGE": "Imagen"
       },
       "TOASTR": {
-        "DELETE_FAILURE":"Error al eliminar el nodo"
+        "DELETE_FAILURE": "Error al eliminar el nodo"
       },
       "ERRORS": {
         "LABEL_REQUIRED": "Debe ingresar una etiqueta",
@@ -147,7 +147,7 @@
       "DESCRIPTION_REQUIRED": "Debe ingresar una descripción"
     },
     "TOASTR": {
-      "INVALID_FORM":"Por favor complete el formulario de metadatos correctamente"
+      "INVALID_FORM": "Por favor complete el formulario de metadatos correctamente"
     }
   },
   "LINKS_DIALOG": {
@@ -247,7 +247,7 @@
       "SUCCESS": "Aventura creada correctamente",
       "FAILURE": "Error al crear la aventura",
       "IMG_NOT_SELECTED": "Debe seleccionar una imagen antes de continuar",
-      "INVALID_FORM":"Por favor complete el formulario correctamente"
+      "INVALID_FORM": "Por favor complete el formulario correctamente"
     }
   },
   "DEFAULT_CHALLENGE": {
@@ -280,7 +280,6 @@
       "LINK_REQUIRED": "Debe ingresar el enlace del recurso a cargar",
       "MASKED_URL_REQUIRED": "Debe ingresar el enlace que desea mostrar al jugador",
       "NODE_REQUIRED": "Debe seleccionar si este recurso es relevante para algun nodo"
-
     }
   },
   "NEW_WEB_RESOURCE_DIALOG": {
@@ -321,5 +320,17 @@
     "UPLOAD": "Subir",
     "TEXT": "Selecciona un archivo de imagen:",
     "CHOOSE_TEXT": "Elegir archivo"
+  },
+  "USER_PROFILE": {
+    "USERNAME": "Usuario",
+    "LAST_NAMES": "Apellidos",
+    "EMAIL": "Correo",
+    "YOUR_PROFILE": "Tu perfil",
+    "ACTUAL_TITLE": "Título actual",
+    "TOTAL_EXP": "Experiencia Total",
+    "NEXT_LEVEL_PROGRESS": "Progreso siguiente nivel",
+    "RANKINGS": "Rankings",
+    "ACHIEVEMENTS_COMPLETED": "Logros Completados",
+    "PLAY_BTN": "Jugar"
   }
 }

@@ -1,0 +1,111 @@
+<!-- Player profile component -->
+<!-- Adapted from the original wotk of: TUTELAGE Project development team -->
+<!-- URL: https://github.com/JoseMellado/GAME -->
+<!-- Camila Marquez -->
+<!-- Jose Mellado -->
+<!-- Fernando Villarreal -->
+<!-- Cristobal Becerra -->
+
+<div class="content-container">
+  <div class="container-left">
+    <div class="player-image">
+      <img
+        *ngIf="user.image_url"
+        [src]="user.image_url"
+        class="player-image img"
+        (click)="openImageSelector()"
+        alt="playerImage"
+      />
+      <img
+        *ngIf="!user.image_url"
+        src="/assets/images/avatars/girl-in-ballcap.svg"
+        class="player-image img"
+        (click)="openImageSelector()"
+        alt="playerImage"
+      />
+      <mat-list>
+        <mat-list-item>
+          <div class="profile-item">
+            <span><strong>{{ "USER_PROFILE.USERNAME" | translate }}:</strong></span>
+            <span>{{ user.username }}</span>
+          </div>
+        </mat-list-item>
+        <mat-list-item>
+          <div class="profile-item">
+            <span><strong>{{ "USER_PROFILE.EMAIL" | translate }}:</strong></span>
+            <span>{{ user.email }}</span>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+  <div class="container-right">
+    <h2 class="h2">{{ "USER_PROFILE.YOUR_PROFILE" | translate }}</h2>
+    <div class="user-statistics">
+      <div class="stats">
+        <h5 class="h5">{{ "USER_PROFILE.ACTUAL_TITLE" | translate }}</h5>
+        <li class="clear m0">
+          <span class="player-status-value di-ib fl large">{{
+            actualLevel?.level.name
+          }}</span>
+        </li>
+      </div>
+      <div class="stats">
+        <h5 class="h5">{{ "USER_PROFILE.TOTAL_EXP" | translate }}</h5>
+        <li class="clear m0">
+          <span
+            class="player-status-value di-ib fl large"
+            *ngIf="points && points.length > 0"
+            >{{ points[0].amount }} {{ points[0].point.abbreviation }}</span
+          >
+        </li>
+      </div>
+    </div>
+    <div class="user-statistics">
+      <div class="stats">
+        <h5 class="h5">{{ "USER_PROFILE.NEXT_LEVEL_PROGRESS" | translate }}</h5>
+        <mat-card class="progressLevelCard">
+          <p class="large" style="display: inline-block">
+            {{ nearLevel?.level.name }}
+          </p>
+          <div id="progressLevel" class="progress large">
+            <span id="progressValue" class="value large"></span>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+    <div class="user-statistics">
+      <div class="stats">
+        <h5 class="h5">{{ "USER_PROFILE.RANKINGS" | translate }}</h5>
+        <li class="clear m0" *ngFor="let rank of ranks">
+          <span class="player-status-value di-ib fl large">{{ rank }}</span>
+        </li>
+      </div>
+    </div>
+    <div class="user-statistics">
+      <div class="stats">
+        <h5 class="h5" *ngIf="completedChallenges.length > 0">
+          {{ "USER_PROFILE.ACHIEVEMENTS_COMPLETED" | translate }}
+        </h5>
+        <div *ngIf="completedChallenges.length > 0">
+          <mat-card
+            *ngFor="let chall of completedChallenges"
+            class="challengeCard"
+          >
+            <img
+              src="/assets/achievement.png"
+              style="height: 30px; display: inline-block"
+            />
+            <p
+              class="large"
+              style="display: inline-block; margin-left: 2%; width: 85%"
+            >
+              {{ chall.challenge.name }}
+              <span style="float: right">{{ chall.dateDisplay }}</span>
+            </p>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

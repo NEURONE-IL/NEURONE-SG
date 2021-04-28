@@ -1,0 +1,190 @@
+// Player profile component
+// Adapted from the original wotk of: TUTELAGE Project development team
+// URL: https://github.com/JoseMellado/GAME
+// Camila Marquez
+// Jose Mellado
+// Fernando Villarreal
+// Cristobal Becerra
+
+.challengeCard {
+  width: 50%;
+  display: inline-block;
+  padding: 1%;
+  height: 10%;
+  margin: auto;
+  background-color: whitesmoke;
+}
+
+.play-button {
+  width: 80%;
+  margin-left: 5%;
+  height: 80px;
+  font-size: 30px;
+  background-color: orange;
+  color: white;
+}
+
+.progressLevelCard {
+  height: 10%;
+  margin: auto;
+  background-color: whitesmoke;
+}
+
+.progress {
+  height: 2em;
+  width: 100%;
+  background-color: #c9c9c9;
+  position: relative;
+  background-color: #eee;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+}
+
+.progress:before {
+  content: attr(data-label);
+  font-size: 1.1em;
+  position: absolute;
+  text-align: center;
+  top: 10px;
+  left: 0;
+  right: 0;
+  vertical-align: 0;
+}
+.progress .value {
+  background-image: -webkit-linear-gradient(
+      -45deg,
+      transparent 33%,
+      rgba(0, 0, 0, 0.1) 33%,
+      rgba(0, 0, 0, 0.1) 66%,
+      transparent 66%
+    ),
+    -webkit-linear-gradient(top, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.25)),
+    -webkit-linear-gradient(left, rgb(0, 204, 102), rgb(221, 255, 68));
+
+  display: inline-block;
+  height: 100%;
+}
+
+.h2 {
+  border-color: #f0f0f0;
+  border-style: solid;
+  border-width: 0 0 1px;
+  color: #000;
+  font-family: Avenir, lucida grande, tahoma, verdana, arial, sans-serif;
+  font-size: 30px;
+  font-weight: 1000;
+  margin: 4px 0;
+  padding: 2px 0;
+}
+
+h3 {
+  margin-top: 2%;
+  margin-left: auto;
+  margin-right: auto;
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  padding: 0 0 0.25em;
+}
+
+.h5 {
+  border-bottom: #f0f0f0 1px solid;
+  font-family: Avenir, lucida grande, tahoma, verdana, arial, sans-serif;
+  font-size: 18px;
+  color: blueviolet;
+  font-weight: 700;
+  margin: 0;
+  margin-bottom: 4px;
+  padding: 0;
+  padding-bottom: 2px;
+}
+
+.content-container {
+  display: table;
+  width: 75%;
+}
+
+.container-left {
+  display: table-cell;
+  width: 100%;
+  padding: 8px 8px 8px 8px;
+  vertical-align: top;
+  width: 325px;
+  border: #ebebeb 1px solid;
+}
+
+.container-right {
+  display: table-cell;
+  padding-left: 8px;
+  vertical-align: top;
+}
+
+.player-image {
+  display: block;
+  text-align: center;
+  cursor: pointer;
+}
+
+.img {
+  width: 325px;
+}
+
+.player-status {
+  border-top: #f0f0f0 1px solid;
+  padding-bottom: 8px !important;
+  padding-top: 8px !important;
+  margin-bottom: 30px !important;
+  list-style-type: none;
+}
+
+.clear {
+  clear: both;
+  content: ".";
+  display: block;
+  height: 0;
+  margin-left: -20px;
+}
+
+.m0 {
+  margin: 0 !important;
+}
+
+.player-status-title {
+  font-weight: 700;
+  line-height: 1.5em;
+  margin: 0;
+  padding: 0;
+}
+
+.player-status-value {
+  font-weight: 400;
+  line-height: 1.5em;
+  margin: 0;
+  padding: 0;
+}
+
+.large {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.user-statistics {
+  display: table;
+  width: 100%;
+  border-bottom: #f0f0f0 1px solid;
+  margin-bottom: 5%;
+}
+
+.stats {
+  display: table-cell;
+  padding-right: 8px;
+  width: 50%;
+  border-right: #f0f0f0 1px solid;
+}
+
+// NEURONE-SG additions
+
+.profile-item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}

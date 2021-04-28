@@ -1,0 +1,8 @@
+.adventure-selection-container {
+  display: grid;
+  grid-template-areas: "header" "profile";
+  grid-template-rows: 60px auto;
+  min-width: 100%;
+  min-height: 100%;
+  background-color: white;
+}

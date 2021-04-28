@@ -16,6 +16,7 @@ const leaderboardService = require('../services/neuronegm/leaderboard');
 
 
 const verifyToken = require('../middlewares/verifyToken');
+const { getLevels } = require('../services/neuronegm/level');
 
 router.get('/isGamified', verifyToken, async (req, res) => {
     let credential = await Credential.findOne({code: "superadmin"}, err => {
@@ -273,7 +274,14 @@ router.get('/userRankings/:user_id/:key' , verifyToken, async (req, res) => {
     })
 });
 
-
+router.get('/availableLevels' , verifyToken, async (req, res) => {
+    await levelService.getLevels((err, levels) => {
+        if (err) {
+            res.status(404).send(err);
+        }
+        res.status(200).send(levels);
+    })
+});
 
 
 

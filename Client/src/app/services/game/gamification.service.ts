@@ -45,4 +45,8 @@ export class GamificationService {
   userRankings(user_id, type): Observable<any>{
     return this.http.get(this.uri+'gamification/userRankings/'+user_id+'/'+type ).pipe(timeout(this.timeout));
   }
+
+  getAvailableLevels(): Observable<any> {
+    return this.http.get(this.uri+'gamification/availableLevels/').pipe(timeout(this.timeout));
+  }
 }

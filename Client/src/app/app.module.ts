@@ -70,6 +70,8 @@ import { EmbeddedMediaModule } from 'ngx-embedded-media';
 import { BookmarkFormComponent } from './components/game-bar/bookmark-form/bookmark-form.component';
 import { CustomPaginatorDirective } from './utils/custom-paginator.directive';
 import { PaginatorComponent } from './components/paginator/paginator.component';
+import { PlayerProfileComponent } from './components/player-profile/player-profile.component';
+import { ProfileComponent } from './views/profile/profile.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -108,7 +110,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     GeneralConfigComponent,
     BookmarkFormComponent,
     CustomPaginatorDirective,
-    PaginatorComponent
+    PaginatorComponent,
+    PlayerProfileComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

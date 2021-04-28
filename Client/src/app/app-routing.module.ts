@@ -4,13 +4,13 @@ import { SearchInterfaceComponent } from './components/search-interface/search-i
 import { SearchResultsComponent } from './components/search-results/search-results.component';
 import { ViewPageComponent } from './components/view-page/view-page.component';
 import { AdventureSelectionComponent } from './views/adventure-selection/adventure-selection.component';
-import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { EditorComponent } from './views/editor/editor.component';
 import { GameComponent } from './views/game/game.component';
 import { LoginRegisterComponent } from './views/login-register/login-register.component';
 import { AuthGuard } from './helpers/guards/auth.guard';
 import { NotLoggedInGuard } from './helpers/guards/not-logged-in.guard';
 import { DirectAccessGuard } from './helpers/guards/direct-access.guard';
+import { ProfileComponent } from './views/profile/profile.component';
 
 const routes: Routes = [
   {
@@ -54,6 +54,14 @@ const routes: Routes = [
     path: 'select',
     canActivate: [AuthGuard],
     component: AdventureSelectionComponent,
+  },
+  {
+    path: 'profile',
+    canActivate: [AuthGuard],
+    data: {
+      role: ['player'],
+    },
+    component: ProfileComponent,
   },
   { path: '**', redirectTo: 'select' },
 ];
