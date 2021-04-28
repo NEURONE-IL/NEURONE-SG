@@ -1,8 +1,8 @@
 <mat-toolbar color="primary">
-  <span (click)="goHome()" class="title">NEURONE-SG</span>
+  <span (click)="goHome()" class="clickable">NEURONE-SG</span>
   <span class="spacer"></span>
   <div *ngIf="user">
-    <span>{{user.username}}</span>
+    <span (click)="goToProfile()" class="clickable">{{user.username}}</span>
   </div>
   <div class="button-panel" *ngIf="user">
     <button mat-button color="white" (click)="logout()">{{'HEADER.LOGOUT' | translate}}</button>

@@ -37,6 +37,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+  goToProfile() {
+    this.router.navigate(['/profile']);
+  }
+
   reloadPage(): void {
     window.location.reload();
   }

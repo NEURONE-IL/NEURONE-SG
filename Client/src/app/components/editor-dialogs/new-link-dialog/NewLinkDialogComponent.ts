@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
+import { GamificationService } from 'src/app/services/game/gamification.service';
 import Utils from 'src/app/utils/utils';
 
 @Component({
@@ -15,7 +16,7 @@ export class NewLinkDialogComponent {
   targetNodes: any;
   nodes: any;
   node: any;
-  GMlevels: any;
+  GMlevels = [];
 
   activatorTypes: any;
 
@@ -24,7 +25,8 @@ export class NewLinkDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewLinkDialogComponent>,
     private translate: TranslateService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private gmService: GamificationService
   ) {
     this.nodes = data.nodes;
     this.targetNodes = data.targetNodes;
@@ -44,36 +46,19 @@ export class NewLinkDialogComponent {
         viewValue: 'NEW_LINK_DIALOG.ACTIVATOR_TYPES.RELEVANT_LINKS',
       },
     ];
-    this.GMlevels = [
-      {
-        value: 'adventure_level_Principiante',
-        viewValue: 'Principiante',
+    this.gmService.getAvailableLevels().subscribe(
+      (levels) => {
+        levels.forEach((level) => {
+          this.GMlevels.push({
+            value: level.code,
+            viewValue: level.name,
+          });
+        });
       },
-      {
-        value: 'adventure_level_Aprendiz',
-        viewValue: 'Aprendiz',
-      },
-      {
-        value: 'adventure_level_Adepto',
-        viewValue: 'Adepto',
-      },
-      {
-        value: 'adventure_level_Graduado',
-        viewValue: 'Graduado',
-      },
-      {
-        value: 'adventure_level_Experto',
-        viewValue: 'Experto',
-      },
-      {
-        value: 'adventure_level_Maestro',
-        viewValue: 'Maestro',
-      },
-      {
-        value: 'adventure_level_Leyenda',
-        viewValue: 'Leyenda',
-      },
-    ];
+      (err) => {
+        console.log('error fetching NEURONE-GM levels: ', err);
+      }
+    );
     this.linkForm = this.formBuilder.group({
       label: ['', [Validators.required]],
       source: [this.node.id],
@@ -172,7 +157,10 @@ export class NewLinkDialogComponent {
       activatorCtrls.links_count.setErrors(null);
     }
     if (evt.value == 'relevant_links') {
-      activatorCtrls.links_count.setValidators([Validators.required, Validators.min(1)]);
+      activatorCtrls.links_count.setValidators([
+        Validators.required,
+        Validators.min(1),
+      ]);
       activatorCtrls.node.clearValidators();
       activatorCtrls.node.setErrors(null);
       activatorCtrls.level.clearValidators();
