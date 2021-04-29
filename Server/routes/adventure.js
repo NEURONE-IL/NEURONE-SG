@@ -138,7 +138,7 @@ router.put(
       adventure.description = req.body.description;
       adventure.nodes = req.body.nodes;
       adventure.links = req.body.links;
-      if (req.body.image_id) {
+      if (req.body.image_id && adventure.image_id!=req.body.image_id) {
         imageHelper.deleteImage(adventure.image_id);
         adventure.image_id = req.body.image_id;
       } else {

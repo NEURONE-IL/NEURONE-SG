@@ -13,7 +13,9 @@ const schema = Joi.object({
         .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'cl'] } }),
 
     username: Joi.string()
-    .required()
+    .required(),
+
+    avatar_img: Joi.string()
 })
 
 const adminSchema = Joi.object({
@@ -28,7 +30,9 @@ const adminSchema = Joi.object({
 
     email: Joi.string()
         .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'cl'] } })
-        .required()
+        .required(),
+
+    avatar_img: Joi.string()
 })
 
 const verifyBody = async (req, res, next) => {
