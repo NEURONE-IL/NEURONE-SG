@@ -72,6 +72,7 @@ import { CustomPaginatorDirective } from './utils/custom-paginator.directive';
 import { PaginatorComponent } from './components/paginator/paginator.component';
 import { PlayerProfileComponent } from './components/player-profile/player-profile.component';
 import { ProfileComponent } from './views/profile/profile.component';
+import { AvatarSelectorComponent } from './components/avatar-selector/avatar-selector.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -112,7 +113,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     CustomPaginatorDirective,
     PaginatorComponent,
     PlayerProfileComponent,
-    ProfileComponent
+    ProfileComponent,
+    AvatarSelectorComponent
   ],
   imports: [
     BrowserModule,

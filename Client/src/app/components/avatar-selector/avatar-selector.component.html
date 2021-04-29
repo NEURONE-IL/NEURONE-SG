@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>{{"PLAYER_PROFILE.CHANGE_AVATAR.TITLE" | translate}}</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="standard">
+    <mat-select [(ngModel)]="selectedAvatar">
+      <mat-option *ngFor="let i of avatars" [value]="i.path">
+        <img with="30" height="30" style="white-space: nowrap; margin-right: 2%; vertical-align: middle;" [src]="i.path">
+        {{i.name}}
+    </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button color="primary" (click)="updateAvatar()">
+    {{"COMMON.SAVE" | translate}}
+  </button>
+  <button mat-button [mat-dialog-close]="true">
+    {{"COMMON.CLOSE" | translate}}
+  </button>
+</div>

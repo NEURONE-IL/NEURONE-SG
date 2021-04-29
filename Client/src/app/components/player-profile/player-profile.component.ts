@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { GamificationService } from 'src/app/services/game/gamification.service';
+import { AvatarSelectorComponent } from '../avatar-selector/avatar-selector.component';
 
 // Player profile component
 // Adapted from the original wotk of: TUTELAGE Project development team
@@ -123,17 +124,13 @@ export class PlayerProfileComponent implements OnInit {
   }
 
   openImageSelector() {
-    console.log('show image selector');
-    // const dialogRef = this.dialog.open(ImageSelectorComponent);
-    // dialogRef.afterClosed().subscribe((res) => {
-    //   this.gamificationService
-    //     .changeProfileImage(this.authService.getUser()._id, res)
-    //     .subscribe((response) => {
-    //       this.authService.refreshUser();
-    //       this.user = this.authService.getUser();
-    //     });
-    //   console.log(res);
-    // });
+    const avatarDialogRef = this.dialog.open(AvatarSelectorComponent);
+    avatarDialogRef.afterClosed().subscribe((result) => {
+      console.log('closed avatarDialog');
+      if (result.avatar) {
+        console.log(result);
+      }
+    });
   }
 
   rankings() {
