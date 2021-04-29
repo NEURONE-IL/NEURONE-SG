@@ -7,7 +7,7 @@ const UserSchema = new Schema({
   confirmed: { type: Boolean, default: false },
   password: { type: String, required: true },
   gm_code: { type: String },
-  avatar_img: { Type: String, default: undefined },
+  avatar_img: { type: String, default: undefined },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
   role: { type: Schema.Types.ObjectId, ref: "Role", required: true },
