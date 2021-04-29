@@ -6,5 +6,6 @@ export const environment = {
   coreRoot: 'http://localhost:3000',
   gmTimeout: 2000,
   coreUploadTimeout: 120000,
-  coreFetchTimeout: 10000
+  coreFetchTimeout: 10000,
+  avatarsPath: '/assets/images/avatars/'
 };

@@ -1,8 +1,8 @@
-<h1 mat-dialog-title>{{"PLAYER_PROFILE.CHANGE_AVATAR.TITLE" | translate}}</h1>
+<h1 mat-dialog-title>{{"USER_PROFILE.CHANGE_AVATAR.TITLE" | translate}}</h1>
 <div mat-dialog-content>
-  <mat-form-field appearance="standard">
+  <mat-form-field class="avatar-form-field">
     <mat-select [(ngModel)]="selectedAvatar">
-      <mat-option *ngFor="let i of avatars" [value]="i.path">
+      <mat-option *ngFor="let i of avatars" [value]="i.filename">
         <img with="30" height="30" style="white-space: nowrap; margin-right: 2%; vertical-align: middle;" [src]="i.path">
         {{i.name}}
     </mat-option>

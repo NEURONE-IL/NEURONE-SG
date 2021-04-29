@@ -21,6 +21,7 @@
           *ngIf="adventure.image_id"
           mat-card-image
           src="{{ apiUrl + '/image/' + adventure.image_id }}"
+          onerror="this.src='/assets/images/placeholder.png';"
           alt="Adventure image"
         />
         <img

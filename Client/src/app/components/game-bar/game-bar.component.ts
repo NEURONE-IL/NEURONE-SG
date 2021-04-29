@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import ActivatorsUtils from '../../utils/activators';
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: 'app-game-bar',
@@ -22,6 +23,7 @@ export class GameBarComponent implements OnInit, OnDestroy {
   challengePending = false;
   currentLinks = [];
   gmStats: any;
+  avatarImg: string;
 
   // Subscriptions
   adventureSubscription: Subscription;
@@ -71,6 +73,7 @@ export class GameBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.player = this.auth.getUser();
+    this.avatarImg = environment.avatarsPath + this.player.avatar_img;
     this.answerForm = this.formBuilder.group({
       answer: ['', Validators.required],
       adventure: [this.adventure._id],

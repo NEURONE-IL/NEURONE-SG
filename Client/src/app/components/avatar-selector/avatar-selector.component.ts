@@ -3,6 +3,8 @@ import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-avatar-selector',
@@ -13,57 +15,72 @@ export class AvatarSelectorComponent implements OnInit {
   loading = true;
   selectedAvatar: any;
   avatars: any;
-  avatarsPath = "assets/images/avatars/"
+  avatarsPath = environment.avatarsPath;
 
   errors = [];
 
   constructor(
-    private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private auth: AuthService,
     private toastr: ToastrService,
     private translate: TranslateService,
     public dialogRef: MatDialogRef<AvatarSelectorComponent>
   ) {
+    let user = this.auth.getUser();
+    if (user.avatar_img) {
+      this.selectedAvatar = user.avatar_img;
+      console.log("aaa", this.selectedAvatar);
+    }
     this.avatars = [
       {
         name: '01',
-        path: this.avatarsPath + '01.jpg',
+        filename: "01.png",
+        path: this.avatarsPath + '01.png',
       },
       {
         name: '02',
-        path: this.avatarsPath + '02.jpg',
+        filename: "02.png",
+        path: this.avatarsPath + '02.png',
       },
       {
         name: '03',
-        path: this.avatarsPath + '03.jpg',
+        filename: "03.png",
+        path: this.avatarsPath + '03.png',
       },
       {
         name: '04',
-        path: this.avatarsPath + '04.jpg',
+        filename: "04.png",
+        path: this.avatarsPath + '04.png',
       },
       {
         name: '05',
-        path: this.avatarsPath + '05.jpg',
+        filename: "05.png",
+        path: this.avatarsPath + '05.png',
       },
       {
         name: '06',
-        path: this.avatarsPath + '06.jpg',
+        filename: "06.png",
+        path: this.avatarsPath + '06.png',
       },
       {
         name: '07',
-        path: this.avatarsPath + '07.jpg',
+        filename: "07.png",
+        path: this.avatarsPath + '07.png',
       },
       {
         name: '08',
-        path: this.avatarsPath + '08.jpg',
+        filename: "08.png",
+        path: this.avatarsPath + '08.png',
       },
       {
         name: '09',
-        path: this.avatarsPath + '09.jpg',
+        filename: "09.png",
+        path: this.avatarsPath + '09.png',
       },
       {
         name: '10',
-        path: this.avatarsPath + '10.jpg',
+        filename: "10.png",
+        path: this.avatarsPath + '10.png',
       },
     ];
   }

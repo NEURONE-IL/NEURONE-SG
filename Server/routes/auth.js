@@ -9,6 +9,7 @@ const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const fs = require("fs");
 const authMiddleware = require("../middlewares/authMiddleware");
+const verifyToken = require("../middlewares/verifyToken");
 const config = require("config");
 
 const neuronegmService = require("../services/neuronegm/connect");
@@ -69,7 +70,7 @@ router.post(
       }
       // Send confirmation email
       sendConfirmationEmail(user, res, req);
-      res.status(200).json({code: "USER_REGISTERED", user});
+      res.status(200).json({ code: "USER_REGISTERED", user });
     });
   }
 );
@@ -135,7 +136,7 @@ router.post(
       }
       // Send confirmation email
       sendConfirmationEmail(user, res, req);
-      res.status(200).json({code: "USER_REGISTERED", user});
+      res.status(200).json({ code: "USER_REGISTERED", user });
     });
   }
 );
@@ -209,10 +210,35 @@ router.post("/login", async (req, res) => {
       email: user.email,
       role: user.role.name,
       username: user.username,
-      gm_code: user.gm_code
+      gm_code: user.gm_code,
+      avatar_img: user.avatar_img
     },
   };
   res.header("x-access-token", token).send(response);
+});
+
+router.put("/:user_id/avatar", [verifyToken], async (req, res) => {
+  const _id = req.params.user_id;
+  const avatar_img = req.body.avatar_img;
+  await User.findOne({ _id: _id }, (err, user) => {
+    if (err) {
+      return res.status(404).json({
+        err,
+      });
+    }
+    user.avatar_img = avatar_img;
+    user.updatedAt = Date.now();
+    user.save((err, user) => {
+      if (err) {
+        return res.status(404).json({
+          err,
+        });
+      }
+      res.status(200).json({
+        avatar_img: user.avatar_img,
+      });
+    });
+  });
 });
 
 // Creates player on NEURONE-GM

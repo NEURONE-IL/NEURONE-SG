@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { GamificationService } from 'src/app/services/game/gamification.service';
 import { AvatarSelectorComponent } from '../avatar-selector/avatar-selector.component';
+import { environment } from 'src/environments/environment';
 
 // Player profile component
 // Adapted from the original wotk of: TUTELAGE Project development team
@@ -26,7 +27,8 @@ export class PlayerProfileComponent implements OnInit {
   points;
   user;
   ranks;
-  studyOk = false;
+  avatarsPath = environment.avatarsPath;
+
   constructor(
     private gamificationService: GamificationService,
     private authService: AuthService,
@@ -124,10 +126,23 @@ export class PlayerProfileComponent implements OnInit {
   }
 
   openImageSelector() {
-    const avatarDialogRef = this.dialog.open(AvatarSelectorComponent);
+    const avatarDialogRef = this.dialog.open(AvatarSelectorComponent, {
+      width: '15rem',
+      height: 'auto',
+    });
     avatarDialogRef.afterClosed().subscribe((result) => {
       console.log('closed avatarDialog');
       if (result.avatar) {
+        this.authService.updateAvatarImage(result.avatar).subscribe(
+          (res) => {
+            this.authService.updateStorageAvatar(res['avatar_img']);
+            console.log(res);
+            this.ngOnInit();
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
         console.log(result);
       }
     });

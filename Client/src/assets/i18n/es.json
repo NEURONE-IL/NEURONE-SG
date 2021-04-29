@@ -331,6 +331,9 @@
     "NEXT_LEVEL_PROGRESS": "Progreso siguiente nivel",
     "RANKINGS": "Rankings",
     "ACHIEVEMENTS_COMPLETED": "Logros Completados",
-    "PLAY_BTN": "Jugar"
+    "PLAY_BTN": "Jugar",
+    "CHANGE_AVATAR": {
+      "TITLE": "Elige tu imagen de perfil"
+    }
   }
 }

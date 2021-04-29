@@ -10,15 +10,16 @@
   <div class="container-left">
     <div class="player-image">
       <img
-        *ngIf="user.image_url"
-        [src]="user.image_url"
+        *ngIf="user.avatar_img"
+        [src]="avatarsPath + user.avatar_img"
         class="player-image img"
         (click)="openImageSelector()"
         alt="playerImage"
+        onerror="this.src='/assets/images/placeholder.png';"
       />
       <img
-        *ngIf="!user.image_url"
-        src="/assets/images/avatars/girl-in-ballcap.svg"
+        *ngIf="!user.avatar_img"
+        src="/assets/images/placeholder.png"
         class="player-image img"
         (click)="openImageSelector()"
         alt="playerImage"
@@ -84,16 +85,16 @@
     </div>
     <div class="user-statistics">
       <div class="stats">
-        <h5 class="h5" *ngIf="completedChallenges.length > 0">
+        <h5 class="h5" *ngIf="completedChallenges && completedChallenges.length > 0">
           {{ "USER_PROFILE.ACHIEVEMENTS_COMPLETED" | translate }}
         </h5>
-        <div *ngIf="completedChallenges.length > 0">
+        <div *ngIf="completedChallenges && completedChallenges.length > 0">
           <mat-card
             *ngFor="let chall of completedChallenges"
             class="challengeCard"
           >
             <img
-              src="/assets/achievement.png"
+              src="/assets/images/achievement.png"
               style="height: 30px; display: inline-block"
             />
             <p
