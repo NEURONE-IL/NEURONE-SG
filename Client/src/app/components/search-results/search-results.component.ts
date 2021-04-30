@@ -24,7 +24,7 @@ export class SearchResultsComponent implements OnInit {
   videosPaginated: any;
   booksPaginated: any;
   query: string;
-  pageSize: number = 10;
+  pageSize: number = 12;
   currentPage: number = 1;
   coreRoot = environment.coreRoot;
   rootPath = environment.root;

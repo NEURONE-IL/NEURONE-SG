@@ -24,70 +24,11 @@
           </p>
           <div class="documents-container">
             <div *ngFor="let doc of webPaginated[currentPage - 1]">
-              <!--Images -->
-              <mat-card
-                class="cardStyle doc-card"
-                [routerLink]="['/game/view-page', doc.url]"
-                [state]="{ doc: doc }"
-                *ngIf="doc.type && doc.type == 'image' && false"
-              >
-                <mat-card-content>
-                  <div class="row">
-                    <div class="col-md-2">
-                      <img
-                        class="img-fluid thumbnail searchImageMini"
-                        src="{{ rootPath + doc.img }}"
-                        alt="thumbnail"
-                      />
-                    </div>
-                    <div class="col-md-10">
-                      <h5 class="url-bar">
-                        {{ doc.docName }}
-                      </h5>
-                      <a
-                        [routerLink]="['/game/view-page', doc.url]"
-                        [state]="{ doc: doc }"
-                        class="document-link"
-                        >{{ doc.title }}</a
-                      >
-                      <p>{{ doc.searchSnippet }}</p>
-                    </div>
-                  </div>
-                </mat-card-content>
-              </mat-card>
-
-              <!--Videos-->
-              <mat-card
-                class="cardStyle doc-card"
-                *ngIf="doc.type && doc.type == 'video'"
-              >
-                <mat-card-content>
-                  <div class="row">
-                    <div class="col-md-2">
-                      <img
-                        class="img-fluid thumbnail searchImageMini"
-                        [src]="getThumb(doc.url)"
-                        alt="thumbnail"
-                      />
-                    </div>
-                    <div class="col-md-10">
-                      <h5 class="url-bar">{{ doc.url }}</h5>
-                      <a
-                        [routerLink]="['/game/view-page', doc.route]"
-                        [state]="{ doc: doc }"
-                        class="document-link"
-                        >{{ doc.title }}</a
-                      >
-                      <p>{{ doc.searchSnippet }}</p>
-                    </div>
-                  </div>
-                </mat-card-content>
-              </mat-card>
-
               <!--Documents-->
               <mat-card
                 class="cardStyle doc-card"
-                [routerLink]="['/session/view-page', doc.title, doc.route]"
+                [routerLink]="['/game/view-page', doc.route]"
+                [state]="{ doc: doc }"
                 *ngIf="!doc.type || doc.type == 'book'"
               >
                 <mat-card-content>
@@ -134,16 +75,17 @@
                 colspan="3"
                 rowspan="3"
                 *ngIf="doc.type == 'image'"
-                [routerLink]="['/game/view-page',  doc.url]"
+                [routerLink]="['/game/view-page', doc.url]"
               >
                 <mat-card
-                  class="cardStyle"
+                  class="cardStyle imageCard"
                   [routerLink]="['/game/view-page', doc.url]"
                 >
                   <img
                     class="img-fluid thumbnail searchImage"
                     src="{{ rootPath + doc.img }}"
                     alt="thumbnail"
+                    onerror="this.src='/assets/images/placeholder.png';"
                   />
                   <mat-card-content>
                     <h5 class="url-bar">
