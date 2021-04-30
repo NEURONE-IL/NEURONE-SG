@@ -20,8 +20,16 @@
           matInput
           name="adventureDescription"
           formControlName="description"
-          placeholder="{{ 'NEW_ADVENTURE.DESCRIPTION_PLACEHOLDER' | translate }}"
+          placeholder="{{
+            'NEW_ADVENTURE.DESCRIPTION_PLACEHOLDER' | translate
+          }}"
         />
+        <mat-icon
+          matSuffix
+          [matTooltip]="'TOOLTIPS.ADVENTURE_DESCRIPTION' | translate"
+          matTooltipPosition="after"
+          >help_outline</mat-icon
+        >
         <mat-error
           *ngIf="newAdventureForm.controls.description.hasError('required')"
         >
@@ -39,6 +47,12 @@
             >{{ adventure.name }}</mat-option
           >
         </mat-select>
+        <mat-icon
+          matSuffix
+          [matTooltip]="'TOOLTIPS.ADVENTURE_PRECONDITIONS' | translate"
+          matTooltipPosition="after"
+          >help_outline</mat-icon
+        >
       </mat-form-field>
       <mat-form-field class="form-field">
         <mat-label>{{ "NEW_ADVENTURE.IMAGE" | translate }}</mat-label>

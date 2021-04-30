@@ -14,6 +14,13 @@
             minLength="2"
             maxLength="50"
           />
+          <mat-icon
+            class="form-tooltip"
+            matSuffix
+            [matTooltip]="'TOOLTIPS.WEB_NAME' | translate"
+            matTooltipPosition="after"
+            >help_outline</mat-icon
+          >
           <mat-error *ngIf="resourceFormCtrls.docName.hasError('required')">
             {{ "WEB_RESOURCES_TABLE.ERRORS.NAME_REQUIRED" | translate }}
           </mat-error>
@@ -29,6 +36,13 @@
               type.viewValue | translate
             }}</mat-option>
           </mat-select>
+          <mat-icon
+            class="form-tooltip"
+            matSuffix
+            [matTooltip]="'TOOLTIPS.WEB_TYPE' | translate"
+            matTooltipPosition="after"
+            >help_outline</mat-icon
+          >
           <mat-error *ngIf="resourceFormCtrls.type.hasError('required')">
             {{ "WEB_RESOURCES_TABLE.ERRORS.TYPE_REQUIRED" | translate }}
           </mat-error>
@@ -46,6 +60,13 @@
             minLength="2"
             maxLength="50"
           />
+          <mat-icon
+            class="form-tooltip"
+            matSuffix
+            [matTooltip]="'TOOLTIPS.WEB_TITLE' | translate"
+            matTooltipPosition="after"
+            >help_outline</mat-icon
+          >
           <mat-error *ngIf="resourceFormCtrls.title.hasError('required')">
             {{ "WEB_RESOURCES_TABLE.ERRORS.TITLE_REQUIRED" | translate }}
           </mat-error>
@@ -61,6 +82,13 @@
               locale.viewValue | translate
             }}</mat-option>
           </mat-select>
+          <mat-icon
+            class="form-tooltip"
+            matSuffix
+            [matTooltip]="'TOOLTIPS.WEB_LOCALE' | translate"
+            matTooltipPosition="after"
+            >help_outline</mat-icon
+          >
           <mat-error *ngIf="resourceFormCtrls.locale.hasError('required')">
             {{ "WEB_RESOURCES_TABLE.ERRORS.LOCALE_REQUIRED" | translate }}
           </mat-error>
@@ -78,6 +106,13 @@
             #inputURL
             maxlength="200"
           />
+          <mat-icon
+            class="form-tooltip"
+            matSuffix
+            [matTooltip]="'TOOLTIPS.WEB_URL' | translate"
+            matTooltipPosition="after"
+            >help_outline</mat-icon
+          >
           <mat-error *ngIf="resourceFormCtrls.url.hasError('required')">
             {{ "WEB_RESOURCES_TABLE.ERRORS.LINK_REQUIRED" | translate }}
           </mat-error>
@@ -100,6 +135,13 @@
             #inputMaskedURL
             maxlength="200"
           />
+          <mat-icon
+            class="form-tooltip"
+            matSuffix
+            [matTooltip]="'TOOLTIPS.WEB_MASKED_URL' | translate"
+            matTooltipPosition="after"
+            >help_outline</mat-icon
+          >
           <mat-error *ngIf="resourceFormCtrls.maskedURL.hasError('required')">
             {{ "WEB_RESOURCES_TABLE.ERRORS.MASKED_URL_REQUIRED" | translate }}
           </mat-error>
@@ -118,9 +160,16 @@
           }}</mat-label>
           <mat-select formControlName="task" required>
             <mat-option *ngFor="let node of nodes" [value]="node.id">{{
-              node.id!="NO_NODE" ? node.label : node.label | translate
+              node.id != "NO_NODE" ? node.label : (node.label | translate)
             }}</mat-option>
           </mat-select>
+          <mat-icon
+            class="form-tooltip"
+            matSuffix
+            [matTooltip]="'TOOLTIPS.WEB_NODE' | translate"
+            matTooltipPosition="after"
+            >help_outline</mat-icon
+          >
           <mat-error *ngIf="resourceFormCtrls.task.hasError('required')">
             {{ "WEB_RESOURCES_TABLE.ERRORS.NODE_REQUIRED" | translate }}
           </mat-error>
@@ -133,7 +182,12 @@
   <mat-spinner class="spinner"></mat-spinner>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-raised-button color="primary" (click)="uploadResource()" [disabled]="uploading">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="uploadResource()"
+    [disabled]="uploading"
+  >
     {{ "NEW_WEB_RESOURCE_DIALOG.UPLOAD_BTN" | translate }}
   </button>
   <button mat-button [mat-dialog-close]="true" [disabled]="uploading">

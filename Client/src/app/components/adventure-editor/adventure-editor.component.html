@@ -13,7 +13,6 @@
         <h3>{{ "EDITOR.NODE_EDITOR.TITLE" | translate }}</h3>
         <form class="node-form" [formGroup]="nodeForm">
           <mat-form-field
-            appearance="fill"
             class="node-form-field"
             *ngIf="currentNode.type != 'initial'"
           >
@@ -29,9 +28,15 @@
                 {{ type.viewValue | translate }}
               </mat-option>
             </mat-select>
+            <mat-icon
+              class="form-tooltip"
+              matSuffix
+              [matTooltip]="'TOOLTIPS.NODE_TYPE' | translate"
+              matTooltipPosition="after"
+              >help_outline</mat-icon
+            >
           </mat-form-field>
           <mat-form-field
-            appearance="fill"
             class="node-form-field"
             *ngIf="currentNode.type == 'initial'"
           >
@@ -60,6 +65,13 @@
               placeholder="B"
               [ngModel]="currentNode.label"
             />
+            <mat-icon
+              class="form-tooltip"
+              matSuffix
+              [matTooltip]="'TOOLTIPS.NODE_LABEL' | translate"
+              matTooltipPosition="after"
+              >help_outline</mat-icon
+            >
             <mat-error *ngIf="nodeForm.controls.label.hasError('required')">
               {{ "EDITOR.NODE_EDITOR.ERRORS.LABEL_REQUIRED" | translate }}
             </mat-error>
@@ -69,7 +81,10 @@
               <mat-label>{{
                 "EDITOR.NODE_EDITOR.MEDIA_TYPE" | translate
               }}</mat-label>
-              <mat-select [(value)]="currentMediaType" (selectionChange)="nodeMediaChange($event)">
+              <mat-select
+                [(value)]="currentMediaType"
+                (selectionChange)="nodeMediaChange($event)"
+              >
                 <mat-option
                   *ngFor="let type of mediaTypes"
                   [value]="type.value"
@@ -77,6 +92,13 @@
                   {{ type.viewValue | translate }}
                 </mat-option>
               </mat-select>
+              <mat-icon
+                class="form-tooltip"
+                matSuffix
+                [matTooltip]="'TOOLTIPS.NODE_MEDIA_TYPE' | translate"
+                matTooltipPosition="after"
+                >help_outline</mat-icon
+              >
             </mat-form-field>
             <div class="img-upload" *ngIf="currentMediaType == 'image'">
               <div *ngIf="currentImg && !imagePreview">
@@ -87,11 +109,7 @@
                 />
               </div>
               <div *ngIf="imagePreview">
-                <img
-                  class="img-thumb"
-                  [src]="imagePreview"
-                  alt="..."
-                />
+                <img class="img-thumb" [src]="imagePreview" alt="..." />
               </div>
               <input
                 type="file"
@@ -114,7 +132,16 @@
                 placeholder="https://www.youtube.com/watch?v=xxZvQPeNBh0"
                 [ngModel]="currentNode.data.video"
               />
-              <mat-error *ngIf="nodeForm.get('data.video').hasError('required')">
+              <mat-icon
+                class="form-tooltip"
+                matSuffix
+                [matTooltip]="'TOOLTIPS.NODE_VIDEO' | translate"
+                matTooltipPosition="after"
+                >help_outline</mat-icon
+              >
+              <mat-error
+                *ngIf="nodeForm.get('data.video').hasError('required')"
+              >
                 {{ "EDITOR.NODE_EDITOR.ERRORS.VIDEO_REQUIRED" | translate }}
               </mat-error>
             </mat-form-field>
@@ -129,6 +156,13 @@
                 }}"
                 [ngModel]="currentNode.data.text"
               />
+              <mat-icon
+                class="form-tooltip"
+                matSuffix
+                [matTooltip]="'TOOLTIPS.NODE_TEXT' | translate"
+                matTooltipPosition="after"
+                >help_outline</mat-icon
+              >
               <mat-error *ngIf="nodeForm.get('data.text').hasError('required')">
                 {{ "EDITOR.NODE_EDITOR.ERRORS.TEXT_REQUIRED" | translate }}
               </mat-error>

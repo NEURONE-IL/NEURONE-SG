@@ -335,5 +335,32 @@
     "CHANGE_AVATAR": {
       "TITLE": "Elige tu imagen de perfil"
     }
+  },
+  "TOOLTIPS": {
+    "ADVENTURE_DESCRIPTION": "Este valor debe contener una breve descripción sobre su aventura",
+    "ADVENTURE_PRECONDITIONS": "Aquí debe seleccionar las aventuras que el jugador debe completar antes de jugar la aventura actual (Opcional)",
+    "CHALLENGE_TYPE": "Aquí debe seleccionar el tipo de desafío",
+    "CHALLENGE_QUESTION": "Aquí debe ingresar el texto de la pregunta que se planteará al jugador",
+    "CHALLENGE_ANSWER": "Este valor representa la respuesta correcta del desafío",
+    "CHALLENGE_DOCUMENT": "Aquí debe seleccionar el documento correcto para resolver el desafío",
+    "CHALLENGE_OPTION": "Este valor representa una posible alternativa que se mostrará al jugador",
+    "LINK_TARGET": "Aquí debe seleccionar el nodo de destino para esta rama",
+    "LINK_LABEL": "Este valor representa el texto que el jugador verá en el botón para acceder a esta rama",
+    "ACTIVATOR_CONDITION": "Aquí debe seleccionar el tipo de condición lógica que activará esta rama",
+    "ACTIVATOR_NODE": "Aquí debe seleccionar el nodo cuyo desafío debe haber sido respondido para activar esta rama",
+    "ACTIVATOR_LEVEL": "Aquí debe seleccionar el nivel que debe tener el jugador para acceder a esta rama",
+    "ACTIVATOR_LINKS": "Este valor representa la cantidad de documentos relevantes que el jugador debe haber visitado para acceder a esta rama",
+    "NODE_LABEL": "Este valor representa la etiqueta que le permitirá identificar el nodo en el editor gráfico",
+    "NODE_TYPE": "Aquí debe seleccionar el tipo de nodo, esto permite definir si es un nodo de transición, incluye un desafío o representa un posible final de la aventura",
+    "NODE_MEDIA_TYPE": "Aquí debe seleccionar el tipo de recurso multimedia que incluye el nodo, puede ser una imagen, video o ninguno",
+    "NODE_VIDEO": "Este valor debe contener un enlace a un video, actualmente sólo puede ser de Youtube",
+    "NODE_TEXT": "Aquí debe ingresar el texto que será desplegado al jugador al llegar a este nodo",
+    "WEB_NAME": "Este valor representa el nombre del recurso a cargar",
+    "WEB_TYPE": "Aquí debe seleccionar el tipo de recurso web a cargar",
+    "WEB_TITLE": "Este valor representa el título que se desplegará al jugador en los resultados de búsqueda",
+    "WEB_LOCALE": "Aquí debe seleccionar el idioma del recurso",
+    "WEB_URL": "Aquí debe ingresar el enlace al documento a cargar",
+    "WEB_MASKED_URL": "Este valor representa el enlace que se muestra al jugador en los resultados de búsqueda",
+    "WEB_NODE": "Aquí debe seleccionar el nodo para el cual este recurso es relevante, en caso de que no sea relevante para ningún nodo puede seleccionar el valor 'Ninguno'"
   }
 }

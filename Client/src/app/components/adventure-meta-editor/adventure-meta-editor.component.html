@@ -2,75 +2,96 @@
   <h1>{{ "META_EDITOR.TITLE" | translate }}</h1>
   <form class="meta-form" [formGroup]="metaForm">
     <div class="form-item">
-    <mat-form-field class="meta-form-field">
-      <mat-label>{{ "META_EDITOR.NAME" | translate }}</mat-label>
-      <input
-        matInput
-        name="metaName"
-        formControlName="name"
-        placeholder="{{ 'META_EDITOR.NAME_PLACEHOLDER' | translate }}"
-        [ngModel]="adventure.name"
-      />
-      <mat-error *ngIf="metaForm.controls.name.hasError('required')">
-        {{ "META_EDITOR.ERRORS.NAME_REQUIRED" | translate }}
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field class="meta-form-field">
-      <mat-label>{{ "META_EDITOR.DESCRIPTION" | translate }}</mat-label>
-      <input
-        matInput
-        name="metaDescription"
-        formControlName="description"
-        placeholder="{{ 'META_EDITOR.DESCRIPTION_PLACEHOLDER' | translate }}"
-        [ngModel]="adventure.description"
-      />
-      <mat-error *ngIf="metaForm.controls.description.hasError('required')">
-        {{ "META_EDITOR.ERRORS.DESCRIPTION_REQUIRED" | translate }}
-      </mat-error>
-    </mat-form-field>
-  </div>
-  <div class="form-item">
-    <mat-form-field class="meta-form-field">
-      <mat-label>{{ "META_EDITOR.PRECONDITIONS" | translate }}</mat-label>
-      <mat-select formControlName="preconditions" multiple [ngModel]="adventure.preconditions">
-        <mat-option
-          *ngFor="let adventure of adventures"
-          [value]="adventure._id"
-          >{{ adventure.name }}</mat-option
+      <mat-form-field class="meta-form-field">
+        <mat-label>{{ "META_EDITOR.NAME" | translate }}</mat-label>
+        <input
+          matInput
+          name="metaName"
+          formControlName="name"
+          placeholder="{{ 'META_EDITOR.NAME_PLACEHOLDER' | translate }}"
+          [ngModel]="adventure.name"
+        />
+        <mat-error *ngIf="metaForm.controls.name.hasError('required')">
+          {{ "META_EDITOR.ERRORS.NAME_REQUIRED" | translate }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="meta-form-field">
+        <mat-label>{{ "META_EDITOR.DESCRIPTION" | translate }}</mat-label>
+        <input
+          matInput
+          name="metaDescription"
+          formControlName="description"
+          placeholder="{{ 'META_EDITOR.DESCRIPTION_PLACEHOLDER' | translate }}"
+          [ngModel]="adventure.description"
+        />
+        <mat-icon
+          class="form-tooltip"
+          matSuffix
+          [matTooltip]="'TOOLTIPS.ADVENTURE_DESCRIPTION' | translate"
+          matTooltipPosition="after"
+          >help_outline</mat-icon
         >
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field class="meta-form-field">
-      <mat-label>{{ "META_EDITOR.IMAGE" | translate }}</mat-label>
-      <mat-select [(value)]="currentMediaType" (selectionChange)="imageSelectorChange($event)">
-        <mat-option *ngFor="let type of mediaTypes" [value]="type.value">
-          {{ type.viewValue | translate }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <div class="file-upload" *ngIf="currentMediaType == 'image'">
-      <input
-        type="file"
-        id="file"
-        accept="image/*"
-        (change)="handleFileInput($event.target.files)"
+        <mat-error *ngIf="metaForm.controls.description.hasError('required')">
+          {{ "META_EDITOR.ERRORS.DESCRIPTION_REQUIRED" | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-item">
+      <mat-form-field class="meta-form-field">
+        <mat-label>{{ "META_EDITOR.PRECONDITIONS" | translate }}</mat-label>
+        <mat-select
+          formControlName="preconditions"
+          multiple
+          [ngModel]="adventure.preconditions"
+        >
+          <mat-option
+            *ngFor="let adventure of adventures"
+            [value]="adventure._id"
+            >{{ adventure.name }}</mat-option
+          >
+        </mat-select>
+        <mat-icon
+          class="form-tooltip"
+          matSuffix
+          [matTooltip]="'TOOLTIPS.ADVENTURE_PRECONDITIONS' | translate"
+          matTooltipPosition="after"
+          >help_outline</mat-icon
+        >
+      </mat-form-field>
+      <mat-form-field class="meta-form-field">
+        <mat-label>{{ "META_EDITOR.IMAGE" | translate }}</mat-label>
+        <mat-select
+          [(value)]="currentMediaType"
+          (selectionChange)="imageSelectorChange($event)"
+        >
+          <mat-option *ngFor="let type of mediaTypes" [value]="type.value">
+            {{ type.viewValue | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="file-upload" *ngIf="currentMediaType == 'image'">
+        <input
+          type="file"
+          id="file"
+          accept="image/*"
+          (change)="handleFileInput($event.target.files)"
+        />
+      </div>
+    </div>
+    <div class="form-item">
+      <img
+        *ngIf="currentImg && !imagePreview"
+        class="img-thumb"
+        src="{{ apiUrl + '/image/' + currentImg }}"
+        alt="..."
+      />
+      <img
+        *ngIf="imagePreview"
+        class="img-thumb"
+        [src]="imagePreview"
+        alt="..."
       />
     </div>
-  </div>
-  <div class="form-item">
-    <img
-      *ngIf="currentImg && !imagePreview"
-      class="img-thumb"
-      src="{{ apiUrl + '/image/' + currentImg }}"
-      alt="..."
-    />
-    <img
-      *ngIf="imagePreview"
-      class="img-thumb"
-      [src]="imagePreview"
-      alt="..."
-    />
-  </div>
   </form>
   <button mat-raised-button color="primary" (click)="saveAllChanges()">
     {{ "META_EDITOR.SAVE_ALL" | translate }}

@@ -10,6 +10,13 @@
               >{{ node.label }}</mat-option
             >
           </mat-select>
+          <mat-icon
+            class="form-tooltip"
+            matSuffix
+            [matTooltip]="'TOOLTIPS.LINK_TARGET' | translate"
+            matTooltipPosition="after"
+            >help_outline</mat-icon
+          >
           <mat-error *ngIf="linkForm.controls.target.hasError('required')">
             {{ "NEW_LINK_DIALOG.ERRORS.TARGET_NODE_REQUIRED" | translate }}
           </mat-error>
@@ -24,13 +31,26 @@
             formControlName="label"
             placeholder="{{'NEW_LINK_DIALOG.LABEL_PLACEHOLDER' | translate}}"
           />
+          <mat-icon
+            class="form-tooltip"
+            matSuffix
+            [matTooltip]="'TOOLTIPS.LINK_LABEL' | translate"
+            matTooltipPosition="after"
+            >help_outline</mat-icon
+          >
           <mat-error *ngIf="linkForm.controls.label.hasError('required')">
             {{ "NEW_LINK_DIALOG.ERRORS.LABEL_REQUIRED" | translate }}
           </mat-error>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile colspan="2">
-        <button mat-button color="accent" type="button" (click)="addActivator()" matTooltip="{{'NEW_LINK_DIALOG.TOOLTIPS.ADD_ACTIVATOR' | translate}}">
+        <button
+          mat-button
+          color="accent"
+          type="button"
+          (click)="addActivator()"
+          matTooltip="{{'NEW_LINK_DIALOG.TOOLTIPS.ADD_ACTIVATOR' | translate}}"
+        >
           {{"NEW_LINK_DIALOG.ADD_ACTIVATOR" | translate}}
         </button>
       </mat-grid-tile>
@@ -45,14 +65,27 @@
                 >{{"NEW_LINK_DIALOG.ACTIVATOR_CONDITION" |
                 translate}}</mat-label
               >
-              <mat-select name="condition" formControlName="condition" (selectionChange)="onTypeChange($event, activator)">
+              <mat-select
+                name="condition"
+                formControlName="condition"
+                (selectionChange)="onTypeChange($event, activator)"
+              >
                 <mat-option
                   *ngFor="let type of activatorTypes"
                   [value]="type.value"
                   >{{ type.viewValue | translate }}</mat-option
                 >
               </mat-select>
-              <mat-error *ngIf="activator.get('condition').hasError('required')">
+              <mat-icon
+                class="form-tooltip"
+                matSuffix
+                [matTooltip]="'TOOLTIPS.ACTIVATOR_CONDITION' | translate"
+                matTooltipPosition="after"
+                >help_outline</mat-icon
+              >
+              <mat-error
+                *ngIf="activator.get('condition').hasError('required')"
+              >
                 {{ "NEW_LINK_DIALOG.ERRORS.CONDITION_REQUIRED" | translate }}
               </mat-error>
             </mat-form-field>
@@ -71,8 +104,16 @@
                   >{{ node.label }}</mat-option
                 >
               </mat-select>
+              <mat-icon
+                class="form-tooltip"
+                matSuffix
+                [matTooltip]="'TOOLTIPS.ACTIVATOR_NODE' | translate"
+                matTooltipPosition="after"
+                >help_outline</mat-icon
+              >
               <mat-error *ngIf="activator.get('node').hasError('required')">
-                {{ "NEW_LINK_DIALOG.ERRORS.CHALLENGE_NODE_REQUIRED" | translate }}
+                {{ "NEW_LINK_DIALOG.ERRORS.CHALLENGE_NODE_REQUIRED" | translate
+                }}
               </mat-error>
             </mat-form-field>
             <mat-form-field
@@ -88,6 +129,13 @@
                   >{{ level.viewValue }}</mat-option
                 >
               </mat-select>
+              <mat-icon
+                class="form-tooltip"
+                matSuffix
+                [matTooltip]="'TOOLTIPS.ACTIVATOR_LEVEL' | translate"
+                matTooltipPosition="after"
+                >help_outline</mat-icon
+              >
               <mat-error *ngIf="activator.get('level').hasError('required')">
                 {{ "NEW_LINK_DIALOG.ERRORS.LEVEL_REQUIRED" | translate }}
               </mat-error>
@@ -108,7 +156,16 @@
                 min="1"
                 formControlName="links_count"
               />
-              <mat-error *ngIf="activator.get('links_count').hasError('required')">
+              <mat-icon
+                class="form-tooltip"
+                matSuffix
+                [matTooltip]="'TOOLTIPS.ACTIVATOR_LINKS' | translate"
+                matTooltipPosition="after"
+                >help_outline</mat-icon
+              >
+              <mat-error
+                *ngIf="activator.get('links_count').hasError('required')"
+              >
                 {{ "NEW_LINK_DIALOG.ERRORS.LINKS_COUNT_REQUIRED" | translate }}
               </mat-error>
             </mat-form-field>

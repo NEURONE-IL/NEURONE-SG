@@ -9,38 +9,57 @@
         formControlName="label"
         placeholder="nodeA"
       />
+      <mat-icon
+        class="form-tooltip"
+        matSuffix
+        [matTooltip]="'TOOLTIPS.NODE_LABEL' | translate"
+        matTooltipPosition="after"
+        >help_outline</mat-icon
+      >
       <mat-error *ngIf="newNodeForm.controls.label.hasError('required')">
         {{ "NEW_NODE_DIALOG.ERRORS.LABEL_REQUIRED" | translate }}
       </mat-error>
     </mat-form-field>
-    <mat-form-field appearance="fill" class="node-form-field">
+    <mat-form-field class="node-form-field">
       <mat-label>{{"NEW_NODE_DIALOG.TYPE" | translate}}</mat-label>
       <mat-select name="nodeType" formControlName="type">
         <mat-option *ngFor="let type of nodeTypes" [value]="type.value">
           {{ type.viewValue | translate }}
         </mat-option>
       </mat-select>
+      <mat-icon
+        class="form-tooltip"
+        matSuffix
+        [matTooltip]="'TOOLTIPS.NODE_TYPE' | translate"
+        matTooltipPosition="after"
+        >help_outline</mat-icon
+      >
       <mat-error *ngIf="newNodeForm.controls.type.hasError('required')">
         {{ "NEW_NODE_DIALOG.ERRORS.TYPE_REQUIRED" | translate }}
       </mat-error>
     </mat-form-field>
     <form formGroupName="data">
       <mat-form-field class="node-form-field">
-        <mat-label>{{
-          "EDITOR.NODE_EDITOR.MEDIA_TYPE" | translate
-        }}</mat-label>
-        <mat-select [(value)]="currentMediaType" (selectionChange)="nodeMediaChange($event)">
-          <mat-option
-            *ngFor="let type of mediaTypes"
-            [value]="type.value"
-          >
+        <mat-label>{{ "EDITOR.NODE_EDITOR.MEDIA_TYPE" | translate }}</mat-label>
+        <mat-select
+          [(value)]="currentMediaType"
+          (selectionChange)="nodeMediaChange($event)"
+        >
+          <mat-option *ngFor="let type of mediaTypes" [value]="type.value">
             {{ type.viewValue | translate }}
           </mat-option>
         </mat-select>
+        <mat-icon
+          class="form-tooltip"
+          matSuffix
+          [matTooltip]="'TOOLTIPS.NODE_MEDIA_TYPE' | translate"
+          matTooltipPosition="after"
+          >help_outline</mat-icon
+        >
       </mat-form-field>
       <div class="img-upload" *ngIf="currentMediaType=='image'">
         <div *ngIf="imagePreview">
-          <img class="img-thumb" [src]="imagePreview" alt="...">
+          <img class="img-thumb" [src]="imagePreview" alt="..." />
         </div>
         <input
           type="file"
@@ -56,6 +75,13 @@
           formControlName="video"
           placeholder="https://www.youtube.com/awesomevideo"
         />
+        <mat-icon
+          class="form-tooltip"
+          matSuffix
+          [matTooltip]="'TOOLTIPS.NODE_VIDEO' | translate"
+          matTooltipPosition="after"
+          >help_outline</mat-icon
+        >
         <mat-error *ngIf="newNodeForm.get('data.video').hasError('required')">
           {{ "NEW_NODE_DIALOG.ERRORS.VIDEO_REQUIRED" | translate }}
         </mat-error>
@@ -68,6 +94,13 @@
           formControlName="text"
           placeholder="{{'NEW_NODE_DIALOG.TEXT_PLACEHOLDER' | translate}}"
         />
+        <mat-icon
+          class="form-tooltip"
+          matSuffix
+          [matTooltip]="'TOOLTIPS.NODE_TEXT' | translate"
+          matTooltipPosition="after"
+          >help_outline</mat-icon
+        >
         <mat-error *ngIf="newNodeForm.get('data.text').hasError('required')">
           {{ "NEW_NODE_DIALOG.ERRORS.TEXT_REQUIRED" | translate }}
         </mat-error>
@@ -76,6 +109,10 @@
   </form>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-button color="accent" (click)="addNewNode()">{{"COMMON.SAVE" | translate}}</button>
-  <button mat-button [mat-dialog-close]="true">{{"COMMON.CLOSE" | translate}}</button>
+  <button mat-button color="accent" (click)="addNewNode()">
+    {{"COMMON.SAVE" | translate}}
+  </button>
+  <button mat-button [mat-dialog-close]="true">
+    {{"COMMON.CLOSE" | translate}}
+  </button>
 </div>

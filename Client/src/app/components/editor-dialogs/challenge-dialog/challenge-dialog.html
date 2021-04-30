@@ -13,6 +13,13 @@
           {{ type.viewValue | translate }}
         </mat-option>
       </mat-select>
+      <mat-icon
+        class="form-tooltip"
+        matSuffix
+        [matTooltip]="'TOOLTIPS.CHALLENGE_TYPE' | translate"
+        matTooltipPosition="after"
+        >help_outline</mat-icon
+      >
     </mat-form-field>
     <mat-form-field class="form-field">
       <mat-label>{{"CHALLENGE_DIALOG.QUESTION" | translate}}</mat-label>
@@ -23,6 +30,13 @@
         placeholder="{{'CHALLENGE_DIALOG.QUESTION_PLACEHOLDER' | translate}}"
         [ngModel]="challenge.question"
       />
+      <mat-icon
+        class="form-tooltip"
+        matSuffix
+        [matTooltip]="'TOOLTIPS.CHALLENGE_QUESTION' | translate"
+        matTooltipPosition="after"
+        >help_outline</mat-icon
+      >
     </mat-form-field>
     <mat-form-field class="form-field" *ngIf="challenge.type=='question'">
       <mat-label>{{"CHALLENGE_DIALOG.ANSWER" | translate}}</mat-label>
@@ -33,17 +47,32 @@
         [ngModel]="challenge.answer"
         placeholder="{{'CHALLENGE_DIALOG.ANSWER_PLACEHOLDER' | translate}}"
       />
-    </mat-form-field>
-    <mat-form-field appearance="fill" class="form-field" *ngIf="!loading && challenge.type=='bookmark'">
-      <mat-label>{{"CHALLENGE_DIALOG.DOCUMENT" | translate}}</mat-label>
-      <mat-select
-        name="challengeDocument"
-        formControlName="document"
+      <mat-icon
+        class="form-tooltip"
+        matSuffix
+        [matTooltip]="'TOOLTIPS.CHALLENGE_ANSWER' | translate"
+        matTooltipPosition="after"
+        >help_outline</mat-icon
       >
+    </mat-form-field>
+    <mat-form-field
+      appearance="fill"
+      class="form-field"
+      *ngIf="!loading && challenge.type=='bookmark'"
+    >
+      <mat-label>{{"CHALLENGE_DIALOG.DOCUMENT" | translate}}</mat-label>
+      <mat-select name="challengeDocument" formControlName="document">
         <mat-option *ngFor="let doc of documents" [value]="doc._id">
           {{ doc.docName }}
         </mat-option>
       </mat-select>
+      <mat-icon
+        class="form-tooltip"
+        matSuffix
+        [matTooltip]="'TOOLTIPS.CHALLENGE_DOCUMENT' | translate"
+        matTooltipPosition="after"
+        >help_outline</mat-icon
+      >
     </mat-form-field>
     <ng-container *ngIf="challenge.type=='multiple'">
       <div
@@ -61,6 +90,13 @@
               formControlName="value"
               placeholder="{{'CHALLENGE_DIALOG.OPTION_PLACEHOLDER' | translate}}"
             />
+            <mat-icon
+              class="form-tooltip"
+              matSuffix
+              [matTooltip]="'TOOLTIPS.CHALLENGE_OPTION' | translate"
+              matTooltipPosition="after"
+              >help_outline</mat-icon
+            >
           </mat-form-field>
           <mat-slide-toggle class="correct-slider" formControlName="correct">
             {{"CHALLENGE_DIALOG.CORRECT_OPTION" | translate }}
