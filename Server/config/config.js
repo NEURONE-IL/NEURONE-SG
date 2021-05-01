@@ -19,3 +19,7 @@ process.env.NEURONEGM = process.env.GM_URL || 'http://localhost:3080'
 
 // NEURONE Docs path
 process.env.NEURONE_DOCS = process.env.NEURONE_DOCS_PATH || '/home/neurone/neuroneAssets'
+
+// EMAIL Service
+process.env.SENDEMAIL_USER = process.env.SENDEMAIL_USER || 'user@mail.com'
+process.env.SENDEMAIL_PASSWORD = process.env.SENDEMAIL_PASSWORD || 'userpass'
