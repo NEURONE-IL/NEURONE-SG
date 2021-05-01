@@ -16,7 +16,7 @@ services:
       - MONGO_PORT=$MONGO_PORT
       - MONGO_DB=$MONGO_DB
     ports:
-      - "3003:3002"
+      - "3002:3002"
     volumes:
       - .:/home/node/neurone-sg
       - node_modules:/home/node/neurone-sg/node_modules

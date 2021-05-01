@@ -95,10 +95,31 @@ app.use("/assets/", express.static(process.env.NEURONE_DOCS));
 
 // - Serve static content
 app.use(express.static("public"));
+
 // - Serve index
-app.get("*", function (req, res) {
-  res.sendFile(path.join(__dirname + "/public/index.html"));
+const allowedExt = [
+  ".js",
+  ".ico",
+  ".css",
+  ".png",
+  ".jpg",
+  ".woff2",
+  ".woff",
+  ".ttf",
+  ".svg",
+];
+
+app.get('*', (req, res) => {
+  if (allowedExt.filter(ext => req.url.indexOf(ext) > 0).length > 0) {
+    res.sendFile(path.resolve(__dirname + `/public/${req.url}`));
+  } else {
+    res.sendFile(path.resolve(__dirname + '/public/index.html'));
+  }
 });
+
+// app.get("*", function (req, res) {
+//   res.sendFile(path.join(__dirname + "/public/index.html"));
+// });
 
 app.listen(process.env.PORT, () => {
   console.log(

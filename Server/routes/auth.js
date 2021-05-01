@@ -11,6 +11,8 @@ const fs = require("fs");
 const authMiddleware = require("../middlewares/authMiddleware");
 const verifyToken = require("../middlewares/verifyToken");
 const config = require("config");
+const path = require("path");
+const appDir = path.dirname(require.main.filename);
 
 const neuronegmService = require("../services/neuronegm/connect");
 const playerService = require("../services/neuronegm/player");
@@ -45,21 +47,26 @@ router.post(
       role: role.id,
     });
 
-    if (config.util.getEnv("NODE_ENV") !== "test") {
-      await neuronegmService.connectGM(
-        req.body.email,
-        req.body.password,
-        (err, res) => {
-          if (err) {
-            console.log("error on connectGM");
-            console.log(err);
-          } else {
-            console.log("connectGM successful");
-            console.log(res);
+    try {
+      if (config.util.getEnv("NODE_ENV") !== "test") {
+        await neuronegmService.connectGM(
+          req.body.email,
+          req.body.password,
+          (err, res) => {
+            if (err) {
+              console.log("error on connectGM");
+              console.log(err);
+            } else {
+              console.log("connectGM successful");
+              console.log(res);
+            }
           }
-        }
-      );
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
+
     //save user in db
     await user.save((err, user) => {
       if (err) {
@@ -176,9 +183,13 @@ router.post(
         });
       }
 
-      // Register player in NEURONE-GM
-      if (config.util.getEnv("NODE_ENV") !== "test") {
-        saveGMPlayer(req, user, res);
+      try {
+        // Register player in NEURONE-GM
+        if (config.util.getEnv("NODE_ENV") !== "test") {
+          saveGMPlayer(req, user, res);
+        }
+      } catch (error) {
+        console.log(error);
       }
 
       // Send confirmation email
@@ -211,7 +222,7 @@ router.post("/login", async (req, res) => {
       role: user.role.name,
       username: user.username,
       gm_code: user.gm_code,
-      avatar_img: user.avatar_img
+      avatar_img: user.avatar_img,
     },
   };
   res.header("x-access-token", token).send(response);
@@ -311,7 +322,7 @@ function sendConfirmationEmail(user, res, req) {
 
 // Reads email template and adds custom data
 function generateEmailData(req, token, user) {
-  const emailTemplateFile = "assets/confirmationEmail.html";
+  const emailTemplateFile = appDir + "/assets/confirmationEmail.html";
   const link = "http://" + req.headers.host + "/confirmation/" + token.token;
   let mailHTML = null;
   let mailText =

@@ -4,18 +4,14 @@ RUN mkdir -p /home/node/neurone-sg/node_modules && chown -R node:node /home/node
 
 WORKDIR /home/node/neurone-sg
 
-COPY ./Server/package*.json ./
+COPY Server/package*.json ./
 
 USER node
 
 RUN npm install
 
-COPY --chown=node:node Server/ .
-
-RUN pwd
-
-RUN ls
+COPY --chown=node:node Server/ ./
 
 EXPOSE 3002
 
-CMD [ "node", "app.js" ]
+CMD [ "node", "Server/app.js" ]
