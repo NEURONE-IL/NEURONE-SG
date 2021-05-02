@@ -20,6 +20,7 @@ services:
     volumes:
       - .:/home/node/neurone-sg
       - node_modules:/home/node/neurone-sg/node_modules
+      - $NEURONE_DOCS_PATH:/home/node/neuroneDocs
     networks:
       - app-network
     command: ./wait-for.sh db:27017 -- /home/node/neurone-sg/node_modules/.bin/nodemon Server/app.js

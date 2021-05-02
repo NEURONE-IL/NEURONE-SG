@@ -19,11 +19,11 @@ export class GamificationService {
   }
 
   gamify(): Observable<any> {
-    return this.http.get(this.uri+'gamification/gamify').pipe(timeout(this.timeout));
+    return this.http.get(this.uri+'gamification/gamify').pipe(timeout(this.timeout + 5000));
   }
 
   gamifyDependent(): Observable<any> {
-    return this.http.get(this.uri+'gamification/gamifyDependent').pipe(timeout(this.timeout));
+    return this.http.get(this.uri+'gamification/gamifyDependent').pipe(timeout(this.timeout + 5000));
   }
 
   userLevel(user_id): Observable<any> {
