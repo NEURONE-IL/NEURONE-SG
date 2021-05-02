@@ -7,10 +7,10 @@
             "key": "inicio_sesion_1"
         },
         {
-            "name": "Responder una pregunta",
-            "description": "El jugador responde una pregunta",
+            "name": "Terminar Aventura",
+            "description": "El jugador terminar una aventura",
             "repeatable": "true",
-            "key": "responder_pregunta_1"
+            "key": "terminar_aventura_1"
         }
     ]
 }

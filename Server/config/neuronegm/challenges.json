@@ -19,6 +19,46 @@
                 }
             ],
             "key": "challenge_login_1"
+        },
+        {
+            "name": "Diez inicio de sesión",
+            "description": "Jugador entra diez veces a la plataforma",
+            "start_date": "2020/01/01",
+            "end_date": "2030/01/01",
+            "actions_required": [
+                {
+                    "action_code": "adventure_action_InicarSesion",
+                    "times_required": 10
+                }
+            ],
+            "challenges_required": [],
+            "points_awards": [
+                {
+                    "point_code": "adventure_point_Experiencia",
+                    "amount": 1000
+                }
+            ],
+            "key": "challenge_login_2"
+        },
+        {
+            "name": "Primera aventura completada",
+            "description": "Jugador completa su primera aventura",
+            "start_date": "2020/01/01",
+            "end_date": "2030/01/01",
+            "actions_required": [
+                {
+                    "action_code": "adventure_action_TerminarAventura",
+                    "times_required": 1
+                }
+            ],
+            "challenges_required": [],
+            "points_awards": [
+                {
+                    "point_code": "adventure_point_Experiencia",
+                    "amount": 2000
+                }
+            ],
+            "key": "challenge_adventure_1"
         }
     ]
 }
