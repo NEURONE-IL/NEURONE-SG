@@ -38,7 +38,6 @@ export class EditorService {
   async init(adventure) {
     this.reset();
     this.setAdventure(adventure);
-    await new Promise(r => setTimeout(r, 1000));
     this.setLoading(false);
     this.setUpdating(false);
     console.log('editor service init complete');

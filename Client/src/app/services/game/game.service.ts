@@ -60,7 +60,6 @@ export class GameService {
     this.player = this.auth.getUser();
     await this.fetchGMStats();
     await this.fetchConfig();
-    await new Promise((r) => setTimeout(r, 1000));
     if (this.player.role == 'player' && this.config.kmTracking) {
       this.kmTracker.start();
     }
@@ -80,7 +79,6 @@ export class GameService {
       this.player = this.auth.getUser();
       await this.fetchGMStats();
       await this.fetchConfig();
-      await new Promise((r) => setTimeout(r, 1000));
       if (this.player.role == 'player' && this.config.kmTracking) {
         this.kmTracker.start();
       }
