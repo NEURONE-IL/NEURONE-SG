@@ -1,5 +1,5 @@
 //PORT
-process.env.PORT = process.env.PORT || 3002;
+process.env.APP_PORT = process.env.APP_PORT || 3002;
 
 //token secret
 process.env.TOKEN_SECRET = "ady7asdy78";

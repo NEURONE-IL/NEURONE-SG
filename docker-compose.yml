@@ -1,10 +1,22 @@
-version: '3'
+version: "3"
 
 services:
   nodejs:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - MONGO_USERNAME=$MONGO_USERNAME
+        - MONGO_PASSWORD=$MONGO_PASSWORD
+        - MONGO_HOSTNAME=db
+        - MONGO_PORT=$MONGO_PORT
+        - MONGO_DB=$MONGO_DB
+        - NEURONE_URL=$NEURONE_URL
+        - NEURONE_DOCS_PATH=$NEURONE_DOCS_PATH
+        - GM_URL=$GM_URL
+        - SERVER_ROOT=$SERVER_ROOT
+        - APP_PORT=$APP_PORT
+        - HOST_PORT=$HOST_PORT
     image: nodejs
     container_name: nodejs
     restart: unless-stopped
@@ -15,8 +27,14 @@ services:
       - MONGO_HOSTNAME=db
       - MONGO_PORT=$MONGO_PORT
       - MONGO_DB=$MONGO_DB
+      - NEURONE_URL=$NEURONE_URL
+      - NEURONE_DOCS_PATH=$NEURONE_DOCS_PATH
+      - GM_URL=$GM_URL
+      - SERVER_ROOT=$SERVER_ROOT
+      - APP_PORT=$APP_PORT
+      - HOST_PORT=$HOST_PORT
     ports:
-      - "3002:3002"
+      - "$HOST_PORT:$APP_PORT"
     volumes:
       - node_modules:/home/node/neurone-sg/node_modules
       - $NEURONE_DOCS_PATH:$NEURONE_DOCS_PATH

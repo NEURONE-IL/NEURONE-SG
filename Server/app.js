@@ -121,9 +121,9 @@ app.get('*', (req, res) => {
 //   res.sendFile(path.join(__dirname + "/public/index.html"));
 // });
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.APP_PORT, () => {
   console.log(
-    `NEURONE-ADV-Server listening at http://localhost:${process.env.PORT}`
+    `NEURONE-ADV-Server listening at http://localhost:${process.env.APP_PORT}`
   );
 });
 
