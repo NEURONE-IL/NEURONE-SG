@@ -314,6 +314,9 @@
       "VIDEOS": "Videos",
       "IMAGES": "Imágenes",
       "BOOKS": "Libros"
+    },
+    "TOASTR": {
+      "INVALID_QUERY": "Por favor ingrese un parámetro de búsqueda válido"
     }
   },
   "IMAGE": {

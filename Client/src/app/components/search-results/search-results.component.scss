@@ -167,7 +167,15 @@ mat-grid-tile .mat-figure{
   justify-content: center;
 }
 
-.imageCard {
+.image-card {
   height: 10rem;
+}
+
+.video-card {
+  align-self: auto;
+}
+
+.video-thumbnail {
+  cursor: pointer;
 }
 

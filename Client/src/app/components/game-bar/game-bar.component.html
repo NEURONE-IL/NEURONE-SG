@@ -6,7 +6,7 @@
         class="player-avatar"
         alt="Player avatar"
         [src]="avatarImg"
-        onerror="this.src='/assets/images/placeholder.png';"
+        onerror="this.src='/assets/images/avatars/anon.png';"
       />
       <mat-card-title>{{ player.username }}</mat-card-title>
       <mat-card-subtitle *ngIf="gmStats && playerLevel">{{

@@ -44,7 +44,6 @@ export class SearchResultsComponent implements OnInit {
         .fetchResults(this.query, null, this.gameService.adventure._id, null)
         .subscribe(
           (res) => {
-            console.log(res);
             this.documents = res;
 
             // Filter and paginate results

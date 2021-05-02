@@ -71,19 +71,18 @@
           <mat-grid-list cols="12" [gutterSize]="'12px'">
             <div *ngFor="let doc of imagesPaginated[currentPage - 1]">
               <mat-grid-tile
-                class="image-card"
                 colspan="3"
                 rowspan="3"
                 *ngIf="doc.type == 'image'"
                 [routerLink]="['/game/view-page', doc.url]"
               >
                 <mat-card
-                  class="cardStyle imageCard"
+                  class="cardStyle image-card"
                   [routerLink]="['/game/view-page', doc.url]"
                 >
                   <img
                     class="img-fluid thumbnail searchImage"
-                    src="{{ rootPath + doc.img }}"
+                    src="{{ rootPath + '/' + doc.img }}"
                     alt="thumbnail"
                     onerror="this.src='/assets/images/placeholder.png';"
                   />
@@ -118,28 +117,29 @@
           }}
         </p>
         <div class="video-container">
-          <mat-grid-list cols="12" [gutterSize]="'12px'">
+          <mat-grid-list cols="10" [gutterSize]="'12px'" rowHeight="1:2">
             <div *ngFor="let doc of videosPaginated[currentPage - 1]">
               <mat-grid-tile
                 class="video-card"
-                colspan="12"
+                colspan="10"
                 *ngIf="doc.type == 'video'"
               >
                 <div>
                   <img
                     [src]="getThumb(doc.url)"
-                    [routerLink]="['/game/view-page', doc.title, doc.route]"
+                    [routerLink]="['/game/view-page', doc.route]"
                     alt="thumbnail"
+                    class="video-thumbnail"
                   />
                 </div>
                 <mat-card
-                  class="cardStyle doc-card"
-                  [routerLink]="['/game/view-page', doc.title, doc.route]"
+                  class="cardStyle doc-card video-card"
+                  [routerLink]="['/game/view-page', doc.route]"
                 >
                   <mat-card-content>
                     <h5 class="url-bar">{{ doc.url }}</h5>
                     <a
-                      [routerLink]="['/game/view-page', doc.title, doc.route]"
+                      [routerLink]="['/game/view-page', doc.route]"
                       class="document-link"
                       >{{ doc.title }}</a
                     >
@@ -170,10 +170,10 @@
             }}
           </p>
           <div class="documents-container">
-            <div *ngFor="let doc of books[currentPage - 1]">
+            <div *ngFor="let doc of booksPaginated[currentPage - 1]">
               <mat-card
                 class="cardStyle doc-card"
-                [routerLink]="['/session/view-page', doc.title, doc.route]"
+                [routerLink]="['/session/view-page', doc.route]"
                 *ngIf="doc.type == 'book'"
               >
                 <mat-card-content>
