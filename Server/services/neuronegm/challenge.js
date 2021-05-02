@@ -27,6 +27,7 @@ const postChallenge = async (challenge, callback) => {
         else{
             let credential = headers.credential;
             axios.post(process.env.NEURONEGM+'/api/'+credential.app_code+'/challenges', challenge, headers.headers ).then((response)=> {
+                console.log("CHALLENGE RESPONSE: ", response);
                 callback(null, response.challenge)
             }).catch((err) => {
                 callback(err);
@@ -39,7 +40,7 @@ const postAllChallenges = async(callback) => {
     let challenges = challengesJson.challenges;
     let newGameElem;
     for(let i = 0; i<challenges.length; i++){
-        await postChallenge(challenges[i], (err, postedChallenge) => {
+        console.log("POSTEANDO CHALLENGE: ", i);
         await postChallenge(challenges[i], (err, challenge) => {
             if(err){
                 console.log(err)

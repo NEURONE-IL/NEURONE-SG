@@ -76,7 +76,7 @@ router.post(
         });
       }
       // Send confirmation email
-      // sendConfirmationEmail(user, res, req);
+      sendConfirmationEmail(user, res, req);
       res.status(200).json({ code: "USER_REGISTERED", user });
     });
   }
@@ -127,7 +127,7 @@ router.post(
         });
       }
       // Send confirmation email
-      // sendConfirmationEmail(user, res, req);
+      sendConfirmationEmail(user, res, req);
       res.status(200).json({ code: "USER_REGISTERED", user });
     });
   }
@@ -178,7 +178,7 @@ router.post(
       }
 
       // Send confirmation email
-      // sendConfirmationEmail(user, res, req);
+      sendConfirmationEmail(user, res, req);
 
       res.status(200).json({ code: "USER_REGISTERED", user });
     });
@@ -267,47 +267,42 @@ function saveGMPlayer(req, user, res) {
 // Sends user confirmation email
 // Adapted from: https://codemoto.io/coding/nodejs/email-verification-node-express-mongodb
 function sendConfirmationEmail(user, res, req) {
-  try {
-    // Create a verification token
-    const token = new Token({
-      _userId: user.id,
-      token: crypto.randomBytes(16).toString("hex"),
-    });
+  // Create a verification token
+  const token = new Token({
+    _userId: user.id,
+    token: crypto.randomBytes(16).toString("hex"),
+  });
 
-    // Save the verification token
-    token.save((err) => {
+  // Save the verification token
+  token.save((err) => {
+    if (err) {
+      return res.status(500).send({ msg: "TOKEN_ERROR" });
+    }
+
+    // Generate email data
+    const { mailHTML, mailText } = generateEmailData(req, token, user);
+
+    // Send the email
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.SENDEMAIL_USER,
+        pass: process.env.SENDEMAIL_PASSWORD,
+      },
+    });
+    const mailOptions = {
+      from: "neuronemail2020@gmail.com",
+      to: user.email,
+      subject: "Verifique su correo",
+      text: mailText,
+      html: mailHTML,
+    };
+    transporter.sendMail(mailOptions, (err) => {
       if (err) {
-        return res.status(500).send({ msg: "TOKEN_ERROR" });
+        console.log("error sending confirmation email: ", err);
       }
-
-      // Generate email data
-      const { mailHTML, mailText } = generateEmailData(req, token, user);
-
-      // Send the email
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: process.env.SENDEMAIL_USER,
-          pass: process.env.SENDEMAIL_PASSWORD,
-        },
-      });
-      const mailOptions = {
-        from: "neuronemail2020@gmail.com",
-        to: user.email,
-        subject: "Verifique su correo",
-        text: mailText,
-        html: mailHTML,
-      };
-      transporter.sendMail(mailOptions, (err) => {
-        if (err) {
-          return res.status(500).send({ msg: err.message });
-        }
-      });
     });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).send({ msg: "error sending confirmation email" });
-  }
+  });
 }
 
 // Reads email template and adds custom data
