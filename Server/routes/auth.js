@@ -118,21 +118,6 @@ router.post(
       role: role.id,
     });
 
-    if (config.util.getEnv("NODE_ENV") !== "test") {
-      await neuronegmService.connectGM(
-        req.body.email,
-        req.body.password,
-        (err, res) => {
-          if (err) {
-            console.log("error on connectGM");
-            console.log(err);
-          } else {
-            console.log("connectGM successful");
-            console.log(res);
-          }
-        }
-      );
-    }
     //save user in db
     await user.save((err, user) => {
       if (err) {

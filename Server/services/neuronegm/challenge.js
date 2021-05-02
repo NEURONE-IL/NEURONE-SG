@@ -39,7 +39,7 @@ const postAllChallenges = async(callback) => {
     let challenges = challengesJson.challenges;
     let newGameElem;
     for(let i = 0; i<challenges.length; i++){
-        await postChallenge(challenges[i], (err, challenge) => {
+        await postChallenge(challenges[i], (err, postedChallenge) => {
             if(err){
                 console.log(err)
             }
@@ -47,7 +47,7 @@ const postAllChallenges = async(callback) => {
                 newGameElem = new GameElement({
                     type: "challenge",
                     key: challenges[i].key,
-                    gm_code: challenge.code
+                    gm_code: postedChallenge.code
                 })
                 newGameElem.save();
             }
