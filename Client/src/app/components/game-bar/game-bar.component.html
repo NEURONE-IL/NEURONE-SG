@@ -1,7 +1,13 @@
 <div class="game-bar-container">
   <mat-card class="choices-card">
     <mat-card-header>
-      <img mat-card-avatar class="player-avatar" alt="Player avatar" [src]="avatarImg">
+      <img
+        mat-card-avatar
+        class="player-avatar"
+        alt="Player avatar"
+        [src]="avatarImg"
+        onerror="this.src='/assets/images/placeholder.png';"
+      />
       <mat-card-title>{{ player.username }}</mat-card-title>
       <mat-card-subtitle *ngIf="gmStats && playerLevel">{{
         playerLevel
