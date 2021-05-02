@@ -76,7 +76,7 @@ router.post(
         });
       }
       // Send confirmation email
-      sendConfirmationEmail(user, res, req);
+      // sendConfirmationEmail(user, res, req);
       res.status(200).json({ code: "USER_REGISTERED", user });
     });
   }
@@ -142,7 +142,7 @@ router.post(
         });
       }
       // Send confirmation email
-      sendConfirmationEmail(user, res, req);
+      // sendConfirmationEmail(user, res, req);
       res.status(200).json({ code: "USER_REGISTERED", user });
     });
   }
@@ -193,7 +193,7 @@ router.post(
       }
 
       // Send confirmation email
-      sendConfirmationEmail(user, res, req);
+      // sendConfirmationEmail(user, res, req);
 
       res.status(200).json({ code: "USER_REGISTERED", user });
     });
