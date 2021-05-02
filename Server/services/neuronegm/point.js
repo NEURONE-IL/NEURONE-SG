@@ -44,12 +44,14 @@ const postAllPoints = async(callback) => {
                 console.log(err)
             }
             else{
-                newGameElem = new GameElement({
-                    type: "point",
-                    key: points[i].key,
-                    gm_code: point.code
-                })
-                newGameElem.save();
+                if (point && point.code) {
+                    newGameElem = new GameElement({
+                        type: "point",
+                        key: points[i].key,
+                        gm_code: point.code
+                    })
+                    newGameElem.save();
+                }
             }
         })
         await new Promise(resolve => setTimeout(resolve, 1000));

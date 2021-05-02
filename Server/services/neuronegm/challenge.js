@@ -40,16 +40,19 @@ const postAllChallenges = async(callback) => {
     let newGameElem;
     for(let i = 0; i<challenges.length; i++){
         await postChallenge(challenges[i], (err, postedChallenge) => {
+        await postChallenge(challenges[i], (err, challenge) => {
             if(err){
                 console.log(err)
             }
             else{
-                newGameElem = new GameElement({
-                    type: "challenge",
-                    key: challenges[i].key,
-                    gm_code: postedChallenge.code
-                })
-                newGameElem.save();
+                if (challenge && challenge.code) {
+                    newGameElem = new GameElement({
+                        type: "challenge",
+                        key: challenges[i].key,
+                        gm_code: challenge.code
+                    })
+                    newGameElem.save();
+                }
             }
         });
         await new Promise(resolve => setTimeout(resolve, 1000));

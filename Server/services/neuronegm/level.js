@@ -44,12 +44,14 @@ const postAllLevels = async(callback) => {
                 callback(err)
             }
             else{
-                newGameElem = new GameElement({
-                    type: "level",
-                    key: levels[i].key,
-                    gm_code: level.code
-                })
-                newGameElem.save();
+                if (level && level.code) {
+                    newGameElem = new GameElement({
+                        type: "level",
+                        key: levels[i].key,
+                        gm_code: level.code
+                    })
+                    newGameElem.save();
+                }
             }
         });
         await new Promise(resolve => setTimeout(resolve, 1000));

@@ -47,7 +47,7 @@
             "end_date": "2030/01/01",
             "actions_required": [
                 {
-                    "action_code": "adventure_action_TerminarAventura",
+                    "action_code": "adventure_action_TerminarAven",
                     "times_required": 1
                 }
             ],
