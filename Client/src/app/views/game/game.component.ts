@@ -30,6 +30,8 @@ export class GameComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy(): void {
+    this.searchEnabledSubscription.unsubscribe();
+    this.loadingSubscription.unsubscribe();
     this.gameService.reset();
   }
 

@@ -1,4 +1,3 @@
-
 .game-container {
   display: grid;
   grid-template-areas: "header header header header header" "adventure adventure search search search" "challenge challenge challenge challenge challenge";
@@ -17,4 +16,8 @@
   grid-column-gap: 16px;
   height: 100%;
   background: #d1d9ff;
+}
+
+.hidden {
+  display: none;
 }

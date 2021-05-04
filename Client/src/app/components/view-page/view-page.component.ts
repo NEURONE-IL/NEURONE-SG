@@ -42,6 +42,7 @@ export class ViewPageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.searchService.setCurrentPage(null);
     this.kmTrackerIframe.stop();
     this.pathSubscription.unsubscribe();
+    this.docSubscription.unsubscribe();
   }
 
   ngOnInit(): void {

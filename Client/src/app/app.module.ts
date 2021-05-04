@@ -49,7 +49,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { FileUploadModule } from 'ng2-file-upload';
 import { QuestionFormComponent } from './components/game-bar/question-form/question-form.component';
 import { MultipleFormComponent } from './components/game-bar/multiple-form/multiple-form.component';
-import { SynthesisFormComponent } from './components/game-bar/synthesis-form/synthesis-form.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { LoginRegisterComponent } from './views/login-register/login-register.component';
 import { LoginCardComponent } from './components/login-card/login-card.component';
@@ -96,7 +95,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     QuestionFormComponent,
     MultipleFormComponent,
     NewAdventureDialogComponent,
-    SynthesisFormComponent,
     LoginRegisterComponent,
     LoginCardComponent,
     RegisterCardComponent,

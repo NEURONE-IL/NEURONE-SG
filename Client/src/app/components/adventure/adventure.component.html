@@ -4,7 +4,7 @@
       <img
         class="node-img"
         src="{{ apiUrl + '/image/' + currentNode.data.image_id }}"
-        onerror="this.src='../../../../../assets/images/placeholder.png';"
+        onerror="this.src='/assets/images/placeholder.png';"
         alt=""
       />
     </div>
@@ -16,8 +16,11 @@
       ></embedded-media>
     </div>
     <div class="text-wrapper">
-      <h3>{{ currentNode.label }}</h3>
       <p>{{ currentNode.data.text }}</p>
     </div>
   </mat-card>
+  <button class="neurone-btn" mat-icon-button color="primary" (click)="toggleSearch()">
+    <mat-icon *ngIf="!searchEnabled">chevron_left</mat-icon>
+    <mat-icon *ngIf="searchEnabled">chevron_right</mat-icon>
+  </button>
 </div>

@@ -69,7 +69,6 @@ export class GameService {
 
   async resume(adventure) {
     try {
-      console.log('RESUMING ADVENTURE!');
       this.reset();
       let progress = adventure.progress;
       this.setAdventure(adventure);
@@ -126,7 +125,6 @@ export class GameService {
 
   setPlayer(player) {
     this.player = player;
-    // TODO: add emitter
   }
 
   adventureEmitChange(adv: any) {

@@ -30,11 +30,13 @@ export class SearchInterfaceComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    // Subscribe to the current adventure
     this.adventureSubscription = this.gameService.adventureEmitter.subscribe(
       (adventure) => {
         this.adventure = adventure;
       }
     );
+    // Subscribe to the current node
     this.currentNodeSubscription = this.gameService.currentNodeEmitter.subscribe(
       (node) => {
         this.currentNode = node;

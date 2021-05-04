@@ -5,6 +5,7 @@
   padding: 5px 10px 5px;
   height: 100%;
   width: 100%;
+  position: relative;
 }
 
 .adventure-card {
@@ -14,6 +15,19 @@
   align-items: center;
   width: 100%;
   height: 100%;
+  overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  overflow-y: scroll;
+  background: lightgray;
+  box-shadow: inset 0 0 4px #707070;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #283593;
+  border-radius: 3em;
 }
 
 .image-wrapper {
@@ -56,6 +70,7 @@
 
 .text-wrapper p{
   // word-wrap: normal;
+  margin-top: 2rem;
 }
 
 .node-img {
@@ -65,7 +80,8 @@
   border-radius: 10px;
 }
 
-.example-header-image {
-  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-  background-size: cover;
+.neurone-btn {
+  position: absolute;
+  top: 50%;
+  right: 5px;
 }
