@@ -72,6 +72,7 @@ import { PaginatorComponent } from './components/paginator/paginator.component';
 import { PlayerProfileComponent } from './components/player-profile/player-profile.component';
 import { ProfileComponent } from './views/profile/profile.component';
 import { AvatarSelectorComponent } from './components/avatar-selector/avatar-selector.component';
+import { InstructionsComponent } from './components/instructions/instructions.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -112,7 +113,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     PaginatorComponent,
     PlayerProfileComponent,
     ProfileComponent,
-    AvatarSelectorComponent
+    AvatarSelectorComponent,
+    InstructionsComponent
   ],
   imports: [
     BrowserModule,

@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
   ) {
     translate.addLangs(['es', 'en']);
     translate.setDefaultLang('es');
-    translate.use('es');
+    translate.use(navigator.language.split('-')[0]);
   }
   async ngOnInit(): Promise<void> {
     await this.fetchConfig();

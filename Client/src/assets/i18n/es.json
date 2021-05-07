@@ -339,6 +339,10 @@
       "TITLE": "Elige tu imagen de perfil"
     }
   },
+  "INSTRUCTIONS": {
+    "TITLE": "Instrucciones de <strong>NEURONE-SG</strong>",
+    "TEXT": "En <strong>NEURONE-SG</strong> tu eres el protagonista de tu propia aventura. Para jugar solo debes seleccionar la opción que prefieras en la barra inferior, esto te permitirá ir avanzando a través de la historia de acuerdo a tus propias decisiones.\n\nEn cualquier momento del juego puedes acceder al siempre confiable buscador de <strong>NEURONE</strong>. Este buscador te permitirá encontrar información relacionada a los desafíos y dudas que tengas durante tu sesión de juego. Aquí podrás encontrar páginas <i>web</i>, videos, imágenes y libros.\n Si deseas esconder el buscador solamente debes oprimir el botón <span class='material-icons'>chevron_right</span>, para volver a desplegarlo solo debes oprimir el botón <span class='material-icons'>chevron_left</span>.\nCuando se presente un desafío la barra cambiará y te permitirá ingresar tu respuesta.\n\nExisten 3 tipos de desafíos:\n <ul> <li>En los desafíos de pregunta y respuesta debes observar la pregunta y responder utilizando el campo de texto proporcionado.</li><li>En los desafíos de selección múltiple debes seleccionar todas las alternativas que consideres correctas y presionar el botón \"Enviar\".</><li>En los desafíos de marcar páginas debes utilizar el buscador de NEURONE para encontrar la página más adecuada para responder la pregunta planteada, una vez que hayas ingresado a ella debes oprimir el botón de marcado de página <span class='material-icons'>bookmark_add</span>, ingresar en el campo de texto tus razones para elegir esta página y enviar tu respuesta. Si deseas desmarcar la página actual, solo debes oprimir el botón <span class='material-icons'>bookmark_remove</span>.</li></ul>"
+  },
   "TOOLTIPS": {
     "ADVENTURE_DESCRIPTION": "Este valor debe contener una breve descripción sobre su aventura",
     "ADVENTURE_PRECONDITIONS": "Aquí debe seleccionar las aventuras que el jugador debe completar antes de jugar la aventura actual (Opcional)",
@@ -364,6 +368,9 @@
     "WEB_LOCALE": "Aquí debe seleccionar el idioma del recurso",
     "WEB_URL": "Aquí debe ingresar el enlace al documento a cargar",
     "WEB_MASKED_URL": "Este valor representa el enlace que se muestra al jugador en los resultados de búsqueda",
-    "WEB_NODE": "Aquí debe seleccionar el nodo para el cual este recurso es relevante, en caso de que no sea relevante para ningún nodo puede seleccionar el valor 'Ninguno'"
+    "WEB_NODE": "Aquí debe seleccionar el nodo para el cual este recurso es relevante, en caso de que no sea relevante para ningún nodo puede seleccionar el valor 'Ninguno'",
+    "SHOW_SEARCH_IF": "Mostrar interfaz de búsqueda de NEURONE",
+    "HIDE_SEARCH_IF": "Esconder interfaz de búsqueda de NEURONE",
+    "INSTRUCTIONS_BTN": "Mostrar instrucciones"
   }
 }

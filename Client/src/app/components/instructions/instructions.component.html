@@ -1,0 +1,9 @@
+<h1 mat-dialog-title [innerHTML]="'INSTRUCTIONS.TITLE' | translate"></h1>
+<div mat-dialog-content>
+  <p class="instructions-text" [innerHTML]="'INSTRUCTIONS.TEXT' | translate"></p>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="true">
+    {{ "COMMON.CLOSE" | translate }}
+  </button>
+</div>

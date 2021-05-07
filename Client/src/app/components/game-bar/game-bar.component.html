@@ -12,6 +12,15 @@
       <mat-card-subtitle *ngIf="gmStats && playerLevel">{{
         playerLevel
       }}</mat-card-subtitle>
+      <button
+        mat-icon-button
+        class="instructions-btn"
+        color="primary"
+        (click)="showInstructions()"
+        [matTooltip]="'TOOLTIPS.INSTRUCTIONS_BTN' | translate"
+      >
+        <mat-icon>help</mat-icon>
+      </button>
       <p *ngIf="gmStats && playerPoints">
         {{ playerPoints }} {{ "GAMIFICATION.POINTS" | translate }} -
         {{ "GAMIFICATION.RANK_TEXT" | translate: { rank: playerRank } }}
@@ -68,8 +77,4 @@
       ></app-bookmark-form>
     </mat-card-content>
   </ng-template>
-  <!-- <button class="neurone-btn" mat-fab color="accent" (click)="toggleSearch()">
-    <mat-icon *ngIf="!searchEnabled">search</mat-icon>
-    <mat-icon *ngIf="searchEnabled">search-off</mat-icon>
-  </button> -->
 </div>

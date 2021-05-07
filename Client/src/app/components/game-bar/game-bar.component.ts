@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import ActivatorsUtils from '../../utils/activators';
 import { environment } from "src/environments/environment";
+import { MatDialog } from '@angular/material/dialog';
+import { InstructionsComponent } from '../instructions/instructions.component';
 
 @Component({
   selector: 'app-game-bar',
@@ -37,7 +39,8 @@ export class GameBarComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private answerService: AnswerService,
     private auth: AuthService,
-    public router: Router
+    public router: Router,
+    public instructionsDialog: MatDialog,
   ) {
     // Subscribe to current adventure
     this.adventureSubscription = this.gameService.adventureEmitter.subscribe(
@@ -88,6 +91,7 @@ export class GameBarComponent implements OnInit, OnDestroy {
     this.currentNodeSubscription.unsubscribe();
     this.searchEnabledSubscription.unsubscribe();
     this.gmStatsSubscription.unsubscribe();
+    this.closeDialogs();
   }
 
   finish() {
@@ -159,6 +163,16 @@ export class GameBarComponent implements OnInit, OnDestroy {
     } catch (error) {
       return undefined;
     }
+  }
+
+  showInstructions(): void {
+    const instructionsDialogRef = this.instructionsDialog.open(InstructionsComponent, {
+      width: '40rem',
+    });
+  }
+
+  closeDialogs() {
+    if (this.instructionsDialog) this.instructionsDialog.closeAll();
   }
 
   toggleSearch() {

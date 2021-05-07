@@ -147,15 +147,16 @@
             </mat-form-field>
             <mat-form-field class="node-form-field">
               <mat-label>{{ "EDITOR.NODE_EDITOR.TEXT" | translate }}</mat-label>
-              <input
+              <textarea
                 matInput
+                type="text"
                 name="nodeText"
                 formControlName="text"
                 placeholder="{{
                   'EDITOR.NODE_EDITOR.TEXT_PLACEHOLDER' | translate
                 }}"
                 [ngModel]="currentNode.data.text"
-              />
+              ></textarea>
               <mat-icon
                 class="form-tooltip"
                 matSuffix
