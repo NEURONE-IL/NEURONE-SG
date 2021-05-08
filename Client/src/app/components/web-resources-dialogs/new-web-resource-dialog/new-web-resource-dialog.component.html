@@ -31,18 +31,18 @@
           <mat-label>{{
             "NEW_WEB_RESOURCE_DIALOG.FORM.TYPE" | translate
           }}</mat-label>
-          <mat-select formControlName="type" required>
+          <mat-select formControlName="type" required [matTooltip]="'TOOLTIPS.WEB_TYPE' | translate">
             <mat-option *ngFor="let type of resTypes" [value]="type.value">{{
               type.viewValue | translate
             }}</mat-option>
           </mat-select>
-          <mat-icon
+          <!-- <mat-icon
             class="form-tooltip"
             matSuffix
             [matTooltip]="'TOOLTIPS.WEB_TYPE' | translate"
             matTooltipPosition="after"
             >help_outline</mat-icon
-          >
+          > -->
           <mat-error *ngIf="resourceFormCtrls.type.hasError('required')">
             {{ "WEB_RESOURCES_TABLE.ERRORS.TYPE_REQUIRED" | translate }}
           </mat-error>
@@ -77,18 +77,18 @@
           <mat-label>{{
             "NEW_WEB_RESOURCE_DIALOG.FORM.LOCALE" | translate
           }}</mat-label>
-          <mat-select formControlName="locale" required>
+          <mat-select formControlName="locale" required [matTooltip]="'TOOLTIPS.WEB_LOCALE' | translate">
             <mat-option *ngFor="let locale of locales" [value]="locale.value">{{
               locale.viewValue | translate
             }}</mat-option>
           </mat-select>
-          <mat-icon
+          <!-- <mat-icon
             class="form-tooltip"
             matSuffix
             [matTooltip]="'TOOLTIPS.WEB_LOCALE' | translate"
             matTooltipPosition="after"
             >help_outline</mat-icon
-          >
+          > -->
           <mat-error *ngIf="resourceFormCtrls.locale.hasError('required')">
             {{ "WEB_RESOURCES_TABLE.ERRORS.LOCALE_REQUIRED" | translate }}
           </mat-error>
@@ -158,18 +158,18 @@
           <mat-label>{{
             "NEW_WEB_RESOURCE_DIALOG.FORM.NODE" | translate
           }}</mat-label>
-          <mat-select formControlName="task" required>
+          <mat-select formControlName="task" required [matTooltip]="'TOOLTIPS.WEB_NODE' | translate">
             <mat-option *ngFor="let node of nodes" [value]="node.id">{{
               node.id != "NO_NODE" ? node.label : (node.label | translate)
             }}</mat-option>
           </mat-select>
-          <mat-icon
+          <!-- <mat-icon
             class="form-tooltip"
             matSuffix
             [matTooltip]="'TOOLTIPS.WEB_NODE' | translate"
             matTooltipPosition="after"
             >help_outline</mat-icon
-          >
+          > -->
           <mat-error *ngIf="resourceFormCtrls.task.hasError('required')">
             {{ "WEB_RESOURCES_TABLE.ERRORS.NODE_REQUIRED" | translate }}
           </mat-error>

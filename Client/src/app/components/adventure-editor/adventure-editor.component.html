@@ -23,18 +23,19 @@
               formControlName="type"
               (selectionChange)="updateNodeType($event.value)"
               [disabled]="currentNode.type == 'initial'"
+              [matTooltip]="'TOOLTIPS.NODE_TYPE' | translate"
             >
               <mat-option *ngFor="let type of nodeTypes" [value]="type.value">
                 {{ type.viewValue | translate }}
               </mat-option>
             </mat-select>
-            <mat-icon
+            <!-- <mat-icon
               class="form-tooltip"
               matSuffix
               [matTooltip]="'TOOLTIPS.NODE_TYPE' | translate"
               matTooltipPosition="after"
               >help_outline</mat-icon
-            >
+            > -->
           </mat-form-field>
           <mat-form-field
             class="node-form-field"
@@ -84,6 +85,7 @@
               <mat-select
                 [(value)]="currentMediaType"
                 (selectionChange)="nodeMediaChange($event)"
+                [matTooltip]="'TOOLTIPS.NODE_MEDIA_TYPE' | translate"
               >
                 <mat-option
                   *ngFor="let type of mediaTypes"
@@ -92,13 +94,13 @@
                   {{ type.viewValue | translate }}
                 </mat-option>
               </mat-select>
-              <mat-icon
+              <!-- <mat-icon
                 class="form-tooltip"
                 matSuffix
                 [matTooltip]="'TOOLTIPS.NODE_MEDIA_TYPE' | translate"
                 matTooltipPosition="after"
                 >help_outline</mat-icon
-              >
+              > -->
             </mat-form-field>
             <div class="img-upload" *ngIf="currentMediaType == 'image'">
               <div *ngIf="currentImg && !imagePreview">

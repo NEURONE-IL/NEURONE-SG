@@ -40,19 +40,19 @@
     <div>
       <mat-form-field class="form-field">
         <mat-label>{{ "NEW_ADVENTURE.PRECONDITIONS" | translate }}</mat-label>
-        <mat-select formControlName="preconditions" multiple>
+        <mat-select formControlName="preconditions" multiple [matTooltip]="'TOOLTIPS.ADVENTURE_PRECONDITIONS' | translate">
           <mat-option
             *ngFor="let adventure of adventures"
             [value]="adventure._id"
             >{{ adventure.name }}</mat-option
           >
         </mat-select>
-        <mat-icon
+        <!-- <mat-icon
           matSuffix
           [matTooltip]="'TOOLTIPS.ADVENTURE_PRECONDITIONS' | translate"
           matTooltipPosition="after"
           >help_outline</mat-icon
-        >
+        > -->
       </mat-form-field>
       <mat-form-field class="form-field">
         <mat-label>{{ "NEW_ADVENTURE.IMAGE" | translate }}</mat-label>

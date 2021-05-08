@@ -5,18 +5,18 @@
       <mat-grid-tile>
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>{{"NEW_LINK_DIALOG.TARGET" | translate}}</mat-label>
-          <mat-select name="linkTarget" formControlName="target">
+          <mat-select name="linkTarget" formControlName="target" [matTooltip]="'TOOLTIPS.LINK_TARGET' | translate">
             <mat-option *ngFor="let node of targetNodes" [value]="node.id"
               >{{ node.label }}</mat-option
             >
           </mat-select>
-          <mat-icon
+          <!-- <mat-icon
             class="form-tooltip"
             matSuffix
             [matTooltip]="'TOOLTIPS.LINK_TARGET' | translate"
             matTooltipPosition="after"
             >help_outline</mat-icon
-          >
+          > -->
           <mat-error *ngIf="linkForm.controls.target.hasError('required')">
             {{ "NEW_LINK_DIALOG.ERRORS.TARGET_NODE_REQUIRED" | translate }}
           </mat-error>
@@ -69,6 +69,7 @@
                 name="condition"
                 formControlName="condition"
                 (selectionChange)="onTypeChange($event, activator)"
+                [matTooltip]="'TOOLTIPS.ACTIVATOR_CONDITION' | translate"
               >
                 <mat-option
                   *ngFor="let type of activatorTypes"
@@ -76,13 +77,13 @@
                   >{{ type.viewValue | translate }}</mat-option
                 >
               </mat-select>
-              <mat-icon
+              <!-- <mat-icon
                 class="form-tooltip"
                 matSuffix
                 [matTooltip]="'TOOLTIPS.ACTIVATOR_CONDITION' | translate"
                 matTooltipPosition="after"
                 >help_outline</mat-icon
-              >
+              > -->
               <mat-error
                 *ngIf="activator.get('condition').hasError('required')"
               >
@@ -97,20 +98,20 @@
               <mat-label
                 >{{"NEW_LINK_DIALOG.ACTIVATOR_NODE" | translate}}</mat-label
               >
-              <mat-select name="node" formControlName="node">
+              <mat-select name="node" formControlName="node" [matTooltip]="'TOOLTIPS.ACTIVATOR_NODE' | translate">
                 <mat-option
                   *ngFor="let node of challengeNodes"
                   [value]="node.id"
                   >{{ node.label }}</mat-option
                 >
               </mat-select>
-              <mat-icon
+              <!-- <mat-icon
                 class="form-tooltip"
                 matSuffix
                 [matTooltip]="'TOOLTIPS.ACTIVATOR_NODE' | translate"
                 matTooltipPosition="after"
                 >help_outline</mat-icon
-              >
+              > -->
               <mat-error *ngIf="activator.get('node').hasError('required')">
                 {{ "NEW_LINK_DIALOG.ERRORS.CHALLENGE_NODE_REQUIRED" | translate
                 }}
@@ -124,18 +125,18 @@
               <mat-label
                 >{{"NEW_LINK_DIALOG.ACTIVATOR_LEVEL" | translate}}</mat-label
               >
-              <mat-select name="level" formControlName="level">
+              <mat-select name="level" formControlName="level" [matTooltip]="'TOOLTIPS.ACTIVATOR_LEVEL' | translate">
                 <mat-option *ngFor="let level of GMlevels" [value]="level.value"
                   >{{ level.viewValue }}</mat-option
                 >
               </mat-select>
-              <mat-icon
+              <!-- <mat-icon
                 class="form-tooltip"
                 matSuffix
                 [matTooltip]="'TOOLTIPS.ACTIVATOR_LEVEL' | translate"
                 matTooltipPosition="after"
                 >help_outline</mat-icon
-              >
+              > -->
               <mat-error *ngIf="activator.get('level').hasError('required')">
                 {{ "NEW_LINK_DIALOG.ERRORS.LEVEL_REQUIRED" | translate }}
               </mat-error>

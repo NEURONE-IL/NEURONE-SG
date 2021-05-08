@@ -43,6 +43,7 @@
           formControlName="preconditions"
           multiple
           [ngModel]="adventure.preconditions"
+          [matTooltip]="'TOOLTIPS.ADVENTURE_PRECONDITIONS' | translate"
         >
           <mat-option
             *ngFor="let adventure of adventures"
@@ -50,13 +51,13 @@
             >{{ adventure.name }}</mat-option
           >
         </mat-select>
-        <mat-icon
+        <!-- <mat-icon
           class="form-tooltip"
           matSuffix
           [matTooltip]="'TOOLTIPS.ADVENTURE_PRECONDITIONS' | translate"
           matTooltipPosition="after"
           >help_outline</mat-icon
-        >
+        > -->
       </mat-form-field>
       <mat-form-field class="meta-form-field">
         <mat-label>{{ "META_EDITOR.IMAGE" | translate }}</mat-label>

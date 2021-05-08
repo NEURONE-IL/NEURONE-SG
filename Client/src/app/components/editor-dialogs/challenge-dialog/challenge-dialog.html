@@ -8,18 +8,19 @@
         formControlName="type"
         [(ngModel)]="challenge.type"
         (selectionChange)="updateType($event.value)"
+        [matTooltip]="'TOOLTIPS.CHALLENGE_TYPE' | translate"
       >
         <mat-option *ngFor="let type of types" [value]="type.value">
           {{ type.viewValue | translate }}
         </mat-option>
       </mat-select>
-      <mat-icon
+      <!-- <mat-icon
         class="form-tooltip"
         matSuffix
         [matTooltip]="'TOOLTIPS.CHALLENGE_TYPE' | translate"
         matTooltipPosition="after"
         >help_outline</mat-icon
-      >
+      > -->
     </mat-form-field>
     <mat-form-field class="form-field">
       <mat-label>{{"CHALLENGE_DIALOG.QUESTION" | translate}}</mat-label>
@@ -61,18 +62,22 @@
       *ngIf="!loading && challenge.type=='bookmark'"
     >
       <mat-label>{{"CHALLENGE_DIALOG.DOCUMENT" | translate}}</mat-label>
-      <mat-select name="challengeDocument" formControlName="document">
+      <mat-select
+        name="challengeDocument"
+        formControlName="document"
+        [matTooltip]="'TOOLTIPS.CHALLENGE_DOCUMENT' | translate"
+      >
         <mat-option *ngFor="let doc of documents" [value]="doc._id">
           {{ doc.docName }}
         </mat-option>
       </mat-select>
-      <mat-icon
+      <!-- <mat-icon
         class="form-tooltip"
         matSuffix
         [matTooltip]="'TOOLTIPS.CHALLENGE_DOCUMENT' | translate"
         matTooltipPosition="after"
         >help_outline</mat-icon
-      >
+      > -->
     </mat-form-field>
     <ng-container *ngIf="challenge.type=='multiple'">
       <div
