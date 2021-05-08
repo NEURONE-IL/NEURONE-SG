@@ -352,7 +352,7 @@ function addTextToEmail(mailHTML, user, link) {
   }
   mailHTML = mailHTML.replace(
     "[CONFIRMATION_EMAIL.TEXT]",
-    "Gracias por registrarse en NEURONE-ADV, " +
+    "Gracias por registrarse en NEURONE-SG, " +
       "antes de ingresar al juego debe confirmar su correo."
   );
   mailHTML = mailHTML.replace(
