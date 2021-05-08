@@ -28,7 +28,7 @@ const getHeadersGM = async (callback) => {
                 if(err){
                     callback(err)
                 }
-                else {
+                else if (credential && credential.token) {
                     callback(null, {headers: {headers: {"x-access-token": credential.token}}, credential: credential});
                 }
             });
