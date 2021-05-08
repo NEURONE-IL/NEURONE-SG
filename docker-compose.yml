@@ -33,6 +33,8 @@ services:
       - SERVER_ROOT=$SERVER_ROOT
       - APP_PORT=$APP_PORT
       - HOST_PORT=$HOST_PORT
+      - SENDEMAIL_USER=$SENDEMAIL_USER
+      - SENDEMAIL_PASSWORD=$SENDEMAIL_PASSWORD
     ports:
       - "$HOST_PORT:$APP_PORT"
     volumes:
