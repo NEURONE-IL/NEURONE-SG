@@ -52,6 +52,7 @@ export class SearchResultsComponent implements OnInit {
             this.fetching = false;
           },
           (err) => {
+            this.fetching = false;
             this.documents = [];
             console.log(err);
           }

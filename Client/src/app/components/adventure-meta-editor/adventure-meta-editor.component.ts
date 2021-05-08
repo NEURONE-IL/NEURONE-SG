@@ -100,6 +100,7 @@ export class AdventureMetaEditorComponent implements OnInit {
     if (this.metaForm.valid) {
       if (this.currentMediaType == 'image') {
         if (this.image) {
+          console.log('habia imagen subida por archivo!');
           this.imageService.upload(this.image).subscribe(
             (res) => {
               this.editorService.setUpdating(true);
@@ -118,6 +119,7 @@ export class AdventureMetaEditorComponent implements OnInit {
             }
           );
         } else if (this.currentImg && this.metaForm.value.image_id) {
+          console.log('habia imagen anterior!!');
           this.editorService.setUpdating(true);
           this.editorService.updateMeta(this.metaForm.value);
           this.editorService.updateAdventure();
@@ -128,6 +130,7 @@ export class AdventureMetaEditorComponent implements OnInit {
           });
         }
       } else {
+        console.log('no había ninguna imagen!');
         this.editorService.setUpdating(true);
         this.editorService.updateMeta(this.metaForm.value);
         this.editorService.updateAdventure();

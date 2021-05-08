@@ -7,10 +7,11 @@ const path = require("path");
 const jwt = require("jsonwebtoken");
 const imagesGridFS = require("../middlewares/imagesGridFS");
 const adventureMiddleware = require("../middlewares/adventureMiddleware");
+const authMiddleware = require("../middlewares/authMiddleware")
 const verifyToken = require("../middlewares/verifyToken");
 const imageHelper = require("../helpers/imagesHelper");
 
-router.get("", [verifyToken], async (req, res) => {
+router.get("", [verifyToken, authMiddleware.isCreator], async (req, res) => {
   Adventure.find({}, (err, adventures) => {
     if (err) {
       return res.status(404).json({
@@ -18,7 +19,9 @@ router.get("", [verifyToken], async (req, res) => {
         err,
       });
     }
-    res.status(200).json(adventures);
+    else {
+      res.status(200).json(adventures);
+    }
   });
 });
 
@@ -58,10 +61,9 @@ router.get("/:adventure_id", [verifyToken], async (req, res) => {
   });
 });
 
-// router.post('',  [verifyToken, authMiddleware.isAdmin, adventureMiddleware.verifyBody], async (req, res) => {
 router.post(
   "",
-  [verifyToken, adventureMiddleware.verifyBody],
+  [verifyToken, authMiddleware.isCreator, adventureMiddleware.verifyBody],
   async (req, res) => {
     const newAdventure = new Adventure(req.body);
     newAdventure.save((err, adventure) => {
@@ -79,6 +81,7 @@ router.post(
   "/new",
   [
     verifyToken,
+    authMiddleware.isCreator,
     imagesGridFS.upload.single("file"),
     adventureMiddleware.verifyNewBody,
   ],
@@ -121,10 +124,9 @@ router.post(
   }
 );
 
-// router.put('/:adventure_id',  [verifyToken, authMiddleware.isAdmin, adventureMiddleware.verifyBody], async (req, res) => {
 router.put(
   "/:adventure_id",
-  [adventureMiddleware.verifyBody, verifyToken],
+  [verifyToken, authMiddleware.isCreator, adventureMiddleware.verifyBody],
   async (req, res) => {
     const id = req.params.adventure_id;
     Adventure.findOne({ _id: id }, (err, adventure) => {
@@ -141,7 +143,8 @@ router.put(
       if (req.body.image_id && adventure.image_id!=req.body.image_id) {
         imageHelper.deleteImage(adventure.image_id);
         adventure.image_id = req.body.image_id;
-      } else {
+      }
+      else if(!req.body.image_id) {
         imageHelper.deleteImage(adventure.image_id);
         adventure.image_id = undefined;
       }
@@ -162,8 +165,7 @@ router.put(
   }
 );
 
-// router.delete('/:adventure_id',  [verifyToken, authMiddleware.isAdmin] , async (req, res) => {
-router.delete("/:adventure_id", [verifyToken], async (req, res) => {
+router.delete("/:adventure_id", [verifyToken, authMiddleware.isCreator], async (req, res) => {
   const _id = req.params.adventure_id;
   Adventure.deleteOne({ _id: _id }, (err, adventure) => {
     if (err) {

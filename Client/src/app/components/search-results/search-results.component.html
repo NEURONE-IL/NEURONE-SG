@@ -5,6 +5,7 @@
         class="logo"
         src="assets/images/neurone_logo.png"
         [routerLink]="['/session/search']"
+        alt="logo"
       />
       <mat-form-field appearance="outline" class="search-box">
         <mat-icon matSuffix (click)="search()" style="cursor: pointer"
@@ -12,6 +13,9 @@
         >
         <input matInput [(ngModel)]="query" (keydown.enter)="search()" />
       </mat-form-field>
+    </div>
+    <div *ngIf="!fetching && documents.length==0">
+      <h3>{{ "SEARCH_INTERFACE.NO_RESULTS_MSG" | translate }}</h3>
     </div>
     <mat-tab-group *ngIf="!fetching" (selectedTabChange)="onTabChange($event)">
       <mat-tab label="{{ 'SEARCH_INTERFACE.TABS.ALL' | translate }}">
@@ -47,7 +51,7 @@
 
               <br />
             </div>
-            <div *ngIf="documents.length <= 0 && !fetching" class="text-center">
+            <div *ngIf="documents.length <= 0 && !fetching">
               <h3>{{ "SEARCH_INTERFACE.NO_RESULTS_MSG" | translate }}</h3>
             </div>
           </div>

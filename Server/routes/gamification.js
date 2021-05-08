@@ -14,9 +14,10 @@ const levelService = require('../services/neuronegm/level');
 const challengeService = require('../services/neuronegm/challenge');
 const leaderboardService = require('../services/neuronegm/leaderboard');
 
+const authMiddleware = require("../middlewares/authMiddleware");
+
 
 const verifyToken = require('../middlewares/verifyToken');
-const { getLevels } = require('../services/neuronegm/level');
 
 router.get('/isGamified', verifyToken, async (req, res) => {
     let credential = await Credential.findOne({code: "superadmin"}, err => {
@@ -38,7 +39,7 @@ router.get('/isGamified', verifyToken, async (req, res) => {
     }
 });
 
-router.get('/gamify', verifyToken, async (req, res) => {
+router.get('/gamify', [verifyToken, authMiddleware.isAdmin], async (req, res) => {
     let credential = await Credential.findOne({code: "superadmin"}, err => {
         if(err){
             return res.status(404).json({
@@ -87,7 +88,7 @@ router.get('/gamify', verifyToken, async (req, res) => {
     }
 })
 
-router.get('/gamifyDependent', verifyToken, async (req, res) => {
+router.get('/gamifyDependent', [verifyToken, authMiddleware.isAdmin], async (req, res) => {
     let credential = await Credential.findOne({code: "superadmin"}, err => {
         if(err){
             return res.status(404).json({
@@ -96,11 +97,6 @@ router.get('/gamifyDependent', verifyToken, async (req, res) => {
             });
         }
     })
-    console.log('------------------------------------------------------');
-    console.log("CREDS: ",credential);
-    console.log('------------------------------------------------------');
-    console.log('posting levels');
-    console.log('------------------------------------------------------');
     if(credential && !credential.gamified){
         await levelService.postAllLevels(err => {
             if(err){
@@ -110,8 +106,6 @@ router.get('/gamifyDependent', verifyToken, async (req, res) => {
                 });
             }
         });
-        console.log('levels posted');
-        console.log('------------------------------------------------------');
         await challengeService.postAllChallenges(err => {
             if(err){
                 return res.status(404).json({

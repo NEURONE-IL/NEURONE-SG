@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const authMiddleware = require("../middlewares/authMiddleware");
 
 const imagesGridFS = require("../middlewares/imagesGridFS");
 const verifyToken = require("../middlewares/verifyToken");
@@ -63,7 +64,7 @@ router.get("", async (req, res) => {
 
 router.post(
   "",
-  [verifyToken, imagesGridFS.upload.single("file")],
+  [verifyToken, authMiddleware.isCreator, imagesGridFS.upload.single("file")],
   async (req, res) => {
     if (req.file) {
       let imageData = {

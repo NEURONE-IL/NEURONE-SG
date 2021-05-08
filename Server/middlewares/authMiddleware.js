@@ -124,20 +124,24 @@ const isAdmin = async(req, res, next) => {
             return;
         }
         var userId = decoded._id;
-        console.log(decoded);
         User.findOne({_id: userId}).then(user => {
             const roleId = user.role;
             Role.findOne({_id: roleId}).then(role => {
-                console.log(role);
                 if(role.name == 'admin') {
                     next();
+                    return;
+                }
+                else {
+                    res.status(401).send('Unauthorized: Requires admin role!');
                     return;
                 }
             })
         });
     }
-    res.status(401).send('Unauthorized: Requires admin role!');
-    return;
+    else {
+        res.status(401).send('Unauthorized');
+        return;
+    }
 }
 
 const isCreator = async(req, res, next) => {
@@ -151,20 +155,24 @@ const isCreator = async(req, res, next) => {
             return;
         }
         var userId = decoded._id;
-        console.log(decoded);
         User.findOne({_id: userId}).then(user => {
             const roleId = user.role;
             Role.findOne({_id: roleId}).then(role => {
-                console.log(role);
                 if(role.name == 'creator' || role.name == 'admin') {
                     next();
+                    return;
+                }
+                else {
+                    res.status(401).send('Unauthorized: Requires creator role at least!');
                     return;
                 }
             })
         });
     }
-    res.status(401).send('Unauthorized: Requires creator role at least!');
-    return;
+    else {
+        res.status(401).send('Unauthorized');
+        return;
+    }
 }
 
 const isPlayer = async(req, res, next) => {
@@ -181,16 +189,21 @@ const isPlayer = async(req, res, next) => {
         User.findOne({_id: userId}).then(user => {
             const roleId = user.role;
             Role.findOne({_id: roleId}).then(role => {
-                console.log(role);
                 if(role.name == 'player' || role.name == 'creator' || role.name == 'admin') {
                     next();
+                    return;
+                }
+                else {
+                    res.status(401).send('Unauthorized: Requires player role at least!');
                     return;
                 }
             })
         });
     }
-    res.status(401).send('Unauthorized: Requires player role at least!');
-    return;
+    else {
+        res.status(401).send('Unauthorized');
+        return;
+    }
 }
 
 const authMiddleware = {

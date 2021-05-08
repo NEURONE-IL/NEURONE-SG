@@ -11,7 +11,6 @@ const answerMiddleware = require("../middlewares/answerMiddleware");
 const verifyToken = require("../middlewares/verifyToken");
 const config = require("config");
 
-// router.post('',  [verifyToken, authMiddleware.isAdmin, adventureMiddleware.verifyBody], async (req, res) => {
 router.post(
   "",
   [answerMiddleware.verifyBody, verifyToken],
@@ -137,7 +136,7 @@ router.put(
   }
 );
 
-router.delete("/:answer_id", [verifyToken], async (req, res) => {
+router.delete("/:answer_id", [verifyToken, authMiddleware.isAdmin], async (req, res) => {
   const _id = req.params.answer_id;
   Answer.deleteOne({ _id: _id }, (err, answer) => {
     if (err) {
