@@ -43,7 +43,9 @@ NEURONE-SG is powered by:
 - Go into the project directory and create and complete your .env file accordingly.
   **NOTE:** An env-example file is provided in this repository to help you complete your own. This file provides the necessary data for the NEURONE-SG to work correctly, this includes external modules endpoints (NEURONE and NEURONE-GM), email service credentials and database information.
   - In the project directory run the following command:
+  
     $ docker-compose up --build -d
+    
   - When the project is done building and deploying it will be live on the machine host and the port specified in the .env file.
 
 ## Credits
