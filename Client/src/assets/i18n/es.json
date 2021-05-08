@@ -53,7 +53,8 @@
     "TOASTR": {
       "DELETE_SUCCESS": "Aventura eliminada correctamente",
       "DELETE_FAILURE": "Error al eliminar la aventura"
-    }
+    },
+    "NO_ADVENTURES": "No hay aventuras disponibles en este momento."
   },
   "REGISTER": {
     "TITLE": "Registrarse",

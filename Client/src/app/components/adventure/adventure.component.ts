@@ -10,11 +10,11 @@ import { SearchService } from 'src/app/services/search/search.service';
   styleUrls: ['./adventure.component.scss'],
 })
 export class AdventureComponent implements OnInit, OnDestroy {
-  adventure: any;
   currentNode: any;
   searchEnabled: any;
+  imageId: string;
+  loadingMedia: boolean = false;
 
-  adventureSubscription: Subscription;
   currentNodeSubscription: Subscription;
   searchEnabledSubscription: Subscription;
 
@@ -27,17 +27,17 @@ export class AdventureComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.adventureSubscription = this.gameService.adventureEmitter.subscribe(
-      (adventure) => {
-        this.adventure = adventure;
-      }
-    );
     // Subscribe to the current node
     this.currentNodeSubscription = this.gameService.currentNodeEmitter.subscribe(
       (node) => {
         this.currentNode = node;
-        if (this.currentNode.data.image_id) this.currentMedia = 'image';
-        else if (this.currentNode.data.video) this.currentMedia = 'video';
+        this.imageId = null;
+        if (this.currentNode.data && this.currentNode.data.image_id) {
+          this.currentMedia = 'image';
+          this.imageId = this.currentNode.data.image_id;
+          this.loadingMedia = true;
+        }
+        else if (this.currentNode.data && this.currentNode.data.video) this.currentMedia = 'video';
         else this.currentMedia = 'none';
       }
     );
@@ -53,8 +53,11 @@ export class AdventureComponent implements OnInit, OnDestroy {
     this.searchService.toggleSearch();
   }
 
+  mediaLoaded() {
+    this.loadingMedia = true;
+  }
+
   ngOnDestroy(): void {
-    this.adventureSubscription.unsubscribe();
     this.currentNodeSubscription.unsubscribe();
   }
 }

@@ -12,6 +12,10 @@
       <mat-card-subtitle *ngIf="gmStats && playerLevel">{{
         playerLevel
       }}</mat-card-subtitle>
+      <p *ngIf="gmStats && playerPoints">
+        {{ playerPoints }} {{ "GAMIFICATION.POINTS" | translate }} -
+        {{ "GAMIFICATION.RANK_TEXT" | translate: { rank: playerRank } }}
+      </p>
       <button
         mat-icon-button
         class="instructions-btn"
@@ -21,10 +25,6 @@
       >
         <mat-icon>help</mat-icon>
       </button>
-      <p *ngIf="gmStats && playerPoints">
-        {{ playerPoints }} {{ "GAMIFICATION.POINTS" | translate }} -
-        {{ "GAMIFICATION.RANK_TEXT" | translate: { rank: playerRank } }}
-      </p>
     </mat-card-header>
     <mat-divider [inset]="true" class="bar-divider"></mat-divider>
     <mat-card-content *ngIf="!challengePending; else challengeContent">

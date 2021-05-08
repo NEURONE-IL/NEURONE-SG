@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GameService } from '../../services/game/game.service';
 import { AnswerService } from '../../services/game/answer.service';
@@ -27,6 +27,9 @@ export class GameBarComponent implements OnInit, OnDestroy {
   gmStats: any;
   avatarImg: string;
 
+  @Output()
+  adventureFinishedEvent = new EventEmitter<boolean>();
+
   // Subscriptions
   adventureSubscription: Subscription;
   currentNodeSubscription: Subscription;
@@ -54,6 +57,8 @@ export class GameBarComponent implements OnInit, OnDestroy {
         this.currentNode = node;
         if (this.currentNode.type == 'challenge') {
           this.challengePending = true;
+        } else if (this.currentNode.type == 'ending') {
+          this.adventureFinishedEvent.emit(true);
         } else {
           this.setCurrentLinks();
         }

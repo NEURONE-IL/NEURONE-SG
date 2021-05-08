@@ -81,8 +81,17 @@
   border-radius: 10px;
 }
 
+.loading {
+  opacity: 0;
+  background: transparent url('/assets/images/loading.gif') center no-repeat;
+}
+
 .neurone-btn {
   position: absolute;
   top: 50%;
   right: 5px;
+}
+
+.adventure-img {
+  background: transparent url('/assets/images/loading.gif') center no-repeat;
 }

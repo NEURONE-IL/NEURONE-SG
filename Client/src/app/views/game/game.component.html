@@ -5,5 +5,5 @@
     <router-outlet></router-outlet>
   </div>
   <app-adventure [style.grid-area]="'adventure'"></app-adventure>
-  <app-game-bar [style.grid-area]="'challenge'"></app-game-bar>
+  <app-game-bar [style.grid-area]="'challenge'" (adventureFinishedEvent)="finishAdventure($event)"></app-game-bar>
 </div>

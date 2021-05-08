@@ -3,9 +3,11 @@
     <div class="image-wrapper" *ngIf="currentMedia == 'image'">
       <img
         class="node-img"
-        src="{{ apiUrl + '/image/' + currentNode.data.image_id }}"
+        [ngClass]="{'loading': !loadingMedia}"
+        src="{{ apiUrl + '/image/' + imageId }}"
         onerror="this.src='/assets/images/placeholder.png';"
         alt=""
+        (load)="mediaLoaded()"
       />
     </div>
     <div class="video-wrapper" *ngIf="currentMedia == 'video'">

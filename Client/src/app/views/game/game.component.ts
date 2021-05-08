@@ -15,6 +15,7 @@ export class GameComponent implements OnInit, OnDestroy, CanExitGuard {
   searchEnabled: boolean;
   loading: boolean;
   exitMessage: string;
+  adventureFinished: boolean = false;
 
   searchEnabledSubscription: Subscription;
   loadingSubscription: Subscription;
@@ -46,9 +47,19 @@ export class GameComponent implements OnInit, OnDestroy, CanExitGuard {
     });
   }
 
+  finishAdventure(evt) {
+    if(evt) {
+      this.adventureFinished = true;
+    }
+  }
+
   @HostListener('window:beforeunload')
   canDeactivate(): Observable<boolean> | boolean {
-    return false;
+    if (this.adventureFinished) {
+      return true
+    } else {
+      return false;
+    }
   }
 
   @HostListener('window:beforeunload', ['$event'])

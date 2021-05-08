@@ -63,15 +63,6 @@ export class MultipleFormComponent implements OnInit {
     if (this.answerForm.valid) {
       const answer = this.answerForm.value;
       this.challengeFinishedEvent.emit(answer);
-      // this.answerService.postAnswer(answer).subscribe(
-      //   (res) => {
-      //     this.challengeFinishedEvent.emit(res);
-      //   },
-      //   (err) => {
-      //     console.log(err);
-      //     this.challengeFinishedEvent.emit();
-      //   }
-      // );
     } else {
       console.log('invalid answer form');
     }
