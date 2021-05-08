@@ -1,6 +1,7 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { TranslateService } from '@ngx-translate/core';
 import { NewLinkDialogComponent } from '../new-link-dialog/NewLinkDialogComponent';
 
 @Component({
@@ -19,7 +20,8 @@ export class LinksTableDialog implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public newLinkDialog: MatDialog,
-    public dialogRef: MatDialogRef<LinksTableDialog>
+    public dialogRef: MatDialogRef<LinksTableDialog>,
+    private translate: TranslateService
   ) {
     this.links = Object.assign([], data.links);
     this.currentNode = data.node;
@@ -35,9 +37,13 @@ export class LinksTableDialog implements OnInit {
   }
 
   deleteLink(idx) {
+    this.translate.get('WARNINGS').subscribe((res) => {
+      if (confirm(res.DELETE_LINK)) {
     this.dataSource.data.splice(idx, 1);
     this.dataSource._updateChangeSubscription();
     console.log(idx);
+      }
+    });
   }
 
   addLink(link) {

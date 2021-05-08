@@ -85,31 +85,39 @@ export class WebResourcesTableDialogComponent implements OnInit {
 
   remove(resource) {
     console.log(resource);
-    this.fetching = true;
-    this.translate.get('WEB_RESOURCES_TABLE.REMOVE_RESOURCE').subscribe(
-      (msg) => {
-        this.search.delete(resource).subscribe(
-          (res) => {
-            this.toastr.success(msg.OK);
-            this.search.fetchResults('*', null, this.adventure._id, null).subscribe(
-              (resources) => {
-                this.resources = resources;
-                this.resources = this.resources.filter((r) => r.type != 'image');
-                this.dataSource = new MatTableDataSource(this.resources);
-                this.fetching = false;
+    this.translate.get('WARNINGS').subscribe((res) => {
+      if (confirm(res.DELETE_RESOURCE)) {
+        this.fetching = true;
+        this.translate.get('WEB_RESOURCES_TABLE.REMOVE_RESOURCE').subscribe(
+          (msg) => {
+            this.search.delete(resource).subscribe(
+              (res) => {
+                this.toastr.success(msg.OK);
+                this.search
+                  .fetchResults('*', null, this.adventure._id, null)
+                  .subscribe(
+                    (resources) => {
+                      this.resources = resources;
+                      this.resources = this.resources.filter(
+                        (r) => r.type != 'image'
+                      );
+                      this.dataSource = new MatTableDataSource(this.resources);
+                      this.fetching = false;
+                    },
+                    (err) => {
+                      console.log(err);
+                    }
+                  );
               },
               (err) => {
+                this.toastr.error(msg.ERROR);
                 console.log(err);
               }
             );
           },
-          (err) => {
-            this.toastr.error(msg.ERROR);
-            console.log(err);
-          }
+          (err) => {}
         );
-      },
-      (err) => {}
-    );
+      }
+    });
   }
 }

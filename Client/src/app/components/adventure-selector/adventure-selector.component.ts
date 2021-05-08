@@ -146,20 +146,24 @@ export class AdventureSelectorComponent implements OnInit {
   }
 
   deleteAdventure(adventure: any) {
-    this.adventureService.deleteAdventure(adventure).subscribe(
-      (res) => {
-        this.translate.get("SELECTOR.TOASTR").subscribe(res => {
-          this.toastr.success(res.DELETE_SUCCESS);
-        });
-        this.reloadPage();
-      },
-      (err) => {
-        this.translate.get("SELECTOR.TOASTR").subscribe(res => {
-          this.toastr.error(res.DELETE_FAILURE);
-        });
-        console.log(err);
+    this.translate.get('WARNINGS').subscribe((res) => {
+      if (confirm(res.DELETE_ADVENTURE)) {
+        this.adventureService.deleteAdventure(adventure).subscribe(
+          (res) => {
+            this.translate.get('SELECTOR.TOASTR').subscribe((res) => {
+              this.toastr.success(res.DELETE_SUCCESS);
+            });
+            this.reloadPage();
+          },
+          (err) => {
+            this.translate.get('SELECTOR.TOASTR').subscribe((res) => {
+              this.toastr.error(res.DELETE_FAILURE);
+            });
+            console.log(err);
+          }
+        );
       }
-    );
+    });
   }
 
   showNewAdventureDialog(): void {
@@ -177,13 +181,13 @@ export class AdventureSelectorComponent implements OnInit {
         console.log('new adventure: ', result.newAdventure);
         this.adventureService.createAdventure(result.newAdventure).subscribe(
           (res) => {
-            this.translate.get("NEW_ADVENTURE.TOASTR").subscribe(res => {
+            this.translate.get('NEW_ADVENTURE.TOASTR').subscribe((res) => {
               this.toastr.success(res.SUCCESS);
             });
             this.reloadPage();
           },
           (err) => {
-            this.translate.get("NEW_ADVENTURE.TOASTR").subscribe(res => {
+            this.translate.get('NEW_ADVENTURE.TOASTR').subscribe((res) => {
               this.toastr.error(res.FAILURE);
             });
             console.log(err);

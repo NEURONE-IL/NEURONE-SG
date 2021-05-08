@@ -215,23 +215,27 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   // Removes a node from current adventure
   // and cleans referenced links
   deleteNode() {
-    try {
-      if (this.currentNode && this.currentNode.type != 'initial') {
-        this.nodes = this.nodes.filter((node) => {
-          return node.id != this.currentNode.id;
-        });
-        // Clean orphaned links
-        this.cleanOrphanedLinks();
-        this.editorService.setAdventure(this.adventure);
-        this.closeEditor();
-        this.refreshGraph();
+    this.translate.get("WARNINGS").subscribe(res => {
+      if(confirm(res.DELETE_NODE)) {
+        try {
+          if (this.currentNode && this.currentNode.type != 'initial') {
+            this.nodes = this.nodes.filter((node) => {
+              return node.id != this.currentNode.id;
+            });
+            // Clean orphaned links
+            this.cleanOrphanedLinks();
+            this.editorService.setAdventure(this.adventure);
+            this.closeEditor();
+            this.refreshGraph();
+          }
+        } catch (error) {
+          this.translate.get('EDITOR.NODE_EDITOR.TOASTR').subscribe((res) => {
+            this.toastr.error(res.DELETE_FAILURE);
+          });
+          console.log('error deleting node: ', error);
+        }
       }
-    } catch (error) {
-      this.translate.get('EDITOR.NODE_EDITOR.TOASTR').subscribe((res) => {
-        this.toastr.error(res.DELETE_FAILURE);
-      });
-      console.log('error deleting node: ', error);
-    }
+    });
   }
 
   // Deletes orphaned links

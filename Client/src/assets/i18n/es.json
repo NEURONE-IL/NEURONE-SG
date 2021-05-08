@@ -372,5 +372,15 @@
     "SHOW_SEARCH_IF": "Mostrar interfaz de búsqueda de NEURONE",
     "HIDE_SEARCH_IF": "Esconder interfaz de búsqueda de NEURONE",
     "INSTRUCTIONS_BTN": "Mostrar instrucciones"
+  },
+  "EXIT_WARNINGS": {
+    "EDITOR": "¿Estás seguro/a que deseas salir? Podrías perder los cambios no guardados.",
+    "GAME": "¿Estás seguro/a que deseas abandonar el juego?"
+  },
+  "WARNINGS": {
+    "DELETE_NODE": "¿Estás seguro/a que deseas eliminar este nodo?",
+    "DELETE_ADVENTURE": "¿Estás seguro/a que deseas eliminar esta aventura?",
+    "DELETE_LINK": "¿Estás seguro/a que deseas eliminar esta rama?",
+    "DELETE_RESOURCE": "¿Estás seguro/a que deseas eliminar este recurso?"
   }
 }
