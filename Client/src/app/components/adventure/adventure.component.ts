@@ -13,7 +13,7 @@ export class AdventureComponent implements OnInit, OnDestroy {
   currentNode: any;
   searchEnabled: any;
   imageId: string;
-  loadingMedia: boolean = false;
+  loadingImg: boolean = true;
 
   currentNodeSubscription: Subscription;
   searchEnabledSubscription: Subscription;
@@ -35,7 +35,7 @@ export class AdventureComponent implements OnInit, OnDestroy {
         if (this.currentNode.data && this.currentNode.data.image_id) {
           this.currentMedia = 'image';
           this.imageId = this.currentNode.data.image_id;
-          this.loadingMedia = true;
+          this.loadingImg = true;
         }
         else if (this.currentNode.data && this.currentNode.data.video) this.currentMedia = 'video';
         else this.currentMedia = 'none';
@@ -54,7 +54,7 @@ export class AdventureComponent implements OnInit, OnDestroy {
   }
 
   mediaLoaded() {
-    this.loadingMedia = true;
+    this.loadingImg = false;
   }
 
   ngOnDestroy(): void {
