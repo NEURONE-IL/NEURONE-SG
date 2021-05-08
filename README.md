@@ -86,7 +86,7 @@ NEURONE-SG is powered by:
 
 - Daniel Gacitúa for his original work on the NEURONE core module.
 - José Mellado for his work on NEURONE-GM.
-- The Tutelage project development team (Camila Marquez, José Mellado, Fernando Villarreal) for their work during the development of NEURONE-GAME, the first game-based platform on the NEURONE ecosystem which was a huge inspiration for the NEURONE-SG project.
+- The TUTELAGE project development team (Camila Marquez, José Mellado, Fernando Villarreal) for their work during the development of NEURONE-GAME, the first game-based platform on the NEURONE ecosystem which was a huge inspiration for the NEURONE-SG project.
 - The following publications that were crucial during the analysis phase of this project:
 
     - González‐Ibáñez, R., Gacitúa, D., Sormunen, E., & Kiili, C. (2017). NEURONE: oNlinE inqUiRy experimentatiON systEm. Proceedings of the Association for Information Science and Technology, 54(1), 687-689.
