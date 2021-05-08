@@ -239,29 +239,33 @@ router.put("/:user_id/avatar", [verifyToken], async (req, res) => {
 
 // Creates player on NEURONE-GM
 function saveGMPlayer(req, user, res) {
-  const player = {
-    name: user.username,
-    last_name: user.username,
-    sourceId: user.id,
-  };
-  playerService.postPlayer(player, (err, data) => {
-    if (err) {
-      console.log(err);
-      res.status(400).json({
-        user,
-      });
-    } else {
-      user.gm_code = data.code;
-      user.save((err) => {
-        if (err) {
-          return res.status(404).json({
-            ok: false,
-            err,
-          });
-        }
-      });
-    }
-  });
+  try {
+    const player = {
+      name: user.username,
+      last_name: user.username,
+      sourceId: user.id,
+    };
+    playerService.postPlayer(player, (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(400).json({
+          user,
+        });
+      } else {
+        user.gm_code = data.code;
+        user.save((err) => {
+          if (err) {
+            return res.status(404).json({
+              ok: false,
+              err,
+            });
+          }
+        });
+      }
+    });
+  } catch (error) {
+    console.log("couldn't save gm player");
+  }
 }
 
 // Sends user confirmation email
@@ -307,25 +311,29 @@ function sendConfirmationEmail(user, res, req) {
 
 // Reads email template and adds custom data
 function generateEmailData(req, token, user) {
-  const emailTemplateFile = appDir + "/assets/confirmationEmail.html";
-  const link = "http://" + req.headers.host + "/confirmation/" + token.token;
-  let mailHTML = null;
-  let mailText =
-    "Hola,\n\n" +
-    "Por favor, verifique su correo ingresando al siguiente link: \nhttp://" +
-    link +
-    ".\n";
+  try {
+    const emailTemplateFile = appDir + "/assets/confirmationEmail.html";
+    const link = "http://" + req.headers.host + "/confirmation/" + token.token;
+    let mailHTML = null;
+    let mailText =
+      "Hola,\n\n" +
+      "Por favor, verifique su correo ingresando al siguiente link: \nhttp://" +
+      link +
+      ".\n";
 
-  // Load email template
-  mailHTML = fs.readFileSync(emailTemplateFile, "utf8", (err, data) => {
-    if (err) {
-      console.log(err);
-    }
-    mailHTML = data.toString();
-  });
-  // Add custom text to email
-  mailHTML = addTextToEmail(mailHTML, user, link);
-  return { mailHTML, mailText };
+    // Load email template
+    mailHTML = fs.readFileSync(emailTemplateFile, "utf8", (err, data) => {
+      if (err) {
+        console.log(err);
+      }
+      mailHTML = data.toString();
+    });
+    // Add custom text to email
+    mailHTML = addTextToEmail(mailHTML, user, link);
+    return { mailHTML, mailText };
+  } catch (error) {
+    return undefined;
+  }
 }
 
 // Add translated text and user data to email
