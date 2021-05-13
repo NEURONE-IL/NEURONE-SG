@@ -1,5 +1,9 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { TranslateService } from '@ngx-translate/core';
 import { NewLinkDialogComponent } from '../new-link-dialog/NewLinkDialogComponent';
@@ -10,7 +14,6 @@ import { NewLinkDialogComponent } from '../new-link-dialog/NewLinkDialogComponen
   styleUrls: ['links-table-dialog.scss'],
 })
 export class LinksTableDialog implements OnInit {
-
   nodes: any;
   currentNode: any;
   links: any;
@@ -39,9 +42,9 @@ export class LinksTableDialog implements OnInit {
   deleteLink(idx) {
     this.translate.get('WARNINGS').subscribe((res) => {
       if (confirm(res.DELETE_LINK)) {
-    this.dataSource.data.splice(idx, 1);
-    this.dataSource._updateChangeSubscription();
-    console.log(idx);
+        this.dataSource.data.splice(idx, 1);
+        this.dataSource._updateChangeSubscription();
+        console.log(idx);
       }
     });
   }
@@ -51,13 +54,14 @@ export class LinksTableDialog implements OnInit {
     this.dataSource._updateChangeSubscription();
   }
 
-  editLink(idx) {
-    console.log(idx);
+  editLink(updatedLink, idx) {
+    this.dataSource.data[idx] = updatedLink;
+    this.dataSource._updateChangeSubscription();
   }
 
   getNodeLabel(id) {
     try {
-      return this.nodes.find(node => node.id==id).label;
+      return this.nodes.find((node) => node.id == id).label;
     } catch (error) {
       console.log(error);
       return id;
@@ -90,6 +94,26 @@ export class LinksTableDialog implements OnInit {
     });
   }
 
+  showEditLinkDialog(link, idx) {
+    const linkDialogRef = this.newLinkDialog.open(NewLinkDialogComponent, {
+      width: '40rem',
+      data: {
+        nodes: this.nodes,
+        node: this.currentNode,
+        targetNodes: this.targetNodes,
+        link: link,
+      },
+    });
+
+    linkDialogRef.afterClosed().subscribe((result) => {
+      console.log('closed linkDialog');
+      if (result.newLink) {
+        console.log('updated link: ', result.newLink);
+        this.editLink(result.newLink, idx);
+      }
+    });
+  }
+
   get targetNodes() {
     return this.nodes.filter((node) => this.currentNode != node);
   }
@@ -99,11 +123,12 @@ export class LinksTableDialog implements OnInit {
   }
 
   viewTable() {
-    const nodeLinks = this.dataSource.data.filter(link => link.source == this.currentNode.id);
-    if(nodeLinks.length > 0) {
+    const nodeLinks = this.dataSource.data.filter(
+      (link) => link.source == this.currentNode.id
+    );
+    if (nodeLinks.length > 0) {
       return true;
     }
     return false;
   }
-
 }

@@ -19,6 +19,7 @@ export class NewLinkDialogComponent {
   GMlevels = [];
 
   activatorTypes: any;
+  fetchingLevels: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -54,9 +55,11 @@ export class NewLinkDialogComponent {
             viewValue: level.name,
           });
         });
+        this.fetchingLevels = false;
       },
       (err) => {
         console.log('error fetching NEURONE-GM levels: ', err);
+        this.fetchingLevels = false;
       }
     );
     this.linkForm = this.formBuilder.group({
@@ -65,6 +68,25 @@ export class NewLinkDialogComponent {
       target: ['', [Validators.required]],
       activators: this.formBuilder.array([]),
     });
+
+    if (data.link) {
+      const link = data.link;
+      console.log('this is actually an edit link dialog for link: ', link);
+      if (link.label) this.linkForm.get('label').setValue(link.label);
+      if (link.source) this.linkForm.get('source').setValue(link.source);
+      if (link.target) this.linkForm.get('target').setValue(link.target);
+      if (link.activators) {
+        link.activators.forEach(activator => {
+          const existingActivator = this.formBuilder.group({
+            node: [activator.node],
+            condition: [activator.condition, Validators.required],
+            level: [activator.level],
+            links_count: [activator.links_count],
+          });
+          this.activatorsArray.push(existingActivator);
+        });
+      }
+    }
   }
 
   ngOnInit(): void {}
@@ -105,6 +127,7 @@ export class NewLinkDialogComponent {
 
     this.activatorsArray.push(newActivator);
   }
+
   removeItem() {
     this.activatorsArray.removeAt(this.activatorsArray.length - 1);
   }

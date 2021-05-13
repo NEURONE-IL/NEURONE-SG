@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>{{"NEW_LINK_DIALOG.TITLE" | translate}}</h1>
-<div mat-dialog-content>
+<div mat-dialog-content *ngIf="!fetchingLevels">
   <mat-grid-list cols="2" rowHeight="4:1">
     <form class="new-link-form" [formGroup]="linkForm">
       <mat-grid-tile>
@@ -185,7 +185,7 @@
   </mat-grid-list>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-button color="primary" (click)="addNewLink()">
+  <button mat-button color="primary" (click)="addNewLink()" *ngIf="!fetchingLevels">
     {{"COMMON.SAVE" | translate}}
   </button>
   <button mat-button [mat-dialog-close]="true">
