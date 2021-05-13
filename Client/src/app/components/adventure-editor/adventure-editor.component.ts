@@ -1,6 +1,11 @@
-import { Component, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { EditorService } from 'src/app/services/game/editor.service';
@@ -31,15 +36,18 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   adventure: any;
   currentNode: any;
   updating: boolean;
+  currentNodeType: string;
 
   nodeTypes: any;
   initialType: any;
   mediaTypes: any;
   currentMediaType: string;
 
-  image: File;  // image file selected
+  image: File; // image file selected
   imagePreview: string; // selected image file preview
   currentImg: string; // existing image from db
+  @ViewChild('fileInput')
+  fileInputElement: ElementRef; // file input element
 
   apiUrl = environment.apiUrl;
 
@@ -125,6 +133,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   closeEditor() {
     this.editorService.currentNode = null;
     if (this.nodeEditor) {
+      this.resetImg();
       this.nodeEditor.close();
     }
   }
@@ -137,6 +146,9 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
 
   openEditor(node: any) {
     this.editorService.setCurrentNode(node);
+    this.currentNodeType = this.currentNode.type;
+    console.log('currentNode on openEditor: ', this.currentNode);
+    this.resetImg();
     if (this.currentNode.data.image_id) {
       const imageId = this.currentNode.data.image_id;
       this.nodeForm.get('data.image_id').setValue(imageId);
@@ -150,29 +162,57 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     this.nodeEditor.open();
   }
 
+  private resetImg() {
+    this.imagePreview = undefined;
+    this.image = undefined;
+    this.currentImg = undefined;
+    this.nodeForm.get('data.image_id').setValue(undefined);
+    this.resetImgInput();
+  }
+
+  private resetImgInput() {
+    if (this.fileInputElement && this.fileInputElement.nativeElement) {
+      // console.log('reset file input');
+      this.fileInputElement.nativeElement.value = '';
+    }
+  }
+
   // Updates node changes directly into the adventure
   async updateNode() {
     try {
       let newNode = this.nodeForm.value;
       if (this.nodeForm.valid) {
-        // Upload image if necessary
-        if(this.image) {
-          await this.uploadImage(newNode);
-        }
-        // Validate selected media
-        this.validateMedia(newNode);
-        // Attach updated node to adventure
-        this.nodes.forEach((node, index) => {
-          if (node.id == this.currentNode.id) {
-            this.nodes[index] = newNode;
-          }
-        });
-        // Update referenced links
-        this.updateLinks(newNode);
+        if (this.currentNode.type == 'initial' && newNode.type != 'initial') {
+          console.log('Initial node type cannot be changed');
+        } else {
+          if (
+            this.currentMediaType == 'image' &&
+            (!this.image && !newNode.data.image_id)
+          ) {
+            this.translate.get('COMMON.TOASTR').subscribe((res) => {
+              this.toastr.warning(res.IMG_NOT_SELECTED);
+            });
+          } else {
+            // Upload image if necessary
+            if (this.image) {
+              await this.uploadImage(newNode);
+            }
+            // Validate selected media
+            this.validateMedia(newNode);
+            // Attach updated node to adventure
+            this.nodes.forEach((node, index) => {
+              if (node.id == this.currentNode.id) {
+                this.nodes[index] = newNode;
+              }
+            });
+            // Update referenced links
+            this.updateLinks(newNode);
 
-        this.editorService.setAdventure(this.adventure);
-        this.closeEditor();
-        this.refreshGraph();
+            this.editorService.setAdventure(this.adventure);
+            this.closeEditor();
+            this.refreshGraph();
+          }
+        }
       } else {
         this.translate.get('COMMON.TOASTR').subscribe((res) => {
           this.toastr.warning(res.INVALID_FORM);
@@ -215,8 +255,8 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   // Removes a node from current adventure
   // and cleans referenced links
   deleteNode() {
-    this.translate.get("WARNINGS").subscribe(res => {
-      if(confirm(res.DELETE_NODE)) {
+    this.translate.get('WARNINGS').subscribe((res) => {
+      if (confirm(res.DELETE_NODE)) {
         try {
           if (this.currentNode && this.currentNode.type != 'initial') {
             this.nodes = this.nodes.filter((node) => {
@@ -244,18 +284,19 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   private cleanOrphanedLinks() {
     this.links = this.links.filter((link) => {
       return (
-        link.source != this.currentNode.id &&
-        link.target != this.currentNode.id
+        link.source != this.currentNode.id && link.target != this.currentNode.id
       );
     });
   }
 
+  // Pushes a new node into the current adventure
   addNode(newNode) {
     newNode.id = nanoid(13);
     this.nodes.push(newNode);
     this.refreshGraph();
   }
 
+  // Refreshes the graphical editor
   refreshGraph() {
     this.closeDialogs();
     this.closeEditor();
@@ -263,6 +304,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     console.log(this.adventure);
   }
 
+  // Displays node creation dialog
   showNewNodeForm(): void {
     const nodeDialogRef = this.newNodeDialog.open(NewNodeDialogComponent, {
       width: '40rem',
@@ -278,6 +320,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Displays link creation dialog
   showLinksDialog() {
     const linksDialogRef = this.linksDialog.open(LinksTableDialog, {
       width: '70rem',
@@ -302,6 +345,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     );
   }
 
+  // Displays challenge dialog
   showChallengeDialog() {
     const challengeDialogRef = this.challengeDialog.open(
       ChallengeDialogComponent,
@@ -321,6 +365,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Displays web resources dialog
   showWebDialog() {
     const webDialogRef = this.webDialog.open(WebResourcesTableDialogComponent, {
       width: '70rem',
@@ -336,11 +381,16 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Updates current node type
+  // this is needed to refresh the editor form
   updateNodeType(type) {
-    this.currentNode.type = type;
+    // this.currentNode.type = type;
+    this.currentNodeType = type;
     console.log(this.currentNode);
   }
 
+  // Handles the event when the user
+  // selects a new file on the image file selector
   handleFileInput(files: FileList) {
     this.image = files.item(0);
     let reader = new FileReader();
@@ -350,6 +400,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     reader.readAsDataURL(this.image);
   }
 
+  // Sets validators for different node types on the editor form
   nodeMediaChange(evt) {
     if (evt.value == 'none') {
       this.nodeForm.get('data.video').setErrors(null);
@@ -365,6 +416,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Uploads an image
   private async uploadImage(newNode) {
     let uploadedImage;
     await this.imageService
@@ -381,22 +433,28 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Gets the current adventure nodes
   get nodes() {
     return this.adventure.nodes;
   }
 
+  // Sets the current adventure nodes
   set nodes(nodes) {
     this.adventure.nodes = nodes;
   }
 
+  // Gets the current adventure links
   get links() {
     return this.adventure.links;
   }
 
+  // Sets the current adventure links
   set links(links) {
     this.adventure.links = links;
   }
 
+  // Gets the all nodes that are different from the current node
+  // this represents every possible target on link creation
   get targetNodes() {
     return this.adventure.nodes.filter((node) => this.currentNode != node);
   }

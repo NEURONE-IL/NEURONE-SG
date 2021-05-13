@@ -14,15 +14,15 @@
         <form class="node-form" [formGroup]="nodeForm">
           <mat-form-field
             class="node-form-field"
-            *ngIf="currentNode.type != 'initial'"
+            *ngIf="currentNodeType != 'initial'"
           >
             <mat-label>{{ "EDITOR.NODE_EDITOR.TYPE" | translate }}</mat-label>
             <mat-select
-              [ngModel]="currentNode.type"
+              [ngModel]="currentNodeType"
               name="nodeType"
               formControlName="type"
               (selectionChange)="updateNodeType($event.value)"
-              [disabled]="currentNode.type == 'initial'"
+              [disabled]="currentNodeType == 'initial'"
               [matTooltip]="'TOOLTIPS.NODE_TYPE' | translate"
             >
               <mat-option *ngFor="let type of nodeTypes" [value]="type.value">
@@ -39,15 +39,15 @@
           </mat-form-field>
           <mat-form-field
             class="node-form-field"
-            *ngIf="currentNode.type == 'initial'"
+            *ngIf="currentNodeType == 'initial'"
           >
             <mat-label>{{ "EDITOR.NODE_EDITOR.TYPE" | translate }}</mat-label>
             <mat-select
-              [ngModel]="currentNode.type"
+              [ngModel]="currentNodeType"
               name="nodeType"
               formControlName="type"
               (selectionChange)="updateNodeType($event.value)"
-              [disabled]="currentNode.type == 'initial'"
+              [disabled]="currentNode.type=='initial'"
             >
               <mat-option *ngFor="let type of initialType" [value]="type.value">
                 {{ type.viewValue | translate }}
@@ -115,7 +115,7 @@
               </div>
               <input
                 type="file"
-                id="file"
+                #fileInput
                 accept="image/*"
                 (change)="handleFileInput($event.target.files)"
               />
@@ -182,12 +182,12 @@
             [ngModel]="currentNode.id"
           />
         </form>
-        <div class="sidebar-button-panel" *ngIf="currentNode.type != 'ending'">
+        <div class="sidebar-button-panel" *ngIf="currentNodeType != 'ending'">
           <button mat-stroked-button color="accent" (click)="showLinksDialog()">
             {{ "EDITOR.NODE_EDITOR.LINKS_BTN" | translate }}
           </button>
           <button
-            *ngIf="currentNode.type == 'challenge'"
+            *ngIf="currentNodeType == 'challenge'"
             mat-stroked-button
             color="accent"
             (click)="showChallengeDialog()"
@@ -203,7 +203,7 @@
             mat-raised-button
             color="accent"
             (click)="deleteNode()"
-            [disabled]="currentNode.type == 'initial'"
+            [disabled]="currentNodeType == 'initial'"
           >
             {{ "COMMON.DELETE" | translate }}
           </button>
@@ -310,7 +310,7 @@
 </ng-container>
 
 <ng-template #serviceUpdating>
-  <div class="adventure-editor-container">
-    <mat-spinner></mat-spinner>
+  <div class="spinner-container">
+    <mat-spinner class="spinner"></mat-spinner>
   </div>
 </ng-template>

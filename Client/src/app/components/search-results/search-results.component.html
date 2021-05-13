@@ -45,7 +45,7 @@
                     class="document-link"
                     >{{ doc.title }}</a
                   >
-                  <p>{{ doc.searchSnippet }}</p>
+                  <div [innerHTML]="doc.searchSnippet"></div>
                 </mat-card-content>
               </mat-card>
 
@@ -147,7 +147,7 @@
                       class="document-link"
                       >{{ doc.title }}</a
                     >
-                    <p>{{ doc.searchSnippet }}</p>
+                    <div [innerHTML]="doc.searchSnippet"></div>
                   </mat-card-content>
                 </mat-card>
               </mat-grid-tile>
@@ -190,7 +190,7 @@
                     class="document-link"
                     >{{ doc.title }}</a
                   >
-                  <p>{{ doc.searchSnippet }}</p>
+                  <div [innerHTML]="doc.searchSnippet"></div>
                 </mat-card-content>
               </mat-card>
 
