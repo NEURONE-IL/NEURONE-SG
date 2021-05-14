@@ -87,9 +87,9 @@ app.use("/api/scroll", ScrollRoutes);
 
 // Serve neurone docs
 app.use("/assets/", express.static(process.env.NEURONE_DOCS));
-// app.get("/assets/*", function (req, res) {
-//   res.status(404).send("DOCUMENT_NOT_FOUND");
-// });
+app.get("/assets/downloadedDocs/*", function (req, res) {
+  res.status(404).send("DOCUMENT_NOT_FOUND");
+});
 
 // Set client on root
 
