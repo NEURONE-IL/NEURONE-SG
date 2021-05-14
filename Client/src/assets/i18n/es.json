@@ -225,7 +225,14 @@
     "OPTION_PLACEHOLDER": "Ingresa alternativa aquí",
     "CORRECT_OPTION": "¿Correcta?",
     "OPTION_MAXLIMIT_MSG": "El límite máximo de opciones es 5",
-    "NEW_OPTION": "Nueva opción"
+    "NO_OPTIONS_SELECTED": "Debe agregar al menos dos opciones",
+    "NEW_OPTION": "Nueva opción",
+    "ERRORS": {
+      "QUESTION_REQUIRED": "Debe escribir una pregunta",
+      "ANSWER_REQUIRED": "Debe escribir una respuesta",
+      "OPTION_TEXT_REQUIRED": "Debe escribir el texto de la opción",
+      "DOCUMENT_REQUIRED": "Debe seleccionar un documento"
+    }
   },
   "GAMEBAR": {
     "ANSWER_INPUT": "Ingrese su respuesta aquí...",
@@ -379,7 +386,9 @@
     "REFRESH_EDITOR": "Refrescar el editor gráfico",
     "MANAGE_WEB_RESOURCES": "Administrar recursos web",
     "BOOKMARK_PAGE": "Marcar esta página",
-    "UNBOOKMARK_PAGE": "Desmarcar esta página"
+    "UNBOOKMARK_PAGE": "Desmarcar esta página",
+    "DELETE_OPTION": "Eliminar opción",
+    "OPTION_SLIDER": "Activa este botón deslizante para indicar que esta es una opción correcta"
   },
   "EXIT_WARNINGS": {
     "EDITOR": "¿Estás seguro/a que deseas salir? Podrías perder los cambios no guardados.",

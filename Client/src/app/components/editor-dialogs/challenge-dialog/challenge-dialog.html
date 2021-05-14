@@ -6,7 +6,6 @@
       <mat-select
         name="challengeType"
         formControlName="type"
-        [(ngModel)]="challenge.type"
         (selectionChange)="updateType($event.value)"
         [matTooltip]="'TOOLTIPS.CHALLENGE_TYPE' | translate"
       >
@@ -14,13 +13,6 @@
           {{ type.viewValue | translate }}
         </mat-option>
       </mat-select>
-      <!-- <mat-icon
-        class="form-tooltip"
-        matSuffix
-        [matTooltip]="'TOOLTIPS.CHALLENGE_TYPE' | translate"
-        matTooltipPosition="after"
-        >help_outline</mat-icon
-      > -->
     </mat-form-field>
     <mat-form-field class="form-field">
       <mat-label>{{"CHALLENGE_DIALOG.QUESTION" | translate}}</mat-label>
@@ -29,7 +21,6 @@
         name="challengeQuestion"
         formControlName="question"
         placeholder="{{'CHALLENGE_DIALOG.QUESTION_PLACEHOLDER' | translate}}"
-        [ngModel]="challenge.question"
       />
       <mat-icon
         class="form-tooltip"
@@ -38,14 +29,16 @@
         matTooltipPosition="after"
         >help_outline</mat-icon
       >
+      <mat-error *ngIf="challengeForm.controls.question.hasError('required')">
+        {{ "CHALLENGE_DIALOG.ERRORS.QUESTION_REQUIRED" | translate }}
+      </mat-error>
     </mat-form-field>
-    <mat-form-field class="form-field" *ngIf="challenge.type=='question'">
+    <mat-form-field class="form-field" *ngIf="type=='question'">
       <mat-label>{{"CHALLENGE_DIALOG.ANSWER" | translate}}</mat-label>
       <input
         matInput
         name="challengeAnswer"
         formControlName="answer"
-        [ngModel]="challenge.answer"
         placeholder="{{'CHALLENGE_DIALOG.ANSWER_PLACEHOLDER' | translate}}"
       />
       <mat-icon
@@ -55,11 +48,14 @@
         matTooltipPosition="after"
         >help_outline</mat-icon
       >
+      <mat-error *ngIf="challengeForm.controls.answer.hasError('required')">
+        {{ "CHALLENGE_DIALOG.ERRORS.ANSWER_REQUIRED" | translate }}
+      </mat-error>
     </mat-form-field>
     <mat-form-field
       appearance="fill"
       class="form-field"
-      *ngIf="!loading && challenge.type=='bookmark'"
+      *ngIf="!loading && type=='bookmark'"
     >
       <mat-label>{{"CHALLENGE_DIALOG.DOCUMENT" | translate}}</mat-label>
       <mat-select
@@ -71,15 +67,11 @@
           {{ doc.docName }}
         </mat-option>
       </mat-select>
-      <!-- <mat-icon
-        class="form-tooltip"
-        matSuffix
-        [matTooltip]="'TOOLTIPS.CHALLENGE_DOCUMENT' | translate"
-        matTooltipPosition="after"
-        >help_outline</mat-icon
-      > -->
+      <mat-error *ngIf="challengeForm.controls.document.hasError('required')">
+        {{ "CHALLENGE_DIALOG.ERRORS.DOCUMENT_REQUIRED" | translate }}
+      </mat-error>
     </mat-form-field>
-    <ng-container *ngIf="challenge.type=='multiple'">
+    <ng-container *ngIf="type=='multiple'">
       <div
         formArrayName="options"
         *ngFor="let option of optionsArray.controls; let i = index;"
@@ -102,8 +94,15 @@
               matTooltipPosition="after"
               >help_outline</mat-icon
             >
+            <mat-error *ngIf="option.get('value').hasError('required')">
+              {{ "CHALLENGE_DIALOG.ERRORS.OPTION_TEXT_REQUIRED" | translate }}
+            </mat-error>
           </mat-form-field>
-          <mat-slide-toggle class="correct-slider" formControlName="correct">
+          <mat-slide-toggle
+            class="correct-slider"
+            formControlName="correct"
+            [matTooltip]="'TOOLTIPS.OPTION_SLIDER' | translate"
+          >
             {{"CHALLENGE_DIALOG.CORRECT_OPTION" | translate }}
           </mat-slide-toggle>
           <button
@@ -111,6 +110,7 @@
             color="warn"
             class="remove-option-btn"
             aria-label="Remove option"
+            [matTooltip]="'TOOLTIPS.DELETE_OPTION' | translate"
             (click)="removeOption(i)"
           >
             <mat-icon>remove</mat-icon>
@@ -121,19 +121,12 @@
         </mat-error>
       </div>
     </ng-container>
-
-    <input type="hidden" formControlName="type" [ngModel]="challenge.type" />
-    <!-- <input
-      type="hidden"
-      formControlName="options"
-      [ngModel]="challenge.options"
-    /> -->
   </form>
 </div>
 <div mat-dialog-actions align="end">
   <button
     mat-button
-    *ngIf="challenge.type=='multiple'"
+    *ngIf="type=='multiple'"
     color="accent"
     (click)="addOption()"
   >

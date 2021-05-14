@@ -94,7 +94,7 @@ export class LinksTableDialog implements OnInit {
 
     linkDialogRef.afterClosed().subscribe((result) => {
       console.log('closed linkDialog');
-      if (result.newLink) {
+      if (result && result.newLink) {
         console.log('new link: ', result.newLink);
         this.addLink(result.newLink);
       }
@@ -115,7 +115,7 @@ export class LinksTableDialog implements OnInit {
 
     linkDialogRef.afterClosed().subscribe((result) => {
       console.log('closed linkDialog');
-      if (result.newLink) {
+      if (result && result.newLink) {
         console.log('updated link: ', result.newLink);
         this.editLink(result.newLink, idx);
       }

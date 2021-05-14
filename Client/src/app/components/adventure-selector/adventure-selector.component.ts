@@ -177,7 +177,7 @@ export class AdventureSelectorComponent implements OnInit {
 
     nodeDialogRef.afterClosed().subscribe((result) => {
       console.log('closed adventureDialog');
-      if (result.newAdventure) {
+      if (result && result.newAdventure) {
         console.log('new adventure: ', result.newAdventure);
         this.adventureService.createAdventure(result.newAdventure).subscribe(
           (res) => {

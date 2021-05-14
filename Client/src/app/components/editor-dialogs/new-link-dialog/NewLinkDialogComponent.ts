@@ -76,7 +76,7 @@ export class NewLinkDialogComponent {
       if (link.source) this.linkForm.get('source').setValue(link.source);
       if (link.target) this.linkForm.get('target').setValue(link.target);
       if (link.activators) {
-        link.activators.forEach(activator => {
+        link.activators.forEach((activator) => {
           const existingActivator = this.formBuilder.group({
             node: [activator.node],
             condition: [activator.condition, Validators.required],

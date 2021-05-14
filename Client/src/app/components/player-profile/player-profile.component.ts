@@ -132,7 +132,7 @@ export class PlayerProfileComponent implements OnInit {
     });
     avatarDialogRef.afterClosed().subscribe((result) => {
       console.log('closed avatarDialog');
-      if (result.avatar) {
+      if (result && result.avatar) {
         this.authService.updateAvatarImage(result.avatar).subscribe(
           (res) => {
             this.authService.updateStorageAvatar(res['avatar_img']);

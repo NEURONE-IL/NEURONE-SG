@@ -5,6 +5,7 @@ import { EditorService } from 'src/app/services/game/editor.service';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { SearchService } from 'src/app/services/search/search.service';
+import Utils from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-challenge-dialog',
@@ -14,7 +15,6 @@ import { SearchService } from 'src/app/services/search/search.service';
 export class ChallengeDialogComponent {
   challengeForm: FormGroup;
   targetNodes: any;
-  challenge: any;
   types: any;
   documents: any;
   loading = true;
@@ -43,19 +43,9 @@ export class ChallengeDialogComponent {
         console.log(err);
       }
     );
-    if (node.challenge) {
-      this.challenge = node.challenge;
-    } else {
-      let localizedDefault = this.translate.instant('DEFAULT_CHALLENGE');
-      this.challenge = {
-        type: 'question',
-        question: localizedDefault.QUESTION || "What's 5 + 15",
-        answer: localizedDefault.ANSWER || '20',
-      };
-    }
     this.challengeForm = this.formBuilder.group({
-      type: [Validators.required],
-      question: [Validators.required],
+      type: ['', Validators.required],
+      question: ['', Validators.required],
       document: [],
       answer: [],
       options: this.formBuilder.array([]),
@@ -74,13 +64,30 @@ export class ChallengeDialogComponent {
         viewValue: 'CHALLENGE_DIALOG.TYPES.BOOKMARK',
       },
     ];
-    this.fetchOptions();
+
+    if (node.challenge) {
+      this.challengeForm.get('type').setValue(node.challenge.type);
+      this.challengeForm.get('question').setValue(node.challenge.question);
+      this.challengeForm.get('document').setValue(node.challenge.document);
+      this.challengeForm.get('answer').setValue(node.challenge.answer);
+
+      if (node.challenge.options) {
+        node.challenge.options.forEach((option) => {
+          const existingOption = this.formBuilder.group({
+            value: [option.value, Validators.required],
+            correct: [option.correct],
+          });
+          this.optionsArray.push(existingOption);
+        });
+      }
+    }
   }
 
   ngOnInit(): void {}
 
   saveChallenge() {
     let challenge = this.challengeForm.value;
+    Utils.markFormGroupTouched(this.challengeForm);
     if (challenge.type == 'multiple') {
       delete challenge.answer;
       delete challenge.document;
@@ -93,12 +100,44 @@ export class ChallengeDialogComponent {
       delete challenge.answer;
       delete challenge.options;
     }
-    this.dialogRef.close({ challenge: challenge });
+    console.log(this.challengeForm);
+    if (this.challengeForm.valid) {
+      if (challenge.type == 'multiple' && this.optionsArray.length < 2) {
+        this.translate.get('CHALLENGE_DIALOG').subscribe((res) => {
+          this.toastr.warning(res.NO_OPTIONS_SELECTED);
+        });
+      } else {
+        this.dialogRef.close({ challenge: challenge });
+      }
+    } else {
+      this.translate.get('COMMON.TOASTR').subscribe((res) => {
+        this.toastr.warning(res.INVALID_FORM);
+      });
+    }
   }
 
   updateType(type) {
     console.log(type);
-    console.log(this.challengeForm.value);
+    let controls = this.challengeForm.controls;
+    let optionsArray = this.challengeForm.get('options') as FormArray;
+    if (type == 'question') {
+      controls.answer.setValidators([Validators.required]);
+      controls.document.clearValidators();
+      controls.document.setErrors(null);
+      optionsArray.clear();
+    }
+    if (type == 'multiple') {
+      controls.answer.clearValidators();
+      controls.answer.setErrors(null);
+      controls.document.clearValidators();
+      controls.document.setErrors(null);
+    }
+    if (type == 'bookmark') {
+      controls.document.setValidators([Validators.required]);
+      controls.answer.clearValidators();
+      controls.answer.setErrors(null);
+      optionsArray.clear();
+    }
   }
 
   addOption() {
@@ -117,7 +156,6 @@ export class ChallengeDialogComponent {
             });
         } else {
           this.optionsArray.push(newOption);
-          console.log(this.challengeForm.value);
         }
       });
   }
@@ -126,16 +164,11 @@ export class ChallengeDialogComponent {
     this.optionsArray.removeAt(idx);
   }
 
-  fetchOptions() {
-    if (this.challenge.options) {
-      this.challenge.options.forEach((option) => {
-        console.log(option);
-        this.optionsArray.push(this.formBuilder.group(option));
-      });
-    }
-  }
-
   get optionsArray() {
     return this.challengeForm.get('options') as FormArray;
+  }
+
+  get type() {
+    return this.challengeForm.get('type').value;
   }
 }

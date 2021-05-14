@@ -363,7 +363,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
 
     nodeDialogRef.afterClosed().subscribe((result) => {
       console.log('closed nodeDialog');
-      if (result.newNode) {
+      if (result && result.newNode) {
         console.log('new node: ', result.newNode);
         this.addNode(result.newNode);
       }
@@ -384,7 +384,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
 
     linksDialogRef.afterClosed().subscribe(
       (result) => {
-        if (result.links) {
+        if (result && result.links) {
           this.adventure.links = result.links;
           this.refreshGraph();
         }
@@ -409,7 +409,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     );
 
     challengeDialogRef.afterClosed().subscribe((result) => {
-      if (result.challenge) {
+      if (result && result.challenge) {
         console.log('result challenge: ', result.challenge);
         this.nodeForm.get('challenge').setValue(result.challenge);
       }
