@@ -14,17 +14,23 @@
         <input matInput [(ngModel)]="query" (keydown.enter)="search()" />
       </mat-form-field>
     </div>
-    <div *ngIf="!fetching && documents.length==0">
-      <h3>{{ "SEARCH_INTERFACE.NO_RESULTS_MSG" | translate }}</h3>
-    </div>
     <mat-tab-group *ngIf="!fetching" (selectedTabChange)="onTabChange($event)">
       <mat-tab label="{{ 'SEARCH_INTERFACE.TABS.ALL' | translate }}">
         <ng-template matTabContent>
-          <p class="soft">
+          <p class="soft" *ngIf="web.length > 1">
             {{
               "SEARCH_INTERFACE.RESULTS_FOUND_MSG"
                 | translate: { count: web.length }
             }}
+          </p>
+          <p class="soft" *ngIf="web.length == 1">
+            {{
+              "SEARCH_INTERFACE.RESULT_FOUND_MSG"
+                | translate: { count: web.length }
+            }}
+          </p>
+          <p class="soft" *ngIf="web.length == 0">
+            {{ "SEARCH_INTERFACE.NO_RESULTS_MSG" | translate }}
           </p>
           <div class="documents-container">
             <div *ngFor="let doc of webPaginated[currentPage - 1]">
@@ -51,9 +57,6 @@
 
               <br />
             </div>
-            <div *ngIf="documents.length <= 0 && !fetching">
-              <h3>{{ "SEARCH_INTERFACE.NO_RESULTS_MSG" | translate }}</h3>
-            </div>
           </div>
           <div class="paginator-wrapper">
             <app-paginator
@@ -65,11 +68,20 @@
         </ng-template>
       </mat-tab>
       <mat-tab label="{{ 'SEARCH_INTERFACE.TABS.IMAGES' | translate }}">
-        <p class="soft">
+        <p class="soft" *ngIf="images.length > 1">
           {{
             "SEARCH_INTERFACE.RESULTS_FOUND_MSG"
               | translate: { count: images.length }
           }}
+        </p>
+        <p class="soft" *ngIf="images.length == 1">
+          {{
+            "SEARCH_INTERFACE.RESULT_FOUND_MSG"
+              | translate: { count: images.length }
+          }}
+        </p>
+        <p class="soft" *ngIf="images.length == 0">
+          {{ "SEARCH_INTERFACE.NO_RESULTS_MSG" | translate }}
         </p>
         <div class="image-container">
           <mat-grid-list cols="12" [gutterSize]="'12px'">
@@ -114,11 +126,20 @@
         </div>
       </mat-tab>
       <mat-tab label="{{ 'SEARCH_INTERFACE.TABS.VIDEOS' | translate }}">
-        <p class="soft">
+        <p class="soft" *ngIf="videos.length > 1">
           {{
             "SEARCH_INTERFACE.RESULTS_FOUND_MSG"
               | translate: { count: videos.length }
           }}
+        </p>
+        <p class="soft" *ngIf="videos.length == 1">
+          {{
+            "SEARCH_INTERFACE.RESULT_FOUND_MSG"
+              | translate: { count: videos.length }
+          }}
+        </p>
+        <p class="soft" *ngIf="videos.length == 0">
+          {{ "SEARCH_INTERFACE.NO_RESULTS_MSG" | translate }}
         </p>
         <div class="video-container">
           <mat-grid-list cols="10" [gutterSize]="'12px'" rowHeight="1:2">
@@ -152,9 +173,6 @@
                 </mat-card>
               </mat-grid-tile>
             </div>
-            <div *ngIf="documents.length <= 0" class="text-center">
-              <h3>{{ "SEARCH_INTERFACE.NO_RESULTS_MSG" | translate }}</h3>
-            </div>
           </mat-grid-list>
         </div>
         <div class="paginator-wrapper">
@@ -167,11 +185,20 @@
       </mat-tab>
       <mat-tab label="{{ 'SEARCH_INTERFACE.TABS.BOOKS' | translate }}">
         <ng-template matTabContent>
-          <p class="soft">
+          <p class="soft" *ngIf="books.length > 1">
             {{
               "SEARCH_INTERFACE.RESULTS_FOUND_MSG"
                 | translate: { count: books.length }
             }}
+          </p>
+          <p class="soft" *ngIf="books.length == 1">
+            {{
+              "SEARCH_INTERFACE.RESULT_FOUND_MSG"
+                | translate: { count: books.length }
+            }}
+          </p>
+          <p class="soft" *ngIf="books.length == 0">
+            {{ "SEARCH_INTERFACE.NO_RESULTS_MSG" | translate }}
           </p>
           <div class="documents-container">
             <div *ngFor="let doc of booksPaginated[currentPage - 1]">
@@ -195,9 +222,6 @@
               </mat-card>
 
               <br />
-            </div>
-            <div *ngIf="documents.length <= 0 && !fetching" class="text-center">
-              <h3>{{ "SEARCH_INTERFACE.NO_RESULTS_MSG" | translate }}</h3>
             </div>
           </div>
           <div class="paginator-wrapper">

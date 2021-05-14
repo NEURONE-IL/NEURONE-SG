@@ -19,6 +19,7 @@
         color="accent"
         (click)="bookmarkPage()"
         [disabled]="!currentPage"
+        [matTooltip]="'TOOLTIPS.BOOKMARK_PAGE' | translate"
         *ngIf="bookmarkedPage == null || bookmarkedPage == undefined"
       >
         <mat-icon>bookmark_add</mat-icon>
@@ -29,6 +30,7 @@
         color="accent"
         (click)="unBookmarkPage()"
         [disabled]="!bookmarkedPage"
+        [matTooltip]="'TOOLTIPS.UNBOOKMARK_PAGE' | translate"
         *ngIf="bookmarkedPage"
       >
         <mat-icon>bookmark_remove</mat-icon>

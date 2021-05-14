@@ -35,10 +35,12 @@ export class LinksTableDialog implements OnInit {
 
   ngOnInit(): void {}
 
+  // Closes all dialogs
   closeDialogs() {
     if (this.newLinkDialog) this.newLinkDialog.closeAll();
   }
 
+  // Deletes a link given it's index
   deleteLink(idx) {
     this.translate.get('WARNINGS').subscribe((res) => {
       if (confirm(res.DELETE_LINK)) {
@@ -49,16 +51,19 @@ export class LinksTableDialog implements OnInit {
     });
   }
 
+  // Adds a new link
   addLink(link) {
     this.dataSource.data.push(link);
     this.dataSource._updateChangeSubscription();
   }
 
+  // Edits a link given it's new data and index
   editLink(updatedLink, idx) {
     this.dataSource.data[idx] = updatedLink;
     this.dataSource._updateChangeSubscription();
   }
 
+  // Gets a node label by id
   getNodeLabel(id) {
     try {
       return this.nodes.find((node) => node.id == id).label;
@@ -68,6 +73,7 @@ export class LinksTableDialog implements OnInit {
     }
   }
 
+  // Hides a row if it's not the current node
   hideRow(row) {
     if (row.source == this.currentNode.id) {
       return false;
@@ -75,6 +81,7 @@ export class LinksTableDialog implements OnInit {
     return true;
   }
 
+  // Shows the link creation dialog
   showNewLinkDialog() {
     const linkDialogRef = this.newLinkDialog.open(NewLinkDialogComponent, {
       width: '40rem',
@@ -94,6 +101,7 @@ export class LinksTableDialog implements OnInit {
     });
   }
 
+  // Shows the link editing dialog
   showEditLinkDialog(link, idx) {
     const linkDialogRef = this.newLinkDialog.open(NewLinkDialogComponent, {
       width: '40rem',
@@ -114,14 +122,17 @@ export class LinksTableDialog implements OnInit {
     });
   }
 
+  // Gets all possible targets from the current node
   get targetNodes() {
     return this.nodes.filter((node) => this.currentNode != node);
   }
 
+  // Closes the dialog and transmits the updated links to the parent component
   save() {
     this.dialogRef.close({ links: this.links });
   }
 
+  // Checks if the current node has links, if it does it shows the links table.
   viewTable() {
     const nodeLinks = this.dataSource.data.filter(
       (link) => link.source == this.currentNode.id

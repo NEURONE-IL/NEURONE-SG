@@ -64,7 +64,6 @@
               name="nodeLabel"
               formControlName="label"
               placeholder="B"
-              [ngModel]="currentNode.label"
             />
             <mat-icon
               class="form-tooltip"
@@ -132,7 +131,6 @@
                 name="nodeVideo"
                 formControlName="video"
                 placeholder="https://www.youtube.com/watch?v=xxZvQPeNBh0"
-                [ngModel]="currentNode.data.video"
               />
               <mat-icon
                 class="form-tooltip"
@@ -157,7 +155,6 @@
                 placeholder="{{
                   'EDITOR.NODE_EDITOR.TEXT_PLACEHOLDER' | translate
                 }}"
-                [ngModel]="currentNode.data.text"
               ></textarea>
               <mat-icon
                 class="form-tooltip"
@@ -174,12 +171,10 @@
           <input
             type="hidden"
             formControlName="challenge"
-            [ngModel]="currentNode.challenge"
           />
           <input
             type="hidden"
             formControlName="id"
-            [ngModel]="currentNode.id"
           />
         </form>
         <div class="sidebar-button-panel" *ngIf="currentNodeType != 'ending'">
@@ -284,6 +279,7 @@
           class="new-node-btn"
           mat-fab
           color="accent"
+          [matTooltip]="'TOOLTIPS.NEW_NODE' | translate"
           (click)="showNewNodeForm()"
         >
           <mat-icon>add</mat-icon>
@@ -292,6 +288,7 @@
           class="web-btn"
           mat-fab
           color="accent"
+          [matTooltip]="'TOOLTIPS.MANAGE_WEB_RESOURCES' | translate"
           (click)="showWebDialog()"
         >
           <mat-icon>web</mat-icon>
@@ -300,6 +297,7 @@
           class="refresh-btn"
           mat-fab
           color="accent"
+          [matTooltip]="'TOOLTIPS.REFRESH_EDITOR' | translate"
           (click)="refreshGraph()"
         >
           <mat-icon>refresh</mat-icon>

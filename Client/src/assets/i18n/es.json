@@ -308,6 +308,7 @@
   },
   "SEARCH_INTERFACE": {
     "RESULTS_FOUND_MSG": "Se han encontrado {{count}} resultados.",
+    "RESULT_FOUND_MSG": "Se ha encontrado {{count}} resultado.",
     "NO_RESULTS_MSG": "No se han encontrado resultados",
     "SEARCHING": "Buscando resultados...",
     "TABS": {
@@ -372,7 +373,13 @@
     "WEB_NODE": "Aquí debe seleccionar el nodo para el cual este recurso es relevante, en caso de que no sea relevante para ningún nodo puede seleccionar el valor 'Ninguno'",
     "SHOW_SEARCH_IF": "Mostrar interfaz de búsqueda de NEURONE",
     "HIDE_SEARCH_IF": "Esconder interfaz de búsqueda de NEURONE",
-    "INSTRUCTIONS_BTN": "Mostrar instrucciones"
+    "INSTRUCTIONS_BTN": "Mostrar instrucciones",
+    "NEW_ADVENTURE": "Crear una nueva aventura",
+    "NEW_NODE": "Crear un nuevo nodo",
+    "REFRESH_EDITOR": "Refrescar el editor gráfico",
+    "MANAGE_WEB_RESOURCES": "Administrar recursos web",
+    "BOOKMARK_PAGE": "Marcar esta página",
+    "UNBOOKMARK_PAGE": "Desmarcar esta página"
   },
   "EXIT_WARNINGS": {
     "EDITOR": "¿Estás seguro/a que deseas salir? Podrías perder los cambios no guardados.",

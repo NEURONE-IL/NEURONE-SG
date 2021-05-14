@@ -27,27 +27,36 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./adventure-editor.component.scss'],
 })
 export class AdventureEditorComponent implements OnInit, OnDestroy {
-  updateGraph: Subject<boolean> = new Subject();
+  // Sidenav reference
   @ViewChild('sidenav') nodeEditor: MatSidenav;
+
+  // Forms
   nodeForm: FormGroup;
   challengeForm: FormGroup;
   nodeLinkForm: FormGroup;
 
+  // Adventure and sub components variables
   adventure: any;
   currentNode: any;
   updating: boolean;
   currentNodeType: string;
 
+  // Subject to notify when the graph refreshes
+  updateGraph: Subject<boolean> = new Subject();
+
+  // Auxiliary variables
   nodeTypes: any;
   initialType: any;
   mediaTypes: any;
   currentMediaType: string;
+  canOpen: boolean;
 
-  image: File; // image file selected
-  imagePreview: string; // selected image file preview
-  currentImg: string; // existing image from db
+  // Image handling variables
+  image: File; // Image file selected
+  imagePreview: string; // Selected image file preview
+  currentImg: string; // Existing image from db
   @ViewChild('fileInput')
-  fileInputElement: ElementRef; // file input element
+  fileInputElement: ElementRef; // File input element reference
 
   apiUrl = environment.apiUrl;
 
@@ -120,6 +129,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
       { value: 'image', viewValue: 'EDITOR.NODE_EDITOR.MEDIA_TYPES.IMAGE' },
       { value: 'video', viewValue: 'EDITOR.NODE_EDITOR.MEDIA_TYPES.VIDEO' },
     ];
+    this.canOpen = true;
   }
 
   ngOnDestroy(): void {
@@ -130,28 +140,40 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     this.closeDialogs();
   }
 
-  closeEditor() {
-    this.editorService.currentNode = null;
-    if (this.nodeEditor) {
-      this.resetImg();
-      this.nodeEditor.close();
-    }
-  }
-
+  // Closes all possible dialogs
   closeDialogs() {
     if (this.newNodeDialog) this.newNodeDialog.closeAll();
     if (this.challengeDialog) this.challengeDialog.closeAll();
     if (this.linksDialog) this.linksDialog.closeAll();
   }
 
+  // Shows the node editor
   openEditor(node: any) {
-    this.editorService.setCurrentNode(node);
-    this.currentNodeType = this.currentNode.type;
-    console.log('currentNode on openEditor: ', this.currentNode);
-    this.resetImg();
+    console.log(this.canOpen);
+    if (this.canOpen) {
+      this.editorService.setCurrentNode(node);
+      this.setNodeForm();
+      this.setCurrentMediaType();
+      this.nodeEditor.open();
+    }
+  }
+
+  // Closes the node editor
+  closeEditor() {
+    this.editorService.currentNode = null;
+    if (this.nodeEditor && this.nodeEditor.opened) {
+      this.canOpen = false;
+      this.nodeEditor.close().then(() => {
+        this.clearNodeForm();
+        this.canOpen = true;
+      });
+    }
+  }
+
+  // Sets the current media type to dynamically update the node edit form
+  private setCurrentMediaType() {
     if (this.currentNode.data.image_id) {
       const imageId = this.currentNode.data.image_id;
-      this.nodeForm.get('data.image_id').setValue(imageId);
       this.currentMediaType = 'image';
       this.currentImg = imageId;
     } else if (this.currentNode.data.video) {
@@ -159,9 +181,34 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     } else {
       this.currentMediaType = 'none';
     }
-    this.nodeEditor.open();
   }
 
+  // Sets current node data on edit form
+  private setNodeForm() {
+    this.resetImg();
+    this.currentNodeType = this.currentNode.type;
+    this.nodeForm.get('id').setValue(this.currentNode.id);
+    this.nodeForm.get('label').setValue(this.currentNode.label);
+    this.nodeForm.get('type').setValue(this.currentNode.type);
+    this.nodeForm.get('challenge').setValue(this.currentNode.challenge);
+    this.nodeForm.get('data.image_id').setValue(this.currentNode.data.image_id);
+    this.nodeForm.get('data.video').setValue(this.currentNode.data.video);
+    this.nodeForm.get('data.text').setValue(this.currentNode.data.text);
+  }
+
+  // Reset node edit form
+  private clearNodeForm() {
+    this.nodeForm.get('id').setValue(undefined);
+    this.nodeForm.get('label').setValue(undefined);
+    this.nodeForm.get('type').setValue(undefined);
+    this.nodeForm.get('challenge').setValue(undefined);
+    this.nodeForm.get('data.image_id').setValue(undefined);
+    this.nodeForm.get('data.video').setValue(undefined);
+    this.nodeForm.get('data.text').setValue(undefined);
+    this.resetImg();
+  }
+
+  // Resets image previews and selector
   private resetImg() {
     this.imagePreview = undefined;
     this.image = undefined;
@@ -187,7 +234,8 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
         } else {
           if (
             this.currentMediaType == 'image' &&
-            (!this.image && !newNode.data.image_id)
+            !this.image &&
+            !newNode.data.image_id
           ) {
             this.translate.get('COMMON.TOASTR').subscribe((res) => {
               this.toastr.warning(res.IMG_NOT_SELECTED);
@@ -199,6 +247,9 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
             }
             // Validate selected media
             this.validateMedia(newNode);
+            // Delete orphaned challenge if not a challenge node
+            if (newNode.challenge && newNode.type != 'challenge')
+              delete newNode.challenge;
             // Attach updated node to adventure
             this.nodes.forEach((node, index) => {
               if (node.id == this.currentNode.id) {
@@ -301,7 +352,6 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     this.closeDialogs();
     this.closeEditor();
     this.updateGraph.next(true);
-    console.log(this.adventure);
   }
 
   // Displays node creation dialog
@@ -352,7 +402,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
       {
         width: '40rem',
         data: {
-          node: this.currentNode,
+          node: this.nodeForm.value,
           adventure: this.adventure._id,
         },
       }
@@ -360,7 +410,8 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
 
     challengeDialogRef.afterClosed().subscribe((result) => {
       if (result.challenge) {
-        this.currentNode.challenge = result.challenge;
+        console.log('result challenge: ', result.challenge);
+        this.nodeForm.get('challenge').setValue(result.challenge);
       }
     });
   }
@@ -384,9 +435,25 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   // Updates current node type
   // this is needed to refresh the editor form
   updateNodeType(type) {
-    // this.currentNode.type = type;
     this.currentNodeType = type;
+    this.setDefaultChallenge(type);
     console.log(this.currentNode);
+  }
+
+  // Sets default challenge for a node when it's type is set to challenge
+  private setDefaultChallenge(type: any) {
+    if (type == 'challenge') {
+      let currentChallenge = this.nodeForm.get('challenge').value;
+      if (!currentChallenge) {
+        let localizedDefault = this.translate.instant('DEFAULT_CHALLENGE');
+        let defaultChallenge = {
+          type: 'question',
+          question: localizedDefault.QUESTION || "What's 10 + 15",
+          answer: localizedDefault.ANSWER || '25',
+        };
+        this.nodeForm.get('challenge').setValue(defaultChallenge);
+      }
+    }
   }
 
   // Handles the event when the user

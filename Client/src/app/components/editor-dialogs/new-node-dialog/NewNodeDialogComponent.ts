@@ -139,25 +139,13 @@ export class NewNodeDialogComponent {
 
   private setDefaultChallenge(newNode: any) {
     if (newNode.type == 'challenge') {
+      let localizedDefault = this.translate.instant('DEFAULT_CHALLENGE');
+
       let defaultChallenge = {
         type: 'question',
-        question: "What's 10 + 15",
-        answer: '25',
+        question: localizedDefault.QUESTION || "What's 10 + 15",
+        answer: localizedDefault.ANSWER || '25',
       };
-
-      this.translate.get('DEFAULT_CHALLENGE').subscribe(
-        (res) => {
-          if (res.QUESTION && res.ANSWER) {
-            defaultChallenge.question = res.QUESTION;
-            defaultChallenge.answer = res.ANSWER;
-          }
-        },
-        (err) => {
-          console.log('error fetching default challenge translations');
-          console.log(err);
-        }
-      );
-
       newNode.challenge = defaultChallenge;
     }
   }

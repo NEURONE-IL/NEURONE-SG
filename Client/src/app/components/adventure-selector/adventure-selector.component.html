@@ -79,6 +79,7 @@
       mat-fab
       color="accent"
       (click)="showNewAdventureDialog()"
+      [matTooltip]="'TOOLTIPS.NEW_ADVENTURE' | translate"
       *ngIf="role == 'admin' || role == 'creator'"
     >
       <mat-icon>add</mat-icon>

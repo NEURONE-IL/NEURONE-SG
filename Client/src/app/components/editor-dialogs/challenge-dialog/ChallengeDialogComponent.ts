@@ -46,10 +46,11 @@ export class ChallengeDialogComponent {
     if (node.challenge) {
       this.challenge = node.challenge;
     } else {
+      let localizedDefault = this.translate.instant('DEFAULT_CHALLENGE');
       this.challenge = {
         type: 'question',
-        question: "What's 10 + 15",
-        answer: '25',
+        question: localizedDefault.QUESTION || "What's 5 + 15",
+        answer: localizedDefault.ANSWER || '20',
       };
     }
     this.challengeForm = this.formBuilder.group({
