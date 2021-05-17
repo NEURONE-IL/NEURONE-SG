@@ -152,7 +152,7 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
     console.log(this.canOpen);
     if (this.canOpen) {
       this.editorService.setCurrentNode(node);
-      this.setNodeForm();
+      this.setNodeForm(node);
       this.setCurrentMediaType();
       this.nodeEditor.open();
     }
@@ -184,9 +184,9 @@ export class AdventureEditorComponent implements OnInit, OnDestroy {
   }
 
   // Sets current node data on edit form
-  private setNodeForm() {
+  private setNodeForm(node: any) {
     this.resetImg();
-    this.currentNodeType = this.currentNode.type;
+    this.currentNodeType = node.type;
     this.nodeForm.get('id').setValue(this.currentNode.id);
     this.nodeForm.get('label').setValue(this.currentNode.label);
     this.nodeForm.get('type').setValue(this.currentNode.type);
