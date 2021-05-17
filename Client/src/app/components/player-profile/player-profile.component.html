@@ -1,5 +1,5 @@
 <!-- Player profile component -->
-<!-- Adapted from the original wotk of: TUTELAGE Project development team -->
+<!-- Adapted from the original work of: TUTELAGE Project development team -->
 <!-- URL: https://github.com/JoseMellado/GAME -->
 <!-- Camila Marquez -->
 <!-- Jose Mellado -->
@@ -16,6 +16,7 @@
         (click)="openImageSelector()"
         alt="playerImage"
         onerror="this.src='/assets/images/avatars/anon.png';"
+        [matTooltip]="'TOOLTIPS.PROFILE_PIC_CHANGE' | translate"
       />
       <img
         *ngIf="!user.avatar_img"
@@ -23,6 +24,7 @@
         class="player-image img"
         (click)="openImageSelector()"
         alt="playerImage"
+        [matTooltip]="'TOOLTIPS.PROFILE_PIC_CHANGE' | translate"
       />
       <mat-list>
         <mat-list-item>

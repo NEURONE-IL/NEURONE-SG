@@ -388,7 +388,10 @@
     "BOOKMARK_PAGE": "Marcar esta página",
     "UNBOOKMARK_PAGE": "Desmarcar esta página",
     "DELETE_OPTION": "Eliminar opción",
-    "OPTION_SLIDER": "Activa este botón deslizante para indicar que esta es una opción correcta"
+    "OPTION_SLIDER": "Activa este botón deslizante para indicar que esta es una opción correcta",
+    "SAVE_ALL_BTN": "Oprime este botón para guardar todos los cambios realizados",
+    "HEADER_PROFILE": "Oprime aquí para ir a tu perfil",
+    "PROFILE_PIC_CHANGE": "Oprime aquí para cambiar tu foto de perfil"
   },
   "EXIT_WARNINGS": {
     "EDITOR": "¿Estás seguro/a que deseas salir? Podrías perder los cambios no guardados.",

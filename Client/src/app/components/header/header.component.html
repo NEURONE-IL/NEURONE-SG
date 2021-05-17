@@ -1,10 +1,23 @@
 <mat-toolbar color="primary">
   <span (click)="goHome()" class="clickable">NEURONE-SG</span>
   <span class="spacer"></span>
-  <div *ngIf="user">
-    <span (click)="goToProfile()" class="clickable">{{user.username}}</span>
+  <div *ngIf="user && role == 'player'">
+    <span
+      (click)="goToProfile()"
+      class="clickable"
+      [matTooltip]="'TOOLTIPS.HEADER_PROFILE' | translate"
+      >{{ user.username }}</span
+    >
+  </div>
+  <div *ngIf="user && role != 'player'">
+    <span
+      class="clickable"
+      >{{ user.username }}</span
+    >
   </div>
   <div class="button-panel" *ngIf="user">
-    <button mat-button color="white" (click)="logout()">{{'HEADER.LOGOUT' | translate}}</button>
+    <button mat-button color="white" (click)="logout()">
+      {{ "HEADER.LOGOUT" | translate }}
+    </button>
   </div>
 </mat-toolbar>

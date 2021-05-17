@@ -94,7 +94,12 @@
       />
     </div>
   </form>
-  <button mat-raised-button color="primary" (click)="saveAllChanges()">
+  <button
+    mat-raised-button
+    color="primary"
+    [matTooltip]="'TOOLTIPS.SAVE_ALL_BTN' | translate"
+    (click)="saveAllChanges()"
+  >
     {{ "META_EDITOR.SAVE_ALL" | translate }}
   </button>
 </div>

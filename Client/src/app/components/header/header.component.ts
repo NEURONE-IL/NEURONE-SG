@@ -41,6 +41,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/profile']);
   }
 
+  public get role() {
+    return this.user.role;
+  }
+
   reloadPage(): void {
     window.location.reload();
   }
