@@ -40,8 +40,6 @@ const dbOptions = {
   useCreateIndex: true,
 };
 
-console.log(process.env.MONGO_URI);
-
 mongoose
   .connect(process.env.MONGO_URI, dbOptions)
   .then(function () {
