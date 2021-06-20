@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  root: 'http://198.199.75.148:3002',
-  apiUrl: 'http://198.199.75.148:3002/api',
-  coreUrl: 'http://198.199.75.148:3000/v1',
-  coreRoot: 'http://198.199.75.148:3000',
+  root: 'http://143.198.136.174:3002',
+  apiUrl: 'http://143.198.136.174:3002/api',
+  coreUrl: 'http://143.198.136.174:3000/v1',
+  coreRoot: 'http://143.198.136.174:3000',
   gmTimeout: 2000,
   coreUploadTimeout: 120000,
   coreFetchTimeout: 10000,
