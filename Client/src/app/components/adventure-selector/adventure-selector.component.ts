@@ -132,7 +132,9 @@ export class AdventureSelectorComponent implements OnInit {
       let foundIdx = this.adventures.findIndex(
         (adv) => adv._id == progress.adventure
       );
-      this.adventures[foundIdx].progress = progress;
+      if (foundIdx && this.adventures[foundIdx]) {
+        this.adventures[foundIdx].progress = progress;
+      }
     });
     this.adventures.sort((adv1, adv2) =>
       adv1.progress && !adv2.progress ? -1 : 1
