@@ -28,10 +28,10 @@
       <p>{{ currentNode.data.text }}</p>
     </div>
   </mat-card>
-  <button class="neurone-btn" *ngIf="searchEnabled" mat-icon-button color="primary" (click)="toggleSearch()" [matTooltip]="'TOOLTIPS.SHOW_SEARCH_IF' | translate">
+  <button class="neurone-btn" *ngIf="searchEnabled" mat-icon-button color="primary" (click)="toggleSearch()" [matTooltip]="'TOOLTIPS.HIDE_SEARCH_IF' | translate">
     <mat-icon>chevron_right</mat-icon>
   </button>
-  <button class="neurone-btn" *ngIf="!searchEnabled" mat-icon-button color="primary" (click)="toggleSearch()"[matTooltip]="'TOOLTIPS.HIDE_SEARCH_IF' | translate">
+  <button class="neurone-btn" *ngIf="!searchEnabled" mat-icon-button color="primary" (click)="toggleSearch()"[matTooltip]="'TOOLTIPS.SHOW_SEARCH_IF' | translate">
     <mat-icon>chevron_left</mat-icon>
   </button>
 </div>
