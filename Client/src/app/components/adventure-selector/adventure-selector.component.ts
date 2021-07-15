@@ -89,7 +89,6 @@ export class AdventureSelectorComponent implements OnInit {
           this.progresService.getUserProgress(user._id).subscribe(
             (res) => {
               this.userProgress = res;
-              console.log('user progress: ', this.userProgress);
               this.validateProgress();
               this.adventuresLoading = false;
             },
@@ -132,7 +131,7 @@ export class AdventureSelectorComponent implements OnInit {
       let foundIdx = this.adventures.findIndex(
         (adv) => adv._id == progress.adventure
       );
-      if (foundIdx && this.adventures[foundIdx]) {
+      if (foundIdx >= 0 && this.adventures[foundIdx]) {
         this.adventures[foundIdx].progress = progress;
       }
     });
