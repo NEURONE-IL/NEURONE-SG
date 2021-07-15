@@ -5,6 +5,6 @@
   window["env"] = window["env"] || {};
 
   // Environment variables
-  window["env"]["rootUrl"] = "http://localhost:3002";
-  window["env"]["coreRoot"] = "http://localhost:3000";
+  window["env"]["rootUrl"] = "http://143.198.136.174:3002";
+  window["env"]["coreRoot"] = "http://143.198.136.174:3000";
 })(this);

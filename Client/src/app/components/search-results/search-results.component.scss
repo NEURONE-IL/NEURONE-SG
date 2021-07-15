@@ -169,6 +169,7 @@ mat-grid-tile .mat-figure{
 
 .image-card {
   height: 10rem;
+  width: 100%;
 }
 
 .video-card {
@@ -179,3 +180,7 @@ mat-grid-tile .mat-figure{
   cursor: pointer;
 }
 
+::ng-deep .hl {
+  font-weight: bold;
+  font-style: normal;
+}

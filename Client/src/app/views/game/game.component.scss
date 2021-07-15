@@ -1,7 +1,7 @@
 .game-container {
   display: grid;
   grid-template-areas: "header header header header header" "adventure adventure search search search" "challenge challenge challenge challenge challenge";
-  grid-template-rows: 60px minmax(0, 1fr) 250px;
+  grid-template-rows: 60px minmax(0, 1fr) minmax(25vh, auto);
   grid-template-columns: 1fr;
   // grid-column-gap: 16px;
   height: 100%;
@@ -11,7 +11,7 @@
 .game-container-no-search {
   display: grid;
   grid-template-areas: "header" "adventure" "challenge";
-  grid-template-rows: 60px minmax(0, 1fr) 250px;
+  grid-template-rows: 60px minmax(0, 1fr) minmax(25vh, auto);
   grid-template-columns: 1fr;
   grid-column-gap: 16px;
   height: 100%;
