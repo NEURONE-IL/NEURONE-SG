@@ -34,7 +34,12 @@ export class HeaderComponent implements OnInit {
   }
 
   goHome() {
-    this.router.navigate(['/']);
+    if(!this.user){
+      this.router.navigate(['/']);
+    }
+    else if(this.user && !this.user.trainer_id){
+      this.router.navigate(['/']);
+    }
   }
 
   goToProfile() {

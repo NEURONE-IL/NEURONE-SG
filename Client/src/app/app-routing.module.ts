@@ -12,6 +12,7 @@ import { NotLoggedInGuard } from './helpers/guards/not-logged-in.guard';
 import { DirectAccessGuard } from './helpers/guards/direct-access.guard';
 import { ProfileComponent } from './views/profile/profile.component';
 import { CanExitGuard } from './helpers/guards/can-exit.guard';
+import { LoginRedirectComponent } from './views/login-redirect/login-redirect.component';
 
 const routes: Routes = [
   {
@@ -65,6 +66,10 @@ const routes: Routes = [
       role: ['player'],
     },
     component: ProfileComponent,
+  },
+  {
+    path: 'login_redirect/:email/:username/:adventure/:trainer_id/:api_key/:url',
+    component: LoginRedirectComponent
   },
   { path: '**', redirectTo: 'select' },
 ];

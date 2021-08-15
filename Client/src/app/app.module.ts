@@ -73,6 +73,7 @@ import { PlayerProfileComponent } from './components/player-profile/player-profi
 import { ProfileComponent } from './views/profile/profile.component';
 import { AvatarSelectorComponent } from './components/avatar-selector/avatar-selector.component';
 import { InstructionsComponent } from './components/instructions/instructions.component';
+import { LoginRedirectComponent } from './views/login-redirect/login-redirect.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -114,7 +115,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     PlayerProfileComponent,
     ProfileComponent,
     AvatarSelectorComponent,
-    InstructionsComponent
+    InstructionsComponent,
+    LoginRedirectComponent
   ],
   imports: [
     BrowserModule,

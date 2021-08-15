@@ -56,6 +56,22 @@ export class AuthService {
     );
   }
 
+  registerAPIKEY(email, username, trainer_id, api_key, url){
+    let headers = new HttpHeaders().set('x-api-key', api_key); // create header object
+    return this.http.post(environment.apiUrl+'/site/registeruser',
+    {email: email, username: username, trainer_id: trainer_id, url: url},
+    {headers: headers });
+  }
+
+  loginAPIKEY(trainer_id, api_key, url){
+    let headers = new HttpHeaders().set('x-api-key', api_key); // create header object
+    return this.http.post(environment.apiUrl+'/site/login',{ trainer_id: trainer_id, url: url} ,{headers: headers });
+  }
+
+  checkTrainer(trainer_id){
+    return this.http.get(environment.apiUrl + '/site/user/' + trainer_id);
+  }
+
   userEmitChange(usr: any) {
     this.user.next(usr);
   }
