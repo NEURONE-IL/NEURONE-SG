@@ -12,7 +12,7 @@ const MONGO_DB = process.env.MONGO_DB || "";
 const MONGO_HOSTNAME = process.env.MONGO_HOSTNAME || "";
 
 process.env.MONGO_URI = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
-// process.env.MONGO_URI = "mongodb://localhost:27017/neurone-sg";
+//process.env.MONGO_URI = "mongodb://localhost:27017/neurone-sg";
 
 //NEURONE GM
 process.env.NEURONEGM = process.env.GM_URL || "http://198.199.75.148:3080";

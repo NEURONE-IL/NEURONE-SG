@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../models/auth/user");
 const Role = require("../models/auth/role");
 const Site = require("../models/auth/site");
+const Progress = require("../models/game/progress");
 const Adventure = require("../models/game/adventure");
 const verifyAPIKey = require('../middlewares/verifyAPIKEY');
 const router = express.Router();
@@ -173,6 +174,38 @@ router.get("/user/:trainer_id", async (req, res) => {
   res.status(200).json({
     ok: true,
     user
+  });
+})
+
+router.get("/user/:trainer_id/advance", async (req, res) => {
+  const trainer_id = req.params.trainer_id;
+  const user = await User.findOne({trainer_id: trainer_id}, err => {
+    if(err){
+      res.status(400).send(err)
+    }
+  })
+  const advances = await Progress.find({user: user._id}, err => {
+    if(err){
+      return res.status(404).json({
+        ok: false,
+        err
+      });
+    }
+  }).populate({ path: 'adventure', model: Adventure});
+  const progress = [];
+  for(let i = 0; i<advances.length; i++){
+    let counter = 0;
+    if(advances.finished){
+      counter = 1;
+    }
+    progress.push({
+      study: advances[i].adventure,
+      completed: advances[i].finished,
+      percentage: counter/1
+    })
+  }
+  res.status(200).json({
+    progress
   });
 })
 
