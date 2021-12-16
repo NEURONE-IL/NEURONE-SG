@@ -130,6 +130,10 @@ export class AuthService {
     return JSON.parse(sessionStorage.getItem(USER_KEY)).role;
   }
 
+  public get loggedIn(): boolean {
+    return sessionStorage.getItem(TOKEN_KEY) !== null;
+  }
+
   async fetchConfig() {
     let config: any;
     await this.configService

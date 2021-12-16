@@ -3,7 +3,7 @@
   <p class="instructions-text" [innerHTML]="'INSTRUCTIONS.TEXT' | translate"></p>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-button [mat-dialog-close]="true">
+  <button mat-button [mat-dialog-close]="true" (click)="closeModal()">
     {{ "COMMON.CLOSE" | translate }}
   </button>
 </div>

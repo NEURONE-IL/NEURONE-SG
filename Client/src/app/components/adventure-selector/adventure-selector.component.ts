@@ -12,6 +12,8 @@ import { environment } from 'src/environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 
+const ADVENTURE_KEY = 'adventureId';
+
 @Component({
   selector: 'app-adventure-selector',
   templateUrl: './adventure-selector.component.html',
@@ -51,6 +53,7 @@ export class AdventureSelectorComponent implements OnInit {
     } else {
       this.fetchAllAdventures();
     }
+    sessionStorage.removeItem(ADVENTURE_KEY);
   }
 
   private fetchAllAdventures() {
