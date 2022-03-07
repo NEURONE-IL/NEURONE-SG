@@ -1,59 +1,59 @@
 const express = require('express');
 const router = express.Router();
-const Keystroke = require('../../models/tracking/keystroke');
+const Event = require('../../models/tracking/event');
 
 const authMiddleware = require('../../middlewares/authMiddleware');
 const verifyToken = require('../../middlewares/verifyToken');
 
 router.get('', [verifyToken] , async (req, res) => {
-    Keystroke.find({}, (err, keystrokes) =>{
+    Event.find({}, (err, events) =>{
         if(err){
             return res.status(404).json({
                 ok: false,
                 err
             });
         }
-        res.status(200).json({keystrokes});
+        res.status(200).json({events});
     });
 })
 
-router.get('/:keystroke_id', [verifyToken] , async (req, res) => {
-    const _id = req.params.keystroke_id;
-    Keystroke.findOne({_id: _id}, (err, keystroke) =>{
+router.get('/:event_id', [verifyToken] , async (req, res) => {
+    const _id = req.params.event_id;
+    Event.findOne({_id: _id}, (err, event) =>{
         if(err){
             return res.status(404).json({
                 ok: false,
                 err
             });
         }
-        res.status(200).json({keystroke});
+        res.status(200).json({event});
     });
 });
 
 router.post('',  [verifyToken], async (req, res) => {
-    const keystroke = new Keystroke(req.body);
-    keystroke.save((err, keystroke) => {
+    const event = new Event(req.body);
+    event.save((err, event) => {
         if (err) {
             return res.status(404).json({
                 err
             });
         }
         res.status(200).json({
-            keystroke
+            event
         });
     })
 });
 
-router.delete('/:keystroke_id',  [verifyToken, authMiddleware.isAdmin] , async (req, res) => {
-    const _id = req.params.keystroke_id;
-    Keystroke.deleteOne({_id: _id}, (err, keystroke) => {
+router.delete('/:event_id',  [verifyToken, authMiddleware.isAdmin] , async (req, res) => {
+    const _id = req.params.event_id;
+    Event.deleteOne({_id: _id}, (err, event) => {
         if (err) {
             return res.status(404).json({
                 err
             });
         }
         res.status(200).json({
-            keystroke
+            event
         });
     })
 })

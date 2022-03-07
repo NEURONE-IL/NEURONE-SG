@@ -12,4 +12,12 @@ export class InstructionsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  closeModal(){
+    /*Dispatch closeinstructionsmodal event*/
+    var evt = new CustomEvent('closeinstructionsmodal');
+    window.dispatchEvent(evt);
+    /*End dispatch closeinstructionsmodal event*/
+    return true;    
+  }
+
 }

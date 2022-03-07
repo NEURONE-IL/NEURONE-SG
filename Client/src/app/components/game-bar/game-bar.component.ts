@@ -12,6 +12,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { InstructionsComponent } from '../instructions/instructions.component';
 import { AdventureService } from 'src/app/services/game/adventure.service';
 
+const ADVENTURE_KEY = 'adventureId';
+
 @Component({
   selector: 'app-game-bar',
   templateUrl: './game-bar.component.html',
@@ -175,6 +177,10 @@ export class GameBarComponent implements OnInit, OnDestroy {
   }
 
   showInstructions(): void {
+    /*Dispatch openinstructionsmodal event*/
+    var evt = new CustomEvent('openinstructionsmodal');
+    window.dispatchEvent(evt);
+    /*End dispatch openinstructionsmodal event*/
     const instructionsDialogRef = this.instructionsDialog.open(InstructionsComponent, {
       width: '40rem',
     });

@@ -27,20 +27,30 @@ export class PaginatorComponent implements OnChanges {
   }
 
   changePage(page) {
+    /*Dispatch changepage event*/
+    var evt = new CustomEvent('changepage', { detail: 'To page ' + page });
+    window.dispatchEvent(evt);
+    /*End dispatch changepage event*/    
     this.currentPage = page;
     this.pageChanged.emit(page);
   }
 
   previous() {
     if (this.currentPage == 1) return;
-
+    /*Dispatch previouspage event*/
+    var evt = new CustomEvent('previouspage', { detail: 'To page ' + (this.currentPage - 1) });
+    window.dispatchEvent(evt);
+    /*End dispatch previouspage event*/    
     this.currentPage--;
     this.pageChanged.emit(this.currentPage);
   }
 
   next() {
     if (this.currentPage == this.pages.length) return;
-
+    /*Dispatch nextpage event*/
+    var evt = new CustomEvent('nextpage', { detail: 'To page ' + (this.currentPage + 1) });
+    window.dispatchEvent(evt);
+    /*End dispatch nextpage event*/
     this.currentPage++;
     this.pageChanged.emit(this.currentPage);
   }

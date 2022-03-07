@@ -4,9 +4,11 @@ import { AdventureService } from '../../services/game/adventure.service';
 import { AuthService } from '../auth/auth.service';
 import { GamificationService } from './gamification.service';
 import { KmTrackerService } from '../../services/tracking/kmtracker.service';
+import { ActionsTrackerService } from '../../services/tracking/actions-tracker.service';
 import { ConfigService } from './config.service';
 import { ProgressService } from './progress.service';
-import { environment } from 'src/environments/environment';
+
+const ADVENTURE_KEY = 'adventureId';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +52,7 @@ export class GameService {
     private gmService: GamificationService,
     private configService: ConfigService,
     private kmTracker: KmTrackerService,
+    private actionsTracker: ActionsTrackerService,
     private progressService: ProgressService
   ) {}
 
@@ -62,6 +65,9 @@ export class GameService {
     await this.fetchConfig();
     if (this.player.role == 'player' && this.config.kmTracking) {
       this.kmTracker.start();
+    }
+    if (this.player.role == 'player'){
+      this.actionsTracker.start();
     }
     this.setLoading(false);
     return Promise.resolve(1);
@@ -80,6 +86,9 @@ export class GameService {
       await this.fetchConfig();
       if (this.player.role == 'player' && this.config.kmTracking) {
         this.kmTracker.start();
+      }
+      if (this.player.role == 'player'){
+        this.actionsTracker.start();
       }
       this.setLoading(false);
       return Promise.resolve(1);
@@ -109,6 +118,7 @@ export class GameService {
 
   private setAdventure(adventure: any) {
     this.adventure = adventure;
+    sessionStorage.setItem(ADVENTURE_KEY, adventure._id);
     this.adventureEmitChange(this.adventure);
   }
 

@@ -120,9 +120,41 @@ export class SearchResultsComponent implements OnInit {
     this.currentPage = newPage;
   }
 
-  onTabChange(evt) {
+  onTabChange(evt) {    
     this.currentPage = 1;
+    switch(evt.index){
+      case 0:
+        this.changeToWebPagesTab();
+        break;
+      case 1:
+        this.changeToImagesTab();
+        break;
+      case 2:
+        this.changeToVideosTab();
+        break;
+    }    
   }
+
+  changeToWebPagesTab(){
+    /*Dispatch changetowebpagestab event*/
+    var evt = new CustomEvent('changetowebpagestab');
+    window.dispatchEvent(evt);
+    /*End dispatch changetowebpagestab event*/
+  }
+
+  changeToImagesTab(){
+    /*Dispatch changetoimagestab event*/
+    var evt = new CustomEvent('changetoimagestab');
+    window.dispatchEvent(evt);
+    /*End dispatch changetoimagestab event*/
+  }
+
+  changeToVideosTab(){
+    /*Dispatch changetovideostab event*/
+    var evt = new CustomEvent('changetovideostab');
+    window.dispatchEvent(evt);
+    /*End dispatch changetovideostab event*/
+  }  
 
   search() {
     if (this.query !== '') {

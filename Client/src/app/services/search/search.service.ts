@@ -78,6 +78,17 @@ export class SearchService {
   }
 
   toggleSearch() {
+    if(this.searchEnabled){
+      /*Dispatch hideneuronesearch event*/
+      var evt = new CustomEvent('hideneuronesearch');
+      window.dispatchEvent(evt);
+      /*End dispatch hideneuronesearch event*/      
+    }else{
+      /*Dispatch showneuronesearch event*/
+      var evt = new CustomEvent('showneuronesearch');
+      window.dispatchEvent(evt);
+      /*End dispatch showneuronesearch event*/      
+    }
     this.searchEnabled = !this.searchEnabled;
     this.searchEnabledEmitChange(this.searchEnabled);
   }
