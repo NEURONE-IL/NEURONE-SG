@@ -78,3 +78,9 @@
     </mat-card-content>
   </ng-template>
 </div>
+
+<iframe with="800px" height="500px" frameborder="0"
+    style="overflow: hidden; margin: 10px; bottom: 15px; right: 15px; position: fixed"
+    [src]="assistantUrl | safeurl"
+    *ngIf=""assistantUrl
+    title="Virtual Asist"></iframe>

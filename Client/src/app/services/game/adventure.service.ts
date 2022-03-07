@@ -56,4 +56,8 @@ export class AdventureService {
   deleteAdventure(adventure): Observable<any> {
     return this.http.delete(this.uri + '/' + adventure._id);
   }
+
+  getAssistant(adventureId: string){
+    return this.http.get(this.uri+'/'+adventureId+'/assistant');
+  }
 }

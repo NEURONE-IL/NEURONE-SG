@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Adventure = require("../models/game/adventure");
+const AdventureAssistant = require("../models/game/adventureAssistant")
 const Progress = require("../models/game/progress");
 const { nanoid } = require("nanoid");
 const path = require("path");
@@ -197,5 +198,115 @@ function validatePreconditions(adventures, progresses, playableAdventures) {
     }
   });
 }
+
+router.get('/:adventure_id/assistant', async (req, res) => {
+  let adventure_id = req.params.adventure_id;
+  const adventure = await Adventure.findOne({_id: adventure_id}, err => {
+      if (err) {
+          return res.status(404).json({
+              ok: false,
+              err: 'Adventure not found!'
+          });
+      }
+  });
+  if(!adventure){
+      return res.status(404).json({
+          ok: false,
+          err: 'Adventure not found!'
+      });
+  }
+  else{
+      AdventureAssistant.findOne({adventure: adventure._id}, (err, adventureAssistant) => {
+          if (err) {
+              return res.status(404).json({
+                  ok: false,
+                  err: 'Adventure not found!'
+              });
+          }
+          else{
+              res.status(200).json({
+                  ok: true,
+                  adventureAssistant
+              });
+          }
+      });
+  }
+});
+
+router.post('/:adventure_id/assistant', async (req, res) => {
+  let adventure_id = req.params.adventure_id;
+  const adventure = await Adventure.findOne({_id: adventure_id}, err => {
+      if (err) {
+          return res.status(404).json({
+              ok: false,
+              err: 'Adventure not found!'
+          });
+      }
+  });
+  if(!adventure){
+      return res.status(404).json({
+          ok: false,
+          err: 'Adventure not found!'
+      });
+  }
+  else{
+      const adventureAssistant = new AdventureAssistant({
+          adventure: adventure._id,
+          assistant: req.body.assistant
+      })
+      adventureAssistant.save((err, adventureAssistant)=> {
+          if(err){
+              return res.status(404).json({
+                  ok: false,
+                  err,
+                });   
+          }
+          res.status(200).json({
+              ok: true,
+              adventureAssistant
+          });
+      })
+  }
+});
+
+router.put('/:adventure_id/assistant', async (req, res) => {
+  let adventure_id = req.params.adventure_id;
+  const adventure = await Adventure.findOne({_id: adventure_id}, err => {
+      if (err) {
+          return res.status(404).json({
+              ok: false,
+              err: 'Adventure not found!'
+          });
+      }
+  });
+  if(!adventure){
+      return res.status(404).json({
+          ok: false,
+          err: 'Adventure not found!'
+      });
+  }
+  else{
+      const adventureAssistant = await AdventureAssistant.findOne({adventure: adventure._id}, err => {
+          if (err) {
+              return res.status(404).json({
+                  err: 'Adventure not found!'
+              });
+          }
+      });
+      adventureAssistant.assistant = req.body.assistant;
+      adventureAssistant.save((err, adventureAssistant)=> {
+          if(err){
+              return res.status(404).json({
+                  ok: false,
+                  err,
+                });   
+          }
+          res.status(200).json({
+              ok: true,
+              adventureAssistant
+          });
+        })
+  }
+});
 
 module.exports = router;

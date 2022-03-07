@@ -10,6 +10,7 @@ import ActivatorsUtils from '../../utils/activators';
 import { environment } from "src/environments/environment";
 import { MatDialog } from '@angular/material/dialog';
 import { InstructionsComponent } from '../instructions/instructions.component';
+import { AdventureService } from 'src/app/services/game/adventure.service';
 
 @Component({
   selector: 'app-game-bar',
@@ -26,6 +27,7 @@ export class GameBarComponent implements OnInit, OnDestroy {
   currentLinks = [];
   gmStats: any;
   avatarImg: string;
+  assistantUrl: string;
 
   @Output()
   adventureFinishedEvent = new EventEmitter<boolean>();
@@ -38,6 +40,7 @@ export class GameBarComponent implements OnInit, OnDestroy {
 
   constructor(
     private gameService: GameService,
+    private adventureService: AdventureService,
     public searchService: SearchService,
     private formBuilder: FormBuilder,
     private answerService: AnswerService,
@@ -81,6 +84,7 @@ export class GameBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.player = this.auth.getUser();
+    this.assistant();
     this.avatarImg = environment.avatarsPath + this.player.avatar_img;
     this.answerForm = this.formBuilder.group({
       answer: ['', Validators.required],
@@ -182,5 +186,17 @@ export class GameBarComponent implements OnInit, OnDestroy {
 
   toggleSearch() {
     this.searchService.toggleSearch();
+  }
+
+  assistant(){
+    let adventure = this.gameService.adventure;
+    this.adventureService.getAssistant(adventure._id).subscribe( response => {
+      let assistant = response['adventureAssistant'].assistant;
+      if(assistant){
+        this.assistantUrl = `http://va.neurone.info/assistant/${assistant._id}/${this.auth.getUser()._id}/SG/${adventure}/adventure`;
+        console.log(this.assistantUrl)
+      }
+    })
+    
   }
 }
