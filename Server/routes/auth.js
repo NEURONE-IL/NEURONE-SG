@@ -208,6 +208,8 @@ router.post("/login", async (req, res) => {
       username: user.username,
       gm_code: user.gm_code,
       avatar_img: user.avatar_img,
+      trainer_id: user.trainer_id,
+      trainer_return_url: user.trainer_return_url
     },
   };
   res.header("x-access-token", token).send(response);

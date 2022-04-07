@@ -106,7 +106,14 @@ export class GameBarComponent implements OnInit, OnDestroy {
   }
 
   finish() {
-    this.router.navigate(['select']);
+    const user = this.auth.getUser();
+    if(user.trainer_id !== null){
+      window.location.href = user.trainer_return_url;
+    }
+    else{
+      this.router.navigate(['select']);
+    }
+
   }
 
   finishChallenge(answer) {

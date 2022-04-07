@@ -107,6 +107,7 @@ router.post("/registeruser", verifyAPIKey, async (req, res) => {
         password: hashpassword,
         role: role._id,
         trainer_id: req.body.trainer_id,
+        trainer_return_url: url,
         confirmed: true
     });
 
