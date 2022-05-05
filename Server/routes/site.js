@@ -30,7 +30,7 @@ function saveGMPlayer(req, user, res) {
     playerService.postPlayer(player, (err, data) => {
       if (err) {
         console.log(err);
-        res.status(400).json({
+        return res.status(400).json({
           user,
         });
       } else {
@@ -63,7 +63,7 @@ router.post(
       }
     })
     if(siteExists){
-      res.status(200).json({
+      return res.status(200).json({
         site: siteExists
       });
     }
@@ -71,7 +71,7 @@ router.post(
       const site = new Site({
         host: req.headers.origin,
         api_key: genKey(),
-        confirmed: false
+        confirmed: true
       });
       site.save((err, site)=> {
         if(err){
@@ -80,7 +80,7 @@ router.post(
                 err,
               });   
         }
-        res.status(200).json({
+        return res.status(200).json({
             site
         });
       })
@@ -119,13 +119,13 @@ router.post("/registeruser", verifyAPIKey, async (req, res) => {
             err,
           });   
         }
-        try {
+        /*try {
           saveGMPlayer(req, user, res);
         } catch (error) {
           console.log(error);
-        }
+        }*/
 
-        res.header("x-access-token", token).send({ user: user, token: token, url: url });
+        return res.header("x-access-token", token).send({ user: user, token: token, url: url });
     })
 
 })
@@ -137,18 +137,18 @@ router.post("/login", verifyAPIKey, async (req, res) => {
       trainer_id: req.body.trainer_id,
     }, err => {
       if(err){
-        res.status(400).send(err)
+        return res.status(400).send(err)
       }
     }).populate( { path: 'role', model: Role} );
     if (!user) res.status(400).send("ID_NOT_FOUND");
     await user.save(err => {
       if(err){
-        res.status(400).send(err)
+        return res.status(400).send(err)
       }
     });
     //create and assign a token
     const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-    res.header("x-access-token", token).send({ user: user, token: token, url: url });
+    return res.header("x-access-token", token).send({ user: user, token: token, url: url });
   });
 
 router.get("/adventure", verifyAPIKey, async (req, res) => {
@@ -160,7 +160,7 @@ router.get("/adventure", verifyAPIKey, async (req, res) => {
       });
     }
     else {
-      res.status(200).json({adventures});
+      return res.status(200).json({adventures});
     }
   });
 })
@@ -182,7 +182,7 @@ router.get("/user/:trainer_id/advance", async (req, res) => {
   const trainer_id = req.params.trainer_id;
   const user = await User.findOne({trainer_id: trainer_id}, err => {
     if(err){
-      res.status(400).send(err)
+      return res.status(400).send(err)
     }
   })
   const advances = await Progress.find({user: user._id} , err => {
@@ -202,10 +202,12 @@ router.get("/user/:trainer_id/advance", async (req, res) => {
     progress.push({
       adventure: advances[i].adventure,
       completed: advances[i].finished,
-      percentage: counter/1
+      percentage: counter/1,
+      finished: advances[i].finished,
+      finishedAt: advances[i].updatedAt
     })
   }
-  res.status(200).json({
+  return res.status(200).json({
     progress
   });
 })

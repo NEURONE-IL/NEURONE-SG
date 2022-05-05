@@ -358,10 +358,12 @@ export class GameService {
         activators: this.activators,
         relevantDocsVisited: this.relevantDocsVisited,
         finished: false,
+        updatedAt: null,
       };
 
       if (this.currentNode.type == 'ending') {
         progress.finished = true;
+        progress.updatedAt = new Date();
       }
 
       this.progressService.postProgress(progress).subscribe(
