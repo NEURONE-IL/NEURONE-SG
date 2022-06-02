@@ -1,5 +1,5 @@
 .selector-container {
-  padding: 1.8em;
+  padding: 0.8em 1.8em 1.8em 1.8em;
 }
 .description-wrap {
   display: block;
@@ -12,6 +12,7 @@
 .adventure-img {
   height: 10em;
   object-fit: cover;
+  margin-bottom: 0;
 }
 
 .button-panel {
@@ -25,3 +26,25 @@
   height: 15rem;
 }
 
+.addButton{
+  background-color: #4CAF50;
+  color: #FFFFFF;
+}
+
+.adventures-title{
+  display: flex; 
+  align-items:center;
+  margin-left: -5%;
+}
+
+.user-info{
+  margin-top: 0% !important;
+  margin-bottom: 0% !important;
+  display: flex; 
+  margin-left: -5%;
+}
+.button-actions{
+  margin: 0px 0% !important;
+  padding-left: 5%;
+  padding-right: 5%;
+}

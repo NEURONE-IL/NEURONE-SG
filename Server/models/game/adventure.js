@@ -69,6 +69,17 @@ const adventureSchema = new Schema({
     ],
     default: [],
   },
+  //Valentina
+  collaborators:[{
+    user: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+    invitation: {type: String, default: 'Pendiente'},
+    _id: false
+    }],
+  privacy: {type: Boolean, default: true},
+  type: {type: String, default: 'own'},
+  tags: {type: [String]},
+  edit: {type: [String], default: []},
+
 
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },

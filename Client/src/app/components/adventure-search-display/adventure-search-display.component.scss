@@ -1,0 +1,15 @@
+
+.editor-container {
+  display: grid;
+  grid-template-areas:"meta-editor" "nodes-editor" ;
+  grid-template-rows: auto 50vh;
+  grid-column-gap: 16px;
+  height: 100%;
+  margin-top: 1%;
+}
+.studies-search-results-card{
+	margin-left: 5%;
+	margin-right: 5%;
+	margin-top: 1%;
+  padding: 0 !important;
+}

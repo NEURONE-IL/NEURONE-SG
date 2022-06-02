@@ -1,0 +1,28 @@
+<div class="adventure-selection-container">
+  <app-header [style.grid-area]="'header'"></app-header>
+  <div [style.grid-area]="'selector'">
+  <mat-card class="studies-search-results-card">
+    <mat-grid-list cols="12">
+      <div class="search-bar-div">
+        <div class="search-studies-bar" style="width: 50%">
+          <mat-form-field appearance="outline" style="width: 100%;">
+              <mat-icon matPrefix >search</mat-icon>
+            <input style="padding-left: 5px;" type="search" matInput placeholder="Buscar Estudios de la Comunidad" name= "search" [(ngModel)]= "search" (keyup.enter)="searchAdventures(this.search)">
+          </mat-form-field>
+        </div>
+        <button class="button-customize" mat-raised-button color="primary" (click)="searchAdventures(this.search)">Buscar
+          <mat-icon>search</mat-icon>
+        </button>
+        <button class="button-customize" mat-raised-button color="primary" (click)="searchAdventures('all')">Ver todos
+          <mat-icon>auto_awesome_motion</mat-icon>
+        </button>
+      </div>
+  </mat-grid-list>
+    </mat-card>
+  <div class="back-login" id="page-container">
+      <div id="content-wrap">
+          <router-outlet (activate)="onActivate($event)" ></router-outlet>   
+      </div>
+  </div>
+  </div>
+</div>

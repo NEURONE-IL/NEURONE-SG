@@ -15,17 +15,43 @@ export class AdventureService {
   getAdventures(): Observable<any> {
     return this.http.get(this.uri);
   }
+  getAdventure(adventureId): Observable<any> {
+    return this.http.get(this.uri+'/'+adventureId);
+  }
+  //Valentina
+  getAdventuresByUser(userId): Observable<any> {
+    return this.http.get(this.uri+'/byUser/'+userId);
+  }
+  getAdventuresByUserCollaboration(userId: string): Observable<any> {
+    return this.http.get(this.uri +'/byUserCollaboration/'+userId)
+  }
+  //Se obtienen los estudios filtrados según privacidad
+  getAdventuresByUserByPrivacy(params: any): Observable<any> {
+    return this.http.get(this.uri +'/byUserbyPrivacy/'+params.user+'/'+params.privacy)
+  }
+  getAdventuresByUserByType(params: any): Observable<any> {
+    return this.http.get(this.uri +'/byUserbyType/'+params.user+'/'+params.type)
+  }
 
   getPlayerAdventures(playerId): Observable<any> {
     return this.http.get(this.uri + '/player/' + playerId);
   }
 
   postAdventure(adventure): Observable<any> {
-    return this.http.post(this.uri, adventure);
+    return this.http.post(this.uri, adventure,{ headers: {'x-access-token': localStorage.getItem('auth_token')} });
+  }
+
+  cloneAdventure(adventure, user): Observable<any> {
+    return this.http.post(this.uri+'/clone/'+adventure, {user_id:user},{ headers: {'x-access-token': localStorage.getItem('auth_token')} });
   }
 
   createAdventure(adventure): Observable<any> {
     return this.http.post(this.uri +'/new', adventure)
+  }
+
+  editCollaboratorAdventure(adventureId: string, collaborators: any): Observable<any> {
+    let reqBody = {collaborators: collaborators}
+    return this.http.put(this.uri+'/editCollaborator/'+adventureId, reqBody, { headers: {'x-access-token': localStorage.getItem('auth_token')} });
   }
 
   updateAdventure(adventure): Observable<any> {

@@ -32,6 +32,9 @@ export class AdventureSelectorComponent implements OnInit {
 
   apiUrl = environment.apiUrl;
 
+  //Valentina
+  indexTab:number = 0;
+
   constructor(
     private adventureService: AdventureService,
     private auth: AuthService,
@@ -43,7 +46,13 @@ export class AdventureSelectorComponent implements OnInit {
     private progresService: ProgressService,
     private translate: TranslateService,
     private toastr: ToastrService
-  ) {}
+  ) {
+    let state = this.router.getCurrentNavigation().extras.state
+    if(state){
+      console.log(state);
+      this.indexTab = 3;
+    }
+  }
 
   ngOnInit(): void {
     this.role = this.auth.getRole();
@@ -51,15 +60,16 @@ export class AdventureSelectorComponent implements OnInit {
     if (this.role == 'player') {
       this.fetchPlayableAdventures(playerId);
     } else {
-      this.fetchAllAdventures();
+      this.onTabClick({index:this.indexTab})
     }
     sessionStorage.removeItem(ADVENTURE_KEY);
   }
 
-  private fetchAllAdventures() {
-    this.adventureService.getAdventures().subscribe(
+  private fetchAllAdventures(playerId) {
+    this.adventureService.getAdventuresByUser(playerId).subscribe(
       (res) => {
         this.adventures = res;
+        console.log(res)
         if (this.auth.getRole() == 'player') {
           let user = this.auth.getUser();
           this.progresService.getUserProgress(user._id).subscribe(
@@ -157,7 +167,7 @@ export class AdventureSelectorComponent implements OnInit {
             this.translate.get('SELECTOR.TOASTR').subscribe((res) => {
               this.toastr.success(res.DELETE_SUCCESS);
             });
-            this.reloadPage();
+            this.onTabClick({index:this.indexTab})
           },
           (err) => {
             this.translate.get('SELECTOR.TOASTR').subscribe((res) => {
@@ -200,8 +210,158 @@ export class AdventureSelectorComponent implements OnInit {
       }
     });
   }
-
   reloadPage(): void {
     this.ngOnInit();
   }
+
+  //Valentina
+  onTabClick(event) {
+    let index = event.index;
+    this.indexTab = index;
+    const userId = this.auth.getUser()._id;
+    switch(index) { 
+      case 0: { 
+        this.fetchAllAdventures(userId);
+        break; 
+      } 
+      case 1: { //Privados
+        var privacy = true;
+        let params = {user: userId, privacy: privacy};
+        this.fetchAdventuresByPrivacy(params); 
+        break; 
+      } 
+      case 2: { //Publicos
+        var privacy = false;
+        let params = {user: userId, privacy: privacy};
+        this.fetchAdventuresByPrivacy(params);
+        break; 
+      } 
+      case 3: { 
+        var type = 'clone';
+        let params = {user: userId, type: type};
+        this.fetchAdventuresByType(params)
+        break; 
+      }
+      case 4: { 
+        this.fetchAdventuresByCollaboration(userId);
+        break; 
+      }
+      default: { 
+         //statements; 
+         break; 
+      } 
+   }
+  }
+  private fetchAdventuresByPrivacy(params: any) {
+    this.adventureService.getAdventuresByUserByPrivacy(params).subscribe(
+      (res) => {
+        this.adventures = res.adventures;
+        if (this.auth.getRole() == 'player') {
+          let user = this.auth.getUser();
+          this.progresService.getUserProgress(user._id).subscribe(
+            (res) => {
+              this.userProgress = res;
+              console.log('user progress: ', this.userProgress);
+              this.validateProgress();
+              this.adventuresLoading = false;
+            },
+            (err) => {
+              this.adventuresLoading = false;
+            }
+          );
+        } else {
+          this.adventuresLoading = false;
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  private fetchAdventuresByType(params: any) {
+    this.adventureService.getAdventuresByUserByType(params).subscribe(
+      (res) => {
+        this.adventures = res.adventures;
+        console.log(res.adventures)
+        if (this.auth.getRole() == 'player') {
+          let user = this.auth.getUser();
+          this.progresService.getUserProgress(user._id).subscribe(
+            (res) => {
+              this.userProgress = res;
+              console.log('user progress: ', this.userProgress);
+              this.validateProgress();
+              this.adventuresLoading = false;
+            },
+            (err) => {
+              this.adventuresLoading = false;
+            }
+          );
+        } else {
+          this.adventuresLoading = false;
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  private fetchAdventuresByCollaboration(userId) {
+    this.adventureService.getAdventuresByUserCollaboration(userId).subscribe(
+      (res) => {
+        this.adventures = res.adventures;
+        console.log(res.adventures)
+        if (this.auth.getRole() == 'player') {
+          let user = this.auth.getUser();
+          this.progresService.getUserProgress(user._id).subscribe(
+            (res) => {
+              this.userProgress = res;
+              console.log('user progress: ', this.userProgress);
+              this.validateProgress();
+              this.adventuresLoading = false;
+            },
+            (err) => {
+              this.adventuresLoading = false;
+            }
+          );
+        } else {
+          this.adventuresLoading = false;
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+  confirmCollaborationLeft(adventure){
+    confirm('Seguro que desea dejar de ser colaborador en la aventura: '+adventure.name) && this.collaborationLeft(adventure);
+  }
+  collaborationLeft(adventure){
+    let user = this.auth.getUser();
+    let collaborators = adventure.collaborators.slice();
+    let index = collaborators.findIndex(coll => coll.user._id === user._id)
+    collaborators.splice(index,1);
+    console.log(collaborators)
+    this.editCollaborator(adventure,collaborators,"Ha dejado de ser colaborador del estudio: "+adventure.name,"No se ha podido realizar la operación, intente más tarde");
+  }
+  editCollaborator(adventure,collaboratorList, msg1, msg2){
+    this.adventureService.editCollaboratorAdventure(adventure._id, collaboratorList).subscribe(
+      response => {
+        this.toastr.success(msg1, "Éxito",{
+          timeOut: 5000,
+          positionClass: 'toast-top-center'
+        });
+        this.onTabClick({index:4})
+      },
+      err => {
+        this.toastr.error(msg2, "Error",{
+          timeOut: 5000,
+          positionClass: 'toast-top-center'
+        });
+        this.onTabClick({index:4})
+      }
+    );
+  }
+
 }

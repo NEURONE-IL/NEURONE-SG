@@ -1,0 +1,53 @@
+<h1 mat-dialog-title>{{ "WEB_RESOURCES_TABLE.TITLE" | translate }}</h1>
+<div mat-dialog-content *ngIf="!fetching">
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" *ngIf="dataSource.data.length > 0" style="width: 100%;">
+    <!-- SOURCE Column -->
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{ "WEB_RESOURCES_TABLE.TYPE" | translate }}
+      </th>
+      <td mat-cell *matCellDef="let resource">
+        <span *ngIf="!resource.type">{{
+          "WEB_RESOURCES_TABLE.TYPES.PAGE" | translate
+        }}</span>
+        <span *ngIf="resource.type == 'video'">{{
+          "WEB_RESOURCES_TABLE.TYPES.VIDEO" | translate
+        }}</span>
+        <span *ngIf="resource.type == 'image'">{{
+          "WEB_RESOURCES_TABLE.TYPES.IMAGE" | translate
+        }}</span>
+        <span *ngIf="resource.type == 'book'">{{
+          "WEB_RESOURCES_TABLE.TYPES.BOOK" | translate
+        }}</span>
+      </td>
+    </ng-container>
+
+    <!-- TARGET Column -->
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{ "WEB_RESOURCES_TABLE.PAGE_TITLE" | translate }}
+      </th>
+      <td mat-cell *matCellDef="let resource">{{ resource.title }}</td>
+    </ng-container>
+
+    <!-- LABEL Column -->
+    <ng-container matColumnDef="url">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{ "WEB_RESOURCES_TABLE.URL" | translate }}
+      </th>
+      <td mat-cell *matCellDef="let resource">{{ resource.url }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <div *ngIf="dataSource.data.length == 0">{{"WEB_RESOURCES_TABLE.NO_RESOURCES" | translate}}</div>
+</div>
+<div *ngIf="fetching">
+  <mat-spinner class="spinner"></mat-spinner>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="true">
+    {{ "COMMON.CLOSE" | translate }}
+  </button>
+</div>

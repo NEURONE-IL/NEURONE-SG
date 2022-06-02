@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { getDutchPaginatorIntl } from './components/paginatorInt/CustomPaginatorConfiguration';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,6 +13,8 @@ import { NewNodeDialogComponent } from './components/editor-dialogs/new-node-dia
 import { NewLinkDialogComponent } from './components/editor-dialogs/new-link-dialog/NewLinkDialogComponent';
 import { LinksTableDialog } from './components/editor-dialogs/links-table-dialog/LinksTableDialog';
 import { ChallengeDialogComponent } from './components/editor-dialogs/challenge-dialog/ChallengeDialogComponent';
+import { WebResourcesSearchDialogComponent } from './components/adventure-search-display/adventure-node/web-resources-search-dialog/web-resources-search-dialog.component'
+import { ChallengeViewComponent } from './components/adventure-search-display/adventure-node/challenge-view/ChallengeViewComponent';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
@@ -21,8 +24,10 @@ import { authInterceptorProviders } from './helpers/auth.interceptor';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { ToastrModule } from 'ngx-toastr';
 
+import {MatChipsModule} from '@angular/material/chips'; 
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatInputModule } from '@angular/material/input';
@@ -45,7 +50,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule,MatPaginatorIntl } from '@angular/material/paginator';
 import { FileUploadModule } from 'ng2-file-upload';
 import { QuestionFormComponent } from './components/game-bar/question-form/question-form.component';
 import { MultipleFormComponent } from './components/game-bar/multiple-form/multiple-form.component';
@@ -74,6 +79,12 @@ import { ProfileComponent } from './views/profile/profile.component';
 import { AvatarSelectorComponent } from './components/avatar-selector/avatar-selector.component';
 import { InstructionsComponent } from './components/instructions/instructions.component';
 import { LoginRedirectComponent } from './views/login-redirect/login-redirect.component';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { AdventuresSearchComponent } from './views/adventures-search/adventures-search.component';
+import { AdventuresSearchResultsComponent } from './components/adventures-search-results/adventures-search-results.component';
+import { AdventureSearchDisplayComponent } from './components/adventure-search-display/adventure-search-display.component';
+import { AdventureNodeComponent } from './components/adventure-search-display/adventure-node/adventure-node.component';
+import { AdventureDataComponent } from './components/adventure-search-display/adventure-data/adventure-data.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -94,6 +105,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     NewLinkDialogComponent,
     LinksTableDialog,
     ChallengeDialogComponent,
+    ChallengeViewComponent,
     QuestionFormComponent,
     MultipleFormComponent,
     NewAdventureDialogComponent,
@@ -106,6 +118,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ViewPageComponent,
     SafeurlPipe,
     WebResourcesTableDialogComponent,
+    WebResourcesSearchDialogComponent,
     NewWebResourceDialogComponent,
     GamificationConfigComponent,
     GeneralConfigComponent,
@@ -116,7 +129,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     ProfileComponent,
     AvatarSelectorComponent,
     InstructionsComponent,
-    LoginRedirectComponent
+    LoginRedirectComponent,
+    SearchBarComponent,
+    AdventuresSearchComponent,
+    AdventuresSearchResultsComponent,
+    AdventureSearchDisplayComponent,
+    AdventureNodeComponent,
+    AdventureDataComponent
   ],
   imports: [
     BrowserModule,
@@ -125,7 +144,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReactiveFormsModule,
     FormsModule,
     MatCardModule,
+    MatChipsModule,
     MatButtonModule,
+    MatBadgeModule,
     NgxGraphModule,
     MatSidenavModule,
     MatInputModule,
@@ -159,7 +180,8 @@ export function HttpLoaderFactory(http: HttpClient) {
       },
     }),
   ],
-  providers: [authInterceptorProviders],
+  providers: [authInterceptorProviders,
+              { provide: MatPaginatorIntl, useValue: getDutchPaginatorIntl() }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

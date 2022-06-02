@@ -1,0 +1,75 @@
+<mat-card class="studies-search-results-card">
+  <mat-card-content>
+    <div *ngIf="adventures.length > 0">
+      <p style="font-size: 18px; font-weight:300;" *ngIf="actualQuery === 'all'">Mostrando todas las aventuras públicas</p>
+      <p style="font-size: 18px; font-weight:300;" *ngIf="actualQuery != 'all'">Mostrando resultados para "<b>{{actualQuery}}"</b></p>
+    </div>
+    <div *ngIf="adventures.length === 0" style="padding-bottom: 1% !important;">
+      <p style="font-size: 18px; font-weight:300; text-align: center;">No se encontraron resultados para "<b>{{actualQuery}}"</b>
+    </div>
+    <mat-grid-list cols="12" [gutterSize]="'12px'">
+			<div
+    fxLayout="row wrap"
+    fxLayoutGap="16px grid"
+    class="adventure-grid"
+    *ngIf="!adventuresLoading"
+  >
+    <div
+      fxFlex="20%"
+      fxFlex.xs="100%"
+      fxFlex.sm="33%"
+      *ngFor="let adventure of adventures"
+    >
+      <mat-card style="cursor:pointer" class="mat-elevation-z4" (click)="clickedAdventure(adventure._id)">
+        <img
+          class="adventure-img"
+          *ngIf="adventure.image_id"
+          mat-card-image
+          src="{{ apiUrl + '/image/' + adventure.image_id }}"
+          onerror="this.src='/assets/images/placeholder.png';"
+          alt="Adventure image"
+        />
+        <img
+          class="adventure-img"
+          *ngIf="!adventure.image_id"
+          mat-card-image
+          src="assets/images/placeholder.png"
+          alt="Adventure image"
+        />
+        <div class="user-info">
+          <mat-icon style="color: gray; font-size: 17px;">person</mat-icon>
+          <mat-card-subtitle style="margin-bottom: 0% !important"> {{ adventure.user.username }}
+          </mat-card-subtitle>  
+        </div>
+        <mat-card-content>
+          <mat-card-title style="font-size: 18px; margin-bottom: 0%;">
+            {{adventure.name}}
+          </mat-card-title>
+          <p class="description-wrap">
+            {{ adventure.description }}
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button
+            mat-button
+            (click)="play(adventure)"
+            *ngIf="!adventure.progress"
+          >
+            {{ "SELECTOR.CARD_PLAY" | translate }}
+          </button>
+          <!--button
+            mat-button
+            (click)="resume(adventure)"
+            *ngIf="adventure.progress"
+          >
+            {{ "SELECTOR.CARD_CONTINUE" | translate }}
+          </button-->
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+		</mat-grid-list>
+</mat-card-content>
+<mat-divider *ngIf="adventures.length > 0"></mat-divider>
+<mat-paginator *ngIf="adventures.length > 0" #adventuresPaginator style="font-size: 17px;" [length]="paginator?.totalDocs" [pageSize]="paginator?.perPages" (page)="pageTurn($event)" aria-label="Seleccionar página"> </mat-paginator>
+</mat-card>

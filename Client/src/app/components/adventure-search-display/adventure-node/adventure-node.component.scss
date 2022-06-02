@@ -1,0 +1,98 @@
+.node-editor {
+  width: 100%;
+}
+
+.node-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.node-form-field {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.form-container {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+button {
+  margin-right: 5px;
+}
+
+.mat-drawer-content .mat-sidenav-container {
+  overflow: hidden;
+}
+
+.mat-drawer-content {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.mat-sidenav-container {
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  overflow-y: scroll;
+  background: lightgray;
+  box-shadow: inset 0 0 4px #707070;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #283593;
+  border-radius: 3em;
+}
+
+.sidebar-button-panel {
+  margin-bottom: 10px;
+}
+
+.button-panel {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.img-thumb {
+  border: 1px solid #ddd; /* Gray border */
+  border-radius: 4px; /* Rounded border */
+  padding: 5px; /* Some padding */
+  height: 5rem; /* Set a small width */
+}
+
+.spinner-container {
+  height: 100%;
+  width: 100%;
+}
+
+.spinner {
+  display: block;
+  margin: auto;
+}
+.studies-search-results-card{
+	margin-left: 5%;
+	margin-right: 5%;
+	margin-top: 1.5%;
+  padding: 0 !important;
+}
+.date-notification-info{
+  display: flex; 
+  padding-bottom: 0% !important;
+  margin-top: -1%;
+  align-items:center;
+}
+.text-view-props {
+  min-width: 150px;
+  max-width: 300px;
+  width: 100%;
+}

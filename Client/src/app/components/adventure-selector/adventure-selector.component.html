@@ -1,7 +1,20 @@
 <div class="selector-container">
+  <div *ngIf="role == 'admin' || role == 'creator'">
+    <app-search-bar></app-search-bar>
+  </div>
   <div class="config-cards" *ngIf="role == 'admin'">
     <app-gamification-config></app-gamification-config>
     <app-general-config></app-general-config>
+  </div>
+  <div>
+    <h4>Mis Aventuras</h4>
+    <mat-tab-group [selectedIndex]="indexTab" class="studies-tab" (selectedTabChange)="onTabClick($event)">
+      <mat-tab label="Todas"></mat-tab>
+      <mat-tab label="Privadas"></mat-tab>
+      <mat-tab label="Públicas"></mat-tab>
+      <mat-tab label="Clonadas"></mat-tab>
+      <mat-tab  label="Colaboraciones"></mat-tab>
+    </mat-tab-group>
   </div>
   <div
     fxLayout="row wrap"
@@ -31,7 +44,22 @@
           src="assets/images/placeholder.png"
           alt="Adventure image"
         />
-        <mat-card-title>{{ adventure.name }}</mat-card-title>
+        <div *ngIf="indexTab == 4" class="user-info">
+          <mat-icon style="color: gray; font-size: 17px;">person</mat-icon>
+          <mat-card-subtitle style="margin-bottom: 0% !important"> {{ adventure.user.username }}
+          </mat-card-subtitle>  
+        </div>
+
+        <div class="adventures-title">
+          <mat-icon *ngIf="adventure.privacy; else adventurePublic" style="font-size: 20px;" color="primary">lock_outlined</mat-icon>
+          <ng-template #adventurePublic> 
+            <mat-icon style="color: #1fa510; font-size: 20px;" >lock_open_outlined</mat-icon>
+          </ng-template>
+          <mat-card-title style="font-size: 20px; margin-bottom: 0%;">
+            {{adventure.name}}
+          </mat-card-title>
+        </div>
+        
         <mat-card-content>
           <p class="description-wrap">
             {{ adventure.description }}
@@ -42,6 +70,7 @@
             mat-button
             (click)="play(adventure)"
             *ngIf="!adventure.progress"
+            class="button-actions"
           >
             {{ "SELECTOR.CARD_PLAY" | translate }}
           </button>
@@ -49,6 +78,7 @@
             mat-button
             (click)="resume(adventure)"
             *ngIf="adventure.progress"
+            class="button-actions"
           >
             {{ "SELECTOR.CARD_CONTINUE" | translate }}
           </button>
@@ -56,21 +86,33 @@
             mat-button
             (click)="edit(adventure)"
             *ngIf="role == 'admin' || role == 'creator'"
+            class="button-actions"
           >
             {{ "SELECTOR.CARD_EDIT" | translate }}
           </button>
           <button
             mat-button
             (click)="deleteAdventure(adventure)"
-            *ngIf="role == 'admin' || role == 'creator'"
+            *ngIf="(role == 'admin' || role == 'creator') && indexTab !=4; else collaborator"
+            class="button-actions"
           >
             {{ "SELECTOR.CARD_DELETE" | translate }}
           </button>
+          <ng-template #collaborator>
+            <button
+              mat-button
+              (click)="confirmCollaborationLeft(adventure)"
+              *ngIf="role == 'admin' || role == 'creator'"
+              class="button-actions"
+            >
+              SALIR
+            </button>
+        </ng-template>
         </mat-card-actions>
       </mat-card>
     </div>
   </div>
-  <div *ngIf="!adventuresLoading && adventures.length==0">
+  <div *ngIf="!adventuresLoading && adventures.length==0" style="margin-top: 3%">
     <h2>{{ "SELECTOR.NO_ADVENTURES" | translate }}</h2>
   </div>
   <div class="button-panel">

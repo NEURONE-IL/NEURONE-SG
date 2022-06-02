@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  root: 'http://143.198.136.174:3002',
-  apiUrl: 'http://143.198.136.174:3002/api',
-  coreUrl: 'http://143.198.136.174:3000/v1',
-  coreRoot: 'http://143.198.136.174:3000',
+  root: 'http://localhost:3002',
+  apiUrl: 'http://localhost:3002/api',
+  coreUrl: 'https://trivia2.neurone.info:3001/v1',
+  coreRoot: 'https://trivia2.neurone.info:3001',
   gmTimeout: 2000,
   coreUploadTimeout: 120000,
   coreFetchTimeout: 10000,
