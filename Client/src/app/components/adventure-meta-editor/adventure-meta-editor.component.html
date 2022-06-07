@@ -1,6 +1,31 @@
 <mat-tab-group dynamicHeight style="background: #d1d9ff;"  mat-align-tabs="start" (selectedTabChange)="onTabClick($event)">
   <mat-tab label="Metadatos">
-    <div class="meta-editor-container">
+    <div class="meta-editor-container" style="display: flex;">
+      <div style="margin-right: 1rem;">
+        <button
+          mat-raised-button
+          class="save-all-button"
+          color="primary"
+          [matTooltip]="'TOOLTIPS.SAVE_ALL_BTN' | translate"
+          (click)="saveAllChanges()"
+        >
+          {{ "META_EDITOR.SAVE_ALL" | translate }}
+        </button>
+        <div style="display: flex; justify-content: center;">
+          <img
+            *ngIf="currentImg && !imagePreview"
+            class="img-thumb"
+            src="{{ apiUrl + '/image/' + currentImg }}"
+            alt="..."
+          />
+          <img
+            *ngIf="imagePreview"
+            class="img-thumb"
+            [src]="imagePreview"
+            alt="..."
+          />
+        </div>
+      </div>
       <form class="meta-form" [formGroup]="metaForm">
         <div class="form-item">
           <mat-form-field class="meta-form-field">
@@ -34,7 +59,8 @@
               {{ "META_EDITOR.ERRORS.DESCRIPTION_REQUIRED" | translate }}
             </mat-error>
           </mat-form-field>
-          <mat-form-field style="width: 310%; margin-bottom: 2% !important;">
+
+          <mat-form-field style="width: 330%; margin-bottom: 2% !important;">
             <mat-chip-list #chipListTags aria-label="Tags Selection" formControlName="tags">
               <mat-chip
                 *ngFor="let tag of tags"
@@ -63,14 +89,6 @@
               El tag ya se encuentra en la lista
             </mat-error>
           </mat-form-field>
-          <button
-            mat-raised-button
-            color="primary"
-            [matTooltip]="'TOOLTIPS.SAVE_ALL_BTN' | translate"
-            (click)="saveAllChanges()"
-          >
-            {{ "META_EDITOR.SAVE_ALL" | translate }}
-          </button>
         </div>
         <div class="form-item">
           <mat-form-field class="meta-form-field">
@@ -86,13 +104,6 @@
                 >{{ adventure.name }}</mat-option
               >
             </mat-select>
-            <!-- <mat-icon
-              class="form-tooltip"
-              matSuffix
-              [matTooltip]="'TOOLTIPS.ADVENTURE_PRECONDITIONS' | translate"
-              matTooltipPosition="after"
-              >help_outline</mat-icon
-            > -->
           </mat-form-field>
     
           <!--Valentina-->
@@ -103,6 +114,7 @@
             </mat-select>
           </mat-form-field>
         </div>      
+        
         <div class="form-item">
           <mat-form-field class="meta-form-field">
             <mat-label>{{ "META_EDITOR.IMAGE" | translate }}</mat-label>
@@ -124,20 +136,7 @@
             />
           </div>
         </div>
-        <div class="form-item">
-          <img
-            *ngIf="currentImg && !imagePreview"
-            class="img-thumb"
-            src="{{ apiUrl + '/image/' + currentImg }}"
-            alt="..."
-          />
-          <img
-            *ngIf="imagePreview"
-            class="img-thumb"
-            [src]="imagePreview"
-            alt="..."
-          />
-        </div>
+        
       </form>
     </div>    
   </mat-tab>

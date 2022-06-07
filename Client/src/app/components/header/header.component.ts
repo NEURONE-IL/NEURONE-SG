@@ -31,7 +31,6 @@ export class HeaderComponent implements OnInit {
             private toastr: ToastrService) {
     this.auth.userEmitter.subscribe(user => {
       this.user = user;
-      console.log(user)
     });
   }
 

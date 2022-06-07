@@ -54,7 +54,7 @@ export class NewAdventureDialogComponent implements OnInit {
     {privacy:"Privado", value: true}
   ];
   user: any;
-  tags: String[] = [];
+  tags: String[] = ['ejemplo'];
   collaborators_selected: any[] = [];
   collaborator_status: boolean = false;
 

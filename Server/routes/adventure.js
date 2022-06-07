@@ -208,7 +208,11 @@ router.post("/new",
     let collaborators = JSON.parse(req.body.collaborators);
     let tags = JSON.parse(req.body.tags);
     initialAdventure.collaborators = collaborators;
-    initialAdventure.tags = tags;
+    if(tags.length > 0)
+      initialAdventure.tags = tags;
+    else
+      initialAdventure.tags = ['ejemplo'];
+
 
     if (req.file) {
       initialAdventure.image_id = req.file.id;
@@ -240,7 +244,7 @@ router.post("/new",
       collaborators.forEach( async coll => {
           const invitation = new Invitation ({
               user: coll.user,
-              adventure: initialAdventure._id,
+              adventure: newAdventure._id,
               status: 'Pendiente',
           });
           invitation.save(err => {
@@ -255,7 +259,7 @@ router.post("/new",
               userTo: coll.user,
               type: 'invitation',
               invitation: invitation._id,
-              description:'Invitación para colaborar en la aventura: ' + initialAdventure.name,
+              description:'Invitación para colaborar en la aventura: ' + newAdventure.name,
               seen: false,
           });
           notification.save(err => {
@@ -276,7 +280,7 @@ router.post("/new",
       }
       await adventure.populate({path:'user', model:User}).execPopulate();
       if(adventure.privacy == false)
-        createAdventureSearch(adventure, []);
+        createAdventureSearch(adventure);
 
       res.status(200).json(adventure);
     });
@@ -336,7 +340,7 @@ router.put(
         if(adventure.privacy == true && privacyChange)
           deleteAdventureSeach(adventure._id);
         else if(adventure.privacy == false && privacyChange)
-          createAdventureSearch(adventure, []);
+          createAdventureSearch(adventure);
         else if(adventure.privacy == false && !privacyChange)
           updateAdventureSearch(adventure);
           
@@ -347,6 +351,122 @@ router.put(
 );
 
 /*************Valentina *************/
+
+//Método para recibir cambios de edición de un estudio
+router.get('/editStatus/:adventure_id/:user_id' ,async (req, res) => {
+  console.log('Event Source for Adventure Edit Status');
+  
+  var Stream = new EventEmitter(); 
+  const _adventure = req.params.adventure_id;       
+  const _user = req.params.user_id;
+
+  res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive'
+  });
+
+  Stream.on(_user+'/'+_adventure, function(event, data){
+      res.write('event: '+ String(event)+'\n'+'data: ' + JSON.stringify(data)+"\n\n");
+  })
+
+  var id = setInterval(async function(){
+      const adventure = await Adventure.findOne({_id:_adventure}, (err) => {
+          if (err) {
+              return res.status(404).json({
+                  err
+              });
+          }
+      }).populate({path:'edit', model:User});
+      Stream.emit(_user+'/'+_adventure,'message',{currentUser: adventure.edit});
+
+      if(adventure.edit === undefined){
+        console.log('xx')
+        Stream.removeAllListeners();
+        clearInterval(id);
+      }
+  }, 5000); 
+});
+
+router.put('/requestEdit/:adventure_id'/*, [verifyToken, authMiddleware.isCreator]*/, async (req, res) => {
+  
+  const _adventure = req.params.adventure_id;
+  const _user = req.body.user;
+
+  console.log(_user + ' arrived');
+  console.log('Entering to Function: ', new Date())
+
+  lock.acquire(_adventure, async function(done) {
+      console.log('Entering to Lock: ', new Date())
+      console.log(_user + ' acquire');
+      
+      const adventure = await Adventure.findOne({_id:_adventure}, async (err, adv) => {
+          if (err) {
+              return res.status(404).json({
+                  err
+              });
+          }
+      }).populate({path:'edit', model:User});
+
+      if(adventure.edit == undefined){
+        adventure.edit = _user
+        adventure.save(async (err,adv) => {
+          if(err){
+              return res.status(404).json({
+                  ok: false,
+                  err
+              });
+          }
+          await adv.populate({path:'edit', model:User}).execPopulate();
+          done(JSON.stringify(adv.edit._id));
+          res.status(200).json({userEdit: adv.edit});
+        })
+        
+      }
+      else{
+        done(JSON.stringify(adventure.edit._id));
+        res.status(200).json({userEdit: adventure.edit});
+      }
+      
+  }, async function(edit) {
+      if(JSON.stringify(_user) == edit)
+        console.log('Current ser can edit ');
+      else
+        console.log('Current ser can\' edit yet');
+
+      console.log('Lock free...');
+  })
+})
+
+router.put('/releaseAdventure/:adventure_id', [verifyToken, authMiddleware.isCreator], async (req, res) => {
+  console.log('releaseEntrando')
+  const _adventure = req.params.adventure_id;
+  const _user = req.body.user;
+
+  const adventure = await Adventure.findOne({_id:_adventure}, err => {
+      if (err) {
+          return res.status(404).json({
+              err
+          });
+      }
+  });
+  if(JSON.stringify(adventure.edit) === JSON.stringify(_user))
+    adventure.edit = undefined;
+
+  //console.log('Current adventure edit %s for %s',adventure.edit,adventure.name)
+  adventure.save(err => {
+      if(err){
+          return res.status(404).json({
+              ok: false,
+              err
+          });
+      }
+      res.status(200).json(adventure);
+  })
+  //await delay(5); Para probar
+      
+})
+
 router.put('/editCollaborator/:adventure_id', [verifyToken, authMiddleware.isCreator], async (req, res) => {
     
   const _id = req.params.adventure_id;
@@ -365,8 +485,6 @@ router.put('/editCollaborator/:adventure_id', [verifyToken, authMiddleware.isCre
           let collDelete = collaborators.some(item => JSON.stringify(item.user._id) === JSON.stringify(coll.user));
 
           if(!collDelete && coll.invitation === 'Pendiente'){
-
-              console.log('borra')
               await Invitation.findOneAndDelete({user: coll.user, status: 'Pendiente', adventure: adventure._id}, async (err, inv) =>{
                   if(err){
                       return res.status(404).json({
@@ -776,7 +894,7 @@ router.put('/:adventure_id/assistant', async (req, res) => {
   }
 });
 
-createAdventureSearch = async (adventure) => {
+async function createAdventureSearch(adventure){
   console.log('createAdventureSearch');
 
   try {
@@ -785,6 +903,8 @@ createAdventureSearch = async (adventure) => {
       name: adventure.name,
       author: adventure.user.username,
       description: adventure.description,
+      nodesLabel:['Start'],
+      nodesText:['...'],
       userID: adventure.user._id,
       tags: adventure.tags,
       adventure: adventure
@@ -800,7 +920,7 @@ createAdventureSearch = async (adventure) => {
   }
 };
 
-updateAdventureSearch = async (adventure) => {
+async function updateAdventureSearch(adventure){
   console.log('updateAdventureSearch');
   try {
     const _id = adventure._id;
@@ -811,21 +931,34 @@ updateAdventureSearch = async (adventure) => {
       }
     });
 
-    adventureSearch.name = adventure.name
-    adventureSearch.description= adventure.description
-    adventureSearch.tags= adventure.tags
+    adventureSearch.name = adventure.name;
+    adventureSearch.description= adventure.description;
+    adventureSearch.tags= adventure.tags;
+    adventureSearch.nodesLabel = [];
+    adventureSearch.nodesText = [];
 
-    adventureSearch.save(err => {
-      if(err){
-          console.log(err)
+    adventure.nodes.forEach(node => {
+      adventureSearch.nodesLabel.push(node.label);
+      adventureSearch.nodesText.push(node.data.text);
+
+      if(adventureSearch.nodesLabel.length == adventure.nodes.length) {
+        adventureSearch.save(err => {
+          if(err){
+            return res.status(404).json({
+                err
+            });
+          }
+        })
       }
-    })
+    });
   }catch (err) {
     console.log(err)
   }
+
 };
 
-deleteAdventureSeach = async (adv_id) => {
+
+async function deleteAdventureSeach(adv_id){
   console.log('deleteAdventureSeach');
   try {
     const _id = adv_id;

@@ -70,7 +70,6 @@ router.put('/acceptInvitation/:type' ,  [verifyToken, authMiddleware.isCreator],
 
     if(type === 'invitation'){
         let index = adventure.collaborators.findIndex( coll => JSON.stringify(coll.user) === JSON.stringify(_user))
-        console.log(index)
         adventure.collaborators[index].invitation = 'Aceptada'
         
         const newNotification = new AdminNotification ({
@@ -89,6 +88,7 @@ router.put('/acceptInvitation/:type' ,  [verifyToken, authMiddleware.isCreator],
         })
     }
     else{
+        //El user de la invitation es quien pidió ser colaborador
         let newColl = {user: invitation.user, invitation:'Aceptada'};
         adventure.collaborators.push(newColl);
         
@@ -96,7 +96,7 @@ router.put('/acceptInvitation/:type' ,  [verifyToken, authMiddleware.isCreator],
             userFrom: adventure.user,
             userTo: invitation.user,
             type: 'invitation_response',
-            description: invitation.user.username +' ha aceptado su solicitud de colaboración en la aventura: '+adventure.name,
+            description: adventure.user.username +' ha aceptado su solicitud de colaboración en la aventura: '+adventure.name,
             seen: false,
         });
         newNotification.save(err => {

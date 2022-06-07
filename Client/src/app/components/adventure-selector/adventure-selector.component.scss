@@ -48,3 +48,14 @@
   padding-left: 5%;
   padding-right: 5%;
 }
+.edit-info {
+  display: flex;
+  position: absolute;
+  transform: scale(0.75);
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.edit-btn {
+  background-color: #FFCC00;
+}

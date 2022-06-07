@@ -1,4 +1,5 @@
 const Role = require('../models/auth/role');
+const Adventure = require('../models/game/adventure')
 const Config = require('../models/game/config');
 
 async function initial() {
@@ -50,5 +51,21 @@ async function initial() {
   })
 
 }
+async function cleanEdit(){
+  const adventures = await Adventure.find({}, (err) => {
+      if(err){
+          console.log(err)
+      }
+  })
+  adventures.forEach(async adventure => {
+      adventure.edit = undefined;
+      adventure.save(err => {
+          if(err){
+              console.log(err)
+          }
+      })
+  })
+}
 
 exports.initial = initial;
+exports.cleanEdit = cleanEdit;

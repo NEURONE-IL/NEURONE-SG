@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -9,8 +9,9 @@ import { environment } from '../../../environments/environment';
 export class AdventureService {
 
   uri = environment.apiUrl + '/adventure';
+  eventsSources: EventSource[] = [];
 
-  constructor(protected http: HttpClient) { }
+  constructor(protected http: HttpClient, private _zone: NgZone) { }
 
   getAdventures(): Observable<any> {
     return this.http.get(this.uri);
@@ -25,7 +26,7 @@ export class AdventureService {
   getAdventuresByUserCollaboration(userId: string): Observable<any> {
     return this.http.get(this.uri +'/byUserCollaboration/'+userId)
   }
-  //Se obtienen los estudios filtrados según privacidad
+  //Se obtienen las aventuras filtrados según privacidad
   getAdventuresByUserByPrivacy(params: any): Observable<any> {
     return this.http.get(this.uri +'/byUserbyPrivacy/'+params.user+'/'+params.privacy)
   }
@@ -52,6 +53,12 @@ export class AdventureService {
   editCollaboratorAdventure(adventureId: string, collaborators: any): Observable<any> {
     let reqBody = {collaborators: collaborators}
     return this.http.put(this.uri+'/editCollaborator/'+adventureId, reqBody, { headers: {'x-access-token': localStorage.getItem('auth_token')} });
+  }
+  requestForEdit(adventureId: string, user: any): Observable<any> {
+    return this.http.put(this.uri+'/requestEdit/'+adventureId, user);
+  }
+  releaseForEdit(adventureId: string, user: any): Observable<any> {
+    return this.http.put(this.uri+'/releaseAdventure/'+adventureId, user, { headers: {'x-access-token': localStorage.getItem('auth_token')} });
   }
 
   updateAdventure(adventure): Observable<any> {
@@ -86,4 +93,45 @@ export class AdventureService {
   getAssistant(adventureId: string){
     return this.http.get(this.uri+'/'+adventureId+'/assistant');
   }
+
+  //Valentina: Control de concurrencia
+  getServerSentEvent(adventureId: string,user_id: string): Observable<any> {
+    return new Observable((observer) => {
+      
+      let eventSource = this.getEventSource(adventureId,user_id);
+      let index = this.eventsSources.push(eventSource);
+
+      this.eventsSources[index-1].onmessage = event => {
+        this._zone.run(() => {
+          observer.next(event);
+        });
+      };
+      this.eventsSources[index-1].onerror = error => {
+        this._zone.run(() => {
+          observer.error(error);
+        });
+      };
+    });
+  }
+
+  getEventSource(adventure_id: string, user_id: string): EventSource {
+    return new EventSource(this.uri+'/editStatus/'+adventure_id+'/'+user_id);
+  }
+
+  closeEventSourcebyUrl(adventure_id: string, user_id: string): void{
+    let url = this.uri+'/editStatus/'+adventure_id+'/'+user_id;
+    let index = this.eventsSources.findIndex( ev => ev.url === url);
+    if(index != -1){
+      this.eventsSources[index].close();
+      this.eventsSources.splice(index,1);
+    }
+  }
+
+  closeAllEventSources(): void {
+    this.eventsSources.forEach(event => {
+      event.close();
+    });
+    this.eventsSources = [];
+  }
+  
 }

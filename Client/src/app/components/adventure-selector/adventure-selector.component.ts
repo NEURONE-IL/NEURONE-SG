@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnDestroy,ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -11,6 +11,9 @@ import { NewAdventureDialogComponent } from './dialogs/new-adventure/new-adventu
 import { environment } from 'src/environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
+import { MatSnackBar,MatSnackBarRef } from '@angular/material/snack-bar';
+import { CustomSnackBarComponent } from './snackbar/CustomSnackBarComponent'
+import { Subject } from 'rxjs';
 
 const ADVENTURE_KEY = 'adventureId';
 
@@ -19,7 +22,7 @@ const ADVENTURE_KEY = 'adventureId';
   templateUrl: './adventure-selector.component.html',
   styleUrls: ['./adventure-selector.component.scss'],
 })
-export class AdventureSelectorComponent implements OnInit {
+export class AdventureSelectorComponent implements OnInit, OnDestroy {
   adventures: any;
   role: any;
   userProgress: any;
@@ -34,6 +37,9 @@ export class AdventureSelectorComponent implements OnInit {
 
   //Valentina
   indexTab:number = 0;
+  acceptSubscription :boolean = false;
+  editUsers: any[][] = [];
+
 
   constructor(
     private adventureService: AdventureService,
@@ -45,7 +51,9 @@ export class AdventureSelectorComponent implements OnInit {
     public newAdventureDialog: MatDialog,
     private progresService: ProgressService,
     private translate: TranslateService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private snackBar: MatSnackBar,
+    private changeDetection: ChangeDetectorRef
   ) {
     let state = this.router.getCurrentNavigation().extras.state
     if(state){
@@ -57,6 +65,7 @@ export class AdventureSelectorComponent implements OnInit {
   ngOnInit(): void {
     this.role = this.auth.getRole();
     const playerId = this.auth.getUser()._id;
+    this.initEditUsers()
     if (this.role == 'player') {
       this.fetchPlayableAdventures(playerId);
     } else {
@@ -64,12 +73,16 @@ export class AdventureSelectorComponent implements OnInit {
     }
     sessionStorage.removeItem(ADVENTURE_KEY);
   }
+  ngOnDestroy(): void {
+    this.adventureService.closeAllEventSources();
+  }
 
   private fetchAllAdventures(playerId) {
     this.adventureService.getAdventuresByUser(playerId).subscribe(
       (res) => {
         this.adventures = res;
         console.log(res)
+        this.createEditUsers();
         if (this.auth.getRole() == 'player') {
           let user = this.auth.getUser();
           this.progresService.getUserProgress(user._id).subscribe(
@@ -256,6 +269,8 @@ export class AdventureSelectorComponent implements OnInit {
     this.adventureService.getAdventuresByUserByPrivacy(params).subscribe(
       (res) => {
         this.adventures = res.adventures;
+        this.createEditUsers();
+
         if (this.auth.getRole() == 'player') {
           let user = this.auth.getUser();
           this.progresService.getUserProgress(user._id).subscribe(
@@ -283,7 +298,9 @@ export class AdventureSelectorComponent implements OnInit {
     this.adventureService.getAdventuresByUserByType(params).subscribe(
       (res) => {
         this.adventures = res.adventures;
-        console.log(res.adventures)
+        console.log(res.adventures);
+        this.createEditUsers();
+
         if (this.auth.getRole() == 'player') {
           let user = this.auth.getUser();
           this.progresService.getUserProgress(user._id).subscribe(
@@ -311,7 +328,9 @@ export class AdventureSelectorComponent implements OnInit {
     this.adventureService.getAdventuresByUserCollaboration(userId).subscribe(
       (res) => {
         this.adventures = res.adventures;
-        console.log(res.adventures)
+        console.log(res.adventures);
+        this.createEditUsers();
+
         if (this.auth.getRole() == 'player') {
           let user = this.auth.getUser();
           this.progresService.getUserProgress(user._id).subscribe(
@@ -343,7 +362,7 @@ export class AdventureSelectorComponent implements OnInit {
     let index = collaborators.findIndex(coll => coll.user._id === user._id)
     collaborators.splice(index,1);
     console.log(collaborators)
-    this.editCollaborator(adventure,collaborators,"Ha dejado de ser colaborador del estudio: "+adventure.name,"No se ha podido realizar la operación, intente más tarde");
+    this.editCollaborator(adventure,collaborators,"Ha dejado de ser colaborador de la aventura: "+adventure.name,"No se ha podido realizar la operación, intente más tarde");
   }
   editCollaborator(adventure,collaboratorList, msg1, msg2){
     this.adventureService.editCollaboratorAdventure(adventure._id, collaboratorList).subscribe(
@@ -363,5 +382,98 @@ export class AdventureSelectorComponent implements OnInit {
       }
     );
   }
+  requestEdit(adventure,i){
+    let user_id = this.auth.getUser()._id;
+    this.adventureService.requestForEdit(adventure._id,{user:user_id}).subscribe(
+      response => {
+        let userEdit = response.userEdit;
+        if(userEdit._id != user_id){
+          this.subsToEdit(adventure,user_id,userEdit,i);
+        }
+        else{
+          this.edit(adventure)
+        }
+      },
+      err => {
+        console.log(err);
+      }
+    )
+  }
+  releaseAdventure(adventure){
+    let user_id = this.auth.getUser()._id;
+    this.adventureService.releaseForEdit(adventure._id, {user:user_id}).subscribe(
+      adventure => {
+        console.log('Adventure Release');
+      },
+      err => {
+        console.log(err)
+      }
+    );
+  }
+  updateStatusForm(editUser,adventure){
+    let user_id = this.auth.getUser()._id;
+    if(editUser == undefined){
+      console.log('Puede editar!')
+      this.toastr.info('La aventura: '+adventure.name+' puede ser editada ahora', 'Información', {
+        timeOut: 5000,
+        positionClass: 'toast-top-center'
+      });
+      this.adventureService.closeEventSourcebyUrl(adventure._id,user_id);
+    }
+  }
+  preEdit(adv,i){
+    this.adventureService.getAdventure(adv._id).subscribe( async response => {
+      this.requestEdit(await response,i);
+    },
+    err => {
+      console.log(err)
+    })
+  }
+  subsToEdit(adventure, user_id,currentUser,i) {
+    console.log('No puede editar');
 
+    let snackBarRef = this.snackBar.openFromComponent(CustomSnackBarComponent, {
+        data:{adventure:adventure},
+        duration: 10 * 1000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        
+    })
+    snackBarRef.afterDismissed().subscribe(data => {
+      let subs = data.dismissedByAction;
+      if(subs){
+        let userEdit: any = {};
+        let currentEdit = {user:currentUser.username, adventure:adventure._id}
+        this.editUsers[this.indexTab][i] = currentEdit;
+        this.changeDetection.detectChanges();
+
+        this.adventureService.getServerSentEvent(adventure._id, user_id).subscribe(
+          response => {
+            let data = JSON.parse(response.data);
+            userEdit = data.currentUser;
+            if(userEdit != undefined){
+              console.log('Para adventure: %s current user edit: %s',adventure.name, userEdit.username);
+            }
+            else{
+              this.editUsers[this.indexTab][i] = undefined;
+              this.updateStatusForm(userEdit,adventure);
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        );
+      }
+    })
+  }
+  createEditUsers(){
+    this.adventures.forEach(adv => {
+      this.editUsers[this.indexTab].push(undefined)
+    });
+  }
+  initEditUsers(){
+    for (var i = 0; i < 5; i++) {
+      this.editUsers.push([])
+   }
+  }
 }

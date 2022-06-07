@@ -78,7 +78,7 @@ const adventureSchema = new Schema({
   privacy: {type: Boolean, default: true},
   type: {type: String, default: 'own'},
   tags: {type: [String]},
-  edit: {type: [String], default: []},
+  edit: { type: Schema.Types.ObjectId, ref: "User" },
 
 
   createdAt: { type: Date, default: Date.now },

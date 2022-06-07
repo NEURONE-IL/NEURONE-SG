@@ -15,7 +15,6 @@ router.get('/search/:user_id/:query/:page', [verifyToken, authMiddleware.isCreat
   const page = req.params.page;
   const totalPerPage = 8;
   const skip = page > 0 ? ( ( page - 1 ) * totalPerPage ) : 0 ;
-  console.log('query', query)
   if(query != 'all'){
     const totalDocs = await AdventureSearch.countDocuments({userID: { $ne:_id }, $text: {$search: query}});
     AdventureSearch.find({userID: { $ne:_id }, $text: {$search: query}},{ score: { $meta: "textScore" } }, (err, docs) =>{
@@ -59,39 +58,35 @@ router.post('/loadAdventures', async (req, res) => {
         });
     }
   }).populate({path:'user', model: User});
+
   await adventures.forEach(async adventure => {
-    //const _adventure_id = adventure._id;
-    /*const challenges = await Challenge.find({study:_study_id}, err => {
-      if(err){
-        return res.status(404).json({
-            ok: false,
-            err
-        });
-      }
-    })*/
-
-    //let challengeArr = [];
-
-    /*await challenges.forEach( challenge => {
-      challengeArr.push(challenge.question)
-    })*/
     const adventureSearch = new AdventureSearch({
       name: adventure.name,
       author: adventure.user.username,
       description: adventure.description,
       tags: adventure.tags,
       userID: adventure.user._id,
-      //challenges: challengeArr,
+      nodesLabel: [],
+      nodesText: [],
       adventure: adventure
     })
-    adventuresIndexes.push(adventureSearch);
-    adventureSearch.save(err => {
-        if(err){
-            return res.status(404).json({
-                err
-            });
-        }
-    })
+
+    adventure.nodes.forEach(node => {
+      adventureSearch.nodesLabel.push(node.label);
+      adventureSearch.nodesText.push(node.data.text);
+
+      if(adventureSearch.nodesLabel.length == adventure.nodes.length) {
+        adventuresIndexes.push(adventureSearch);
+        adventureSearch.save(err => {
+          if(err){
+              return res.status(404).json({
+                  err
+              });
+          }
+        })
+      }
+    });
+    
     if(adventuresIndexes.length === adventures.length) {
       res.status(200).json({adventuresIndexes});
 

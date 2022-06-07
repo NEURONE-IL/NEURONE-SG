@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild,HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, ValidatorFn, ValidationErrors, AbstractControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
@@ -110,7 +110,7 @@ export class AdventureMetaEditorComponent implements OnInit {
       { value: 'image', viewValue: 'COMMON.YES' },
       { value: 'none', viewValue: 'COMMON.NO' },
     ];
-    this.adventureService.getAdventures().subscribe(
+    this.adventureService.getAdventuresByUser(this.user._id).subscribe(
       (res) => {
         this.adventures = res;
         this.adventures = this.adventures.filter((adv) => {
@@ -123,7 +123,9 @@ export class AdventureMetaEditorComponent implements OnInit {
       }
     );
   }
-
+  ngOnDestroy(): void {
+    this.editorService.reset();
+  }
   ngOnInit(): void {
     this.tags = this.adventure.tags.slice();
     if (this.adventure.collaborators.length>0)
@@ -392,6 +394,7 @@ export class AdventureMetaEditorComponent implements OnInit {
         
       },
       err => {
+        console.log(err)
         this.toastr.error(msg2, "Error",{
           timeOut: 5000,
           positionClass: 'toast-top-center'

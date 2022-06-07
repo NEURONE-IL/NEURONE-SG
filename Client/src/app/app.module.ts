@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { Injector, NgModule } from '@angular/core';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { getDutchPaginatorIntl } from './components/paginatorInt/CustomPaginatorConfiguration';
@@ -24,7 +24,8 @@ import { authInterceptorProviders } from './helpers/auth.interceptor';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { ToastrModule } from 'ngx-toastr';
 
-import {MatChipsModule} from '@angular/material/chips'; 
+import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
+import { MatChipsModule } from '@angular/material/chips'; 
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -85,6 +86,8 @@ import { AdventuresSearchResultsComponent } from './components/adventures-search
 import { AdventureSearchDisplayComponent } from './components/adventure-search-display/adventure-search-display.component';
 import { AdventureNodeComponent } from './components/adventure-search-display/adventure-node/adventure-node.component';
 import { AdventureDataComponent } from './components/adventure-search-display/adventure-data/adventure-data.component';
+import { CustomSnackBarComponent } from './components/adventure-selector/snackbar/CustomSnackBarComponent';
+import { ServiceLocator } from './services/locator.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -135,7 +138,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AdventuresSearchResultsComponent,
     AdventureSearchDisplayComponent,
     AdventureNodeComponent,
-    AdventureDataComponent
+    AdventureDataComponent,
+    CustomSnackBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -181,7 +185,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
   ],
   providers: [authInterceptorProviders,
-              { provide: MatPaginatorIntl, useValue: getDutchPaginatorIntl() }],
+              { provide: MatPaginatorIntl, useValue: getDutchPaginatorIntl() }, MatSnackBar],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private injector: Injector){
+    ServiceLocator.injector = this.injector;
+  }
+}

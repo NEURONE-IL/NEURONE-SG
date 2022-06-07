@@ -7,8 +7,8 @@
     <app-general-config></app-general-config>
   </div>
   <div>
-    <h4>Mis Aventuras</h4>
-    <mat-tab-group [selectedIndex]="indexTab" class="studies-tab" (selectedTabChange)="onTabClick($event)">
+    <h4 *ngIf="role !== 'player'">Mis Aventuras</h4>
+    <mat-tab-group *ngIf="role !== 'player'" [selectedIndex]="indexTab" class="studies-tab" (selectedTabChange)="onTabClick($event)">
       <mat-tab label="Todas"></mat-tab>
       <mat-tab label="Privadas"></mat-tab>
       <mat-tab label="Públicas"></mat-tab>
@@ -26,9 +26,19 @@
       fxFlex="20%"
       fxFlex.xs="100%"
       fxFlex.sm="33%"
-      *ngFor="let adventure of adventures"
+      *ngFor="let adventure of adventures; let i = index"
     >
-      <mat-card class="mat-elevation-z4">
+      <mat-card class="mat-elevation-z4" [ngStyle]="{'padding-top': editUsers[indexTab][i]? '0px': '16px'}">
+        <div class="edit-info" *ngIf="editUsers[indexTab][i]">
+          <button
+            class="edit-btn"
+            mat-fab
+            [matTooltip]="editUsers[indexTab][i].user + ' editando'"
+            *ngIf="role == 'admin' || role == 'creator'"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
         <img
           class="adventure-img"
           *ngIf="adventure.image_id"
@@ -84,7 +94,7 @@
           </button>
           <button
             mat-button
-            (click)="edit(adventure)"
+            (click)="preEdit(adventure,i)"
             *ngIf="role == 'admin' || role == 'creator'"
             class="button-actions"
           >

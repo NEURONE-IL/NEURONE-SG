@@ -5,7 +5,7 @@ const cors = require("cors");
 const config = require("config");
 const bodyParser = require("body-parser");
 const path = require("path");
-const { initial } = require("./helpers/dataLoader");
+const { initial, cleanEdit } = require("./helpers/dataLoader");
 const morgan = require("morgan");
 
 // Setup env
@@ -52,6 +52,7 @@ mongoose
   })
   .then(() => {
     initial();
+    cleanEdit();
   })
   .catch(function (err) {
     console.log(err);

@@ -1,0 +1,33 @@
+::ng-deep .mat-snack-bar-container{
+  background: #F89406 !important;
+}
+.snackbar-custom{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #F89406;
+}
+.snackbar-text{
+  color: white;
+}
+.warn-icon{
+  color: white;
+  transform: scale(1.5);
+  margin-right: 1rem;
+
+}
+.bottom-sheet {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  
+  }
+  .bottom-sheet div {
+    flex: 1;
+    color: white;
+  }
+  button {
+    margin-left: 5px;
+    color: white !important;
+  }

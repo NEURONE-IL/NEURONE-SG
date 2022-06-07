@@ -4,7 +4,8 @@ const { Schema } = mongoose;
 const AdventureSearchSchema = new Schema({
     name: { type: String, required: true},
     description: { type: String},
-    //challenges: {type: [String]},
+    nodesLabel: {type: [String]},
+    nodesText: {type: [String]},
     tags: {type: [String]},
     author: { type: String},
     userID:{type: String},
@@ -25,8 +26,9 @@ AdventureSearchSchema.pre('save', next => {
     next();
 });
 
-AdventureSearchSchema.index({name:'text', description: 'text', tags: 'text', author: 'text'},
-                        {default_language: "spanish" })
+AdventureSearchSchema.index({name:'text', description: 'text', tags: 'text', 
+                            author: 'text',nodesText:'text', nodesLabel:'text'},
+                            {default_language: "spanish" })
 
 const myDB = mongoose.connection.useDb('neurone-sg');
 const AdventureSearch = myDB.model('AdventureSearch', AdventureSearchSchema);

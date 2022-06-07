@@ -30,11 +30,11 @@
 
 .meta-form-field {
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: .5rem;
 }
 
 .img-thumb {
-  border: 1px solid #ddd;
+  border: 1px solid #3f51b5;
   border-radius: 4px;
   padding: 5px;
   height: 5rem;
@@ -53,4 +53,8 @@
   display: flex; 
   justify-items:center;
   justify-content: center;
+}
+.save-all-button{
+  margin-bottom: 1rem;
+  transform: scale(0.9);
 }

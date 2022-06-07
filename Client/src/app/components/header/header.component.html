@@ -56,12 +56,10 @@
   </div>
   </mat-menu>
   <div *ngIf="user && role == 'player'">
-    <span
-      (click)="goToProfile()"
-      class="clickable"
-      [matTooltip]="'TOOLTIPS.HEADER_PROFILE' | translate"
-      >{{ user.username }}</span
-    >
+      <button mat-button color="white" (click)="goToProfile()" [matTooltip]="'TOOLTIPS.HEADER_PROFILE' | translate">
+        <mat-icon>account_circle</mat-icon>
+        {{ user.username }}
+      </button>
   </div>
   <div class="button-panel" *ngIf="user && role != 'player'">
     <button mat-button color="white" style="pointer-events:none">
