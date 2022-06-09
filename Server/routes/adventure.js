@@ -567,8 +567,11 @@ router.put('/editCollaborator/:adventure_id', [verifyToken, authMiddleware.isCre
 
 router.post("/clone/:adventure_id",
 [verifyToken,authMiddleware.isCreator,imagesGridFS.upload.single("file")], async (req, res) => {
+    console.log('entra')
     const _id = req.params.adventure_id
     const _user = req.body.user_id
+
+    console.log(_id)
 
     let adventure = await Adventure.findOne({ _id: _id }, (err) => {
       if (err) {
@@ -627,7 +630,7 @@ router.post("/clone/:adventure_id",
       privacy: true,
       type: 'clone',
       tags: adventure.tags,
-      edit: [],
+      edit: undefined,
     };
     const newAdventure = new Adventure(cloneAdventure);
 

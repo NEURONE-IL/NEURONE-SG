@@ -8,6 +8,7 @@ import { EditorComponent } from './views/editor/editor.component';
 import { GameComponent } from './views/game/game.component';
 import { LoginRegisterComponent } from './views/login-register/login-register.component';
 import { AuthGuard } from './helpers/guards/auth.guard';
+import { AdminGuard } from './helpers/guards/admin.guard';
 import { NotLoggedInGuard } from './helpers/guards/not-logged-in.guard';
 import { DirectAccessGuard } from './helpers/guards/direct-access.guard';
 import { ProfileComponent } from './views/profile/profile.component';
@@ -61,7 +62,7 @@ const routes: Routes = [
   {
     path: 'adventures-search',
     component: AdventuresSearchComponent,
-    canActivate: [ AuthGuard ],
+    canActivate: [ AuthGuard, AdminGuard ],
     children: [
       {
         path: 'results/:term',

@@ -96,6 +96,7 @@
             mat-button
             (click)="preEdit(adventure,i)"
             *ngIf="role == 'admin' || role == 'creator'"
+            [disabled]="editUsers[indexTab][i]"
             class="button-actions"
           >
             {{ "SELECTOR.CARD_EDIT" | translate }}
@@ -113,6 +114,7 @@
               mat-button
               (click)="confirmCollaborationLeft(adventure)"
               *ngIf="role == 'admin' || role == 'creator'"
+              [matTooltip]="'Dejar de ser colaborador de la aventura'"
               class="button-actions"
             >
               SALIR
