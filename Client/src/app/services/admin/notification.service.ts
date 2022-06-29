@@ -14,6 +14,6 @@ export class NotificationService {
     return this.http.get(this.uri +'byUser/'+user_id);
   }
   seeNotification(notification: any): Observable<any>{
-    return this.http.put(this.uri + 'seeNotifications/', notification, { headers: {'x-access-token': localStorage.getItem('auth_token')} })
+    return this.http.put(this.uri + 'seeNotifications/', notification)
   }
 }

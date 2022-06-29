@@ -19,9 +19,10 @@
           <button mat-flat-button class="rejectButton" (click)="rejectInvitation(item)" color="warn">Rechazar</button>
           <button mat-flat-button class="rejectButton" (click)="redirectAdventure(item.invitation.adventure._id)" color="primary">Ver</button>
         </div>
+
         <div>
           <mat-card-subtitle *ngIf="(item.type === 'invitation' || item.type === 'collabRequest') && item.invitation.status != 'Pendiente'" class="statusInfo" >Invitación {{' ' +item.invitation.status }} </mat-card-subtitle>
-          </div>
+        </div>
         <div class="date-notification-info">
           <mat-icon *ngIf="item.type === 'invitation' || item.type === 'collabRequest' || item.type === 'invitation_response'" style="font-size: 12px; height: 12px;">email</mat-icon>
           <mat-icon *ngIf="item.type === 'clone'" style="font-size: 12px; height: 12px;">content_copy</mat-icon>

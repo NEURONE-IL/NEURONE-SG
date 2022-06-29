@@ -23,8 +23,8 @@ export class AdventuresSearchResultsComponent implements OnInit {
   actualQuery: string = "";
   adventures: any[] = [];
   paginator: Paginator = {
-    totalDocs:8, 
-    perPages: 8, 
+    totalDocs: 10, 
+    perPages: 10, 
   }
   pageEvent: PageEvent;
   adventuresLoading = true;

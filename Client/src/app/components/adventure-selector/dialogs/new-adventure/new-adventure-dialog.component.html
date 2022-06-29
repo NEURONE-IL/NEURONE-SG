@@ -106,7 +106,7 @@
                 <mat-icon matChipRemove>cancel</mat-icon>
             </mat-chip>
           <input
-            #collaboratorsInput
+            #tagsInput
             placeholder="Escriba una etiqueta y presione Enter o Añadir para agregarla"
             type="text" 
             formControlName="tags"
@@ -120,7 +120,7 @@
             La etiqueta no puede tener más de 15 caracteres
           </mat-error>
           <mat-error *ngIf="newAdventureForm.controls.tags.hasError('tagExist')">
-            El tag ya se encuentra en la lista
+            El etiqueta ya se encuentra en la lista
           </mat-error>
         </mat-form-field>
 				<button mat-flat-button (click)="addTag()" class="addButton">Añadir <mat-icon>add</mat-icon></button>

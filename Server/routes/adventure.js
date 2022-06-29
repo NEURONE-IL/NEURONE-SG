@@ -299,7 +299,6 @@ router.put(
           err,
         });
       }
-      console.log(req.body)
       var privacyChange = false;
       adventure.name = req.body.name;
       adventure.description = req.body.description;
@@ -308,16 +307,18 @@ router.put(
       adventure.tags = req.body.tags;
       adventure.collaborators = req.body.collaborators;
 
-      if(req.body.privacy){
-        let privacy = JSON.parse(req.body.privacy);
-        if(adventure.privacy == privacy)
-          privacyChange = false;
-        else {
-          adventure.privacy = privacy
-          privacyChange = true;
-        }
-        console.log(privacyChange)   
+      let privacy = req.body.privacy;
+      console.log('privacidad: ', privacy)
+
+      if(adventure.privacy === privacy)
+        privacyChange = false;
+      else {
+        adventure.privacy = privacy
+        privacyChange = true;
       }
+      console.log('Cambia la privacidad?',privacyChange)
+      adventure.privacy = req.body.privacy;
+      
       if (req.body.image_id && adventure.image_id!=req.body.image_id) {
         imageHelper.deleteImage(adventure.image_id);
         adventure.image_id = req.body.image_id;
@@ -345,8 +346,8 @@ router.put(
           updateAdventureSearch(adventure);
           
         res.status(200).json(result);
-      });
-    });
+      })
+    }).populate({path:'user', model:User});;
   }
 );
 
@@ -899,9 +900,7 @@ router.put('/:adventure_id/assistant', async (req, res) => {
 
 async function createAdventureSearch(adventure){
   console.log('createAdventureSearch');
-
   try {
-
     const adventureSearch = new AdventureSearch({
       name: adventure.name,
       author: adventure.user.username,

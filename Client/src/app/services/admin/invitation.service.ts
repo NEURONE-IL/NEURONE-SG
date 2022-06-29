@@ -17,12 +17,12 @@ export class InvitationService {
     return this.http.get(this.uri +'checkExist/'+user_id+'/'+adventure_id);
   }
   acceptInvitation(invitation: any, type: string): Observable<any>{
-    return this.http.put(this.uri + 'acceptInvitation/'+type, invitation, { headers: {'x-access-token': localStorage.getItem('auth_token')} })
+    return this.http.put(this.uri + 'acceptInvitation/'+type, invitation)
   }
   rejectInvitation(invitation: any, type: string): Observable<any>{
-    return this.http.put(this.uri + 'rejectInvitation/'+type, invitation, { headers: {'x-access-token': localStorage.getItem('auth_token')} })
+    return this.http.put(this.uri + 'rejectInvitation/'+type, invitation)
   }
   requestCollab(invitation: any): Observable<any>{
-    return this.http.post(this.uri + 'requestCollaboration/', invitation, { headers: {'x-access-token': localStorage.getItem('auth_token')} })
+    return this.http.post(this.uri + 'requestCollaboration/', invitation)
   }
 }

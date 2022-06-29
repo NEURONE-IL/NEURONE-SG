@@ -13,7 +13,7 @@ router.get('/search/:user_id/:query/:page', [verifyToken, authMiddleware.isCreat
   const _id = req.params.user_id;
   
   const page = req.params.page;
-  const totalPerPage = 8;
+  const totalPerPage = 10;
   const skip = page > 0 ? ( ( page - 1 ) * totalPerPage ) : 0 ;
   if(query != 'all'){
     const totalDocs = await AdventureSearch.countDocuments({userID: { $ne:_id }, $text: {$search: query}});
