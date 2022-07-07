@@ -64,7 +64,9 @@ db.on("error", console.error.bind(console, "MongoDB: Connection error:"));
 // Setup CORS
 app.use(cors());
 
-app.use(morgan("combined"));
+if(config.util.getEnv('NODE_ENV') !== 'test'){
+  app.use(morgan("combined"));
+}
 
 //parse application/json and look for raw text
 app.use(bodyParser.json());
