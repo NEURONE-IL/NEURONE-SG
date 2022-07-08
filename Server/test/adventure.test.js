@@ -12,6 +12,10 @@ chai.use(chaiHttp);
 /*JWT to allow requests from registered users*/
 let token;
 let userId;
+let token2;
+let userId2;
+
+/*Adventure data for test*/
 let adventure;
 let cloneAdventure;
 
@@ -35,7 +39,19 @@ describe('Adventure API New Implementations', () => {
           token = res.body.token;
           userId = res.body.user._id;
           res.should.have.status(200);
-          done();
+      });
+
+      chai.request(app)
+      .post('/api/auth/login')
+      .send({
+        email: 'user@email.com',
+        password: 'user123'
+      })
+      .end((err, res) => {
+        token2 = res.body.token;
+        userId2 = res.body.user._id;
+        res.should.have.status(200);
+        done();
       });
   });
 
@@ -44,7 +60,7 @@ describe('Adventure API New Implementations', () => {
   Successful test for POST route    
   */
   describe('/POST adventure', () => {
-    it('It should POST a adventure', (done) => {
+    it('It should POST an adventure', (done) => {
       let adventureTestBody = {
         name: 'Adventure Creation Test',
         description: 'Adventure Description Test',
@@ -84,8 +100,8 @@ describe('Adventure API New Implementations', () => {
   @vjlh:
   Successful test for get by user route 
   */
-  describe('/GET/byUser/:userId Adventures by User', () => {
-    it('It should GET all adventures of a particular user', (done) => {
+  describe('/GET/byUser/:userId adventures', () => {
+    it('It should GET all adventures of a user', (done) => {
       chai.request(app)
       .get('/api/adventure/byUser/'+userId)
       .set({ 'x-access-token': token })
@@ -102,8 +118,8 @@ describe('Adventure API New Implementations', () => {
   @vjlh:
   Successful test for get by user by privacy route 
   */
-  describe('/GET/byUserbyPrivacy/:userId/:privacy Adventures by User', () => {
-    it('It should GET all adventures of a particular user filtered by privacy (public / private)', (done) => {
+  describe('/GET/byUserbyPrivacy/:userId/:privacy adventures', () => {
+    it('It should GET all adventures of a user filtered by privacy (public / private)', (done) => {
       chai.request(app)
       .get('/api/adventure/byUserbyPrivacy/'+userId+'/true')
       .set({ 'x-access-token': token })
@@ -120,8 +136,8 @@ describe('Adventure API New Implementations', () => {
   @vjlh:
   Successful test for get by type route 
   */
-  describe('/GET/byUserbyType/:userId/:type adventures by User', () => {
-    it('It should GET all adventures of a particular user filtered by type (cloned / own)', (done) => {
+  describe('/GET/byUserbyType/:userId/:type adventures', () => {
+    it('It should GET all adventures of a user filtered by type (cloned / own)', (done) => {
       chai.request(app)
       .get('/api/adventure/byUserbyType/'+userId+'/own')
       .set({ 'x-access-token': token })
@@ -139,8 +155,8 @@ describe('Adventure API New Implementations', () => {
   @vjlh:
   Successful test for get by user for collaboration 
   */
-  describe('/GET/byUserCollaboration/:userId/ adventures by User', () => {
-    it('It should GET all adventures of a particular user in which is collaborator', (done) => {
+  describe('/GET/byUserCollaboration/:userId/ adventures', () => {
+    it('It should GET all adventures of a user in which is collaborator', (done) => {
       chai.request(app)
       .get('/api/adventure/byUserCollaboration/'+userId)
       .set({ 'x-access-token': token })
@@ -158,14 +174,14 @@ describe('Adventure API New Implementations', () => {
   @vjlh:
   Successful test for get cloning route 
   */
-  describe('/POST/clone/:adventureId adventure', () => {
-    it('It should POST a generated cloned adventure', (done) => {
+  describe('/POST/clone/:id adventure', () => {
+    it('It should POST a cloned adventure', (done) => {
       let body = {
-        user_id: userId 
+        user_id: userId2 
       }
       chai.request(app)
       .post('/api/adventure/clone/'+adventure._id)
-      .set({ 'x-access-token': token })
+      .set({ 'x-access-token': token2 })
       .send(body)
       .end((err, res) => {
         res.should.have.status(200);
@@ -177,7 +193,7 @@ describe('Adventure API New Implementations', () => {
         res.body.adventure.should.have.property('preconditions');
         res.body.adventure.should.have.property('nodes');
         res.body.adventure.should.have.property('links');
-        res.body.adventure.should.have.property('user').eql(userId);
+        res.body.adventure.should.have.property('user').eql(userId2);
         res.body.adventure.should.have.property('privacy');
         res.body.adventure.should.have.property('collaborators');
         res.body.adventure.should.have.property('type').eql('clone');
@@ -192,8 +208,8 @@ describe('Adventure API New Implementations', () => {
   @vjlh:
   Successful test for put request for edit route 
   */
-  describe('/PUT/requestEdit/:adventureId adventure', () => {
-    it('It should PUT edit field of a adventure to give a user edit permission', (done) => {
+  describe('/PUT/requestEdit/:id adventure', () => {
+    it('It should PUT edit field of an adventure to set the user id if it is empty', (done) => {
       let body = {
         user: userId
       }
@@ -216,8 +232,8 @@ describe('Adventure API New Implementations', () => {
   @vjlh:
   Successful test for put route 
   */
-  describe('/PUT/:adventureId flow', () => {
-    it('It should PUT a flow', (done) => {
+  describe('/PUT/:id adventure', () => {
+    it('It should PUT an adventure', (done) => {
 
       delete adventure.nodes[0]._id
       let adventurePutTestBody = {
@@ -258,8 +274,8 @@ describe('Adventure API New Implementations', () => {
   @vjlh:
   Successful test for put release edit route 
   */
-  describe('/PUT/releaseAdventure/:adventureId adventure', () => {
-    it('It should PUT edit list of a adventure to release edition from a user', (done) => {
+  describe('/PUT/releaseAdventure/:id adventure', () => {
+    it('It should PUT the edit field of an adventure to remove the user id and release the edition', (done) => {
       let body = {
         user: userId
       }
@@ -281,10 +297,10 @@ describe('Adventure API New Implementations', () => {
   @vjlh:
   Successful test for put edit collaborators route 
   */
-  describe('/PUT/editCollaborator/:adventureId adventure', () => {
-    it('It should PUT collaborator list of a adventure', (done) => {
+  describe('/PUT/editCollaborator/:id adventure', () => {
+    it('It should PUT list of collaborators of an adventure and update it', (done) => {
       let body = {
-        collaborators: [{user:'628e8c3f4e6ed8186ad926ad', invitation:'Pendiente'}]
+        collaborators: [{user:userId2, invitation:'Pendiente'}]
       }
       chai.request(app)
       .put('/api/adventure/editCollaborator/'+adventure._id)
@@ -307,7 +323,7 @@ describe('Adventure API New Implementations', () => {
   @vjlh:
   Successful test for delete by id route 
   */
-  describe('/DELETE/:adventureId adventure', () => {
+  describe('/DELETE/:id adventure', () => {
     it('It should DELETE an adventure given the id', (done) => {
       chai.request(app)
       .delete('/api/adventure/' + adventure._id)
@@ -319,7 +335,7 @@ describe('Adventure API New Implementations', () => {
       });
       chai.request(app)
       .delete('/api/adventure/' + cloneAdventure)
-      .set({ 'x-access-token': token })
+      .set({ 'x-access-token': token2 })
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a('object');

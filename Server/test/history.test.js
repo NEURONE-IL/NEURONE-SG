@@ -18,7 +18,7 @@ let userId;
 @vjlh:
 Test suite for History Clone API.
 */
-describe('History Clone API', () => {
+describe('CloneHistory API', () => {
   /*
   @vjlh:
   Tries to authenticate the default user to get a JWT before apply each test.
@@ -42,8 +42,8 @@ describe('History Clone API', () => {
   @vjlh:
   Successful test for get all route 
   */
-  describe('/GET/ History', () => {
-    it('It should GET all history clone', (done) => {
+  describe('/GET/ cloningHistory', () => {
+    it('It should GET all cloning history', (done) => {
       chai.request(app)
       .get('/api/history/')
       .set({ 'x-access-token': token })
@@ -62,8 +62,8 @@ describe('History Clone API', () => {
   @vjlh:
   Successful test for get all by user route 
   */
-  describe('/GET/:userId History', () => {
-    it('It should GET all history from a specific user', (done) => {
+  describe('/GET/:userId cloningHistory', () => {
+    it('It should GET all cloning history of a user', (done) => {
       chai.request(app)
       .get('/api/history/byUser/'+userId)
       .set({ 'x-access-token': token })
@@ -82,8 +82,8 @@ describe('History Clone API', () => {
   @vjlh:
   Successful test for get all clone by adventure route 
   */
-  describe('/GET/byAdventureByType/:adventureId/:type History', () => {
-    it('It should GET all history clone for a adventure', (done) => {
+  describe('/GET/byAdventureByType/:adventureId/:type cloningHistory', () => {
+    it('It should GET all cloning history of an adventure', (done) => {
       let type = 'clone';
       Adventure.findOne({user:userId}, function (err, adventure){
         if (err){

@@ -81,7 +81,7 @@ describe('Invitation API', () => {
   @vjlh:
   Successful test for POST to send an invitation to collaborate route
   */
-  describe('/POST invitation to collaborate', () => {
+  describe('/POST invitation', () => {
     it('It should POST a invitation to collaborate', (done) => {
         let body = {
             user: user2,
@@ -92,7 +92,7 @@ describe('Invitation API', () => {
         .set({ 'x-access-token': token2 })
         .send(body)
         .end((err, res) => {
-            res.should.have.status(200);
+          res.should.have.status(200);
           res.body.should.be.a('object');
           res.body.should.have.property('message').eql('Invitation to collaborate succesfully sended');
           res.body.should.have.property('invitation');
@@ -108,7 +108,7 @@ describe('Invitation API', () => {
   @vjlh:
   Successful test for POST route to send a collaboration request  
   */
-  describe('/POST collaboration request', () => {
+  describe('/POST invitation', () => {
     it('It should POST a collaboration request', (done) => {
         let body = {
             user: user2,
@@ -136,8 +136,8 @@ describe('Invitation API', () => {
   @vjlh:
   Successful test for GET to check if a user has pending adventure invitations route
   */
-  describe('/GET/checkExist/:userId/:adventure_id Invitation', () => {
-    it('It should GET if exist pending invitation for a adventure by a user', (done) => {
+  describe('/GET/checkExist/:userId/:adventureId invitation', () => {
+    it('It should GET if there are pending invitations for the user, from an adventure', (done) => {
       chai.request(app)
       .get('/api/invitation/checkExist/'+user2._id+'/'+adventureTest._id)
       .set({ 'x-access-token': token2 })
@@ -154,8 +154,8 @@ describe('Invitation API', () => {
   @vjlh:
   Successful test for GET route all invitations by user 
   */
-  describe('/GET/byUser/:userId Invitation', () => {
-    it('It should GET all invitations from a specific user', (done) => {
+  describe('/GET/byUser/:userId invitation', () => {
+    it('It should GET all invitations of a user', (done) => {
       chai.request(app)
       .get('/api/invitation/byUser/'+user2._id)
       .set({ 'x-access-token': token2 })
@@ -173,7 +173,7 @@ describe('Invitation API', () => {
   Successful test for PUT to reject an invitation route
   */
   describe('/PUT/rejectInvitation/:type Invitation', () => {
-    it('It should PUT rejected status to a invitation', (done) => {
+    it('It should PUT rejected status for an invitation', (done) => {
         let type = 'collabRequest';
         let body = {
             _id: collabRequestId       
@@ -199,8 +199,8 @@ describe('Invitation API', () => {
   @vjlh:
   Successful test for PUT route to accept an invitation 
   */
-  describe('/PUT/acceptInvitation/:type Invitation', () => {
-    it('It should PUT accepted status to a invitation', (done) => {
+  describe('/PUT/acceptInvitation/:type invitation', () => {
+    it('It should PUT accepted status for an invitation', (done) => {
         
         let type = 'invitation';
         let body = {
@@ -227,7 +227,7 @@ describe('Invitation API', () => {
   @vjlh:
   Successful test for delete an invitation by id route 
   */
-  describe('/DELETE/:invitationId invitation', () => {
+  describe('/DELETE/:id invitation', () => {
     it('It should DELETE a invitation given the id', (done) => {
       chai.request(app)
       .delete('/api/invitation/' + invitationId)

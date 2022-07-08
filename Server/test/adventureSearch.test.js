@@ -15,9 +15,9 @@ let userId;
 
 /*
 @vjlh:
-Test suite for FlowSearch API.
+Test suite for AdventureSearch API.
 */
-describe('FlowSearch API', () => {
+describe('AdventureSearch API', () => {
   /*
   @vjlh:
   Tries to authenticate the default user to get a JWT before apply each test.
@@ -41,8 +41,8 @@ describe('FlowSearch API', () => {
   @vjlh:
   Successful test for get route search adventures for query
   */
-  describe('/GET/search/:userId/:query/:page Search Adventures', () => {
-    it('It should GET all relevant adventures for a query, to navigate for them', (done) => {
+  describe('/GET/search/:userId/:query/:page searchAdventures', () => {
+    it('It should GET all relevant adventures for a query', (done) => {
       let query = 'aventura';
       let page = '1';
       chai.request(app)
@@ -66,8 +66,8 @@ describe('FlowSearch API', () => {
   @vjlh:
   Successful test for get route search all public adventures
   */
-  describe('/GET/search/:userId/:query/:page Search Adventures', () => {
-    it('It should GET all public adventures, to navigate for them', (done) => {
+  describe('/GET/search/:userId/:query/:page searchAdventures', () => {
+    it('It should GET all adventures available for search', (done) => {
       let query = 'all';
       let page = '1';
       chai.request(app)
@@ -90,7 +90,7 @@ describe('FlowSearch API', () => {
   @vjlh:
   Successful test for get route search no results
   */
-  describe('/GET/search/:userId/:query/:page Search Adventures', () => {
+  describe('/GET/search/:userId/:query/:page searchAdventures', () => {
     it('It should GET no result adventures for a query', (done) => {
       let query = 'NotResultTest';
       let page = '1';
