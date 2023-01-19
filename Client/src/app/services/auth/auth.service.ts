@@ -133,6 +133,10 @@ export class AuthService {
   public get loggedIn(): boolean {
     return sessionStorage.getItem(TOKEN_KEY) !== null;
   }
+  //Valentina
+  getUserbyEmail(user_email){
+    return this.http.get(AUTH_API+'/getUserbyEmail/'+user_email);
+  }
 
   async fetchConfig() {
     let config: any;

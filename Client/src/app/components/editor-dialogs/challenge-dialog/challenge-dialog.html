@@ -64,7 +64,7 @@
         [matTooltip]="'TOOLTIPS.CHALLENGE_DOCUMENT' | translate"
       >
         <mat-option *ngFor="let doc of documents" [value]="doc._id">
-          {{ doc.docName }}
+          {{ doc.docName.split('clone')[0] }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="challengeForm.controls.document.hasError('required')">

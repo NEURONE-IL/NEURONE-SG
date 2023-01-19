@@ -1,0 +1,14 @@
+<div class="snackbar-custom">
+  <mat-icon class="warn-icon">warning_rounded</mat-icon>
+  <div class="snackbar-text">
+    <div>
+      <b>Información:</b>
+    </div>
+    <div> <p>{{'La aventura: '+adventure.name+' está siendo editada por alguien más'}}</p> </div>
+    <div> <p>¿Quiere que se le notifique cuando la aventura se encuentre disponible para edición?</p> </div>
+  </div>
+</div>
+<div class="bottom-sheet">
+  <button mat-stroked-button type="button" color="warn" (click)="cancel()">CANCELAR</button>
+  <button mat-stroked-button type="submit" color="warn" (click)="accept()">ACEPTAR</button>
+</div>

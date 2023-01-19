@@ -1,0 +1,107 @@
+<!--mat-card-header *ngIf="adventure" class="user-info-display">
+  <div mat-card-avatar class="example-header-image"></div>
+  <mat-card-title>{{adventure.user.username}}</mat-card-title>
+  <mat-card-subtitle style="font-size: 14px;">{{adventure.user.email}}</mat-card-subtitle>
+</mat-card-header-->
+<mat-card class="studies-search-results-card" *ngIf="adventure">
+  <mat-tab-group dynamicHeight  mat-align-tabs="start" (selectedTabChange)="onTabClick($event)" *ngIf="!loadingClone; else cloneProcess">
+    <mat-tab label="Metadatos">
+      <div id="parent">
+        <div>
+          <div class="image-container">
+            <img
+              class="adventure-img"
+              *ngIf="!adventure.image_id; else image"
+              src="assets/images/placeholder.png"
+              alt="Adventure image"
+            />
+            <ng-template #image>
+              <img
+                *ngIf="currentImg && !imagePreview"
+                class="img-thumb"
+                src="{{ apiUrl + '/image/' + currentImg }}"
+                alt="..."
+              />
+              <img
+                *ngIf="imagePreview"
+                class="img-thumb"
+                [src]="imagePreview"
+                alt="..."
+              />
+            </ng-template>
+          </div>
+            <div>
+              <div class="date-notification-info">
+              <mat-icon class="icon-user-info">person</mat-icon>
+              <mat-card-subtitle class="data-user-info">{{adventure.user.username}}</mat-card-subtitle>
+            </div>
+              <div class="date-notification-info" style="margin-bottom: 2%;">
+                <mat-icon class="icon-user-info">email</mat-icon>  
+                <mat-card-subtitle class="data-user-info">{{adventure.user.email}}</mat-card-subtitle>
+              </div>
+            </div>
+        </div>
+        <div style="width: 100%;">
+          <div class="adventure-info-div">
+            <mat-card-header>
+              <mat-card-title *ngIf="adventure">{{adventure.name}}</mat-card-title>
+            </mat-card-header>
+            <div style="justify-self: end;">
+            <button mat-raised-button class="actionButton" color="primary" (click)="confirmCloneAdventure()">Clonar Aventura <mat-icon>content_copy</mat-icon></button>
+            <button mat-raised-button class="actionButton" *ngIf="notActualCollaborator"  color="primary" [ngStyle]="{'pointer-events': existingInvitation? 'none': 'all'}" (click)="confirmCollaborateRequest()">{{existingInvitation? 'Solicitud Pendiente': 'Solicitar Colaborar'}}  <mat-icon>handshake</mat-icon></button>
+            </div>
+          </div> 
+          <div class="adventure-info-div" style="padding-top: 0">
+            <mat-card-header>
+              <mat-card-subtitle *ngIf="adventure" class="study-description">{{adventure.description}}</mat-card-subtitle>
+            </mat-card-header>
+          </div>
+          <div class="adventure-info-div" style="margin-bottom: 7px">
+            <mat-chip-list style="margin-left: 1%;" aria-label="Tag List">
+              <mat-chip *ngFor="let tag of adventure.tags">{{tag}}</mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Colaboradores" *ngIf="adventure && collaboratorsExist">
+      <div class="meta-editor-container">
+      <div class="adventures-coll">
+          <table style="width:90%;height: 100%; transform: scale(0.9);" *ngIf="collaboratorsExist; else notCollaborators" mat-table [dataSource]="filterCollaborators" matSort class="mat-elevation-z8">
+            <ng-container matColumnDef="icon" sticky>
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let element"> <mat-icon color="primary">account_circle</mat-icon></td>
+            </ng-container>
+            <ng-container matColumnDef="fullname">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre de usuario</th>
+              <td mat-cell *matCellDef="let element"> {{element.user.username}} </td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo</th>
+              <td mat-cell *matCellDef="let element"> {{element.user.email}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay "></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+          </table>
+        </div>
+        </div>
+        
+        <ng-template #notCollaborators>
+          <div>
+            <p>Aun no se han añadido colaboradores a este estudio</p>
+          </div>
+        </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+  <ng-template #cloneProcess>
+    <mat-card-content style="border: none;">
+      <div style="display: flex; justify-content: center;">
+      <mat-spinner style="margin-top: 2%;"></mat-spinner>
+      </div>
+      <div style="display: flex; justify-content: center;">
+        <mat-card-subtitle style="margin-bottom: 1%; margin-top:2%">La aventura está siendo clonada</mat-card-subtitle>
+      </div>
+    </mat-card-content>
+</ng-template>
+</mat-card>

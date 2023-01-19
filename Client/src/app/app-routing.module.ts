@@ -8,11 +8,16 @@ import { EditorComponent } from './views/editor/editor.component';
 import { GameComponent } from './views/game/game.component';
 import { LoginRegisterComponent } from './views/login-register/login-register.component';
 import { AuthGuard } from './helpers/guards/auth.guard';
+import { AdminGuard } from './helpers/guards/admin.guard';
 import { NotLoggedInGuard } from './helpers/guards/not-logged-in.guard';
 import { DirectAccessGuard } from './helpers/guards/direct-access.guard';
 import { ProfileComponent } from './views/profile/profile.component';
 import { CanExitGuard } from './helpers/guards/can-exit.guard';
 import { LoginRedirectComponent } from './views/login-redirect/login-redirect.component';
+import { AdventuresSearchComponent } from './views/adventures-search/adventures-search.component';
+import { AdventuresSearchResultsComponent } from './components/adventures-search-results/adventures-search-results.component';
+import { AdventureSearchDisplayComponent } from './components/adventure-search-display/adventure-search-display.component';
+import { AdventureSearchDisplayGuard} from './helpers/guards/adventure-search-display.guard'
 
 const routes: Routes = [
   {
@@ -53,6 +58,22 @@ const routes: Routes = [
     path: 'login',
     canActivate: [NotLoggedInGuard],
     component: LoginRegisterComponent,
+  },
+  {
+    path: 'adventures-search',
+    component: AdventuresSearchComponent,
+    canActivate: [ AuthGuard, AdminGuard ],
+    children: [
+      {
+        path: 'results/:term',
+        component: AdventuresSearchResultsComponent
+      },
+      {
+        path: 'adventure/:adventure_id',
+        component: AdventureSearchDisplayComponent,
+        canActivate:[AdventureSearchDisplayGuard]
+      }
+    ]
   },
   {
     path: 'select',

@@ -10,6 +10,7 @@ import { ProgressService } from 'src/app/services/game/progress.service';
 import { SearchService } from 'src/app/services/search/search.service';
 import { StoreSessionService } from 'src/app/services/tracking/store-session.service';
 
+
 @Component({
   selector: 'app-login-redirect',
   templateUrl: './login-redirect.component.html',

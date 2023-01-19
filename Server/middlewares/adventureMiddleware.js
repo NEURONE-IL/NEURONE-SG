@@ -46,6 +46,11 @@ const schema = Joi.object({
             level: Joi.string()
         }))
     })),
+    privacy: Joi.boolean(),
+
+    collaborators: Joi.array(),
+
+    tags: Joi.array().items(Joi.string())
 })
 
 const newSchema = Joi.object({
@@ -58,7 +63,13 @@ const newSchema = Joi.object({
 
     image_id: Joi.string().allow('').allow(null),
 
-    preconditions: Joi.array().items(Joi.string())
+    preconditions: Joi.array().items(Joi.string()),
+    
+    privacy: Joi.boolean(),
+
+    collaborators: Joi.string(),
+
+    tags: Joi.string()
 })
 
 

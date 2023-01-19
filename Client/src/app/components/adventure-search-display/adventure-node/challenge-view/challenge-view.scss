@@ -1,0 +1,38 @@
+.form-field {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+table {
+  width: 100%;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+.hidden {
+  display: none;
+}
+
+.remove-option-btn {
+  margin: 1rem;
+}
+
+.correct-slider {
+  margin: 1rem 1rem 1rem 3rem;
+}
+.date-notification-info{
+  display: flex; 
+  padding-bottom: 0% !important;
+  margin-top: 0%;
+  align-items:center;
+}
+.text-view-props {
+  min-width: 150px;
+  max-width: 300px;
+  width: 100%;
+}
+::ng-deep .mat-slide-toggle.mat-disabled {
+  opacity: 1 !important;
+}

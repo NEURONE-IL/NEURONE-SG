@@ -1,0 +1,63 @@
+<h1 mat-dialog-title>Información del desafío</h1>
+<div mat-dialog-content>
+  <div class="date-notification-info">
+    <mat-icon style="font-size: 14px; height: 14px;">list</mat-icon>
+    <div>
+      <mat-card-subtitle style="font-size: 12px;margin-bottom: 0%">{{"CHALLENGE_DIALOG.TYPE" | translate}}</mat-card-subtitle>
+      <p>{{challengeTypeView | translate}}</p>
+    </div>
+  </div>
+
+  <div class="date-notification-info">
+    <mat-icon style="font-size: 14px; height: 14px;">question_mark</mat-icon>
+    <div>
+      <mat-card-subtitle style="font-size: 12px;margin-bottom: 0%">{{"CHALLENGE_DIALOG.QUESTION" | translate}}</mat-card-subtitle>
+      <p>{{challengeForm.value.question}}</p>
+    </div>
+  </div>
+
+  <div class="date-notification-info" *ngIf="type=='question'">
+    <mat-icon style="font-size: 14px; height: 14px;">question_answer</mat-icon>
+    <div>
+      <mat-card-subtitle style="font-size: 12px;margin-bottom: 0%">{{"CHALLENGE_DIALOG.ANSWER" | translate}}</mat-card-subtitle>
+      <p>{{challengeForm.value.answer}}</p>
+    </div>
+  </div>
+  
+  <div class="date-notification-info" *ngIf="!loading && type=='bookmark'">
+    <mat-icon style="font-size: 14px; height: 14px;">bookmark</mat-icon>
+    <div>
+      <mat-card-subtitle style="font-size: 12px;margin-bottom: 0%">{{"CHALLENGE_DIALOG.DOCUMENT" | translate}}</mat-card-subtitle>
+      <p>{{documentView.docName.split('clone')[0]}}</p>
+    </div>
+  </div>
+
+  <ng-container *ngIf="type=='multiple'">
+    <div
+      *ngFor="let option of optionsArray.controls; let i = index;"
+    >
+      <div>
+        <div class="date-notification-info">
+          <mat-icon style="font-size: 14px; height: 14px;">question_answer</mat-icon>
+          <div>
+            <mat-card-subtitle style="font-size: 12px;margin-bottom: 0%">{{"CHALLENGE_DIALOG.OPTION" | translate:{idx: i+1} }}</mat-card-subtitle>
+            <p>{{option.controls.value.value}}</p>
+          </div>
+          <mat-slide-toggle
+          class="correct-slider"
+          [checked]="option.controls.correct.value"
+          disable
+        >
+          {{"CHALLENGE_DIALOG.CORRECT_OPTION" | translate }}
+        </mat-slide-toggle>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="true">
+    {{"COMMON.CLOSE" | translate}}
+  </button>
+</div>

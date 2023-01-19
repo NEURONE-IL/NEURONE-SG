@@ -90,7 +90,10 @@ export class EditorService {
     this.adventure.description = newMeta.description;
     this.adventure.image_id = newMeta.image_id;
     this.adventure.preconditions = newMeta.preconditions;
-    console.log('this.adventure: ', this.adventure);
+    this.adventure.tags = newMeta.tags;
+    this.adventure.privacy = newMeta.privacy;
+    delete this.adventure.type;
+    delete this.adventure.edit;
     this.adventureEmitChange(this.adventure);
   }
 

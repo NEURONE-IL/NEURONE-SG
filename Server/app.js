@@ -5,7 +5,8 @@ const cors = require("cors");
 const config = require("config");
 const bodyParser = require("body-parser");
 const path = require("path");
-const { initial } = require("./helpers/dataLoader");
+const { initial, cleanEdit } = require("./helpers/dataLoader");
+const morgan = require("morgan");
 
 // Setup env
 require("./config/config");
@@ -15,6 +16,10 @@ require("dotenv").config();
 const authRoutes = require("./routes/auth");
 const confirmationRoutes = require("./routes/confirmation");
 const adventureRoutes = require("./routes/adventure");
+const adventureSearchRoutes = require('./routes/adventureSearch');
+const invitationRoutes = require('./routes/invitation');
+const adminNotificationRoutes = require('./routes/adminNotification');
+const historyRoutes = require('./routes/history')
 const answerRoutes = require("./routes/answer");
 const gamificationRoutes = require("./routes/gamification");
 const configRoutes = require("./routes/config");
@@ -35,8 +40,6 @@ const EventRoutes = require("./routes/tracking/event");
 // Setup DB
 const dbOptions = {
   useNewUrlParser: true,
-  reconnectTries: 2,
-  reconnectInterval: 500,
   connectTimeoutMS: 10000,
   useUnifiedTopology: true,
   useCreateIndex: true,
@@ -49,6 +52,7 @@ mongoose
   })
   .then(() => {
     initial();
+    cleanEdit();
   })
   .catch(function (err) {
     console.log(err);
@@ -59,6 +63,10 @@ db.on("error", console.error.bind(console, "MongoDB: Connection error:"));
 
 // Setup CORS
 app.use(cors());
+
+if(config.util.getEnv('NODE_ENV') !== 'test'){
+  app.use(morgan("combined"));
+}
 
 //parse application/json and look for raw text
 app.use(bodyParser.json());
@@ -76,6 +84,11 @@ app.use("/api/progress", progressRoutes);
 app.use("/api/image", imageRoutes);
 app.use("/api/site", siteRoutes);
 app.use("/", confirmationRoutes);
+app.use('/api/adventureSearch/', adventureSearchRoutes);
+app.use("/api/history", historyRoutes);
+app.use("/api/invitation", invitationRoutes);
+app.use("/api/adminNotification", adminNotificationRoutes);
+
 
 // Use tracking routes
 app.use("/api/keystroke", keystrokeRoutes);

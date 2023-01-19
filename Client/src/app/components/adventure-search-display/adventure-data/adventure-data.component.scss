@@ -1,0 +1,123 @@
+.meta-editor-container {
+  padding: 10px 10px 10px;
+  margin-bottom: 0% !important;
+  box-sizing: border-box;
+}
+
+.panel button {
+  margin-right: 5px;
+}
+
+.meta-form {
+  min-width: 150px;
+  max-width: 500px;
+  height: 74%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.form-item {
+  width: 40%;
+  margin-right: 2rem;
+}
+.form-item-table {
+  width: 100%;
+  margin-right: 2rem;
+}
+
+.meta-form-field {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.img-thumb {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  height: 5rem;
+}
+
+.addButton{
+  background-color: #4CAF50;
+  color: #FFFFFF;
+  margin-left: 1%;
+  transform: scale(0.75);
+}
+::ng-deep .mat-tab-label {
+  height: 35px !important;
+}
+.adventures-coll{
+  display: flex; 
+  justify-items:center;
+  justify-content: center;
+}
+
+.study-description{
+  font-weight: 400;
+  color: rgb(46, 46, 46);
+}
+.user-data-display{
+  margin-left: 10%;
+	margin-right: 10%;
+	margin-top: 3%;
+}
+.example-header-image {
+  background-image: url('https://cdn-icons-png.flaticon.com/512/1738/1738691.png');
+  background-size: cover;
+}
+.studies-search-results-card{
+	margin-left: 5%;
+	margin-right: 5%;
+	margin-top: 0%;
+  padding: 0 !important;
+}
+.adventure-info-div{
+  display: flex !important; 
+  align-items:center;
+  justify-content: space-between !important;
+  padding:0 !important;
+}
+.user-info-display{
+  margin-left: 5%;
+	margin-right: 5%;
+}
+.actionButton{
+  margin-right: 7px;
+}
+#parent{
+  display: flex;
+  flex-direction: row;
+  padding-top: 7px;
+}
+.date-notification-info{
+  display: flex; 
+  padding-bottom: 0% !important;
+  margin-top: 0%;
+  margin-bottom: 3%;
+  margin-left: .5rem;
+  align-items:center;
+}
+.icon-user-info{
+  font-size: 15px; 
+  height: 15px;
+  color: #3f51b5;
+}
+.data-user-info{
+  font-size: 14px;
+  margin-bottom: 0% !important;
+  color:rgb(68, 67, 67);
+}
+.adventure-img {
+  height: 5em;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+}
+.image-container{
+  display: flex; 
+  justify-content: center;
+  margin-bottom: 5%;
+  margin-left: .5em;
+}

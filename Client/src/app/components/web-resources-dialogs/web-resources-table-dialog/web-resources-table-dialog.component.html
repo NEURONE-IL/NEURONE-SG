@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>{{ "WEB_RESOURCES_TABLE.TITLE" | translate }}</h1>
 <div mat-dialog-content *ngIf="!fetching">
-  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" *ngIf="dataSource.data.length > 0">
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" *ngIf="dataSource.data.length > 0" style="width: 100%;">
     <!-- SOURCE Column -->
     <ng-container matColumnDef="type">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>
