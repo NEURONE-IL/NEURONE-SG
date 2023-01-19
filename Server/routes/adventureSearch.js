@@ -7,7 +7,10 @@ const User = require('../models/auth/user');
 const verifyToken = require('../middlewares/verifyToken');
 const authMiddleware = require('../middlewares/authMiddleware');
 
-
+/*
+@Valentina Ligueño
+TESTED: Método para realizar una búsqueda a través de una consulta
+*/
 router.get('/search/:user_id/:query/:page', [verifyToken, authMiddleware.isCreator], async (req, res) => {
   const query = req.params.query;
   const _id = req.params.user_id;
@@ -24,7 +27,10 @@ router.get('/search/:user_id/:query/:page', [verifyToken, authMiddleware.isCreat
                 err
             });
         }
-        res.status(200).json({'docs':docs, 'actualPage': page, 'totalDocs':totalDocs});
+        res.status(200).json({
+          'message':'Adventures search successfully get',
+          'docs':docs, 'actualPage': page, 'totalDocs':totalDocs
+        });
 
     }).sort( { score: { $meta: "textScore" } } )
       .skip( skip )
@@ -40,7 +46,10 @@ router.get('/search/:user_id/:query/:page', [verifyToken, authMiddleware.isCreat
               err
           });
       }
-      res.status(200).json({'docs':docs, 'actualPage': page, 'totalDocs':totalDocs});
+      res.status(200).json({
+        'message':'Adventures search successfully get',
+        'docs':docs, 'actualPage': page, 'totalDocs':totalDocs
+      });
     }).sort( {name:1} )
       .skip( skip )
       .limit( totalPerPage )
@@ -48,6 +57,10 @@ router.get('/search/:user_id/:query/:page', [verifyToken, authMiddleware.isCreat
   }
 })
 
+/*
+@Valentina Ligueño
+NOT_FOR_TEST: Método para cargar las aventuras públicas en el índice
+*/
 router.post('/loadAdventures', async (req, res) => {
   let adventuresIndexes = []
   const adventures = await Adventure.find({privacy:false}, err =>{

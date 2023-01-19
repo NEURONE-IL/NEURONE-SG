@@ -8,8 +8,10 @@ const AdminNotification = require('../models/admin/adminNotification');
 const authMiddleware = require('../middlewares/authMiddleware');
 const verifyToken = require('../middlewares/verifyToken');
 
-//Traer todas las invitaciones de un usuario
-
+/*
+@Valentina Ligueño
+TESTED: Método para traer todas las invitaciones de un usuario
+*/
 router.get('/byUser/:user_id' ,  [verifyToken, authMiddleware.isCreator], async (req, res) => {
   const _user = req.params.user_id;
   Invitation.find({user: _user}, (err, invitations) =>{
@@ -20,10 +22,14 @@ router.get('/byUser/:user_id' ,  [verifyToken, authMiddleware.isCreator], async 
           });
       }
       invitations.reverse();
-      res.status(200).json({invitations});
+      res.status(200).json({message:'Invitations by user successfully get', invitations});
   }).populate({path: 'user', model: User, select:'-password'}).populate({path:'adventure', model: Adventure, populate: {path: 'user', model: User, select:'-password'}});
 })
 
+/*
+@Valentina Ligueño
+TESTED: Método para verificar si existen invitaciones pendientes para usuario de una aventura en específico
+*/
 router.get('/checkExist/:user_id/:adventure_id' ,  [verifyToken, authMiddleware.isCreator], async (req, res) => {
     const _user = req.params.user_id;
     const _adventure = req.params.adventure_id;
@@ -35,15 +41,18 @@ router.get('/checkExist/:user_id/:adventure_id' ,  [verifyToken, authMiddleware.
             });
         }
     })
-    console.log(invitation)
+    //console.log(invitation)
     if(invitation != null)
         return res.status(200).json({message: "EXISTING_INVITATION"})
     else  
         return res.status(200).json({message: "NOT_EXISTING_INVITATION"})
 
-  })
+})
 
-//Para aceptar una invitación
+/*
+@Valentina Ligueño
+TESTED: Método para aceptar una invitación
+*/
 router.put('/acceptInvitation/:type' ,  [verifyToken, authMiddleware.isCreator], async (req, res) => {
     const type = req.params.type
     const _invitation = req.body._id;
@@ -65,8 +74,6 @@ router.put('/acceptInvitation/:type' ,  [verifyToken, authMiddleware.isCreator],
         }
     }).populate({path:'user', model: User, select:'-password'})
     let _user = invitation.user._id;
-    console.log(_user);
-    console.log(adventure.collaborators);
 
     if(type === 'invitation'){
         let index = adventure.collaborators.findIndex( coll => JSON.stringify(coll.user) === JSON.stringify(_user))
@@ -127,12 +134,17 @@ router.put('/acceptInvitation/:type' ,  [verifyToken, authMiddleware.isCreator],
         await invitation.populate({path: 'user', model: User, select:'-password'})
                         .populate({path:'adventure', model: Adventure, populate: {path: 'user', model: User, select:'-password'}}).execPopulate()
         res.status(200).json({
+            message: 'Invitation succesfully accepted',
             invitation
         });
     })
 
-  })
+})
 
+/*
+@Valentina Ligueño
+TESTED: Método para rechazar una invitación
+*/
 router.put('/rejectInvitation/:type' ,  [verifyToken, authMiddleware.isCreator], async (req, res) => {
     const type = req.params.type;
 
@@ -145,7 +157,7 @@ router.put('/rejectInvitation/:type' ,  [verifyToken, authMiddleware.isCreator],
             });
         }
     }).populate({path:'user', model: User, select:'-password'});
-    console.log(invitation);
+    //console.log(invitation);
     const adventure = await Adventure.findOne( {_id: invitation.adventure}, err =>{
         if(err){
             return res.status(404).json({
@@ -209,6 +221,7 @@ router.put('/rejectInvitation/:type' ,  [verifyToken, authMiddleware.isCreator],
         await invitation.populate({path: 'user', model: User, select:'-password'})
                         .populate({path:'adventure', model: Adventure, populate: {path: 'user', model: User, select:'-password'}}).execPopulate()
         res.status(200).json({
+            message: 'Invitation succesfully rejected',
             invitation
         });
     })
@@ -216,7 +229,10 @@ router.put('/rejectInvitation/:type' ,  [verifyToken, authMiddleware.isCreator],
   })
 
   
-//Método para crear una invitación
+/*
+@Valentina Ligueño
+TESTED: Método para enviar una solicitud de colaboración para una aventura
+*/
 router.post('/requestCollaboration' ,  [verifyToken, authMiddleware.isCreator], async (req, res) => {
     const invitation = new Invitation ({
         user: req.body.user,
@@ -246,9 +262,89 @@ router.post('/requestCollaboration' ,  [verifyToken, authMiddleware.isCreator], 
         }
     })
     res.status(200).json({
+        message:'Request Collaboration succesfully sended',
         invitation
     });
 });
 
+/*
+@Valentina Ligueño
+TESTED: Método para enviar una invitación de colaboración a una aventura
+*/
+router.post('/invitationToCollaborate' ,  [verifyToken, authMiddleware.isCreator], async (req, res) => {
+    Adventure.findOne({_id: req.body.adventure._id}, (err, adventure) => {
+        if(err){
+            return res.status(404).json({
+                err
+            });
+        }
+        adventure.collaborators.push({user:req.body.user, invitation:'Pendiente'})
+        adventure.save((err,adv) => {
+            if(err){
+                return res.status(404).json({
+                    err
+                });
+            }
+        })
+    })
+    const invitation = new Invitation ({
+        user: req.body.user,
+        adventure: req.body.adventure._id,
+        status: 'Pendiente',
+    });
+    invitation.save( err => {
+        if(err){
+            return res.status(404).json({
+                err
+            });
+        }
+    })
+    const notification = new AdminNotification ({
+        userFrom: req.body.adventure.user._id,
+        userTo:req.body.user,
+        type: 'invitation',
+        invitation: invitation._id,
+        description:'Invitación para colaborar en la aventura: ' + req.body.adventure.name,
+        seen: false,
+    });
+    notification.save(err => {
+        if(err){
+            return res.status(404).json({
+                err
+            });
+        }
+    })
+    res.status(200).json({
+        message:'Invitation to collaborate succesfully sended',
+        invitation
+    });
+});
+
+/*
+@Valentina Ligueño
+TESTED: Método para eliminar una invitación con su notificación asociada
+*/
+router.delete('/:invitation_id',  [verifyToken, authMiddleware.isCreator] , async (req, res) => {
+    const _id = req.params.invitation_id;
+
+    await AdminNotification.deleteOne({invitation: _id}, (err) => {
+        if (err) {
+          return res.status(404).json({
+              err
+          });
+        }
+    })
+    await Invitation.deleteOne({_id: _id}, (err) => {
+        if (err) {
+            return res.status(404).json({
+                err
+            });
+        }
+
+        res.status(200).json({
+            message: 'Invitation successfully deleted',
+        });
+    });
+});
 
 module.exports = router;

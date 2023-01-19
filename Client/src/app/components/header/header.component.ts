@@ -22,6 +22,7 @@ export class HeaderComponent implements OnInit {
   newNotificationsAdmin: any[] = [];
   oldNotificationsAdmin: any[] = [];
   showOldNotifications:boolean = false;
+  demoLink: String = "https://youtu.be/xu-bGYiZvtg";
 
   constructor(
             public router: Router, 

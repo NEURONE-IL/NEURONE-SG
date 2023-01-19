@@ -1,6 +1,6 @@
 <mat-tab-group dynamicHeight style="background: #d1d9ff;"  mat-align-tabs="start" (selectedTabChange)="onTabClick($event)">
-  <mat-tab label="Metadatos">
-    <div class="meta-editor-container" style="display: flex;">
+  <mat-tab label="Metadatos" >
+    <div class="meta-editor-container" style="display: flex;" *ngIf="adventure">
       <div style="margin-right: 1rem;">
         <button
           mat-raised-button
@@ -60,7 +60,7 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field style="width: 330%; margin-bottom: 2% !important;">
+          <mat-form-field style="width: 340%; margin-bottom: 2% !important;">
             <mat-chip-list #chipListTags aria-label="Tags Selection" formControlName="tags">
               <mat-chip
                 *ngFor="let tag of tags"
@@ -75,7 +75,7 @@
               formControlName="tags"
               [matChipInputFor]="chipListTags"
               (matChipInputTokenEnd)="addTag()">
-            <button matSuffix mat-mini-fab (click)="addTag()" class="addButton">
+            <button matSuffix mat-mini-fab [disabled]="!metaForm.controls.tags.valid || !metaForm.controls.tags.value" (click)="addTag()" class="addButton">
               <mat-icon>add</mat-icon>
             </button> 
             </mat-chip-list>
@@ -146,7 +146,7 @@
       <div class="adventures-coll">
         <mat-form-field *ngIf="this.adventure != null" style="width: 50%;">
           <mat-label>Añadir Colaborador</mat-label>
-          <input matInput type="email" [formControl]="emailFormControl" placeholder="Escribir Correo" (keyup.enter)="verifyCollaborator()">
+          <input matInput type="email" [formControl]="emailFormControl" placeholder="Escribir el correo del usuario y presionar enter o +" (keyup.enter)="verifyCollaborator()">
           <button matSuffix mat-mini-fab (click)="confirmAddCollaborator()" class="addButton" [disabled]="loadingColl">
             <mat-icon>add</mat-icon>
           </button>

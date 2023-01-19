@@ -80,7 +80,7 @@ export class AdventureSelectorComponent implements OnInit, OnDestroy {
   private fetchAllAdventures(playerId) {
     this.adventureService.getAdventuresByUser(playerId).subscribe(
       (res) => {
-        this.adventures = res;
+        this.adventures = res.adventures;
         console.log(res)
         this.createEditUsers();
         if (this.auth.getRole() == 'player') {
@@ -402,8 +402,8 @@ export class AdventureSelectorComponent implements OnInit, OnDestroy {
   releaseAdventure(adventure){
     let user_id = this.auth.getUser()._id;
     this.adventureService.releaseForEdit(adventure._id, {user:user_id}).subscribe(
-      adventure => {
-        console.log('Adventure Release');
+      res => {
+        console.log(res.message);
       },
       err => {
         console.log(err)

@@ -92,7 +92,7 @@
             El usuario que creó el estudio no puede añadirse como colaborador
           </mat-error>
         </mat-form-field>
-        <button class="addButton" mat-flat-button (click)="verifyCollaborator()">Añadir <mat-icon>add</mat-icon></button>
+        <button class="addButton" mat-flat-button [disabled]="!newAdventureForm.controls.collaborators.valid || !newAdventureForm.controls.collaborators.value" (click)="verifyCollaborator()">Añadir <mat-icon>add</mat-icon></button>
       </div>
 
       <div>
@@ -123,7 +123,7 @@
             El etiqueta ya se encuentra en la lista
           </mat-error>
         </mat-form-field>
-				<button mat-flat-button (click)="addTag()" class="addButton">Añadir <mat-icon>add</mat-icon></button>
+				<button mat-flat-button [disabled]="!newAdventureForm.controls.tags.valid || !newAdventureForm.controls.tags.value" (click)="addTag()" class="addButton">Añadir <mat-icon>add</mat-icon></button>
       </div>
 
       <mat-form-field class="form-field">

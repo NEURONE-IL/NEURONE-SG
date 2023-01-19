@@ -91,7 +91,7 @@ export class NewAdventureDialogComponent implements OnInit {
     let userId = this.auth.getUser()._id;
     this.adventureService.getAdventuresByUser(userId).subscribe(
       (res) => {
-        this.adventures = res;
+        this.adventures = res.adventures;
         this.loading = false;
       },
       (err) => {

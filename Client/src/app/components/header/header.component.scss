@@ -51,3 +51,8 @@
   margin-bottom: 3% !important; 
   margin-top:-2% !important;
 }
+::ng-deep .mat-menu-panel {
+  max-width: 320px !important;
+  min-width: 320px !important;
+  width: 320px !important;
+}

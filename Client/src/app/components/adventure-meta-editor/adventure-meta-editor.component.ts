@@ -112,7 +112,7 @@ export class AdventureMetaEditorComponent implements OnInit {
     ];
     this.adventureService.getAdventuresByUser(this.user._id).subscribe(
       (res) => {
-        this.adventures = res;
+        this.adventures = res.adventures;
         this.adventures = this.adventures.filter((adv) => {
           return adv._id != this.adventure._id;
         });
@@ -166,9 +166,9 @@ export class AdventureMetaEditorComponent implements OnInit {
       name: [this.adventure.name, Validators.required],
       description: [this.adventure.description, Validators.required],
       image_id: [],
-      preconditions: this.adventure.preconditions,
-      privacy: this.adventure.privacy,
-      collaborators: this.adventure.collaborators,
+      preconditions: [this.adventure.preconditions],
+      privacy: [this.adventure.privacy, Validators.required],
+      collaborators: [this.adventure.collaborators],
       tags:['',[Validators.minLength(3), Validators.maxLength(15), tagExist(this.tags)]],
     });
     if(!this.userOwner){
@@ -212,7 +212,7 @@ export class AdventureMetaEditorComponent implements OnInit {
         this.metaForm.controls.privacy.enable();
         this.metaForm.controls.preconditions.enable();
       }
-      if(this.adventure.preconditions.length === 0)
+      if(this.metaForm.controls.preconditions.value.length === 0)
         this.metaForm.controls.preconditions.setValue([]);
 
       if (this.currentMediaType == 'image') {
@@ -354,7 +354,7 @@ export class AdventureMetaEditorComponent implements OnInit {
             }
 
             if(err === 'USER_NOT_CONFIRMED'){
-            this.toastr.error("El usuario ingresado no ha terminado su proceso de registro", "Usuario no confirmado", {
+            this.toastr.error("El usuario ingresado no ha terminado su proceso de registro, este debe confirmar el registro en el correo recibido", "Usuario no confirmado", {
               timeOut: 5000,
               positionClass: 'toast-top-center'});
               return

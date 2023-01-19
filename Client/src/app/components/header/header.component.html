@@ -56,6 +56,11 @@
       </ng-container>
   </div>
   </mat-menu>
+  <a mat-button *ngIf="user && (user.role === 'admin' || user.role === 'creator')" 
+    [href]="demoLink" target="_blank"
+    [matTooltip]="'Acceder a una demostración de uso de la plataforma'">	
+    <mat-icon>help_outline</mat-icon> 
+  </a>
   <div *ngIf="user && role == 'player'">
       <button mat-button color="white" (click)="goToProfile()" [matTooltip]="'TOOLTIPS.HEADER_PROFILE' | translate">
         <mat-icon>account_circle</mat-icon>

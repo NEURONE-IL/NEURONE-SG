@@ -37,8 +37,31 @@ router.get("", [verifyToken, authMiddleware.isCreator], async (req, res) => {
   })
 });
 
+router.get("/:adventure_id", [verifyToken], async (req, res) => {
+  const _id = req.params.adventure_id;
+  Adventure.findOne({ _id: _id }, (err, adventure) => {
+    if (err) {
+      return res.status(404).json({
+        ok: false,
+        err,
+      });
+    }
+    res.status(200).json(adventure);
+  }).populate({
+    path: 'collaborators',
+    populate: {
+      path: 'user',
+      model: User,
+      select:'-password' 
+    }
+  }).populate({ path: 'user', model: User, select:'-password'});
+});
+
 //Valentina
-//Ruta para traer las aventuras filtradas por usuario
+/*
+@Valentina Ligueño
+TESTED: Método para obtener las aventuras de un usuario en específico
+*/
 router.get("/byUser/:user_id", [verifyToken, authMiddleware.isCreator], async (req, res) => {
   const _id = req.params.user_id;
   
@@ -50,7 +73,9 @@ router.get("/byUser/:user_id", [verifyToken, authMiddleware.isCreator], async (r
       });
     }
     else {
-      res.status(200).json(adventures);
+      res.status(200).json({
+        message: 'Adventures by user successfully get',
+        adventures});
     }
   }).populate({
     path: 'collaborators',
@@ -62,7 +87,10 @@ router.get("/byUser/:user_id", [verifyToken, authMiddleware.isCreator], async (r
   }).populate({path: 'user', model: User, select:'-password'});
 });
 
-//Ruta para traer las aventuras filtradas privacidad de un usuario
+/*
+@Valentina Ligueño
+TESTED: Método para obtener solo aventuras privadas o públicas de un usuario
+*/
 router.get('/byUserbyPrivacy/:user_id/:privacy', [verifyToken, authMiddleware.isCreator], async (req, res) => {
   const _privacy = JSON.parse(req.params.privacy);
   const _id = req.params.user_id; 
@@ -74,7 +102,10 @@ router.get('/byUserbyPrivacy/:user_id/:privacy', [verifyToken, authMiddleware.is
               err
           });
       }
-      res.status(200).json({adventures});
+      res.status(200).json({
+        message: 'Adventures by user by privacy successfully get',
+        adventures
+      });
   }).populate({
     path: 'collaborators',
     populate: {
@@ -85,7 +116,10 @@ router.get('/byUserbyPrivacy/:user_id/:privacy', [verifyToken, authMiddleware.is
   }).populate({path: 'user', model: User, select:'-password'});
 });
 
-//Método para obtener las aventuras por tipo de un usuario
+/*
+@Valentina Ligueño
+TESTED: Método para obtener las aventuras por tipo de un usuario
+*/
 router.get('/byUserbyType/:user_id/:type', [verifyToken, authMiddleware.isCreator] ,async (req, res) => {
   const type = req.params.type;
   const _id = req.params.user_id; 
@@ -98,7 +132,10 @@ router.get('/byUserbyType/:user_id/:type', [verifyToken, authMiddleware.isCreato
           });
       }
 
-      res.status(200).json({adventures});
+      res.status(200).json({
+        message: 'Adventures by user by type successfully get',
+        adventures
+      });
   }).populate({
     path: 'collaborators',
     populate: {
@@ -109,7 +146,10 @@ router.get('/byUserbyType/:user_id/:type', [verifyToken, authMiddleware.isCreato
   }).populate({path: 'user', model: User, select:'-password'})
 });
 
-//Método para obtener las aventuras de colaboración de un usuario en específico
+/*
+@Valentina Ligueño
+TESTED: Método para obtener las aventuras en las que está colaborando un usuario en específico
+*/
 router.get('/byUserCollaboration/:user_id', [verifyToken, authMiddleware.isCreator], async (req, res) => {
   const _id = req.params.user_id;
   
@@ -125,7 +165,10 @@ router.get('/byUserCollaboration/:user_id', [verifyToken, authMiddleware.isCreat
               err
           })
       }
-      res.status(200).json({adventures});
+      res.status(200).json({
+        message:'Adventures by user in which is collaborator successfully get',
+        adventures
+      });
   }).populate({
     path: 'collaborators',
     populate: {
@@ -159,25 +202,6 @@ router.get("/player/:user_id", [verifyToken], async (req, res) => {
   });
 });
 
-router.get("/:adventure_id", [verifyToken], async (req, res) => {
-  const _id = req.params.adventure_id;
-  Adventure.findOne({ _id: _id }, (err, adventure) => {
-    if (err) {
-      return res.status(404).json({
-        ok: false,
-        err,
-      });
-    }
-    res.status(200).json(adventure);
-  }).populate({
-    path: 'collaborators',
-    populate: {
-      path: 'user',
-      model: User,
-      select:'-password' 
-    }
-  }).populate({ path: 'user', model: User, select:'-password'});
-});
 
 router.post(
   "",
@@ -195,6 +219,10 @@ router.post(
   }
 );
 
+/*
+@Valentina Ligueño
+TESTED: Método para crear una aventura con las nuevas implementaciones
+*/
 router.post("/new",
 [
     verifyToken,
@@ -204,7 +232,6 @@ router.post("/new",
   ],
   async (req, res) => {
     const initialAdventure = req.body;
-    //Valentina
     let collaborators = JSON.parse(req.body.collaborators);
     let tags = JSON.parse(req.body.tags);
     initialAdventure.collaborators = collaborators;
@@ -282,11 +309,18 @@ router.post("/new",
       if(adventure.privacy == false)
         createAdventureSearch(adventure);
 
-      res.status(200).json(adventure);
+      res.status(200).json({
+        message:'Adventure succesfully created',
+        adventure
+      });
     });
   }
 );
 
+/*
+@Valentina Ligueño
+TESTED: Método para editar una aventura con las nuevas implementaciones
+*/
 router.put(
   "/:adventure_id",
   [verifyToken, authMiddleware.isCreator, adventureMiddleware.verifyBody],
@@ -308,7 +342,6 @@ router.put(
       adventure.collaborators = req.body.collaborators;
 
       let privacy = req.body.privacy;
-      console.log('privacidad: ', privacy)
 
       if(adventure.privacy === privacy)
         privacyChange = false;
@@ -316,7 +349,6 @@ router.put(
         adventure.privacy = privacy
         privacyChange = true;
       }
-      console.log('Cambia la privacidad?',privacyChange)
       adventure.privacy = req.body.privacy;
       
       if (req.body.image_id && adventure.image_id!=req.body.image_id) {
@@ -345,15 +377,20 @@ router.put(
         else if(adventure.privacy == false && !privacyChange)
           updateAdventureSearch(adventure);
           
-        res.status(200).json(result);
+        res.status(200).json({
+          message:'Adventure succesfully updated',
+          result});
       })
     }).populate({path:'user', model:User});;
   }
 );
 
-/*************Valentina *************/
+/************* Concurrencia *************/
 
-//Método para recibir cambios de edición de un estudio
+/*
+@Valentina Ligueño
+NOT_FOR_TEST: Método para suscribirse a la edición de una aventura
+*/
 router.get('/editStatus/:adventure_id/:user_id' ,async (req, res) => {
   console.log('Event Source for Adventure Edit Status');
   
@@ -389,17 +426,21 @@ router.get('/editStatus/:adventure_id/:user_id' ,async (req, res) => {
   }, 5000); 
 });
 
+/*
+@Valentina Ligueño
+TESTED: Método para solicitar la edición de una aventura
+*/
 router.put('/requestEdit/:adventure_id'/*, [verifyToken, authMiddleware.isCreator]*/, async (req, res) => {
   
   const _adventure = req.params.adventure_id;
   const _user = req.body.user;
 
-  console.log(_user + ' arrived');
-  console.log('Entering to Function: ', new Date())
+  //console.log(_user + ' arrived');
+  //console.log('Entering to Function: ', new Date())
 
   lock.acquire(_adventure, async function(done) {
-      console.log('Entering to Lock: ', new Date())
-      console.log(_user + ' acquire');
+      //console.log('Entering to Lock: ', new Date())
+      //console.log(_user + ' acquire');
       
       const adventure = await Adventure.findOne({_id:_adventure}, async (err, adv) => {
           if (err) {
@@ -420,7 +461,10 @@ router.put('/requestEdit/:adventure_id'/*, [verifyToken, authMiddleware.isCreato
           }
           await adv.populate({path:'edit', model:User}).execPopulate();
           done(JSON.stringify(adv.edit._id));
-          res.status(200).json({userEdit: adv.edit});
+          res.status(200).json({
+            message: 'Current user for edit successfully updated',
+            userEdit: adv.edit
+          });
         })
         
       }
@@ -430,17 +474,21 @@ router.put('/requestEdit/:adventure_id'/*, [verifyToken, authMiddleware.isCreato
       }
       
   }, async function(edit) {
-      if(JSON.stringify(_user) == edit)
+      /*if(JSON.stringify(_user) == edit)
         console.log('Current ser can edit ');
       else
-        console.log('Current ser can\' edit yet');
+        console.log('Current ser can\' edit yet');*/
 
-      console.log('Lock free...');
+      //console.log('Lock free...');
   })
 })
 
+/*
+@Valentina Ligueño
+TESTED: Método para liberar la edición de una aventura
+*/
 router.put('/releaseAdventure/:adventure_id', [verifyToken, authMiddleware.isCreator], async (req, res) => {
-  console.log('releaseEntrando')
+  //console.log('releaseEntrando')
   const _adventure = req.params.adventure_id;
   const _user = req.body.user;
 
@@ -462,12 +510,17 @@ router.put('/releaseAdventure/:adventure_id', [verifyToken, authMiddleware.isCre
               err
           });
       }
-      res.status(200).json(adventure);
-  })
-  //await delay(5); Para probar
-      
+      res.status(200).json({
+        message:'Adventure released for edit',
+        adventure
+      });
+  })  
 })
 
+/*
+@Valentina Ligueño
+TESTED: Método para gestionar los colaboradores de una aventura
+*/
 router.put('/editCollaborator/:adventure_id', [verifyToken, authMiddleware.isCreator], async (req, res) => {
     
   const _id = req.params.adventure_id;
@@ -561,18 +614,20 @@ router.put('/editCollaborator/:adventure_id', [verifyToken, authMiddleware.isCre
           }
         }).populate({path: 'user', model: User, select:'-password'}).execPopulate()
       res.status(200).json({
-          adventure
+        message:'Collaborators list successfully updated',
+        adventure
       });
   })
 })
 
+/*
+@Valentina Ligueño
+TESTED: Método para clonar una aventura
+*/
 router.post("/clone/:adventure_id",
 [verifyToken,authMiddleware.isCreator,imagesGridFS.upload.single("file")], async (req, res) => {
-    console.log('entra')
     const _id = req.params.adventure_id
     const _user = req.body.user_id
-
-    console.log(_id)
 
     let adventure = await Adventure.findOne({ _id: _id }, (err) => {
       if (err) {
@@ -747,10 +802,17 @@ router.post("/clone/:adventure_id",
           err,
         });
       }
-      res.status(200).json(adventure);
+      res.status(200).json({
+        message:'Adventure successfully cloned',
+        adventure});
     });
   }
 );
+
+/*
+@Valentina Ligueño
+TESTED: Método para eliminar una aventura con las nuevas implementaciones
+*/
 router.delete("/:adventure_id", [verifyToken, authMiddleware.isCreator], async (req, res) => {
   const _id = req.params.adventure_id;
   Adventure.findOneAndDelete({ _id: _id }, (err, adventure) => {
@@ -764,7 +826,7 @@ router.delete("/:adventure_id", [verifyToken, authMiddleware.isCreator], async (
     
     deleteInvitations(adventure,res)
     res.status(200).json({
-      adventure,
+      message:'Adventure successfully deleted',
     });
   });
 });
@@ -899,7 +961,7 @@ router.put('/:adventure_id/assistant', async (req, res) => {
 });
 
 async function createAdventureSearch(adventure){
-  console.log('createAdventureSearch');
+  //console.log('createAdventureSearch');
   try {
     const adventureSearch = new AdventureSearch({
       name: adventure.name,
@@ -961,7 +1023,7 @@ async function updateAdventureSearch(adventure){
 
 
 async function deleteAdventureSeach(adv_id){
-  console.log('deleteAdventureSeach');
+  //console.log('deleteAdventureSeach');
   try {
     const _id = adv_id;
     //Find the adventureSearch element

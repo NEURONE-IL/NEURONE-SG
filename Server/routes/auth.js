@@ -28,7 +28,7 @@ router.get("/getUserByEmail/:user_email", async (req, res) => {
   }).populate( { path: 'role', model: Role} );
   if (!user) return res.status(400).json({status: 400, message: "EMAIL_NOT_FOUND"})
   //checking role
-  if (user.role.name !== 'admin' ) return res.status(400).json({status: 400, message: "ROLE_INCORRECT"});
+  if (user.role.name === 'player' ) return res.status(400).json({status: 400, message: "ROLE_INCORRECT"});
   //checking confirmed
   if (!user.confirmed) return res.status(400).json({status: 400, message: "USER_NOT_CONFIRMED"});
   res.status(200).json({ user });

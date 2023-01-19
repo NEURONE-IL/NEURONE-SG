@@ -54,7 +54,7 @@
       "DELETE_SUCCESS": "Aventura eliminada correctamente",
       "DELETE_FAILURE": "Error al eliminar la aventura"
     },
-    "NO_ADVENTURES": "No hay aventuras disponibles en este momento."
+    "NO_ADVENTURES": "No existen aventuras coincidentes con la pestaña seleccionada"
   },
   "REGISTER": {
     "TITLE": "Registrarse",

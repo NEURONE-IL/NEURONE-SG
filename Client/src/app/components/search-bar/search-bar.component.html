@@ -7,7 +7,7 @@
           <div class="search-adventures-bar" style="width: 50%">
             <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-icon matPrefix >search</mat-icon>
-              <input style="padding-left: 5px;" type="search" matInput placeholder="Buscar Estudios de la Comunidad" name= "search" [(ngModel)]= "search" (keyup.enter)="getPublicAdventures(this.search)">
+              <input style="padding-left: 5px;" type="search" matInput placeholder="Buscar aventuras de la Comunidad" name= "search" [(ngModel)]= "search" (keyup.enter)="getPublicAdventures(this.search)">
             </mat-form-field>
           </div>
           <button class="button-customize" mat-raised-button color="primary" (click)="getPublicAdventures(this.search)">Buscar
