@@ -6,6 +6,7 @@ const Token = require("../models/auth/token");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const Adventure = require("../models/game/adventure");
 const crypto = require("crypto");
 const fs = require("fs");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -32,6 +33,31 @@ router.get("/getUserByEmail/:user_email", async (req, res) => {
   //checking confirmed
   if (!user.confirmed) return res.status(400).json({status: 400, message: "USER_NOT_CONFIRMED"});
   res.status(200).json({ user });
+});
+
+router.get("/getUsersByAdventure/:adventure_id", async (req, res) => {
+  const adventure_id = req.params.adventure_id;
+  console.log(adventure_id)
+  Adventure.find({ _id: adventure_id }, (err, adventure) => {
+    if (err) {
+      return res.status(404).json({
+        ok: false,
+        err,
+      });
+    }
+    console.log(adventure)
+    let userIds = adventure.map(adventure => adventure.user);
+    console.log(userIds)
+    User.find({ _id: { $in: userIds } }, { password: 0 }, (err, users) => {
+      if (err) {
+        return res.status(404).json({
+          ok: false,
+          err,
+        });
+      }
+      res.status(200).json({ users });
+    }).populate({ path: 'role', model: Role });
+  });
 });
 
 router.post(
@@ -187,6 +213,7 @@ router.post(
 
       try {
         // Register player in NEURONE-GM
+        console.log('EJEMPLO ENTRA')
         if (config.util.getEnv("NODE_ENV") !== "test") {
           saveGMPlayer(req, user, res);
         }

@@ -151,4 +151,8 @@ export class AuthService {
       });
     return config;
   }
+
+  getUsersByAdventure(adventure_id: string){
+    return this.http.get(AUTH_API + '/getUsersByAdventure/' + adventure_id);
+  }
 }

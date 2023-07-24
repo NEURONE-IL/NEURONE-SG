@@ -18,6 +18,7 @@ import { AdventuresSearchComponent } from './views/adventures-search/adventures-
 import { AdventuresSearchResultsComponent } from './components/adventures-search-results/adventures-search-results.component';
 import { AdventureSearchDisplayComponent } from './components/adventure-search-display/adventure-search-display.component';
 import { AdventureSearchDisplayGuard} from './helpers/guards/adventure-search-display.guard'
+import { StaticsComponent } from './components/statics/statics.component';
 
 const routes: Routes = [
   {
@@ -72,6 +73,11 @@ const routes: Routes = [
         path: 'adventure/:adventure_id',
         component: AdventureSearchDisplayComponent,
         canActivate:[AdventureSearchDisplayGuard]
+      },
+      {
+        path: 'adventure/:adventure_id/statics',
+        canActivate: [AuthGuard],
+        component: StaticsComponent,
       }
     ]
   },
@@ -80,6 +86,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     component: AdventureSelectionComponent,
   },
+  
   {
     path: 'profile',
     canActivate: [AuthGuard],

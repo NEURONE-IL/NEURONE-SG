@@ -23,7 +23,7 @@ import { authInterceptorProviders } from './helpers/auth.interceptor';
 
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { ToastrModule } from 'ngx-toastr';
-
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 import { MatChipsModule } from '@angular/material/chips'; 
 import { MatCardModule } from '@angular/material/card';
@@ -88,6 +88,8 @@ import { AdventureNodeComponent } from './components/adventure-search-display/ad
 import { AdventureDataComponent } from './components/adventure-search-display/adventure-data/adventure-data.component';
 import { CustomSnackBarComponent } from './components/adventure-selector/snackbar/CustomSnackBarComponent';
 import { ServiceLocator } from './services/locator.service';
+import { StaticsComponent } from './components/statics/statics.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -140,6 +142,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AdventureNodeComponent,
     AdventureDataComponent,
     CustomSnackBarComponent,
+    StaticsComponent,
   ],
   imports: [
     BrowserModule,
@@ -172,7 +175,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatSlideToggleModule,
     MatTableModule,
     MatTooltipModule,
+    MatRadioModule,
     MatPaginatorModule,
+    NgxChartsModule,
     FileUploadModule,
     EmbeddedMediaModule,
     ToastrModule.forRoot(),

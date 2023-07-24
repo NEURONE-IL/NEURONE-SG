@@ -1,0 +1,78 @@
+<div class="container">
+    <mat-card class="form-container">
+        <form>
+            <h4>Métricas</h4>
+            <fieldset>
+                <legend>Selecciona una métrica</legend>
+                <ul>
+                    <li *ngFor="let metric of metrics">
+                        <mat-radio-button [value]="metric.value" (change)="onMetricChange($event.value)">
+                            {{metric.viewValue}}
+                        </mat-radio-button>
+                    </li>
+                </ul>
+            </fieldset>
+            <p> Métrica seleccionada: {{selectedValue}} </p>
+        </form>
+    </mat-card>
+
+    <mat-card class="form-container">
+        <form>
+            <h4>Estudiantes</h4>
+            <fieldset>
+                <legend>Selecciona una métrica</legend>
+                <ul>
+                    <li *ngFor="let student of students">
+                        <mat-radio-button [value]="student.value" (change)="onStudentChange($event.value)">
+                            {{student.viewValue}}
+                        </mat-radio-button>
+                    </li>
+                </ul>
+            </fieldset>
+            <p> Estudiante seleccionado/a: {{selectedStudent}} </p>
+        </form>
+    </mat-card>
+
+    <mat-card class="form-container-metrics">
+        <div class="pdf-container">
+            <div class="pdf-viewer">
+                <div id="pdf-border" class="pdf-border">
+                    <!-- Primer gráfico -->
+                    <ngx-charts-line-chart [attr.id]="selectedMetric" [view]="linearChartOptions.view" [scheme]="linearChartOptions.colorScheme" [legend]="linearChartOptions.legend"
+                        [showXAxisLabel]="linearChartOptions.showXAxisLabel" [showYAxisLabel]="linearChartOptions.showYAxisLabel" [xAxis]="linearChartOptions.xAxis"
+                        [yAxis]="linearChartOptions.yAxis" [xAxisLabel]="linearChartOptions.xAxisLabel" [yAxisLabel]="linearChartOptions.yAxisLabel" [timeline]="linearChartOptions.timeline"
+                        *ngIf="chartsVisible" [results]="linearChartOptions.single">
+                    </ngx-charts-line-chart>
+
+                    <!-- Segundo gráfico -->
+                    <div class="pdf-row">
+
+                        <ngx-charts-pie-chart [attr.id]="selectedMetric" [view]="circularChartOptions.view"
+                            [scheme]="circularChartOptions.colorScheme" *ngIf="chartsVisible" [results]="circularChartOptions.single"
+                            [gradient]="circularChartOptions.gradient" [legend]="circularChartOptions.showLegend"
+                            [legendPosition]="circularChartOptions.legendPosition"
+                            [labels]="circularChartOptions.showLabels" [doughnut]="circularChartOptions.isDoughnut">
+                        </ngx-charts-pie-chart>
+                        <ngx-charts-bar-vertical [attr.id]="selectedMetric" [view]="barChartOptions.view" [scheme]="barChartOptions.colorScheme"
+                        *ngIf="chartsVisible" [results]="barChartOptions.single" [gradient]="barChartOptions.gradient"
+                            [xAxis]="barChartOptions.showXAxis" [yAxis]="barChartOptions.showYAxis"
+                            [legend]="barChartOptions.showLegend" [showXAxisLabel]="barChartOptions.showXAxisLabel"
+                            [showYAxisLabel]="barChartOptions.showYAxisLabel" [xAxisLabel]="barChartOptions.xAxisLabel"
+                            [yAxisLabel]="barChartOptions.yAxisLabel">
+                        </ngx-charts-bar-vertical>
+                    </div>
+                </div>
+                <div class="pdf-buttons">
+                    <button class="pdf-excel-button" (click)="downloadExcel()">
+                        <img src="../../../assets/images/excel-logo.png" alt="Excel">
+                        <span>Descargar Excel</span>
+                      </button>
+                      <button class="pdf-pdf-button" (click)="downloadPDF()">
+                        <img src="../../../assets/images/pdf-logo.png" alt="PDF">
+                        <span>Descargar PDF</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+</div>
