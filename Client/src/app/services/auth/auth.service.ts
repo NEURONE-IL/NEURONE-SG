@@ -151,4 +151,12 @@ export class AuthService {
       });
     return config;
   }
+
+  getUsersByAdventure(adventure_id: string){
+    return this.http.get(AUTH_API + '/getUsersByAdventure/' + adventure_id);
+  }
+
+  getMetricsByAdventure(adventure_id: string){
+    return this.http.get(AUTH_API +'/getMetricsByAdventure/' + adventure_id);
+  }
 }

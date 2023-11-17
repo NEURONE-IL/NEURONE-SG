@@ -86,8 +86,9 @@ export class GameBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.player = this.auth.getUser();
-    this.assistant();
-    this.avatarImg = environment.avatarsPath + this.player.avatar_img;
+    console.log(this.player)
+    //this.assistant();
+    this.avatarImg = environment.avatarsPath + '01.png';
     this.answerForm = this.formBuilder.group({
       answer: ['', Validators.required],
       adventure: [this.adventure._id],

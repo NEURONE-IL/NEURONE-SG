@@ -476,4 +476,8 @@ export class AdventureSelectorComponent implements OnInit, OnDestroy {
       this.editUsers.push([])
    }
   }
+  goToStatics(adventure: any) {
+    this.router.navigate([`adventures-search/adventure/${adventure._id}/statics`]);
+  }
+  
 }

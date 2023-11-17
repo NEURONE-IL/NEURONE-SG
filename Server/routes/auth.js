@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/auth/user");
+const Metrics = require("../models/auth/metrics");
 const Role = require("../models/auth/role");
 const Token = require("../models/auth/token");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const Adventure = require("../models/game/adventure");
 const crypto = require("crypto");
 const fs = require("fs");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -33,6 +35,48 @@ router.get("/getUserByEmail/:user_email", async (req, res) => {
   if (!user.confirmed) return res.status(400).json({status: 400, message: "USER_NOT_CONFIRMED"});
   res.status(200).json({ user });
 });
+
+router.get("/getUsersByAdventure/:adventure_id", async (req, res) => {
+  // Busca en la colección de 'metrics'
+  Metrics.find({}, (err, metrics) => {
+    if (err) {
+      return res.status(404).json({
+        ok: false,
+        err,
+      });
+    }
+    // Aquí asumo que metrics tiene una propiedad 'userId' ya que no especificaste la estructura del documento en 'metrics'
+    let userIds = [...new Set(metrics.map(metric => metric.userId))];
+
+    // Formateamos los userIds a un objeto para mantener la consistencia con tu código anterior.
+    const formattedUsers = userIds.map(userId => {
+      return {
+        _id: userId,
+        names: userId
+      };
+    });
+
+    // No necesitamos buscar en la colección 'User' ni hacer populate, así que lo eliminamos
+    res.status(200).json({ users: formattedUsers });
+  });
+});
+
+router.get("/getMetricsByAdventure/:adventure_id", async (req, res) => {
+  try {
+    const metrics = await Metrics.find({});
+
+    if (!metrics.length) {
+      return res.status(404).json({ status: 404, message: "Metrics not found" });
+    }
+
+    res.status(200).json(metrics);
+
+  } catch (error) {
+    console.error(`Error: ${error}`);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 router.post(
   "/register/admin",
@@ -187,6 +231,7 @@ router.post(
 
       try {
         // Register player in NEURONE-GM
+        console.log('EJEMPLO ENTRA')
         if (config.util.getEnv("NODE_ENV") !== "test") {
           saveGMPlayer(req, user, res);
         }

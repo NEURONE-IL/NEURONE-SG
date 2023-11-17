@@ -50,6 +50,7 @@
     "CARD_CONTINUE": "CONTINUAR",
     "CARD_EDIT": "EDITAR",
     "CARD_DELETE": "ELIMINAR",
+    "CARD_STATICS": "ESTADÍSTICAS",
     "TOASTR": {
       "DELETE_SUCCESS": "Aventura eliminada correctamente",
       "DELETE_FAILURE": "Error al eliminar la aventura"
