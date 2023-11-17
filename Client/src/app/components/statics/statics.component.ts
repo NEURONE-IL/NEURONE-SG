@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChangeDetectorRef } from '@angular/core';
-import { originalSingle } from './data'
 import * as XLSX from 'xlsx';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -75,35 +72,53 @@ export class StaticsComponent implements OnInit {
       domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
     }
   }
-  study$: any; // Variable para almacenar el estudio obtenido del servicio
-  idStudy: string; // Variable para almacenar el id del estudio
+
+  numberCardOptions: any = {
+    single: [...this.originalSingle],
+    view: [900, 330],  // configura el tamaño según tus necesidades
+    colorScheme: {
+      domain: [
+        '#5AA454', '#E44D25', '#CFC0BB', '#7AA3E5', '#A8385D', '#AAE3F5']
+    },
+    cardColor: '#232837'
+  };
+
+  study$: any;
+  idStudy: string;
   students: Student[] = [];
   selectedStudent = 'todos';
-  constructor(private authService: AuthService, private route: ActivatedRoute, private cdRef: ChangeDetectorRef) {
-    Object.assign(this, { originalSingle });
-  }
+  allMetrics: Metric[] = [
+    { value: 'totalcover', viewValue: 'Totalcover' },
+    { value: 'bmrelevant', viewValue: 'Bmrelevant' },
+    { value: 'precision', viewValue: 'Precision' },
+    { value: 'totalpagestay', viewValue: 'Total Page Stay' },
+    { value: 'pagestay', viewValue: 'Page Stay' },
+    { value: 'writingtime', viewValue: 'Writing Time Query' },
+    { value: 'ifquotes', viewValue: 'If Quotes' },
+    { value: 'firstquerytime', viewValue: 'First Query Time' },
+    { value: 'challengestarted', viewValue: 'Challenge Started' },
+  ];
+  metrics: any;
+  constructor(private authService: AuthService, private route: ActivatedRoute, private cdRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.idStudy = this.route.snapshot.paramMap.get('adventure_id'); // Obtiene el id del estudio de la ruta
+    this.idStudy = this.route.snapshot.paramMap.get('adventure_id');
     console.log(this.idStudy)
-    this.getStudyData(this.idStudy); // Llama al servicio con el id del estudio
-    console.log(this.study$)
+    this.getStudyData(this.idStudy);
+    this.getMetricsData(this.idStudy);
   }
 
   getStudyData(id: string): void {
     this.authService.getUsersByAdventure(id).subscribe(
       (studyData: any) => {
-        this.study$ = studyData;
         console.log(studyData)
-        // procesar los datos del estudio para obtener los estudiantes
+        this.study$ = studyData;
         this.students = studyData.users.map(user => {
           return {
             value: user._id,
-            viewValue: user.username,
+            viewValue: user.names,
           };
         });
-
-        // Agregar la opción "Todos" al inicio de la lista de estudiantes
         this.students.unshift({ value: 'todos', viewValue: 'Todos' });
         console.log(this.students)
       },
@@ -113,12 +128,44 @@ export class StaticsComponent implements OnInit {
     );
   }
 
+  getMetricsData(id: string): void {
+    this.authService.getMetricsByAdventure(id).subscribe(
+      (studyData: any) => {
+        this.originalSingle = studyData.map(metricData => {
+          return {
+            userId: metricData.userId,
+            value: metricData.value,
+            type: metricData.type
+          };
+        });
+
+        this.updateMetrics();
+
+        this.updateChartData();
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+
+  updateMetrics(): void {
+    if (this.selectedStudent === 'todos') {
+      this.metrics = this.allMetrics.filter(metric =>
+        this.originalSingle.some(data => data.type === metric.value && data.value)
+      );
+    } else {
+      this.metrics = this.allMetrics.filter(metric =>
+        this.originalSingle.some(data => data.type === metric.value && data.value && data.userId === this.selectedStudent)
+      );
+    }
+  }
   onStudentChange(value: string): void {
     this.selectedStudent = value;
+    this.updateMetrics();
     this.updateChartData();
     this.cdRef.detectChanges();
   }
-
 
   onMetricChange(value: string): void {
     this.selectedMetric = value;
@@ -129,87 +176,109 @@ export class StaticsComponent implements OnInit {
   updateChartData(): void {
     let filteredData;
     if (this.selectedMetric === 'Todos') {
-      filteredData = [...this.originalSingle];  // Muestra todos los datos si se selecciona 'Todos'
+      filteredData = [...this.originalSingle];
     } else {
       filteredData = this.originalSingle.filter(data => data.type === this.selectedMetric);
     }
-  
+
     if (this.selectedStudent !== 'todos') {
       filteredData = filteredData.filter(data => data.userId === this.selectedStudent);
     }
-  
-    // Group by 'userId'
+
     let groupedData = filteredData.reduce((groups, data) => {
       let group = groups[data.userId] || [];
       group.push(data);
       groups[data.userId] = group;
       return groups;
     }, {});
-  
-    // Map the grouped data to the structure that ngx-charts expects
+
     let barAndCircularChartData = [];
     let linearChartData = [];
+
     for (let userId in groupedData) {
       let userName = this.students.find(student => student.value === userId)?.viewValue || userId;
-  
-      // For bar and circular charts, we can still use the maximum 'value'
+
       let maxValue = Math.max(...groupedData[userId].map(data => data.value));
-      barAndCircularChartData.push({
+
+      let chartDataItem = {
         name: userName,
         value: maxValue
-      });
-  
-      // For the linear chart, we create a series with each data point
+      };
+
+      // Add extra field if the selectedMetric is 'challengestarted'
+      if (this.selectedMetric === 'challengestarted') {
+        chartDataItem.name = `${userName} ha iniciado reto`;
+      }
+
+      barAndCircularChartData.push(chartDataItem);
+
       linearChartData.push({
         name: userName,
         series: groupedData[userId].map((data, index) => ({
-          name: index.toString(),  // Using the index as the 'name' for each data point
+          name: index.toString(),
           value: data.value
         }))
       });
     }
-  
+
     this.barChartOptions.single = barAndCircularChartData;
     this.circularChartOptions.single = barAndCircularChartData;
+    this.numberCardOptions.single = barAndCircularChartData;
     this.linearChartOptions.single = linearChartData;
-    
+
     this.chartsVisible = this.barChartOptions.single.length > 0;
-    console.log(this.chartsVisible)
-    console.log(this.barChartOptions.single)
-    console.log(this.circularChartOptions.single)
-    console.log(this.linearChartOptions.single)
     this.cdRef.markForCheck();
-  }  
-
-
-  selectedValue: string;
-  selectedCar: string;
-
-  metrics: Metric[] = [
-    { value: 'totalcover', viewValue: 'Totalcover' }, //NNúmero total de documentos diferentes visitados por el participante
-    { value: 'bmrelevant', viewValue: 'Bmrelevant' }, //Número de documentos relevantes recuperados por el participante
-    { value: 'precision', viewValue: 'Precision' }, // Relación entre el número de documentos relevantes encontrados y el universo total de documentos diferentes visitados
-    { value: 'totalpagestay', viewValue: 'Total Page Stay' }, // Tiempo total en segundos que el participante permanece en documentos
-    { value: 'pagestay', viewValue: 'Page Stay' }, // Tiempo total en segundos que el participante estuvo en el último documento visitado
-    { value: 'writingtime', viewValue: 'Writing Time Query' }, //Tiempo total en segundos utilizado por el participante en el proceso de escritura de todas las consultas realizadas
-    { value: 'ifquotes', viewValue: 'If Quotes' }, // Indica si la última consulta formulada posee comillas (1.0) o no (0.0)
-    { value: 'firstquerytime', viewValue: 'First Query Time' }, // Indica de forma progresiva (cada 1 segundo aproximadamente) cuanto tiempo (en segundos) lleva el estudiante sin hacer la primera consulta
-    { value: 'challengestarted', viewValue: 'Challenge Started' },
-  ];
-
+  }
 
   downloadExcel(): void {
-    /* Genera un objeto de libro de trabajo */
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    const studentsData: Record<string, Record<string, number>> = {};
 
-    /* Genera una hoja de trabajo */
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.originalSingle);
+    for (const metric of this.metrics) {
+      const metricData = this.originalSingle.filter(data => data.type === metric.value);
+      for (const data of metricData) {
+        if (!studentsData[data.userId]) {
+          studentsData[data.userId] = {};
+        }
+        if (!studentsData[data.userId][metric.value] || data.value > studentsData[data.userId][metric.value]) {
+          studentsData[data.userId][metric.value] = data.value;
+        }
+      }
+    }
 
-    /* Agrega la hoja de trabajo al libro de trabajo */
-    XLSX.utils.book_append_sheet(wb, ws, 'Métricas');
+    const worksheetData: any[] = [];
+    const headerRow: any[] = ['Estudiante', ...this.metrics.map(metric => metric.viewValue)];
 
-    /* Guarda el archivo */
-    XLSX.writeFile(wb, 'metricas.xlsx');
+    worksheetData.push(headerRow);
+
+    for (const studentId in studentsData) {
+      const studentRow: any[] = [this.getStudentNameById(studentId)];
+      for (const metric of this.metrics) {
+        const value = studentsData[studentId][metric.value] || '';
+        studentRow.push(value);
+      }
+      worksheetData.push(studentRow);
+    }
+
+    const worksheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(worksheetData);
+
+    // Ajustar el ancho de las columnas
+    const columnWidths: number[] = [20]; // Ancho de la primera columna (Estudiante)
+    for (let i = 0; i < this.metrics.length; i++) {
+      columnWidths.push(15); // Ancho de las columnas de métricas
+    }
+    worksheet['!cols'] = columnWidths.map(width => ({ width }));
+
+    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Métricas');
+    XLSX.writeFile(workbook, 'metricas.xlsx');
+  }
+
+  getStudentNameById(userId: string): string {
+    if (userId === 'todos') {
+      return 'Todos';
+    }
+    const student = this.students.find(student => student.value === userId);
+    return student ? student.viewValue : '';
   }
 
   async downloadPDF(): Promise<void> {
@@ -221,44 +290,91 @@ export class StaticsComponent implements OnInit {
         Swal.showLoading();
       }
     });
-    
+
     const mergedPdf = new jsPDF();
-  
-    // Bucle para recorrer cada métrica de manera secuencial
+
+    const metricDescriptions = {
+      totalcover: 'Número total de documentos diferentes visitados por el participante',
+      bmrelevant: 'Número de documentos relevantes recuperados por el participante',
+      precision: 'Relación entre el número de documentos relevantes encontrados y el universo total de documentos diferentes visitados',
+      recall: 'Relación entre el número de documentos relevantes encontrados y el universo total de documentos relevantes',
+      f1: 'Media armónica entre las métricas Precision y Recall',
+      usfcover: 'Número de documentos diferentes visitados durante un período superior a un cierto número de segundos, por defecto treinta',
+      numqueries: 'Número de consultas realizadas por cada participante',
+      ceffectiveness: 'Relación entre el número de documentos visitados en un tiempo superior a treinta segundos y el universo total de documentos visitados',
+      qeffectiveness: 'Relación entre Coverage Effectiveness y Number of Queries. Esto permite medir la eficiencia asociada al proceso de búsqueda seguido por el usuario',
+      activebm: 'Número total de documentos recuperados por el participante, incluidos los relevantes y no relevantes',
+      score: 'Relación entre el número de documentos marcados que son relevantes y todos los marcados por el usuario. En una escala de 0 a 5, con una puntuación de 3,5 se aprueba al participante',
+      totalpagestay: 'Tiempo total en segundos que el participante permanece en documentos',
+      pagestay: 'Tiempo total en segundos que el participante estuvo en el último documento visitado',
+      entropy: 'Mide la frecuencia de cada una de las palabras de la consulta de tal forma que aquellas que menos se repiten aportan más información',
+      writingtime: 'Tiempo total en segundos utilizado por el participante en el proceso de escritura de todas las consultas realizadas',
+      modquery: 'Número de modificaciones realizadas a las consultas en el proceso de escritura en la etapa de búsqueda',
+      ifquotes: 'Indica si la última consulta formulada posee comillas (1.0) o no (0.0)',
+      firstquerytime: 'Indica de forma progresiva (cada 1 segundo aproximadamente) cuanto tiempo (en segundos) lleva el estudiante sin hacer la primera consulta',
+      challengestarted: 'Indica si el participante ha iniciado el reto'
+    };
+
+    let filteredData;
+
+    if (this.selectedStudent !== 'todos') {
+      filteredData = this.originalSingle.filter(data => data.userId === this.selectedStudent);
+    } else {
+      filteredData = this.originalSingle;
+    }
+
     for (let i = 0; i < this.metrics.length; i++) {
       const metric = this.metrics[i];
-  
-      // Llama a tu función para cambiar la métrica seleccionada
+
       this.onMetricChange(metric.value);
-  
-      // Espera un poco para que la página tenga tiempo de actualizar el gráfico
-      // Puedes ajustar este tiempo según tus necesidades
-      await new Promise(resolve => setTimeout(resolve, 1000));
-  
-      // Selecciona el contenedor que incluye todos los gráficos
+      await this.cdRef.detectChanges();
+
       const data = document.getElementById('pdf-border');
-  
+
       if (data) {
-        const canvas = await html2canvas(data); // Espera a que se complete la promesa de html2canvas
-  
-        // Configuración de la página PDF
+        if (i !== 0) { // Agrega una nueva página solo si no es la primera métrica
+          mergedPdf.addPage();
+        }
+
+        // Agregar título "Reporte Estudio" en cada página
+        mergedPdf.setFontSize(24);
+        mergedPdf.text('Reporte Estudio', mergedPdf.internal.pageSize.getWidth() / 2, 20, { align: 'center' });
+
+        await this.delay(1000); // Agrega un retraso de 1 segundo (puedes ajustar el tiempo según tus necesidades)
+
+        const canvas = await html2canvas(data);
         const imgWidth = 208;
         const pageHeight = 295;
         const imgHeight = canvas.height * imgWidth / canvas.width;
         const imgData = canvas.toDataURL('image/png');
-  
-        if (i > 0) { // Si no es la primera página, agrega una nueva página
-          mergedPdf.addPage();
-        }
-  
-        mergedPdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+
+        // Agregar nombre de la métrica como texto al principio de la página
+        mergedPdf.setFontSize(12);
+        mergedPdf.text(`${metric.viewValue} (${metric.value})`, 10, 60);
+
+        // Agregar descripción de la métrica en español
+        const description = metricDescriptions[metric.value];
+        mergedPdf.setFontSize(10);
+        const splitDescription = mergedPdf.splitTextToSize(description, 180);
+        mergedPdf.text(splitDescription, 10, 70);
+
+        // Agregar la imagen debajo del nombre y descripción de la métrica
+        mergedPdf.addImage(imgData, 'PNG', 0, 90, imgWidth, imgHeight);
       }
     }
     Swal.close();
-    // Guarda el PDF resultante
-    mergedPdf.save('metricas.pdf');
+    mergedPdf.save(`metricas.pdf`);
   }
-  
 
+  delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
+  getSelectedStudentName(): string {
+    if (this.selectedStudent === 'todos') {
+      return 'Todos';
+    }
+    const selectedStudent = this.students.find(student => student.value === this.selectedStudent);
+    return selectedStudent ? selectedStudent.viewValue : '';
+  }
 }
